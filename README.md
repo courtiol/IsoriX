@@ -5,7 +5,7 @@ This is the development repository of IsoriX, an R package aiming at building is
 ## Authors
 * Alexandre Courtiol
 * Stephanie Kramer-Schadt
-* François Rousset 
+* François Rousset
 
 ## How to install IsoriX?
 You will soon be able to download and install the stable version of IsoriX by typing:
@@ -18,6 +18,8 @@ You can download and install the development version of IsoriX by typing:
 devtools::install_bitbucket("courtiol/isorix/IsoriX")
 ```
 
+## How can you contribute?
+There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests.
 
 ## Some useful links
 [Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
