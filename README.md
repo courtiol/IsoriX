@@ -48,6 +48,6 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 [rasterVis](https://oscarperpinan.github.io/rastervis/)
 
 ## Authors
-* Alexandre Courtiol
+* [Alexandre Courtiol](https://sites.google.com/site/alexandrecourtiol/home)
 * Stephanie Kramer-Schadt
-* François Rousset
+* [François Rousset](http://www.isem.univ-montp2.fr/recherche/teams/evolutionary-genetics/staff/roussetfrancois/?lang=en)
