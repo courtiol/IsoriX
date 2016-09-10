@@ -5,6 +5,8 @@
 isorix.Rproj
 *.html
 *.tar.gz
+*.Rout
+*.pdf
 sources_for_vignettes/**/cache_knitr/
 sources_for_vignettes/**/fig_knitr/
 sources_for_vignettes/**/*.tif
