@@ -17,6 +17,14 @@
 }
 
 
+\section{version 0.4-2}{
+	\subsection{Minor changes}{
+			\itemize{
+			\item typo fixed in description file
+			}
+	}
+}
+
 \section{version 0.4-1}{
 	\subsection{New feature(s)}{
 			\itemize{
