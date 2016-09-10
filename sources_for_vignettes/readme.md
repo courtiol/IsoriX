@@ -10,7 +10,8 @@ Static vignette won't be compiled during build time and thus allows the presenta
 
 * if vignettes are pdfs, you can reduce their size by creating png pictures at 100 dpi and by comrpessing the pdfs using Ghostscript. The can be done easily in R by typing:
 
-```{r}
+```
+#!R
 tools::compactPDF(getwd(), gs_quality="ebook")
 ```
 
