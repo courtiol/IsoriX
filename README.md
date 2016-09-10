@@ -4,11 +4,6 @@ This is the development repository of IsoriX, an R package aiming at building is
 
 ![isoscape](image/isoscape.png)
 
-## Authors
-* Alexandre Courtiol
-* Stephanie Kramer-Schadt
-* François Rousset
-
 ## How to install IsoriX?
 You will soon be able to download and install the stable version of IsoriX by typing:
 
@@ -40,3 +35,8 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 [Using version control in RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
 
 [Markdown in Bitbucket](https://bitbucket.org/tutorials/markdowndemo)
+
+## Authors
+* Alexandre Courtiol
+* Stephanie Kramer-Schadt
+* François Rousset
