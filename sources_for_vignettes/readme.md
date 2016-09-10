@@ -6,8 +6,11 @@ Static vignette won't be compiled during build time and thus allows the presenta
 
 * just paste the html or pdf in the folder vignette in the package and copy the Rmd file after renaming it sources_for_nameofthevignette.Rmd in inst/doc/
 
-* if pdf, you can reduce the size of the document by creating png pictures at 100 dpi and by comrpessing the pdfs using Ghostscript. The can be done in R:
+* create the asis file (see pdf in this folder for how to)
+
+* if vignettes are pdfs, you can reduce their size by creating png pictures at 100 dpi and by comrpessing the pdfs using Ghostscript. The can be done easily in R by typing:
 
 ```{r}
 tools::compactPDF(getwd(), gs_quality="ebook")
 ```
+
