@@ -15,7 +15,7 @@ install.packages("IsoriX")
 
 You can download and install the development version of IsoriX by typing:
 ```{r}
-devtools::install_bitbucket("courtiol/isorix/IsoriX")
+devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
 ```
 
 ## How can you contribute?
