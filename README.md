@@ -9,12 +9,16 @@ This is the development repository of IsoriX, an R package aiming at building is
 
 ## How to install IsoriX?
 You will soon be able to download and install the stable version of IsoriX by typing:
-```{r}
+
+```
+#!r
 install.packages("IsoriX")
 ```
 
+
 You can download and install the development version of IsoriX by typing:
-```{r}
+```
+#!r
 devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
 ```
 
