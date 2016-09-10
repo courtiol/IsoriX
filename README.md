@@ -4,7 +4,7 @@ This is the development repository of IsoriX, an R package aiming at building is
 
 ![isoscape](image/isoscape.png)
 
-## How to install IsoriX?
+## How to download and install IsoriX?
 You will soon be able to download and install the stable version of IsoriX by typing:
 
 ```
