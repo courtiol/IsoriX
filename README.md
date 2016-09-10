@@ -43,9 +43,9 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 
 * about other R packages on which IsoriX strongly depends:
 
-[The R package spaMM](http://kimura.univ-montp2.fr/~rousset/spaMM.htm)
+[spaMM](http://kimura.univ-montp2.fr/~rousset/spaMM.htm)
 
-[The R package rasterVis](https://oscarperpinan.github.io/rastervis/)
+[rasterVis](https://oscarperpinan.github.io/rastervis/)
 
 ## Authors
 * Alexandre Courtiol
