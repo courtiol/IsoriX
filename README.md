@@ -11,7 +11,6 @@ This is the development repository of IsoriX, an R package aiming at building is
 You will soon be able to download and install the stable version of IsoriX by typing:
 
 ```
-#!R
 install.packages("IsoriX")
 ```
 
@@ -19,7 +18,6 @@ install.packages("IsoriX")
 You can download and install the development version of IsoriX by typing:
 
 ```
-#!R
 devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
 ```
 
