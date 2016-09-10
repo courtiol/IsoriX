@@ -1,0 +1,36 @@
+exportPattern("^[[:alpha:]]+")
+
+## Importing functions from other packages
+#importFrom("doParallel", registerDoParallel)
+#importFrom("foreach", "%dopar%", foreach)
+importFrom("graphics", par, plot, points, title)
+importFrom("grDevices", dev.off, terrain.colors)
+importFrom("grid", textGrob)
+importFrom("latticeExtra", mergedTrellisLegendGrob, layer)
+importFrom("numDeriv", hessian)
+#importFrom("parallel", makeCluster, stopCluster)
+importFrom("proxy", dist, pr_DB)
+importFrom("RandomFields", RFoptions, RFsimulate, RMnugget, RMwhittle)
+importFrom("raster", aggregate, calc, crop, extent, extract, overlay, raster, rasterize, stack, values, xmax, xmin, ymax, ymin)
+importFrom("rasterVis", levelplot)
+importFrom("sp", coordinates, CRS, gridded, proj4string,  set_ll_warn, sp.points, sp.polygons, "coordinates<-", "gridded<-", "proj4string<-")
+importFrom("spaMM", corrHLfit, fitme, HLfit, HLCor, MaternCorr, predict.HLfit, spaMM_Gamma, summary.HLfit)
+importFrom("stats", as.dist, dnorm, formula, Gamma, lm, na.omit, optim, pchisq, pnorm, predict, rgamma, rnorm, runif, sd, var)
+importFrom("utils", data, download.file, head, modifyList, object.size, packageDescription, packageVersion, setTxtProgressBar, txtProgressBar)
+
+## Registering S3 methods
+
+S3method(print, isofit)
+S3method(print, isoscape)
+S3method(print, calibfit)
+S3method(print, isorix)
+
+S3method(summary, isofit)
+S3method(summary, isoscape)
+S3method(summary, calibfit)
+S3method(summary, isorix)
+
+S3method(plot, isofit)
+S3method(plot, isoscape)
+S3method(plot, calibfit)
+S3method(plot, isorix)
