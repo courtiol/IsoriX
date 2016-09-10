@@ -26,6 +26,7 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 ## Some useful links
 
 * about making R packages:
+
 [Simple introduction to the making of R packages](http://r-pkgs.had.co.nz/)
 
 [Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
