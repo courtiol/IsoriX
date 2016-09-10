@@ -30,3 +30,5 @@ Suggests:
     maps,
     R.rsp
 VignetteBuilder: R.rsp
+URL: https://bitbucket.org/courtiol/isorix_project/
+BugReports: https://bitbucket.org/courtiol/isorix_project/issues/
