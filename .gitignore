@@ -1,12 +1,22 @@
+# RStudio stuff
+
 .Rproj.user
+isorix.Rproj
+.Ruserdata
+
+# heavy files that can easily be generated locally
+
+*.tar.gz
+*.tif
+
+# temporary files
+
 .Rhistory
 .RData
-.Ruserdata
-isorix.Rproj
-*.html
-*.tar.gz
 *.Rout
-*.pdf
+
+# vignettes
+
 sources_for_vignettes/**/cache_knitr/
 sources_for_vignettes/**/fig_knitr/
 sources_for_vignettes/**/*.tif
