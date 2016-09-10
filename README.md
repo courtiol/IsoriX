@@ -7,6 +7,13 @@ This is the development repository of IsoriX, an R package aiming at building is
 * Stephanie Kramer-Schadt
 * François Rousset 
 
+## How to install IsoriX
+
+You can download and install the development version of IsoriX by typing:
+```{r}
+devtools::install_bitbucket("courtiol/isorix/IsoriX")
+```
+
 
 ## Some useful links
 [R coding standard](https://google.github.io/styleguide/Rguide.xml)
