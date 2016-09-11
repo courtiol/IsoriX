@@ -24,7 +24,7 @@ devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
 
 Here, on bitbucket, we are planning to provide documentation in [our Wiki](https://bitbucket.org/courtiol/isorix_project/wiki/Home). It is just starting, so check regularly for updates.
 
-Otherwise, within __IsoriX__, you can access to the package documentation by typing:
+Otherwise, within IsoriX, you can access to the package documentation by typing:
 
 ```
 #!R
