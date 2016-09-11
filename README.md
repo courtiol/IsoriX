@@ -5,7 +5,7 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 ![isoscape](image/isoscape.png)
 
 ## How to download and install IsoriX?
-You will soon be able to download and install the stable version of IsoriX by typing:
+You can download and install the stable version of IsoriX by typing:
 
 ```
 #!R
