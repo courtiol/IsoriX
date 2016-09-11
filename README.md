@@ -23,19 +23,19 @@ devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
 
 Here, on bitbucket, we are planning to provide documentation in [our Wiki](https://bitbucket.org/courtiol/isorix_project/wiki/Home). It is just starting, so check regularly for updates.
 
-Otherwise, you can access the package documentation either on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or directly from within IsoriX by typing:
+Otherwise, you can access the documentation and tutorials about IsoriX on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or if you have installed IsoriX you can type:
 
 ```
 #!R
 help(package="IsoriX", help_type="html")
 ```
-
-and you can also find our tutorials by typing:
+to access the help files of all exported IsoriX functions and objects. Or you can type:
 
 ```
 #!R
 browseVignettes(package="IsoriX")
 ```
+to find our tutorials.
 
 
 ## How can you contribute?
