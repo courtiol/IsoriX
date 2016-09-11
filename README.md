@@ -20,6 +20,25 @@ You can download and install the development version of IsoriX by typing:
 devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
 ```
 
+## Where to learn about IsoriX?
+
+Here, on bitbucket, we are planning to provide documentation in [our Wiki](https://bitbucket.org/courtiol/isorix_project/wiki/Home). It is just starting, so check regularly for updates.
+
+Otherwise, within __IsoriX__, you can access to the package documentation by typing:
+
+```
+#!R
+help(package="IsoriX", help_type="html")
+```
+
+and you can also find our tutorials by typing:
+
+```
+#!R
+browseVignettes(package="IsoriX")
+```
+
+
 ## How can you contribute?
 There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests.
 
