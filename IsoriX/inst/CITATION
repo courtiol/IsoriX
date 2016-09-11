@@ -4,7 +4,7 @@ note <- sprintf("R package version %s", meta$Version)
 bibentry(bibtype="Manual",
   title = "Isoscape Computation and Inference of Spatial Origins using Mixed Models",
   author = personList(as.person("Alexandre Courtiol"),
-                      as.person("FranÃ§ois, Rousset"),
+                      as.person("François Rousset"),
                       as.person("Stephanie Kramer-Schadt")),
   year = year,
   note = note
