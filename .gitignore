@@ -4,6 +4,9 @@
 *.Rproj
 .Ruserdata
 
+# Windows files
+*.db
+
 # heavy files that can easily be generated locally
 
 *.tar.gz
