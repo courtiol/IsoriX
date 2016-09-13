@@ -1,0 +1,327 @@
+---
+title: "A simple workflow for IsoriX"
+author: "Alexandre Courtiol, François Rousset & Stephanie Kramer-Schadt"
+date: "`r Sys.Date()`"
+output:
+    pdf_document
+vignette: >
+  %\VignetteIndexEntry{A simple workflow for IsoriX}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, initialization, echo=FALSE}
+library(knitr)
+set.seed(123)  ## set seed for entire manuscript
+# set global options for knitr (if changed, all cashed chunked will be rerun!)
+knitr::opts_chunk$set(global.par=TRUE, width="\\linewidth", fig.align="center", dev="CairoPNG", dpi=500) # use dpi=100 for small pdfs
+docache <- FALSE
+```
+
+Welcome to __IsoriX__, in this vignette we present the steps required for you to build an isoscape and infer the geographic origin of your favorite animals or plants. This document is a simple introduction, we will thus not explore all the functionalities of the package. Such exploration will be the object of additional vignettes that will be available with future versions of the package. For the time being, users can discover advanced functionalities by reading the documentation of the package.
+
+Note that this vignette takes a lot of time to run. It has thus not been compiled by CRAN but by us. We have included the sources of this vignette as a text file which you can find in your computer. This file is in the folder `IsoriX/doc` within the folder where you usually install your packages (the latter being usually the one that shows up when you type `.libPaths()[1]` in R).
+
+In addition, due to constrains on how big this document must be, we had to reduce a lot the resolution of the figures. If you run it on your computer you will see that in fact figures produced by __IsoriX__ are great!
+
+## Step 0 - Loading IsoriX
+
+Before using the package, you need to start R and define your working directory using the function `setwd()`. You also need to have installed __IsoriX__ on your system. We assume that you already know R a little bit and that you thus know how to perform such basic operations. If it is not the case, you should read [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) or any other introduction to R before continuing. Once your R session is ready, you can load the package:
+
+```{r, load package}
+library(IsoriX)
+```
+
+
+## Step 1 - Select the isoscape data
+
+Start by selecting the GNIP data needed for us to build an isoscape. In this example, we will consider all the data available in `GNIP_World` within an extent of latitude and longitude that covers roughly Europe.
+
+```{r, GNIP}
+## load all the GNIP data
+data(GNIP_World)
+
+## select the relevant data
+GNIP_Europe <- QueryGNIP(
+    data=GNIP_World,
+    long.min = -30, 
+    long.max = 60,
+    lat.min = 30, 
+    lat.max = 70)
+```
+A warning appears because repeated measurements at one location are associated with two different elevations. This is probably a mistake present in the original data, so the function `QueryGNIP()` will only select the first elevation found for this location in the dataset.
+
+The function `QueryGNIP` could also be used to select data from particular years or months. The function aggregates data so that there are as many rows in `GNIP_Europe` as the number of weather stations considered. If you explore the dataset we created, you will notice that it has `r nrow(GNIP_Europe)` rows and `r ncol(GNIP_Europe)` columns. Typing `head(GNIP_Europe)` will show you the first 6 rows of the dataset. We should get the following output:
+
+```{r, GNIP2, echo=FALSE}
+kable(head(GNIP_Europe))
+```
+
+
+## Step 2 - Fit the geostatistical model
+
+The second thing you need to do is to fit the geostatisical model using the function `Isofit()`. This function has many parameters that can be ajusted to fit different models, but we will here use its default settings.
+
+```{r, Isofit, eval=FALSE}
+GNIP_Model <- Isofit(iso.data=GNIP_Europe,
+    mean.model.fix=list(elev=TRUE, lat.abs=TRUE),
+    mean.model.rand=list("uncorr"=TRUE),
+    disp.model.rand=list("uncorr"=TRUE))
+```
+
+```{r, loadmodel, echo=FALSE}
+data(GNIP_Model)
+```
+
+We should check the output of the model fits by typing its name (not shown) and you can also use the function `plot()` from our package to check visually some properties of the model fits.
+
+```{r, Isofit3, fig.asp=1, out.width="0.7\\linewidth"}
+plot(GNIP_Model)
+```
+
+The left column of this panel shows the relationship between the observed and predicted response (top) and the variation in spatial autocorrelation with the distance between location (bottom) captured by the model for the model fit called __mean.fit__, which corresponds to the fit of the mean isotopic values. The right column shows the same information for the model fit called __disp.fit__, which corresponds to the fit of the residual dispersion variance in the isotopic values. On the first row you observe points distributed practically along the 1:1 diagonal. A different slope would suggest a high residual variance of the data. We do not expect the points to fall exactly on the line because the model fit does not attempt to predict perfectly the observation used during the fit. Instead, the model fit produces a smooth surface that aims at reaching a maximum predictive power for locations not considered during the fit. The second row gives you an idea of the strength of the spatial autocorrelation captured by the models. Here the results suggest that the autocorrelation is very strong. Not considering this autocorrelation would thus lead here to poor approximation of the isoscape and resulting assignments.
+
+
+## Step 3 - Prepare the elevation raster
+
+To build the isoscape using the geostatistical model fitted above, we need to provide the function `Isoscape()` with an elevation raster. We will thus start by preparing such raster. We first need to acquire the high resolution raster from Internet. We store the _Global Multi-resolution Terrain Elevation Data 2010_ on our server and you can easily downloaded from R using the function `GetElev`:
+
+```{r, GetElev, eval=FALSE}
+GetElev()
+```
+
+We then import the high resolution elevation raster and transform it into an R raster object using the package __raster__:
+
+```{r, RElevate, message=FALSE, cache=docache}
+## we load the package raster
+library(raster)
+
+## we import the high resolution raster
+data(elevationrastersmall)
+elevationraster <- elevationrastersmall
+## we always check that the import worked
+elevationraster
+```
+
+Then, we crop and resize it using our function `RElevate()`. The crop is automatically set by default to the extent corresponding to the dataset we used above (`GNIP_Europe`), which the function access through the fitted `GNIP_Model`. To resize the raster we chose here an aggregation factor of 10. The lower the aggregation factor, the higher the resolution of the elevation raster will be, but the longest the computation time and the largest the map produced will also be. We recommend to use the lowest aggregation factor that you hardware and patience can handle.
+
+```{r, RElevate2, cache=docache}
+elev <- RElevate(elevation.raster=elevationraster, isofit=GNIP_Model, aggregation.factor=10)
+```
+
+
+## Step 4 - Build the isoscape
+
+We will now build the isocape using the function `Isoscape()`.
+
+```{r, isoscape, warning=FALSE}
+isoscape <- Isoscape(elevation.raster=elev, isofit=GNIP_Model)
+```
+
+```{r, saveiso, echo=FALSE}
+save(isoscape, file="isoscape.rda", compress="xz")
+```
+
+```{r, plot1}
+## we load the objects that are used to decorate the maps
+data(worldcountries)
+data(oceanmask)
+data(isoscapepalette)
+
+## we plot the prediction for the mean isotopic values
+plot(
+    x=isoscape,
+    which="mean",
+    borders=list(borders=worldcountries),
+    mask=list(mask=oceanmask),
+    palette=isoscapepalette
+)
+```
+
+The function `Isoscape()` creates 8 different rasters that correspond to different aspects of the isoscape (see `?Isoscape()` for details). For example, we will now plot the variation in isotopic values predicted at each location.
+
+```{r, respVar}
+plot(
+    x=isoscape,
+    which="mean.respVar",
+    borders=list(borders=worldcountries),
+    mask=list(mask=oceanmask),
+    palette=isoscapepalette
+)
+```
+
+We can also plot the prediction variance, which will be useful to discuss the quality of our assignment:
+
+```{r, predVar}
+plot(
+    x=isoscape,
+    which="mean.predVar",
+    borders=list(borders=worldcountries),
+    mask=list(mask=oceanmask),
+    palette=isoscapepalette
+)
+```
+
+## Step 5 - Fit the calibration function
+
+We now use the function `Calibfit()` to fit the relationship between the isotope values in the environment and the isotope values in our calibration organisms. In this example, we will use the calibration dataset `calibrationdata` that is provided with __IsoriX__. This dataset concerns sedentary bats inhabiting Europe (see `?calibrationdata` for details).
+
+```{r, calib}
+## load the calibration dataset
+data(calibrationdata)
+
+## fit the calibration model
+calib <- Calibfit(
+	calib.data=calibrationdata,
+	isofit=GNIP_Model
+	)
+```
+
+These warnings should disappear in the future. They reflect limitations of the current version of the package __spaMM__, which we use to fit our models.
+
+To get the result of the calibration fit, you can simply type the name of the object we just created, or plot it:
+
+```{r, calib2, fig.asp=1, out.width="0.7\\linewidth"}
+calib
+
+plot(calib)
+```
+
+## Step 6 - Perform the assignment
+
+We will now perform the assignment procedure that aims at identifying areas with the same isotopic signature than the area where individuals originate. To put this into practice, we will use a dataset containing isotopic measurements on other bats, which is also provided in __IsoriX__. We will select from this dataset the bats of the species "Myotis_bechsteinii":
+
+```{r, assign data}
+## load the assignment dataset
+data(assignmentdata)
+
+## keep only one bat species
+M_bechsteinii <- subset(assignmentdata, species=="Myotis_bechsteinii")
+
+## first 6 rows of the dataset
+head(M_bechsteinii)
+
+## number of bats to assign
+nrow(M_bechsteinii)
+```
+
+We now perform the assignment:
+
+```{r, assign comput}
+assignment <- Isorix(
+    assign.data=M_bechsteinii,
+    isoscape=isoscape,
+    calibfit=calib,
+    mask=oceanmask
+    )
+```
+
+Note that we used the argument `mask=oceanmask` so to exclude with certainty that the origin of the bats comes from the water.
+
+
+Once the assignment done, we can draw several assignment maps. Let us start by plotting the assignment map for a specific bat by telling the function `plot` that `who` we want the plot for the bat with the `animalID` "Mbe_6" for example:
+
+```{r, assign plot 1}
+## we load new colors for the maps
+data(isorixpalette)
+
+## we plot
+plot(x=assignment,
+     who="Mbe_6",
+     borders=list(borders=worldcountries),
+     mask=list(mask=oceanmask),
+     palette=isorixpalette)
+```
+
+We can also use number for individuals and plot several at once:
+
+```{r, assign plot 2}
+## plot the first 9 bats
+plot(x=assignment,
+     who=1:9,
+     borders=list(borders=worldcountries),
+     mask=list(mask=oceanmask),
+     sources=list(draw=FALSE),
+     calib=  list(draw=FALSE),
+     palette=isorixpalette)
+```
+
+Note that we removed the plotting of sources and calibration points in the previous plot by setting using `draw=FALSE`. Assuming that all bats originate from the same place we can also plot the global assignment for the group by setting `who="group"`:
+
+```{r, assign plot3}
+plot(x=assignment,
+     who="group",
+     borders=list(borders=worldcountries),
+     mask=list(mask=oceanmask),
+     palette=isorixpalette)
+```
+
+We can easily add information on these plots. As an example, we will add the point that is the most compatible with the unknown origin of these bats. We start by extracting its location using functions from the package __raster__:
+
+```{r, maximum}
+coord <- coordinates(assignment$group$pv)
+max.location <- coord[which.max(values(assignment$group$pv)), ]
+maximum <- data.frame(long=max.location[1], lat=max.location[2])
+maximum
+```
+
+Let us also compute for comparison the point that corresponds to the real origin of bats. We know it because they were caught in a cave in the North of Bulgaria:
+
+```{r, origin}
+## the real origin of these bats (as known by us)
+origin <- data.frame(long=25.982122, lat=43.611536)
+```
+
+We add these plots to the last plot we created using the package __lattice__:
+
+```{r, assign plot 4, message=FALSE}
+library(lattice)
+trellis.last.object() + 
+  xyplot(origin$lat~origin$long, pch=13, col="purple", cex=5, lwd=2, 
+      panel=panel.points) +
+  xyplot(maximum$lat~maximum$long, pch=13, col="orange", cex=5, lwd=2, 
+      panel=panel.points)
+```
+
+The function `trellis.last.object()` is very handy: it retrieves the last plot created using __lattice__ and our plot functions for isoscapes and assignments use __lattice__ since they use __rasterVis__ which is a package itself based on __lattice__.
+
+As you can see the location of origin (purple) and the location for the best assignment (orange) differ a bit. The flexibility of __IsoriX__ helps to explore potential sources of problems and limitation. We can for example compare our isoscape prediction in these two locations:
+
+```{r, comparison}
+print(paste("mean isoscape value at origin (+/-SE) =",
+            round(extract(isoscape$Isoscape$mean, origin), 2), "+/-",
+            round(sqrt(extract(isoscape$Isoscape$mean.predVar, origin)), 2)))
+
+print(paste("mean isoscape value at maximum (+/-SE) =",
+            round(extract(isoscape$Isoscape$mean, maximum),2), "+/-",
+            round(sqrt(extract(isoscape$Isoscape$mean.predVar, maximum)), 2)))
+```
+Note that the estimate for the mean isotopic value where the maximum is has a large standard error as this area is not well covered by sources. You can also observe this effect by simply looking at the map for the prediction isoscape variance which we have plotted above. In this context, it is thus expected that such area will be difficult to rule out as a possible source of origin. This example is a good reminder that one must always think about the quality of the isoscape before making definitive biological conclusion.
+
+Another way to look at our assignment is to check if for all bats the predicted assignment region does include the real location of origin by simply typing:
+
+```{r, ground truthing}
+## extract the p-values for all individuals at the location of origin
+pvs <- c(extract(assignment$indiv$pv, origin))
+
+## count how many individuals are in
+table(pvs > 0.05)
+```
+
+All bats are in! That is great but it will not necessarily happen all the time, especially if as here the calibration is performed on a different species than the individuals you want to allocate. As an exercise you can now try to plot the bats we assigned into the calibration fit to see if they do behave in the same way as other species. In one of the next version of this vignette we will show you how in case you have difficulties.
+
+## More?
+To export these nice plots on your hard drive, please check another vignette:
+
+```{r, saveplot, eval=FALSE}
+vignette("Saveplot", package="IsoriX")
+```
+
+The number and the quality of the vignette should grow in the future, so keep updating your packages in R and check what has been changing between version by typing:
+
+```{r, news, eval=FALSE}
+news(package='IsoriX')
+```
+
+## New steph part
+
