@@ -1,13 +1,15 @@
 # RStudio stuff
 
 .Rproj.user
-isorix.Rproj
+*.Rproj
 .Ruserdata
 
 # heavy files that can easily be generated locally
 
 *.tar.gz
 *.tif
+/*.html
+
 
 # temporary files
 
