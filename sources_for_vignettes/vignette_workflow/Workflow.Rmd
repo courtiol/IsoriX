@@ -319,11 +319,8 @@ To export these nice plots on your hard drive, please check another vignette:
 vignette("Saveplot", package="IsoriX")
 ```
 
-The number and the quality of the vignette should grow in the future, so keep updating your packages in R and check what has been changing between version by typing:
+The number and the quality of the vignettes should grow in the future, so keep updating your packages in R and check what has been changing between version by typing:
 
 ```{r, news, eval=FALSE}
 news(package='IsoriX')
 ```
-
-## New steph part
-

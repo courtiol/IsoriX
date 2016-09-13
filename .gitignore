@@ -20,6 +20,10 @@
 .RData
 *.Rout
 
+# local folder
+
+local_trials/
+
 # vignettes
 
 sources_for_vignettes/**/cache_knitr/
