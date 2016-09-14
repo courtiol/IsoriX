@@ -8,15 +8,13 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 You can download and install the stable version of IsoriX directly from within R by typing:
 
 ```
-#!R
 install.packages("IsoriX")
 ```
 
 You can download and install the development version of IsoriX by typing:
 
 ```
-#!R
-devtools::install_bitbucket("courtiol/IsoriX_project/IsoriX")
+devtools::install_github("courtiol/IsoriX_project/IsoriX")
 ```
 
 ## Where to learn about IsoriX?
@@ -26,13 +24,11 @@ Here, on bitbucket, we are planning to provide documentation in [our Wiki](https
 Otherwise, you can access the documentation and tutorials about IsoriX on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or if you have installed IsoriX you can type:
 
 ```
-#!R
 help(package="IsoriX", help_type="html")
 ```
 to access the help files of all exported IsoriX functions and objects. Or you can type:
 
 ```
-#!R
 browseVignettes(package="IsoriX")
 ```
 to find our tutorials.
@@ -53,11 +49,7 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 
 * about the environment to develop IsoriX:
 
-[Learning git](https://www.atlassian.com/git/tutorials/)
-
 [Using version control in RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
-
-[Markdown in Bitbucket](https://bitbucket.org/tutorials/markdowndemo)
 
 * about other R packages on which IsoriX strongly depends:
 
