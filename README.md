@@ -7,13 +7,13 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 ## How to download and install IsoriX?
 You can download and install the stable version of IsoriX directly from within R by typing:
 
-```
+```R
 install.packages("IsoriX")
 ```
 
 You can download and install the development version of IsoriX by typing:
 
-```
+```R
 devtools::install_github("courtiol/IsoriX_project/IsoriX")
 ```
 
@@ -23,12 +23,12 @@ Here, on github, we are planning to provide documentation in [our Wiki](https://
 
 Otherwise, you can access the documentation and tutorials about IsoriX on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or if you have installed IsoriX you can type:
 
-```
+```R
 help(package="IsoriX", help_type="html")
 ```
 to access the help files of all exported IsoriX functions and objects. Or you can type:
 
-```
+```R
 browseVignettes(package="IsoriX")
 ```
 to find our tutorials.
