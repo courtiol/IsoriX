@@ -7,11 +7,7 @@
 	\subsection{Upcoming features planned for future releases}{
 			\itemize{
 			\item (version 1.0 does not exist yet)
-			\item assignment method when calibration is not needed
-			\item function to test fits via leave-one-out method
-			\item resample method for RElevate
-			\item projections for maps
-			\item vignette explaining how to export objects for GIS
+			\item feature requests can be defined and watched here: \url{https://github.com/courtiol/IsoriX_project/issues}
 		}
 	}
 }
