@@ -21,7 +21,7 @@
 }
 
 \note{
-Users who wish to use their own dataset for isoscape model fitting should create a similar \var{dataframe}. All columns should possess the same names as the ones described above. We found occasional strong discrepancies between elevations from the \code{\link{GNIP_World}} dataset and elevation from the GMTED2010 satellite dataset. We also found occasional variation among elevations from the \code{\link{GNIP_World}} same weather stations. For these reasons, we decided to compute all elevations for GNIP_Europe using satellite estimation only, before we clarify the situation.
+Users who wish to use their own dataset for isoscape model fitting should create a similar \var{dataframe}. All columns should possess the same names as the ones described above. We found occasional strong discrepancies between elevations from the \code{\link{GNIP_World}} dataset and elevation from the \cr GMTED2010 satellite dataset. We also found occasional variation among elevations from the \code{\link{GNIP_World}} same weather stations. For these reasons, we decided to compute all elevations for GNIP_Europe using satellite estimation only, before we clarify the situation.
 
 }
 

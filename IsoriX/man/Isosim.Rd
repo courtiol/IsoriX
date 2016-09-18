@@ -41,7 +41,7 @@ Isosim(
 This function takes as inputs the values for all covariates matching a series of locations (which can be provided as an elevation raster or as a \var{data.frame}), as well as the parameters of the isoscape model. The function is not required to fit an isoscape, nor to perform assignments. It is an additional function that can be useful to test the method, and to study the effect of different parameters on isoscapes. We chose default values for parameters inspired to model fits in order to simulate a relatively realistic isoscape. We precised 'relatively' because, in the simulations, the Matern realizations for the mean and the dispersion are drawn independently, which is not the case in nature. Note that extra parameters present in the input lists will not make the function crash but won't be considered during computations either.
 }
 
-\value{This function returns a \var{list} of class \var{isoscape} containing a stack of raster and an optional \var{data.frame}. The stack contains the raster \code{mean.raster} storing the mean isotopic value, and the raster \code{disp.raster} storing the residual dispersion variance. The optional \var{data.frame} contains the simulated data and details of the computation in an object called \code{data}.
+\value{This function returns a \var{list} of class \var{isoscape} containing a stack of raster and an optional \var{data.frame}. The stack contains the raster \code{mean.raster} storing the mean isotopic value, and the raster \cr \code{disp.raster} storing the residual dispersion variance. The optional \var{data.frame} contains the simulated data and details of the computation in an object called \code{data}.
 }
 
 \note{
