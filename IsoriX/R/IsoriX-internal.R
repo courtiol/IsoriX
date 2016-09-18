@@ -203,7 +203,7 @@ function(
 	if(is.null(mask$mask))
 		mask.layer <- layer()
 	else
-		mask.layer <- layer(sp.polygons(m$mask, fill=m$col),
+		mask.layer <- layer(sp.polygons(m$mask, fill=m$fill, col=m$col, lwd=m$lwd),
 			data=list(m=mask, sp.polygons=sp.polygons))
 
 	out <- list(
