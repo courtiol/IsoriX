@@ -5,60 +5,70 @@ Calibfit <- function(
 		control.optim=list()
 	) {
 
-	## prepare the dataset
-	calib.data <- .PrepareDataCalib(calib.data)
-
-	## predict isoscape and associated prediction 
-	##   covariance matrix at animal locations
-
-	if(verbose)
-		print("predicting the isoscape value in each calibration site...")
-
-	calib.mean <- predict(isofit[["mean.fit"]], newdata=calib.data,
-		variances=list(predVar=TRUE, cov=TRUE))
-	
-	## store the mean prediction
-	calib.data$mean.iso <- c(calib.mean)
-
-	## extract the prediction covariance matrix
-	predcov.isofit.full <- attr(calib.mean, "predVar")
-
-	## extract the prediction variances
-	calib.data$mean.predVar.iso <- diag(predcov.isofit.full)
-	
-	## reshape the prediction covariance matrix to number of unique sites
-	firstoccurences <- match(levels(calib.data$siteID), calib.data$siteID)
-	predcov.isofit <- predcov.isofit.full[firstoccurences, firstoccurences]
-	rownames(predcov.isofit) <- levels(calib.data$siteID)
-	colnames(predcov.isofit) <- levels(calib.data$siteID)
-
-	### fitting the calibration function
-	if(verbose)
-		print("fitting the calibration function...")
-
-	## estimation of intercept and slope of the calibration function
-	opt.res <- optim(par=c(0, 1), fn=.ObjectiveFnCalib,
-		control=c(list(fnscale=-1), control.optim), data=calib.data, predcov=predcov.isofit,
-		lik.method="REML")
-
-	param.calibfit <- opt.res$par
-	names(param.calibfit) <- c("intercept", "slope")
-
-	## fit of the calibration function
-	calib.fit <- .ObjectiveFnCalib(param=param.calibfit,
-		data=calib.data, predcov=predcov.isofit, lik.method="REML", return.fit=TRUE)
-
-	## computing the covariance matrix of fixed effects
-	if(verbose)
-		print("computing the covariance matrix of fixed effects...")
-
-	fixefCov.calibfit <- solve(-hessian(.ObjectiveFnCalib, param.calibfit,
-		data=calib.data, predcov=predcov.isofit, lik.method="ML"))
-
-	rownames(fixefCov.calibfit) <- names(param.calibfit)
-	colnames(fixefCov.calibfit) <- names(param.calibfit)
-
-
+  time <- system.time({
+    
+  	## prepare the dataset
+  	calib.data <- .PrepareDataCalib(calib.data)
+  
+  	## predict isoscape and associated prediction 
+  	##   covariance matrix at animal locations
+  
+  	if(verbose)
+  		print("predicting the isoscape value in each calibration site...")
+  
+  	calib.mean <- predict(isofit[["mean.fit"]], newdata=calib.data,
+  		variances=list(predVar=TRUE, cov=TRUE))
+  	
+  	## store the mean prediction
+  	calib.data$mean.iso <- c(calib.mean)
+  
+  	## extract the prediction covariance matrix
+  	predcov.isofit.full <- attr(calib.mean, "predVar")
+  
+  	## extract the prediction variances
+  	calib.data$mean.predVar.iso <- diag(predcov.isofit.full)
+  	
+  	## reshape the prediction covariance matrix to number of unique sites
+  	firstoccurences <- match(levels(calib.data$siteID), calib.data$siteID)
+  	predcov.isofit <- predcov.isofit.full[firstoccurences, firstoccurences]
+  	rownames(predcov.isofit) <- levels(calib.data$siteID)
+  	colnames(predcov.isofit) <- levels(calib.data$siteID)
+  
+  	### fitting the calibration function
+  	if(verbose)
+  		print("fitting the calibration function...")
+  
+  	## estimation of intercept and slope of the calibration function
+  	opt.res <- optim(par=c(0, 1), fn=.ObjectiveFnCalib,
+  		control=c(list(fnscale=-1), control.optim), data=calib.data, predcov=predcov.isofit,
+  		lik.method="REML")
+  
+  	param.calibfit <- opt.res$par
+  	names(param.calibfit) <- c("intercept", "slope")
+  
+  	## fit of the calibration function
+  	calib.fit <- .ObjectiveFnCalib(param=param.calibfit,
+  		data=calib.data, predcov=predcov.isofit, lik.method="REML", return.fit=TRUE)
+  
+  	## computing the covariance matrix of fixed effects
+  	if(verbose)
+  		print("computing the covariance matrix of fixed effects...")
+  
+  	fixefCov.calibfit <- solve(-hessian(.ObjectiveFnCalib, param.calibfit,
+  		data=calib.data, predcov=predcov.isofit, lik.method="ML"))
+  
+  	rownames(fixefCov.calibfit) <- names(param.calibfit)
+  	colnames(fixefCov.calibfit) <- names(param.calibfit)
+  	
+  }) ## end of system.time
+  
+  
+  ## display time
+  time <- round(as.numeric((time)[3]))
+  if(verbose) {
+    print(paste("the calibration procedure based on", nrow(calib.data), "calibration samples have been computed in", time, "sec."))
+  }
+  
 	## we create the spatial points for calibration points
 	calib.points  <- .CreateSpatialPoints(
 		long=calib.data$long,
