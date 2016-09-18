@@ -18,6 +18,9 @@ You can download and install the development version of IsoriX by typing:
 devtools::install_github("courtiol/IsoriX_project/IsoriX")
 ```
 
+Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master). The current built status is provided at the top of this readme document.
+
+
 ## Where to learn about IsoriX?
 
 Here, on github, we are planning to provide documentation in [our Wiki](https://github.com/courtiol/IsoriX_project/wiki/Welcome-to-the-IsoriX-Wiki). It is just starting, so check regularly for updates.
