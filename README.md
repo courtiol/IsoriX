@@ -1,4 +1,5 @@
-# Welcome!
+# Welcome to IsoriX [![Build Status](https://travis-ci.org/courtiol/IsoriX_project.svg?branch=master)](https://travis-ci.org/courtiol/IsoriX_project.svg?branch=master)
+
 
 This is the development repository of __IsoriX__, an [R](https://www.r-project.org/) package aiming at building isoscapes using mixed models and inferring the geographic origin of organisms based on their isotopic ratios.
 
@@ -16,6 +17,9 @@ You can download and install the development version of IsoriX by typing:
 ```R
 devtools::install_github("courtiol/IsoriX_project/IsoriX")
 ```
+
+Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master). The current built status is provided at the top of this readme document.
+
 
 ## Where to learn about IsoriX?
 
