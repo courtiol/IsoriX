@@ -42,6 +42,7 @@
     calib=  list(draw=TRUE, cex=0.5, pch=4, lwd=1, col="blue"),
     borders=list(borders=NULL, lwd=0.5, col="black"),
     mask=   list(mask=NULL, lwd=0, col="black", fill="black"),
+  	mask2=   list(mask=NULL, lwd=0, col="purple", fill="purple"),
     palette=rev(terrain.colors(100)),
     plot=TRUE,
     ...
@@ -60,6 +61,7 @@
     \item{calib}{A \var{list} containing information for the display of the location of the calibration sampling area (see details)}
     \item{borders}{A \var{list} containing information for the display of borders (e.g. country borders) (see details)}
     \item{mask}{A \var{list} containing information for the display of a mask (e.g. an ocean mask) (see details)}
+    \item{mask2}{A \var{list} containing information for the display of a mask (e.g. a distribution mask) (see details)}
     \item{palette}{A vector of colours (\var{character})}
     \item{plot}{A \var{logical} indicating whether the plot shall be plotted or just returned}
     \item{...}{Additional arguments (not in use)}
@@ -74,7 +76,7 @@ When called upon an object of class \code{isoscape}, the plot function draws a f
 
 When called upon an object of class \code{isorix}, the plot function draws a fine-tuned plot of the assignment. You can use the argument "who" to choose between plotting the assignment for the group or for some individuals (check the vignette "Workflow" for examples).
 
-The arguments "cutoff", "sources", "calib", "borders" and "mask" are used to fine-tune additional layers that can be added to the main plot to embellish it. These arguments must be lists that provide details on how to draw, respectively, the area outside the prediction interval (for assignment plots), the locations of sources (for both isoscape and assignment plots), the locations of the calibration sampling area (for assignment plots, the borders (for both types of plots) and a mask (again, for both)). Within these lists, the element "lwd", "col", "cex", "pch" and "fill" influences their respective objects as in traditional R plotting functions (see \code{\link{par}} for details). The element "draw" should be a \var{logical} that indicates whether the layer must be created or not. The argument "borders" (within the list borders) expects an object of the class \var{SpatialPolygons} such as the object "worldcountries" provided with this package. The argument "mask" (within the list maks) expects an object of the class \var{SpatialPolygons} such as the object oceanmask provided with this package (see examples).
+The arguments "cutoff", "sources", "calib", "borders", "mask" and "mask2" are used to fine-tune additional layers that can be added to the main plot to embellish it. These arguments must be lists that provide details on how to draw, respectively, the area outside the prediction interval (for assignment plots), the locations of sources (for both isoscape and assignment plots), the locations of the calibration sampling area (for assignment plots, the borders (for both types of plots) and a mask (again, for both)). For assignment maps, an extra mask can be used (mask2), as one may want to add a mask covering the area outside the biological range of the species. Within these lists, the element "lwd", "col", "cex", "pch" and "fill" influences their respective objects as in traditional R plotting functions (see \code{\link{par}} for details). The element "draw" should be a \var{logical} that indicates whether the layer must be created or not. The argument "borders" (within the list borders) expects an object of the class \var{SpatialPolygons} such as the object "worldcountries" provided with this package. The argument "mask" (within the list maks) expects an object of the class \var{SpatialPolygons} such as the object oceanmask provided with this package (see examples).
 
 }
 

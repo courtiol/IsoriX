@@ -165,52 +165,64 @@ function(
 }
 
 
-.BuildAdditionalLayers <- function(x, sources, calib, borders, mask) {
+.BuildAdditionalLayers <- function(x, sources, calib, borders, mask, mask2=NULL) {
 	## This function should not be called by the user but is itself called by other functions.
 	## It build the additional layers for plots
 
 	## layer for sources
-	if(!sources$draw)
+	if (!sources$draw) {
 		sources.layer <- layer()
-	else
+	}	else {
 		sources.layer <- layer(sp.points(sources, col=pt$col,
 			cex=pt$cex, pch=pt$pch, lwd=pt$lwd),
 			data=list(sources=x$sp.points$sources,
 				pt=sources, sp.points=sp.points))
+	}
 
 	## layer for calibration points
-	if(is.null(calib))
+	if (is.null(calib)) {
 		calib.layer <- layer()
-	else {
-		if(!calib$draw)
-			calib.layer <- layer()
-		else
+	}	else {
+		if(!calib$draw) {
+		  calib.layer <- layer()
+		}	else {
 			calib.layer <- layer(sp.points(calib, col=pt$col,
 				cex=pt$cex, pch=pt$pch, lwd=pt$lwd),
 				data=list(calib=x$sp.points$calibs,
 					pt=calib, sp.points=sp.points))
+		}
 	}
 
 	## layer for country borders
-	if(is.null(borders$borders))
+	if (is.null(borders$borders)) {
 		borders.layer <- layer()
-	else
+	}	else {
 		borders.layer <- layer(sp.polygons(b$borders, lwd=b$lwd,
 			col=b$col, fill="transparent"),
 			data=list(b=borders, sp.polygons=sp.polygons))
-
+	}
+  
 	## layer for mask
-	if(is.null(mask$mask))
+	if (is.null(mask$mask)) {
 		mask.layer <- layer()
-	else
+	} else {
 		mask.layer <- layer(sp.polygons(m$mask, fill=m$fill, col=m$col, lwd=m$lwd),
 			data=list(m=mask, sp.polygons=sp.polygons))
-
+	}
+  
+	if (is.null(mask2$mask)) {
+	  mask2.layer <- layer()
+	} else {
+	  mask2.layer <- layer(sp.polygons(m$mask, fill=m$fill, col=m$col, lwd=m$lwd),
+	                      data=list(m=mask2, sp.polygons=sp.polygons))
+	}
+  
 	out <- list(
 		sources.layer=sources.layer,
 		calib.layer=calib.layer,
 		borders.layer=borders.layer,
-		mask.layer=mask.layer
+		mask.layer=mask.layer,
+		mask2.layer=mask2.layer
 		)
 	
 	## tweack to please code checking procedure
