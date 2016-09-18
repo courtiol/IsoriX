@@ -1,11 +1,12 @@
-year <- sub("-.*", "", meta$Date)
 note <- sprintf("R package version %s", meta$Version)
 
 bibentry(bibtype="Manual",
   title = "Isoscape Computation and Inference of Spatial Origins using Mixed Models",
   author = personList(as.person("Alexandre Courtiol"),
-                      as.person("François Rousset"),
+
+                      as.person("FranÃ§ois Rousset"),
+  
                       as.person("Stephanie Kramer-Schadt")),
-  year = year,
+  year = "2016",
   note = note
 )
