@@ -1,0 +1,8 @@
+language: r
+before_install:
+  - cd IsoriX
+cache: packages
+r:
+  - release
+  - devel
+r_check_args: --as-cran
