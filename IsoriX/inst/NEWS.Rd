@@ -16,13 +16,14 @@
 \section{version 0.4-2}{
   \subsection{Solved BUGS}{
     \itemize{
-      \item the path in GetElev could break. This has now been solved.
+      \item the citation was not correct
+      \item the path in GetElev was breaking in some cases
     }
   }
 
 	\subsection{New feature(s)}{
 			\itemize{
-			\item link to GitHub directory have been added
+			\item links to GitHub directory have been added
 			\item new function DownloadFile to download non standard elevation raster or any other file
 			\item function DownloadFile can perform MD5 checksum if the package 'tools' is installed
 			\item function GetElev and DowloadFile can display additional information during download if verbose > 1
@@ -31,8 +32,8 @@
 
 	\subsection{Minor changes}{
 			\itemize{
-			\item function GetElev lost 'address' argument has DownloadFile should now be used to download the non standard elevation raster
-			\item typo fixed in description file
+			\item function GetElev lost its 'address' argument as DownloadFile should now be used to download non standard elevation rasters
+			\item typo fixed in documentation files
 			}
 	}
 }
@@ -40,7 +41,7 @@
 \section{version 0.4-1}{
 	\subsection{New feature(s)}{
 			\itemize{
-			\item this is the first version of IsoriX submitted to CRAN!!!
+			\item this was the first version of IsoriX submitted to CRAN
 			}
 	}
 }
