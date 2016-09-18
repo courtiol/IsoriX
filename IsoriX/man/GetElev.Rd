@@ -13,9 +13,7 @@ GetElev(
 	overwrite=FALSE,
 	verbose=interactive()
 	) 
-}
 
-\usage{
 DownloadFile(
   address=NULL,
   filename=NULL,
