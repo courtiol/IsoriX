@@ -29,6 +29,8 @@ DownloadFile(
 \item{overwrite}{A \var{logical} indicating if an existing file should be re-downloaded}
 \item{verbose}{A \var{logical} indicating whether information about the progress of the procedure should be displayed or not while the function is running. By default verbose is \code{TRUE} if users use an interactive R session and \code{FALSE} otherwise. If a \var{numeric} is provided instead, additional information about the download will be provided if the number is greater than 1.}
 \item{address}{A \var{string} indicating where to download the file from}
+\item{filename}{A \var{string} indicating the name of the file to be writen on the disk}
+\item{md5sum}{An optional \var{string} indicating the MD5 hashes of the file for testing its integrity}
 }
 
 \details{In the argument "path" is not provided, the file will be stored in the current working directory. The functions can create new directories, so you can also indicate a new path. If the package \pkg{\link[tools]{tools}} is installed, the integrity of the elevation raster is tested after a call to \code{GetElev}. In case of corruption, try downloading the file again, specifying overwrite=TRUE to overwrite the corrupted file.}
