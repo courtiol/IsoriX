@@ -72,6 +72,9 @@ function (
 }
 
 
+.NiceRound <- function(x, digits) formatC(round(x, digits), digits=digits, format="f")
+
+
 .CreateRaster <-
 function(
 	long,
