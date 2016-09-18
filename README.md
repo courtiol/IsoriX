@@ -23,7 +23,7 @@ Mind that the development version, being under development, can sometimes be bro
 
 ## Where to learn about IsoriX?
 
-Here, on github, we are planning to provide documentation in [our Wiki](https://github.com/courtiol/IsoriX_project/wiki/Welcome-to-the-IsoriX-Wiki). It is just starting, so check regularly for updates.
+Here, on github, we are planning to provide documentation in [our Wiki](https://github.com/courtiol/IsoriX_project/wiki/). It is just starting, so check regularly for updates.
 
 Otherwise, you can access the documentation and tutorials about IsoriX on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or if you have installed IsoriX you can type:
 
