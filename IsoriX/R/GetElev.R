@@ -77,10 +77,9 @@ DownloadFile <- function (
   if (!is.null(md5sum)) {
     if (requireNamespace("tools")) {
       if (md5sum(complete.path) == md5sum) {
-        print(paste("the file", filename, "seems OK (md5sums do match)"))
+        print("the file seems OK (md5sums do match)")
       } else {
-        warning(paste(
-          "the file", filename, "seems to be corructed (md5sums do not match)"))
+        warning("the file seems to be corructed (md5sums do not match)")
       }
     } else {
     warning("package 'tools' not installed, so the integrity of the downloaded file has not been checked")
@@ -89,7 +88,7 @@ DownloadFile <- function (
   
   ## Display outcome
   if (verbose > 0) {
-    print(paste("the raster", filename, "is stored in the folder", path))
+    print(paste("the file", filename, "is stored in the folder", path))
   }
   
   ## Restore original internet options
