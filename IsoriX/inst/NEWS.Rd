@@ -16,6 +16,7 @@
 \section{version 0.4-2}{
   \subsection{Solved BUGS}{
     \itemize{
+      \item the package could not be detached and reloaded
       \item the citation was not correct
       \item the path in GetElev was breaking in some cases
     }
