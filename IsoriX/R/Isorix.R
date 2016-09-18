@@ -156,3 +156,19 @@ Isorix <- function(
 	pv <- pchisq(q=fisher.stat, df=df, lower.tail=FALSE)
 	return(pv)
 }
+
+
+print.isorix <- function(x, ...) {
+  print(summary(x))
+  return(invisible(NULL))
+}
+
+
+summary.isorix <- function(object, ...) {
+  for(i in names(object)[names(object)!="sp.points"]){
+    cat(paste("######### assignment raster(s): '", i, "'"), "\n")
+    print(object[[i]])
+    cat("\n")
+  } 
+  return(invisible(NULL))
+}

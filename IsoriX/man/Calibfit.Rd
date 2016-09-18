@@ -1,5 +1,7 @@
 \name{Calibfit}
 \alias{Calibfit}
+\alias{print.calibfit}
+\alias{summary.calibfit}
 
 \title{Fit the calibration model}
 

@@ -123,3 +123,41 @@ Calibfit <- function(
 	if(return.fit) return(calib.fit)
 	return(calib.fit$APHLs$p_v)
 }
+
+
+print.calibfit <- function(x, ...) {
+  cat("\n")
+  cat("Fixed effect estimates of the calibration fit", "\n")
+  cat("tissue.value = intercept + slope * mean.iso + 	corrMatrix(1|siteID) + slope^2 * (1|siteID) + Error", "\n")
+  cat("\n")
+  cat(paste("           intercept (+/- SE) =", .NiceRound(x$param["intercept"], 2),
+            "+/-",  .NiceRound(sqrt(x$fixefCov["intercept", "intercept"]), 2)), "\n")
+  cat(paste("           slope     (+/- SE) =  ", .NiceRound(x$param["slope"], 2),
+            "+/-",  .NiceRound(sqrt(x$fixefCov["slope", "slope"]), 2)), "\n")
+  cat("\n")
+  cat("[for more information, use summary()]", "\n")
+  cat("\n")
+  return(invisible(NULL))
+}
+
+
+summary.calibfit <- function(object, ...) {
+  cat("\n")
+  cat("Fixed effect estimates of the calibration fit", "\n")
+  print(.NiceRound(object$param, 3), quote=FALSE)
+  cat("\n")
+  cat("Covariance matrix of fixed effect estimates:", "\n")
+  print(.NiceRound(object$fixefCov, 3), quote=FALSE)
+  cat("\n")
+  cat("#########################################################", "\n")
+  cat("### spaMM summary of the fit of the calibration model ###", "\n")
+  cat("#########################################################", "\n")
+  cat("\n")
+  print(summary.HLfit(object$calib.fit))
+  cat("\n")
+  cat(paste("[model fitted with spaMM version ", object$calib.fit$spaMM.version, "]", sep=""), "\n")
+  cat("\n")
+  return(invisible(NULL))
+}
+
+

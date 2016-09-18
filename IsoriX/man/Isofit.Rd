@@ -1,5 +1,7 @@
 \name{Isofit}
 \alias{Isofit}
+\alias{print.isofit}
+\alias{summary.isofit}
 
 \title{Fit the isoscape model}
 

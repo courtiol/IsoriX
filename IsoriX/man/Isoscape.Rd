@@ -1,5 +1,7 @@
 \name{Isoscape}
 \alias{Isoscape}
+\alias{print.isoscape}
+\alias{summary.isoscape}
 
 \title{Predicts the spatial distribution of isotopic values}
 

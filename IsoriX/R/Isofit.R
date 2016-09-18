@@ -187,3 +187,31 @@ Isofit <- function(
 	return(base.formula)
 }
 
+
+print.isofit <- function(x, ...) {
+  print(summary(x))
+  return(invisible(NULL))
+}
+
+
+summary.isofit <- function(object, ...) {
+  cat("\n")
+  cat("##################################################", "\n")
+  cat("### spaMM summary of the fit of the mean model ###", "\n")
+  cat("##################################################", "\n")
+  cat("\n")
+  print(summary.HLfit(object$mean.fit))
+  cat("\n")
+  cat("\n")
+  cat("#################################################################", "\n")
+  cat("### spaMM summary of the fit of the residual dispersion model ###", "\n")
+  cat("#################################################################", "\n")
+  cat("\n")
+  print(summary.HLfit(object$disp.fit))
+  cat("\n")
+  cat(paste("[models fitted with spaMM version ", object$mean.fit$spaMM.version, "]", sep=""), "\n")
+  cat("\n")
+  return(invisible(NULL))
+}
+
+

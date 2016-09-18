@@ -1,5 +1,7 @@
 \name{Isorix}
 \alias{Isorix}
+\alias{print.isorix}
+\alias{summary.isorix}
 
 \title{Infer spatial origins}
 \description{

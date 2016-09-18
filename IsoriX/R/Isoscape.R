@@ -153,3 +153,29 @@ Isoscape <- function(
 
 	return(out)
 }
+
+
+print.isoscape <- function(x, ...) {
+  print(summary(x))
+  return(invisible(NULL))
+}
+
+
+summary.isoscape <- function(object, ...) {
+  if("isosim" %in% class(object)) {
+    cat("\n")
+    cat("##############################################", "\n")
+    cat("### Note: this isoscape has been simulated ###", "\n")
+    cat("##############################################", "\n")
+    cat("\n")
+  }
+  cat("### stack containing the isoscape")
+  print(object[[1]])
+  cat("\n")
+  if(length(object) > 1) {
+    cat("### first 5 locations of the dataset")
+    print(head(object[[2]][[1]], 5L))
+  }
+  return(invisible(NULL))
+}
+
