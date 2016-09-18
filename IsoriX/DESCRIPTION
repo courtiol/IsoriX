@@ -28,6 +28,7 @@ Suggests:
     Cairo,
     lattice,
     maps,
+    tools,
     R.rsp
 VignetteBuilder: R.rsp
 URL: https://github.com/courtiol/IsoriX_project/
