@@ -2,11 +2,12 @@
 
 .onAttach <-
 function (
-	lib,
-	pkg
+	libname,
+	pkgname
 	) {
 	## This function should not be called by the user.
-	## It display a message when the package is being loaded.
+	## It display a message when the package is being loaded
+  ## and sets the proxy method Earth
 	packageStartupMessage(  # display message
 		"\n ############################################",
 		"\n #                                          #",
@@ -32,7 +33,14 @@ function (
 		distance = TRUE
 		)
 
-	}
+}
+
+
+.onDetach <- function(libpath) {
+  ## This function should not be called by the user.
+  ## It remove the proxy method Earth when pacakge is being detached
+  pr_DB$delete_entry("Earth")
+}
 
 
 .Dist.earth.mat <- function (x, y=NULL) {
