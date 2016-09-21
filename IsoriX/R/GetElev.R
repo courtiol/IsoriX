@@ -46,14 +46,14 @@ DownloadFile <- function (
   opt.ori <- options()$internet.info
   if (verbose > 1) options(internet.info = 1)
   
-  ## Turning path into canonical form
-  ## (this avoids the problem of having terminal slash or not)
-  path <- normalizePath(path, mustWork = FALSE)
-
   ## Use current directory if path is missing
   if (is.null(path)) {
     path <- getwd()
   }
+  
+  ## Turning path into canonical form
+  ## (this avoids the problem of having terminal slash or not)
+  path <- normalizePath(path, mustWork = FALSE)
   
   ## Create directory if missing
   if (!dir.exists(path)) {
