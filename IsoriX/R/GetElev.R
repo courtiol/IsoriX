@@ -76,7 +76,7 @@ DownloadFile <- function (
   ## Checking MD5sum
   if (!is.null(md5sum)) {
     if (requireNamespace("tools")) {
-      if (md5sum(complete.path) == md5sum) {
+      if (tools::md5sum(complete.path) == md5sum) {
         print("the file seems OK (md5sums do match)")
       } else {
         warning("the file seems to be corructed (md5sums do not match)")
