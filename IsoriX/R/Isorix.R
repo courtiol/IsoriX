@@ -10,7 +10,7 @@ Isorix <- function(
 	if(verbose)
 		print("computing the test statistic and its variance...")
 
-	names.layers <- as.character(assign.data$animalID)
+	names.layers <- gsub(" ", "_", as.character(assign.data$animalID))
 
 	time <- system.time({
 		## we predict the isotopic value at origin location	
