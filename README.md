@@ -20,6 +20,15 @@ devtools::install_github("courtiol/IsoriX_project/IsoriX")
 
 Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master). The current built status is provided at the top of this readme document.
 
+Also, if you access the network via a proxy, you may experience troubles with ```install_github```. In such case try something like:
+
+```R
+library(httr)
+with_config(use_proxy("192.168.2.2:3128"), devtools::install_github("courtiol/IsoriX_project/IsoriX"))
+```
+
+Off course, unless you are in the same institute than some of us, replace the numbers with your proxy settings!
+
 
 ## Where to learn about IsoriX?
 
