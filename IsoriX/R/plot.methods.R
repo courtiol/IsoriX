@@ -113,8 +113,10 @@ plot.isorix <- function(
 					maxpixels=4e6, margin=FALSE, at=splits,
 					col.regions=palette, main="Group assignment")
 	} else {
+	  main.title <- if (length(who)==1) names(x$indiv[[what]][[who]]) else NULL
 		map <- levelplot(x$indiv[[what]][[who]] * (x$indiv$pv[[who]] > cutoff$level),
-					maxpixels=4e6, margin=FALSE, at=splits, col.regions=palette)
+					maxpixels=4e6, margin=FALSE, at=splits, col.regions=palette,
+					main=main.title)
   }
 		
 	## create the additional plot(s)
