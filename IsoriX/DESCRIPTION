@@ -32,4 +32,4 @@ Suggests:
     R.rsp
 VignetteBuilder: R.rsp
 URL: https://github.com/courtiol/IsoriX_project/
-BugReports: https://github.com/courtiol/IsoriX_project/issues
+BugReports: https://github.com/courtiol/IsoriX_project/issues/
