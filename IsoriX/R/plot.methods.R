@@ -45,7 +45,7 @@ plot.isoscape <-
     ##  allows for the evaluation of arguments.
     ##  (the stars are used to remove spaces)
     map <- levelplot(
-      x$Isoscape[[which]],
+      x$isoscape[[which]],
       maxpixels=4e6,
       margin=FALSE,
       cuts=length(palette)-1,

@@ -51,7 +51,7 @@
 }
 
 \arguments{
-    \item{x}{The return object of an \code{\link{Isofit}}, \code{\link{Isoscape}}, \code{\link{Calibfit}}, or \code{\link{Isorix}} call}
+    \item{x}{The return object of an \code{\link{isofit}}, \code{\link{isoscape}}, \code{\link{calibfit}}, or \code{\link{isofind}} call}
     \item{cex.scale}{a \var{numeric} giving a scalling factor for the points in the plots}
     \item{which}{A \var{string} indicating the name of the raster to be plotted (see details)}
     \item{who}{Either "group", or a vector of indices (e.g. 1:3) or names of the individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots}
@@ -76,24 +76,24 @@ When called upon an object of class \code{isoscape}, the plot function draws a f
 
 When called upon an object of class \code{isorix}, the plot function draws a fine-tuned plot of the assignment. You can use the argument "who" to choose between plotting the assignment for the group or for some individuals (check the vignette "Workflow" for examples).
 
-The arguments "cutoff", "sources", "calib", "borders", "mask" and "mask2" are used to fine-tune additional layers that can be added to the main plot to embellish it. These arguments must be lists that provide details on how to draw, respectively, the area outside the prediction interval (for assignment plots), the locations of sources (for both isoscape and assignment plots), the locations of the calibration sampling area (for assignment plots, the borders (for both types of plots) and a mask (again, for both)). For assignment maps, an extra mask can be used (mask2), as one may want to add a mask covering the area outside the biological range of the species. Within these lists, the element "lwd", "col", "cex", "pch" and "fill" influences their respective objects as in traditional R plotting functions (see \code{\link{par}} for details). The element "draw" should be a \var{logical} that indicates whether the layer must be created or not. The argument "borders" (within the list borders) expects an object of the class \var{SpatialPolygons} such as the object "worldcountries" provided with this package. The argument "mask" (within the list maks) expects an object of the class \var{SpatialPolygons} such as the object oceanmask provided with this package (see examples).
+The arguments "cutoff", "sources", "calib", "borders", "mask" and "mask2" are used to fine-tune additional layers that can be added to the main plot to embellish it. These arguments must be lists that provide details on how to draw, respectively, the area outside the prediction interval (for assignment plots), the locations of sources (for both isoscape and assignment plots), the locations of the calibration sampling area (for assignment plots, the borders (for both types of plots) and a mask (again, for both)). For assignment maps, an extra mask can be used (mask2), as one may want to add a mask covering the area outside the biological range of the species. Within these lists, the element "lwd", "col", "cex", "pch" and "fill" influences their respective objects as in traditional R plotting functions (see \code{\link{par}} for details). The element "draw" should be a \var{logical} that indicates whether the layer must be created or not. The argument "borders" (within the list borders) expects an object of the class \var{SpatialPolygons} such as the object "countries" provided with this package. The argument "mask" (within the list maks) expects an object of the class \var{SpatialPolygons} such as the object oceanmask provided with this package (see examples).
 
 }
 
 \seealso{
-\code{\link{Isofit}} for the function fitting the isoscape
+\code{\link{isofit}} for the function fitting the isoscape
 
-\code{\link{Isoscape}} for the function building the isoscape
+\code{\link{isoscape}} for the function building the isoscape
 
-\code{\link{Calibfit}} for the function fitting the calibration function
+\code{\link{calibfit}} for the function fitting the calibration function
 
-\code{\link{Isorix}} for the function performing the assignment
+\code{\link{isofind}} for the function performing the assignment
 
 \code{\link{IsoriX}} for the complete work-flow
 }
 
 \examples{
-## See ?Isoscape or ?Isorix for examples
+## See ?isoscape or ?isofind for examples
 }
 
 \keyword{plot}

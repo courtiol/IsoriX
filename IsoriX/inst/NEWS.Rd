@@ -13,29 +13,30 @@
 }
 
 
-\section{version 0.4-2}{
+\section{version 0.5}{
   \subsection{Solved BUGS}{
     \itemize{
       \item the package could not be detached and reloaded
       \item the citation was not correct
-      \item the path in GetElev was breaking in some cases
+      \item the path in getelev was breaking in some cases
       \item the title of the assignment plot was missing when a single individual was plotted
     }
   }
 
 	\subsection{New feature(s)}{
 			\itemize{
+			\item names of all functions and objects have been refactored
 			\item links to our GitHub directory have been added
 			\item new function DownloadFile to download non standard elevation raster or any other file
 			\item function DownloadFile can perform MD5 sum checks if the package 'tools' is installed
-			\item function GetElev and DowloadFile can display additional information during download if verbose > 1
+			\item function getelev and DowloadFile can display additional information during download if verbose > 1
 			\item the column animalID in the assignment dataset can now handle names within spaces
 			}
 	}
 
 	\subsection{Minor changes}{
 			\itemize{
-			\item function GetElev lost its 'address' argument as DownloadFile should now be used to download non standard elevation rasters
+			\item function getelev lost its 'address' argument as DownloadFile should now be used to download non standard elevation rasters
 			\item some typo fixed in documentation files
 			}
 	}

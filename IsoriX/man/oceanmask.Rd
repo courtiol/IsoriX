@@ -13,12 +13,12 @@ A \var{SpatialPolygons} object
 }
 
 \source{
-This \var{SpatialPolygons} is derived from the \code{\link{worldcountries}}.
+This \var{SpatialPolygons} is derived from the \code{\link{countries}}.
 See example for details on how we created the dataset.
 }
 
 \seealso{
-\code{\link{worldcountries}} for another polygon shapefile used to embellish the plots
+\code{\link{countries}} for another polygon shapefile used to embellish the plots
 
 }
 
@@ -33,9 +33,9 @@ if(require(sp))
   
 \dontrun{
 if(require(raster) & require(rgeos)){
-    worldlimit <- as(extent(worldcountries), "SpatialPolygons")
-    proj4string(worldlimit) <- crs(worldcountries)
-    oceanmask <- gDifference(worldlimit, worldcountries)  
+    worldlimit <- as(extent(countries), "SpatialPolygons")
+    proj4string(worldlimit) <- crs(countries)
+    oceanmask <- gDifference(worldlimit, countries)  
     oceanmask
     ## uncomment the following to store the file:
     #save(oceanmask, file="oceanmask.rda", compress="xz")

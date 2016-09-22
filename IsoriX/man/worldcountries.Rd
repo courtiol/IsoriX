@@ -1,12 +1,12 @@
-\name{worldcountries}
-\alias{worldcountries}
+\name{countries}
+\alias{countries}
 
 \docType{data}
 \title{Borders of world countries}
 
 \description{This dataset contains a polygon shapefile that can be used to plot the borders of countries.}
 
-\usage{data(worldcountries)}
+\usage{data(countries)}
 
 \format{A \var{SpatialPolygons}}
 
@@ -22,25 +22,25 @@ See example for details on how we created the dataset.
 }
 
 \examples{
-data(worldcountries)
+data(countries)
 
 if(require(sp))
-  plot(worldcountries, border="red", col="darkgrey")
+  plot(countries, border="red", col="darkgrey")
 
 
 ### HOW DID WE CREATE THIS FILE?
 ### (This example takes some time and will therefore not be run
-###  unless you type: example(worldcountries, run.dontrun=TRUE) )
+###  unless you type: example(countries, run.dontrun=TRUE) )
 
 \dontrun{
 if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
     worldmap <- map("world", fill=TRUE, plot=FALSE)
-    worldcountries <- map2SpatialPolygons(worldmap, IDs=worldmap$names)
-    worldcountries <- gBuffer(worldcountries, byid=TRUE, width=0)
-    proj4string(worldcountries) <- CRS("+proj=longlat +datum=WGS84")
-    worldcountries
+    countries <- map2SpatialPolygons(worldmap, IDs=worldmap$names)
+    countries <- gBuffer(countries, byid=TRUE, width=0)
+    proj4string(countries) <- CRS("+proj=longlat +datum=WGS84")
+    countries
     ## uncomment the following to store the file:
-    #save(worldcountries, file="worldcountries.rda", compress="xz")
+    #save(countries, file="countries.rda", compress="xz")
 }
 }
 

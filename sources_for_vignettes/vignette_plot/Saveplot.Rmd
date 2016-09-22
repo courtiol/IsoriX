@@ -59,17 +59,17 @@ Our goal is to save the plot of this isoscape on the hard drive so we can includ
 
 ```{r, make plot}
 ## we load the objects that are used to decorate the maps
-data(worldcountries)
+data(countries)
 data(oceanmask)
-data(isoscapepalette)
+data(isopalette1)
 
 ## we create the plot (but do not display it)
 plot.mean.isoscape <- plot(
     x=isoscape,
     which="mean",
-    borders=list(borders=worldcountries),
+    borders=list(borders=countries),
     mask=list(mask=oceanmask),
-    palette=isoscapepalette,
+    palette=isopalette1,
     plot=FALSE
 )
 ```

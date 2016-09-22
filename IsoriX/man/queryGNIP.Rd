@@ -1,0 +1,118 @@
+\name{queryGNIP}
+\alias{queryGNIP}
+
+\title{Filter the dataset to create an isoscape}
+
+\description{This function prepares the worldwide GNIP data (\var{GNIPdata}) to be used for creating the isoscape. This function allows the trimming of data by months, years and location, and for the aggregation of selected data per weather station. The function can also be used to randomly exclude some observations.}
+
+\usage{
+queryGNIP(
+    data,
+    month.min = 1,
+    month.max = 12,
+    year.min,
+    year.max,
+    long.min ,
+    long.max,
+    lat.min,
+    lat.max,
+    prop.random = 0,
+    random.level = "station"
+    )
+}
+
+\arguments{
+    \item{data}{A \var{dataframe} containing original isotopic measurements similar in structure to \code{\link{GNIPdata}}}
+    \item{month.min}{A \var{numeric} indicating the minimum month to select from. Should be a round number between 1 and 12. The default value is 1 (January).}
+    \item{month.max}{A \var{numeric} indicating the maximum month to select from. Should be a round number between 1 and 12. 
+    The default value is 12 (December).}
+    \item{year.min}{A \var{numeric} indicating the oldest year to select from. If not provided, the oldest year of \code{GNIPdata} will be considered}
+    \item{year.max}{A \var{numeric} indicating the most recent year to select from.  If not provided, the most recent year of \code{\link{GNIPdata}} will be considered}
+    \item{long.min}{A \var{numeric} indicating the minimum longitude to select from. Should be a number between -180 and 180. If not provided, -180 will be considered.}
+    \item{long.max}{A \var{numeric} indicating the maximal longitude to select from. Should be a number between -180 and 180. If not provided, 180 will be considered.}
+    \item{lat.min}{A \var{numeric} indicating the minimum latitude to select from. Should be a number between -90 and 90. If not provided, -90 will be considered.}
+    \item{lat.max}{A \var{numeric} indicating the maximal latitude to select from. Should be a number between -90 and 90. If not provided, 90 will be considered.}
+    \item{prop.random}{A \var{numeric} indicating the proportion of observations or weather stations (depending on the argument for \code{random.level}) that will be kept. If \code{prop.random} is greater than 0, then the function will return a list containing two dataframes: one containing the selected data, called \code{selected.data}, and one containing the remaining data, called \code{remaining.data}.}
+    \item{random.level}{A \var{string} indicating the level at which random draws can be performed. The two possibilities are \code{"obs"}, which indicates that observations are randomly drawn taken independently of their location, or "station" (default), which indicates that observations are randomly drawn at the level of weather stations.}
+}
+
+\value{This function returns a \var{dataframe} containing the filtered data aggregated by weather station, or a \var{list}, see above argument \code{prop.random}. For each weather station the mean and variance sample estimates are computed.}
+
+\details{This functions allows the user to filter the world-wide weather station data (\var{GNIPdata}) based on time (years and/ or months) and space (locations given in geographic coordinates, i.e. longitude and latitude) to calculate tailored isoscapes matching e.g. the time of sampling and speeding up the model fit by cropping/ clipping a certain area. The dataframe produced by this function can be used as input to fit the isoscape (see \code{\link{isofit}}).
+}
+
+\note{If one wants e.g. to select the winter months November to February, one has to select 11 as minimum and 2 as maximum and not the opposite.}
+
+\seealso{
+\code{\link{IsoriX}} for the complete work-flow
+\code{\link{GNIPdata}} for the complete dataset
+\code{\link{GNIPdataEU}} for an example of a dataset produced by this function
+
+}
+
+
+\examples{
+data(GNIPdata)
+
+### HOW DID WE CREATE THE OBJECT GNIPdataEU?
+
+## The following example require to have downloaded
+## a large elevation raster with the function getelev()
+## and will therefore not run unless you type:
+## example(queryGNIP, run.dontrun=TRUE)
+
+## we first correct the elevations in GNIPdata:
+\dontrun{
+if(require(raster)) {
+    elevationrasterbig <- raster("gmted2010_30mn.tif")
+            GNIPdata$elev <- extract(
+                elevationrasterbig,
+                cbind(GNIPdata$long, GNIPdata$lat))
+    }
+}
+
+## then we used our function:
+GNIPdataEU <- queryGNIP(
+    data=GNIPdata,
+    long.min = -27.34, 
+    long.max = 57.1,
+    lat.min = 31.62, 
+    lat.max = 68.97)
+head(GNIPdataEU)
+## uncomment the following to store the file:
+# save(GNIPdataEU, file="GNIPdataEU.rda", compress="xz")
+
+
+### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN EUROPE
+GNIPdataEU_Warm <- queryGNIP(
+    data=GNIPdata,
+    month.min = 5,  
+    month.max = 8,
+    year.min =  1960,
+    year.max =  2013,
+    long.min = -27.34, 
+    long.max = 57.1,
+    lat.min = 31.62, 
+    lat.max = 68.97)
+
+head(GNIPdataEU_Warm)
+
+
+### CREATE A DATASET WITH 90% OF OBS
+GNIPdata_90pct <- queryGNIP(
+    data=GNIPdata,
+    prop.random=0.9,
+    random.level = "obs")
+
+lapply(GNIPdata_90pct, head) # show beginnng of both datasets
+
+### CREATE A DATASET WITH HALF THE WEATHER STATIONS
+GNIPdata_50pctStations <- queryGNIP(
+    data=GNIPdata,
+    prop.random=0.5,
+    random.level = "station")
+
+lapply(GNIPdata_50pctStations, head)
+    
+}
+
