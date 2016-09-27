@@ -13,7 +13,7 @@ getelev <- function (
   md5sum.elev <- "9fbbb014e2f27299137bae21be31ac7c" 
   
   ## Download and check file
-  out <- DownloadFile(
+  out <- downloadfile(
     address=address.elev,
     filename=filename.elev,
     path=path,
@@ -29,7 +29,7 @@ getelev <- function (
 ## The following function is a generic function to download files and check 
 ## their binary intergrity
 
-DownloadFile <- function (
+downloadfile <- function (
   address=NULL,
   filename=NULL,
   path=NULL,
