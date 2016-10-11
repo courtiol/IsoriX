@@ -1,5 +1,5 @@
 Package: IsoriX
-Version: 0.4-3
+Version: 0.4-4.9000
 Date: 2016-09-22
 Encoding: UTF-8
 Title: isoscape Computation and Inference of Spatial Origins using Mixed Models
@@ -15,7 +15,6 @@ Imports:
     latticeExtra,
     numDeriv,
     proxy,
-    RandomFields,
     raster,
     rasterVis (>= 0.30),
     sp,
@@ -29,6 +28,7 @@ Suggests:
     lattice,
     maps,
     tools,
+    RandomFields,
     R.rsp,
     viridisLite
 VignetteBuilder: R.rsp

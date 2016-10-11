@@ -12,7 +12,12 @@ isosim <- function(
 	verbose=interactive()
 	) {
 
-	## if simu.data is a raster, we convert it as data.frame
+  if (!requireNamespace("RandomFields", quietly=TRUE)) {
+    stop("the package 'RandomFields' is needed for this function,
+    you can install it by typing install.packages('RandomFields')")
+  }
+  
+  ## if simu.data is a raster, we convert it as data.frame
 	if(class(simu.data) == "RasterLayer") {
 		elevation.raster <- simu.data
 		coord <- coordinates(elevation.raster)
@@ -50,13 +55,13 @@ isosim <- function(
 
 	## define the seeds (one for RandomFields, one for other R functions) and set other options for RandomFields
 	set.seed(seed)
-	RFoptions(
+	RandomFields::RFoptions(
 		seed=ifelse(is.null(seed), NA, seed),
 		spConform=FALSE,  ##so that RFsimulte returns vector directly
 		cPrintlevel=1)    ##cPrintlevel=3 for more details
 
-	if(dist.method=="Earth") RFoptions(new_coord_sys="earth")
-	if(dist.method=="Euclidean") RFoptions(new_coord_sys="cartesian")
+	if(dist.method=="Earth") RandomFields::RFoptions(new_coord_sys="earth")
+	if(dist.method=="Euclidean") RandomFields::RFoptions(new_coord_sys="cartesian")
 	## see ?"coordinate system" for info about RF coordinate system
 
 
@@ -140,7 +145,12 @@ isosim <- function(
 .LinPred <- function(fix.coef, matern.coef, uncorr.coef, data) {
 	## This function should not be called by the user but is itself called by other functions.
 	## It builds the linear predictor for the simulations
-
+  
+  if (!requireNamespace("RandomFields", quietly=TRUE)) {
+    stop("the package 'RandomFields' is needed for this function,
+    you can install it by typing install.packages('RandomFields')")
+  }
+  
 	## fixed effects
 	fix <- with(as.list(fix.coef), intercept +
 		elev*data$elev + lat.abs*data$lat.abs + lat.2*data$lat.2 +
@@ -150,16 +160,16 @@ isosim <- function(
 	matern <- 0
 	if(matern.coef["lambda"] > 0) {
 		model.matern <- with(as.list(matern.coef),
-			RMwhittle(nu=nu, var=lambda, scale=1/rho))
-		matern <- RFsimulate(model.matern,
+		  RandomFields::RMwhittle(nu=nu, var=lambda, scale=1/rho))
+		matern <- RandomFields::RFsimulate(model.matern,
 			x=data$long, y=data$lat)
 	}
 
 	## uncorr random effects
 	uncorr <- rnorm(nrow(data), mean=0, sd=sqrt(uncorr.coef["lambda"]))
 	if(uncorr.coef["nugget"] > 0)
-		uncorr <- uncorr + RFsimulate(RMnugget(var=uncorr.coef["nugget"]),
-			x=data$long, y=data$lat)
+		uncorr <- uncorr + RandomFields::RFsimulate(RandomFields::RMnugget(
+		  var=uncorr.coef["nugget"]),x=data$long, y=data$lat)
 
 	eta.sum <- fix + matern + uncorr
 	return(list("fix"=fix, "matern"=matern, "uncorr"=uncorr, "eta.sum"=eta.sum))
