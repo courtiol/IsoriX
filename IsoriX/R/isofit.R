@@ -1,3 +1,19 @@
+Isofit <- function(
+  iso.data,
+  mean.model.fix=list(elev=FALSE, lat.abs=FALSE, lat.2=FALSE, long=FALSE, long.2=FALSE),
+  disp.model.fix=list(elev=FALSE, lat.abs=FALSE, lat.2=FALSE, long=FALSE, long.2=FALSE),
+  mean.model.rand=list(uncorr=FALSE, spatial=TRUE),
+  disp.model.rand=list(uncorr=FALSE, spatial=TRUE),
+  uncorr.terms=list(mean.model="lambda", disp.model="lambda"), ## or: "nugget"
+  spaMM.method=list(mean.model="fitme", disp.model="fitme"), ## or: "corrHLfit", "HLfit"
+  dist.method="Earth", ## or: "Euclidean"
+  control.mean=list(),
+  control.disp=list(),
+  verbose=interactive()
+) {
+  .Defunct("isofit")
+}
+
 isofit <- function(
 		iso.data,
 		mean.model.fix=list(elev=FALSE, lat.abs=FALSE, lat.2=FALSE, long=FALSE, long.2=FALSE),

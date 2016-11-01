@@ -1,3 +1,13 @@
+Isorix <- function(
+  assign.data,
+  isoscape,
+  calibfit,
+  mask=NULL,
+  verbose=interactive()
+) {
+  .Defunct("isofind")
+}
+
 isofind <- function(
 	assign.data,
 	isoscape,
