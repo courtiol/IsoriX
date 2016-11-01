@@ -1,3 +1,12 @@
+Calibfit <- function(
+  calib.data,
+  isofit,
+  verbose=interactive(),
+  control.optim=list()
+) {
+  .Defunct("calibfit")
+  }
+
 calibfit <- function(
 		calib.data,
 		isofit,
