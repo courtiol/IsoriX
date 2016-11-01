@@ -25,7 +25,7 @@
 
 	\subsection{New feature(s)}{
 			\itemize{
-			\item names of all functions and objects have been refactored
+			\item names of all functions and objects have been refactored to remove upper cases
 			\item links to our GitHub directory have been added
 			\item new function downloadfile to download non standard elevation raster or any other file
 			\item function getelev can perform MD5 sum checks if the package 'tools' is installed
@@ -36,7 +36,7 @@
 
 	\subsection{Minor changes}{
 			\itemize{
-			\item function getelev lost its 'address' argument as downloadfile should now be used to download non standard elevation rasters
+			\item function getelev lost its 'address' argument as downloadfile should now be used to download non-standard elevation rasters
 			\item some typo fixed in documentation files
 			\item RandomFields moved to suggest
 			}
