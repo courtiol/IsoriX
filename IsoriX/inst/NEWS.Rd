@@ -25,7 +25,7 @@
 
 	\subsection{New feature(s)}{
 			\itemize{
-			\item the file GNIPdata has been updated
+			\item the file GNIPdata has been updated and now contain 2014 data
 			\item names of all functions and objects have been refactored to remove upper cases
 			\item links to our GitHub directory have been added
 			\item new function downloadfile to download non standard elevation raster or any other file
