@@ -18,11 +18,11 @@ knitr::opts_chunk$set(cache=TRUE, cache.path="./cache_knitr/", fig.path="./fig_k
 docache <- TRUE
 ```
 
-Welcome to __IsoriX__, in this vignette we present the steps required for you to build an isoscape and infer the geographic origin of your favorite animals or plants. This document is a simple introduction, we will thus not explore all the functionalities of the package. Such exploration will be the object of additional vignettes that will be available with future versions of the package. For the time being, users can discover advanced functionalities by reading the documentation of the package.
+Welcome to __IsoriX__, in this vignette we present the steps required for you to build an isoscape and infer the geographic origin of your favourite animals or plants. This document is a simple introduction, we will thus not explore all the functionalities of the package. Such exploration will be the subject of additional vignettes that will be available with future versions of the package. For the time being, users can discover advanced functionalities by reading the documentation of the package.
 
 Note that this vignette takes a lot of time to run. It has thus not been compiled by CRAN but by us. We have included the sources of this vignette as a text file which you can find in your computer. This file is in the folder `IsoriX/doc` within the folder where you usually install your packages (the latter being usually the one that shows up when you type `.libPaths()[1]` in R).
 
-In addition, due to constrains on how big this document must be, we had to reduce a lot the resolution of the figures. If you run it on your computer you will see that in fact figures produced by __IsoriX__ are great!
+In addition, due to constraints on how big this document could be, we had to reduce a lot the resolution of the figures. If you run it on your computer you will see that in fact figures produced by __IsoriX__ are great!
 
 ## Step 0 - Loading IsoriX
 
@@ -49,7 +49,7 @@ GNIPdataEU <- queryGNIP(
     lat.min = 30, 
     lat.max = 70)
 ```
-A warning appears because repeated measurements at one location are associated with two different elevations. This is probably a mistake present in the original data, so the function `queryGNIP()` will only select the first elevation found for this location in the dataset.
+A warning appears because repeated measurements at one location are associated with different elevations. This is a mismatch in the original data, and the function `queryGNIP()` will only select the first elevation found for this location in the dataset.
 
 The function `queryGNIP` could also be used to select data from particular years or months. The function aggregates data so that there are as many rows in `GNIPdataEU` as the number of weather stations considered. If you explore the dataset we created, you will notice that it has `r nrow(GNIPdataEU)` rows and `r ncol(GNIPdataEU)` columns. Typing `head(GNIPdataEU)` will show you the first 6 rows of the dataset. We should get the following output:
 
