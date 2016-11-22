@@ -161,10 +161,10 @@ isofit <- function(
 .PrepareDataIso <- function(data) {
 	## This function should not be called by the user but is itself called by other functions.
 	## It prepares data for the prediction procedures.
-	if(!all(c("lat", "long") %in% colnames(data)))
-		stop("the dataset does not seem to contain the required variable(s) lat and/or long")
 	if(max(table(data$lat, data$long))>1)
 		warning("the dataset does not seem to be aggregated, make sure you only have a single row per location in your dataset")     
+	if(!all(c("lat", "long") %in% colnames(data)))
+		stop("the dataset does not seem to contain the required variable(s) lat and/or long")
 	if(is.null(data$var.isoscape.value))
 		stop("the dataset does not seem to contain the required variable var.isoscape.value")
 	if(is.null(data$n.isoscape.value))
