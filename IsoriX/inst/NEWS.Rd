@@ -31,7 +31,7 @@
 			\item new function downloadfile to download non standard elevation raster or any other file
 			\item function getelev can perform MD5 sum checks if the package 'tools' is installed
 			\item function getelev can display additional information during download if verbose > 1
-			\item the column animalID in the assignment dataset can now handle names within spaces
+			\item the column animalID in the assignment dataset can now handle names with spaces
 			}
 	}
 
