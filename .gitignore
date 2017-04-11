@@ -4,10 +4,12 @@
 .Ruserdata
 
 # Sublime file
+
 *sublime*
 
 
 # Windows files
+
 *.db
 
 # Heavy files that can easily be generated locally
@@ -16,8 +18,12 @@
 *.tif
 /*.html
 
+# MacOS files
 
-# temporary files
+*.DS_Store
+
+
+# Temporary files
 
 .Rhistory
 .RData
