@@ -31,11 +31,13 @@ Description:
 License: GPL (>= 2)
 Suggests:
     Cairo,
+    GISTools,
     lattice,
     maps,
     tools,
     RandomFields,
     R.rsp,
+    rgdal,
     viridisLite
 VignetteBuilder: R.rsp
 URL: https://github.com/courtiol/IsoriX_project/
