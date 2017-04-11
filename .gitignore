@@ -1,7 +1,6 @@
 # RStudio stuff
 
 .Rproj.user
-*.Rproj
 .Ruserdata
 
 # Sublime file
