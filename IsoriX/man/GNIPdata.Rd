@@ -4,12 +4,12 @@
 \docType{data}
 \title{World-wide weather station data}
 
-\description{This dataset contains the mean and variance of Deuterium delta precipitation values of weather stations sampled between 1960 and 2013. Data have been compiled by the International Atomic Energy Agency IAEA in Vienna (GNIP Project: Global Network of Isotopes in Precipitation).}
+\description{This dataset contains the mean and variance of Deuterium delta precipitation values of weather stations sampled between 1960 and 2015. Data have been compiled by the International Atomic Energy Agency IAEA in Vienna (GNIP Project: Global Network of Isotopes in Precipitation).}
 
 \usage{data(GNIPdata)}
 
 \format{
-	The \var{dataframe} includes 54513 observations on the following variables:
+	The \var{dataframe} includes 62040 observations on the following variables:
 	\tabular{rlll}{
 	[, 1] \tab lat \tab (\var{numeric}) \tab  Latitude coordinate [decimal degrees]\cr
 	[, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
@@ -22,7 +22,7 @@
 }
 
 \details{
-The dataset contains non-aggregated data for 858 weather stations across the world.
+The dataset contains non-aggregated data for 920 weather stations across the world.
 
 This dataset is the raw data source and should not be directly used for fitting isoscapes.
 
