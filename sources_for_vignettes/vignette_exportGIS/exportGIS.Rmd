@@ -1,26 +1,27 @@
 ---
-title: "How to export your IsoriX objetcs to GIS?"
+title: "How to export to GIS in IsoriX?"
 author: "Alexandre Courtiol, François Rousset & Stephanie Kramer-Schadt"
-date: "`r Sys.Date()`"
+date: '`r Sys.Date()`'
 output:
-    pdf_document
+  pdf_document
 vignette: >
   %\VignetteIndexEntry{Export to GIS in IsoriX}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, initialization, echo=FALSE}
+```{r, initialization, echo=FALSE, results='hide', message=FALSE}
 library(knitr)
-set.seed(123)  ## set seed for entire manuscript
+library(IsoriX)
+library(raster)
 # set global options for knitr (if changed, all cashed chunked will be rerun!)
-knitr::opts_chunk$set(cache=FALSE)
-do.eval <- FALSE ## to check that it does work, put TRUE
+knitr::opts_chunk$set(cache=TRUE, cache.path="./cache_knitr/", fig.path="./fig_knitr/", global.par=TRUE, width="\\linewidth", fig.align="center", dev="CairoPNG", dpi=500) # use dpi=100 for small pdfs
+do.eval <- TRUE ## to check that it does work, put TRUE
 ```
 
-Welcome to __IsoriX__, in this vignette we present the steps required for you to export your isoscape or assignment maps for using them outside R within the GIS program of your choice.
+Welcome to __IsoriX__, in this vignette we present the steps required for you to export the spatial object created in IsoriX to your favorite GIS software.
 
-## Before starting
+# Before starting
 
 Please read the vignette ___Workflow___, if you haven't done so. You can access it by simply typing:
 
@@ -28,54 +29,84 @@ Please read the vignette ___Workflow___, if you haven't done so. You can access 
 vignette("Workflow", package="IsoriX")
 ```
 
-We assume that you are still in the same R session than the one created during the simple workflow example. That implies that __IsoriX__ is loaded and that the objects we will use below have already been created.
+We assume that you are still in the same R session than the one created during the simple workflow example. That implies that the packages __IsoriX__ and __raster__ are loaded and that the objects we will use below have already been created.
 
 
-```{r, load isoscape, echo=FALSE, message=FALSE}
-library(IsoriX)
+```{r, load isoscape, echo=FALSE, message=FALSE, results='hide'}
+data(countries)
+data(oceanmask)
+data(Europefit)
 load("../vignette_workflow/isoscape.rda")
+load("../vignette_workflow/assignment.rda")
+elevationraster <- raster("../vignette_workflow/gmted2010_30mn.tif")
+elev <- relevate(elevation.raster=elevationraster, isofit=Europefit, aggregation.factor=10)
 ```
 
-## Export your data to a GIS
-R comes along with a suite of packages designed for easy handling of spatial data and exchange formats with standard GIS programs, such asArcGIS by ESRI. In the following, we will first explain the different spatial data formats stored within the objects created in the IsoriX-package and explain how they can easily be exported. We then provide some visualisation functions along with coordinate reference system transformations to directly handle the spatial layers in R.
+You can test if you have all the object we need by running the following code:
+
+```{r test if objects are here}
+all(c("countries", "oceanmask", "elev", "isoscape", "assignment") %in% ls())
+```
+
+If the result is TRUE, you can proceed! If not, then go back to the vignette ___Workflow___.
+
+
+# Export your data to a GIS
+
+R comes along with a suite of free packages designed for easy handling of spatial data and exchange formats with standard GIS programs, such asArcGIS by ESRI. Although you can probably do all you need in R, we will how you can export the different spatial object created in IsoriX to your favorite GIS software.
+
+Let's first explain which spatial data formats we use in IsoriX and where to find the spatial data in the objects created by IsoriX.
 
 ## RasterLayers, RasterStacks (RasterBricks),  and SpatialPolygons, SpatialPointsDataFrames
-There are four types of spatial objects in IsoriX that one should know. RasterLayers are 2-dimensional matrix-like grids, with each grid cell containing a value representing information, e.g. the mean predicted isotopic value or elevation. RasterStacks or RasterBricks are multilayer-raster objects, i.e. multi-band satellite images (see __raster__ package).
+
+There are four types of spatial objects in IsoriX that one should know about. RasterLayers are 2-dimensional matrix-like grids, with each grid cell containing a value representing information, e.g. the mean predicted isotopic value or elevation. RasterStacks or RasterBricks are multilayer-raster objects, i.e. multi-band satellite images (see __raster__ package).
 SpatialPolygons and SpatialPoints are vector-data, i.e. geometric objects of polygons, (lines) or points and can be handled through the __sp__ package.
 
-## Accessing the spatial information stored in the Isoscape- and Isorix-objects
-The 'worldcountries' and the 'oceanmask' are ready-to-use polygon vector layers stored in IsoriX as SpatialPolygons. Further spatial information is stored in the Isoscape- and the Isorix-objects.
+## Accessing the spatial information stored in the objects of class *isoscape* and *isorix*
 
-### The Isoscape-object
-When you type
+The object 'countries' and the 'oceanmask' are ready-to-use polygon vector layers stored in IsoriX as SpatialPolygons. Further spatial information is stored in the objects of class *isoscape* (such as isoscape) and *isorix* (such as assignment).
+
+### The guts of the objects of class *isoscape*
+
+The objects of class *isoscape* (such as the object actually called ```isoscape``` which we created in the workflow) are list that contain information stored in ```$isoscape``` (a RasterStack) and ```$sp.points``` (a list containing itself ```$sources``` a SpatialPointsDataFrame). All of this can be deduced from the analysis of the object in R:
+
 ```{r AccessIsoscape1}
-unlist(isoscape) #note: isoscape = the Isoscape-object
+names(isoscape)
+class(isoscape$isoscape)
+class(isoscape$sp.points$sources)
 ```
-you will see that there is information stored in $Isoscape (RasterStack) and $sp.points (SpatialPointsDataFrame). The RasterStack consists of 8 layers specified in the names-slot. Typing
+
+The RasterStack consists of 8 layers specified in the names-slot:
 ```{r AccessIsoscape2}
-names(isoscape$Isoscape) 
+names(isoscape$isoscape) 
 ```
-shows you which RasterLayers are stored in the stack. To access a single RasterLayers, e.g. to plot or export it, type
+
+To access a single RasterLayers, e.g. to plot or export it, just type:
 ```{r AccessIsoscape3}
-isoscape$Isoscape[['mean']] # similar to: isoscape$Isoscape[[1]]
+isoscape$isoscape$mean ## similar to: isoscape$isoscape[[1]] or isoscape$isoscape[["mean"]]
 ```
 In a similar way, you can access the weather station data, called sources:
 ```{r AccessIsoscape4}
-isoscape$sp.points  
+isoscape$sp.points$sources
 ```
 
-### The Isorix-object
-Analoguously, one can access all the information stored in the Isorix-object, that is, the assignment. Here, for each statistical output (e.g. p-value), a RasterBrick is stored containing the information for each single individual entered into the assignment dataset.
+### The guts of the objects of class *isorix*
+
+Analoguously, one can access all the information stored in the object of class *isorix*. Here, for each statistical output (e.g. p-value), a RasterBrick is stored containing the information for each single individual entered into the assignment dataset:
+
 ```{r AccessIsorix1}
-unlist(assignment)
+names(assignment)
+names(assignment$indiv)
+names(assignment$indiv$pv)
 ```
 
-That is, the assignment probability of e.g. a given individual 'Mbe_1' can be extracted from the RasterBrick $indiv.pv in the following way:
+That is, the assignment probability of e.g. a given individual 'Mbe_1' can be extracted from the RasterBrick ```$indiv$pv``` in the following way:
+
 ```{r AccessIsorix2}
-assignment$indiv$pv[['Mbe_1']]
+assignment$indiv$pv$Mbe_1 ## similar to: assignment$indiv$pv[["Mbe_1"]]
 ```
 
-The Isorix-object also stores the sources (e.g. water stations used to create the isoscape) as well as the locations of the calibrationdata as SpatialPointsDataFrames and can be accessed accordingly:
+The objects of class *isorix* also store the sources (e.g. water stations used to create the isoscape) as well as the locations of the calibrationdata as SpatialPointsDataFrames and can be accessed accordingly:
 
 ```{r AccessIsorix3}
 assignment$sp.points$sources
@@ -84,25 +115,38 @@ assignment$sp.points$calibs
 
 
 ## Export spatial objects created in IsoriX 
-The ESRI shapefile is a widely used interchange format to store vector data, i.e. in our case the SpatialPolygons (worldcountries, oceanmask) and the SpatialPointsDataFrames (sources, calibration locations). There are two libraries in R that can be used: rgdal and maptools (https://www.nceas.ucsb.edu/scicomp/usecases/ReadWriteESRIShapeFiles). To save SpatialPolygons, a little workaround is needed to join a dataframe (attribute table) to each feature. Before the export, make sure that the projection is defined for all spatial data. By default, we are working with WGS84.
+
+The ESRI shapefile is a widely used interchange format to store vector data, i.e. in our case the SpatialPolygons (countries, oceanmask) and the SpatialPointsDataFrames (sources, calibration locations). There are two libraries in R that can be used to create such shapefile: ```rgdal``` and ```maptools``` (https://www.nceas.ucsb.edu/scicomp/usecases/ReadWriteESRIShapeFiles). To save SpatialPolygons, a little workaround is needed to add an attribute. Before the export, make sure that the projection is defined for all spatial data. By default, we are working with WGS84.
 
 
-```{r ExportShape,eval=FALSE,tidy.opts=list(keep.blank.line=FALSE, width.cutoff=60)}
-# the sources
+```{r ExportShape, tidy.opts=list(keep.blank.line=FALSE, width.cutoff=60)}
+## the sources
 SourceLocations <- assignment$sp.points$sources
 projection(SourceLocations)
 
-#workaround for worldcountries
-df <- data.frame(id = getSpPPolygonsIDSlots(worldcountries)) #add attribute table with 'id' for 1625 features
-row.names(df) <- getSpPPolygonsIDSlots(worldcountries)
-wrld_cntrs <- SpatialPolygonsDataFrame(worldcountries, data =df)
+## workaround for countries
+df <- data.frame(id = getSpPPolygonsIDSlots(countries)) ## create table with 'id'
+row.names(df) <- getSpPPolygonsIDSlots(countries)
+wrld_cntrs <- SpatialPolygonsDataFrame(countries, data = df)
 projection(wrld_cntrs)
 
-# export
-setwd('C:/Temp') #or wherever on your harddrive
+## export in your current directory
 library(rgdal)
-writeOGR(obj=SourceLocations, dsn=getwd(), layer='SourceLocs_rgdal', driver ='ESRI Shapefile',overwrite=TRUE)
-writeOGR(obj=wrld_cntrs, dsn=getwd(), layer='SourceLocs_rgdal', driver ='ESRI Shapefile',overwrite=TRUE)
+writeOGR(
+  obj = SourceLocations,
+  dsn = getwd(),
+  layer = 'SourceLocs_rgdal',
+  driver = 'ESRI Shapefile',
+  overwrite = TRUE
+  )
+
+  writeOGR(
+  obj = wrld_cntrs,
+  dsn = getwd(),
+  layer = 'SourceLocs_rgdal',
+  driver = 'ESRI Shapefile',
+  overwrite = TRUE
+  )
 
 library(maptools)
 writePointsShape(x=SourceLocations, "SourceLocs_mapt") #points
@@ -118,78 +162,3 @@ projection(Assignment_Prob_Mbe_1)
 writeRaster(Assignment_Prob_Mbe_1, filename="ap1.asc",format="ascii",overwrite=TRUE,NAflag = -9999)
 writeRaster(Assignment_Prob_Mbe_1, filename="ap2.tif",format="GTiff",overwrite=TRUE,NAflag = -9999)#requires rgdal
 ```
-
-
-
-## Pimping up your plots
-### Add a 3D-image to your plot
-```{r hillshade I}
-slope <- terrain(x = elev, opt = "slope",unit = "radians", neighbors = 8)
-aspect <- terrain(x = elev, opt = "aspect",unit = "radians", neighbors = 8)
-hillsh <- hillShade(slope, aspect, angle = 45,direction = 270)
-```
-
-```{r hillshade II,warning=FALSE,fig.pos='t', fig.width=4, fig.height=3}
-plot(hillsh, col=grey(0:100/100), legend=FALSE)
-#and colors on top: alpha value gives semi-transparency
-image(isoscape$Isoscape[['mean']], col=terrain.colors(100,alpha=0.3),add=T)
-points(isoscape$sp.points$sources,cex=0.5,pch='+')
-plot(oceanmask,col='grey',border='transparent',add=T)
-plot(worldcountries,col='transparent',border='white',add=T)
-box()
-```
-
-
-### Add Gridlines
-```{r gridline, fig.pos='t', fig.width=3, fig.height=3}
-
-grd <- gridlines(isoscape$Isoscape[['mean']], 
-                    easts = pretty(bbox(isoscape$Isoscape[['mean']])[1,]),
-                    norths = pretty(bbox(isoscape$Isoscape[['mean']])[2,]), 
-                    ndiscr = 20)
-plot(grd, add=T, col='pink', lty=2)
-```
-
-
-### Add North Arrow and Scale Bar
-```{r north arrow, fig.pos='t', fig.width=3, fig.height=3}
-library(GISTools)
-library(maps)
-north.arrow(-20, 40, 2.25, cex.lab=0.7, col="grey80")
-map.scale(-15, 35, 10,"Km",1, 1000, sfcol='red')   #should be approx correct
-```
-
-
-### Change the projection of your map
-For certain parts of the world it is better to use a different projection than our geographic coordinate system (WGS84). Data can easily be projected in R, however, there is no 'on the fly' projection like in GIS systems - each layer has to be projected separately. To find the optimal reference system for your area, please check here:
-http://www.spatialreference.org
-As an example, we will use a Mollenweide-projection. There is different commands for vector and raster data.
-
-```{r projections}
-sources_moll <-  spTransform(isoscape$sp.points$sources,   CRS("+proj=moll +datum=WGS84"))
-wrld_moll <- spTransform(worldcountries,   CRS("+proj=moll +datum=WGS84"))
-ocma_moll <- spTransform(oceanmask,   CRS("+proj=moll +datum=WGS84")) ##### ALEX: the oceanmask get inverted, shiott...
-
-iso_mean_moll <- projectRaster(isoscape$Isoscape[['mean']], crs=CRS("+proj=moll +datum=WGS84"))
-hillsh_moll <- projectRaster(hillsh, crs=CRS("+proj=moll +datum=WGS84"))
-```
-
-
-### Redo the plot
-
-```{r hillshade IIb,warning=FALSE,fig.pos='t', fig.width=4, fig.height=3}
-plot(hillsh_moll, col=grey(0:100/100), legend=FALSE)
-image(iso_mean_moll, col=terrain.colors(100,alpha=0.3),add=T)
-points(sources_moll,cex=0.5,pch='+')
-#plot(ocma_moll,col='grey',border='transparent',add=T)############## taken out
-plot(wrld_moll,col='transparent',border='white',add=T)
-box()
-
-```
-
-
-
-
-
-
-
