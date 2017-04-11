@@ -15,7 +15,7 @@ library(knitr)
 set.seed(123)  ## set seed for entire manuscript
 # set global options for knitr (if changed, all cashed chunked will be rerun!)
 knitr::opts_chunk$set(cache=FALSE)
-do.eval <- FALSE ## to check that it does work, put TRUE
+do.eval <- TRUE ## to check that it does work, put TRUE
 ```
 
 Welcome to __IsoriX__, in this vignette we present the steps required for you to save your isoscape or assignment maps on your hard drive.
