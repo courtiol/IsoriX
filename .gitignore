@@ -10,7 +10,7 @@
 # Windows files
 *.db
 
-# heavy files that can easily be generated locally
+# Heavy files that can easily be generated locally
 
 *.tar.gz
 *.tif
@@ -35,3 +35,8 @@ sources_for_vignettes/**/cache_knitr/
 sources_for_vignettes/**/fig_knitr/
 sources_for_vignettes/**/*.tif
 sources_for_vignettes/**/*.rda
+sources_for_vignettes/**/*.dbf
+sources_for_vignettes/**/*.shp
+sources_for_vignettes/**/*.shx
+sources_for_vignettes/**/*.prj
+sources_for_vignettes/**/*.asc
