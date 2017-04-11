@@ -1,16 +1,4 @@
-Isofit <- function(
-  iso.data,
-  mean.model.fix=list(elev=FALSE, lat.abs=FALSE, lat.2=FALSE, long=FALSE, long.2=FALSE),
-  disp.model.fix=list(elev=FALSE, lat.abs=FALSE, lat.2=FALSE, long=FALSE, long.2=FALSE),
-  mean.model.rand=list(uncorr=FALSE, spatial=TRUE),
-  disp.model.rand=list(uncorr=FALSE, spatial=TRUE),
-  uncorr.terms=list(mean.model="lambda", disp.model="lambda"), ## or: "nugget"
-  spaMM.method=list(mean.model="fitme", disp.model="fitme"), ## or: "corrHLfit", "HLfit"
-  dist.method="Earth", ## or: "Euclidean"
-  control.mean=list(),
-  control.disp=list(),
-  verbose=interactive()
-) {
+Isofit <- function(...) {
   .Defunct("isofit")
 }
 
@@ -161,7 +149,7 @@ isofit <- function(
 .PrepareDataIso <- function(data) {
 	## This function should not be called by the user but is itself called by other functions.
 	## It prepares data for the prediction procedures.
-	if(max(table(data$lat, data$long))>1)
+	if(max(table(data$lat, data$long)) > 1)
 		warning("the dataset does not seem to be aggregated, make sure you only have a single row per location in your dataset")     
 	if(!all(c("lat", "long") %in% colnames(data)))
 		stop("the dataset does not seem to contain the required variable(s) lat and/or long")
@@ -169,7 +157,7 @@ isofit <- function(
 		stop("the dataset does not seem to contain the required variable var.isoscape.value")
 	if(is.null(data$n.isoscape.value))
 		stop("the dataset does not seem to contain the required variable n.isoscape.value")
-	if(any(data$var.isoscape.value<=0))
+	if(any(data$var.isoscape.value <= 0))
 		stop("the dataset seem to contain null or negative value for var.isoscape.value")
 	if(!is.null(data$stationID))
 		data$stationID <- factor(data$stationID)

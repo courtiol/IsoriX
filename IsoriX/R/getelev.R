@@ -1,9 +1,4 @@
-GetElev <- function (
-  path=NULL,
-  address=NULL,
-  overwrite=FALSE,
-  verbose=interactive()
-) {
+GetElev <- function (...) {
   .Defunct("getelev")
 }
 

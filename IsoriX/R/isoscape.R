@@ -1,8 +1,4 @@
-Isoscape <- function(
-  elevation.raster,
-  isofit,
-  verbose=interactive()
-) {
+Isoscape <- function(...) {
   .Defunct("isoscape")
 }
 

@@ -1,9 +1,4 @@
-Calibfit <- function(
-  calib.data,
-  isofit,
-  verbose=interactive(),
-  control.optim=list()
-) {
+Calibfit <- function(...) {
   .Defunct("calibfit")
   }
 
