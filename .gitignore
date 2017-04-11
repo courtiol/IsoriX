@@ -29,7 +29,7 @@ local_trials/
 biblio_nonshared/
 IsoriX.Rcheck
 
-# vignettes
+# Files in vignettes that can easily be generated locally
 
 sources_for_vignettes/**/cache_knitr/
 sources_for_vignettes/**/fig_knitr/
@@ -40,3 +40,5 @@ sources_for_vignettes/**/*.shp
 sources_for_vignettes/**/*.shx
 sources_for_vignettes/**/*.prj
 sources_for_vignettes/**/*.asc
+sources_for_vignettes/**/*.pdf
+
