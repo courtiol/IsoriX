@@ -27,15 +27,15 @@ The dataset contains non-aggregated data for 858 weather stations across the wor
 This dataset is the raw data source and should not be directly used for fitting isoscapes.
 
 Please use \code{\link{queryGNIP}} to filter the dataset by time and location.
+
+If you want to use your own dataset, you must format your data as those produced by the function code{\link{queryGNIP}}.
 }
 
-\note{Some elevations seem to be wrong... see \code{\link{GNIPdataEU}} for details.}
 
 \source{Data extracted from IAEA (see below for more details).}
 
 \seealso{
-\code{\link{GNIPdataEU}} for information on what your working dataset should look like
-\code{\link{queryGNIP}} to filter the dataset by time and location.
+\code{\link{queryGNIP}} to prepare the dataset for the analyses and to filter by time and location.
 }
 
 \references{
