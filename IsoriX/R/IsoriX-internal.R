@@ -2,84 +2,45 @@
 
 .onAttach <-
 function (
-	libname,
-	pkgname
-	) {
-	## This function should not be called by the user.
-	## It display a message when the package is being loaded
-  ## and sets the proxy method Earth
-	packageStartupMessage(  # display message
-		"\n ############################################",
-		"\n #                                          #",
-		"\n #    IsoriX (version ", packageDescription("IsoriX")$Version,") is loaded!     #",
-		"\n #                                          #",
-		"\n #   Note that many functions and objects   #",
-		"\n #  have changed names since last version   #",
-		"\n # This is to make our IsoriX more intuitive#",
-		"\n #   and we will do our best not to change  #",
-		"\n #     names again in the future!!          #",
-		"\n #                                          #",
-		"\n #  Type ?IsoriX for a short description    #",
-		"\n #                                          #",
-		"\n #  Type browseVignettes(package='IsoriX')  #",
-		"\n #    for details about how this package    #",
-		"\n #         works and how to use it          #",
-		"\n #                                          #",
-		"\n #  Type news(package='IsoriX') for news    #",
-		"\n #                                          #",
-		"\n ############################################", "\n")
-	set_ll_warn(TRUE)  ##makes sp creating warning instead of errors when lat/long out of boundaries
-
-	## Let us set the new proxy method
-	pr_DB$set_entry(FUN = .Dist.earth.mat, names = c("Earth", "dist.earth"))
-	pr_DB$modify_entry(
-		names = "Earth",
-		description = "Approximate distance in Km between points on earth surface.",
-		loop = FALSE,
-		distance = TRUE
-		)
-
-}
-
-
-.onDetach <- function(libpath) {
+  libname,
+  pkgname
+  ) {
   ## This function should not be called by the user.
-  ## It remove the proxy method Earth when pacakge is being detached
-  pr_DB$delete_entry("Earth")
+  ## It display a message when the package is being loaded
+  packageStartupMessage(  # display message
+    "\n IsoriX version ", packageDescription("IsoriX")$Version," is loaded!",
+    "\n",
+    "\n Many functions and objects have changed names since the version 0.4.",
+    "\n This is to make IsoriX more intuitive for you to use.",
+    "\n We will do our best to limit changes in names in the future!!",
+    "\n",
+    "\n Type:",
+    "\n    * ?IsoriX for a short description.",
+    "\n    * browseVignettes(package='IsoriX') for tutorials.",
+    "\n    * news(package='IsoriX') for news.",
+    "\n")
 }
 
+.IsoriX_options <- new.env(parent = emptyenv())
 
-.Dist.earth.mat <- function (x, y=NULL) {
-	## This function should not be called by the user but is itself called by other functions.
-	## It compute orthodromic distances in Km between locations.
-	if(is.null(y)) {
-		coslat <- cos(x[, 2]*pi/180)
-		sinlat <- sin(x[, 2]*pi/180)
-		coslon <- cos(x[, 1]*pi/180)
-		sinlon <- sin(x[, 1]*pi/180)
-		pp <- cbind(coslat * coslon, coslat * sinlon, sinlat) %*% 
-				t(cbind(coslat * coslon, coslat * sinlon, sinlat))
-	} else { 
-		coslat1 <- cos(x[, 2]*pi/180)
-		sinlat1 <- sin(x[, 2]*pi/180)
-		coslon1 <- cos(x[, 1]*pi/180)
-		sinlon1 <- sin(x[, 1]*pi/180)
-		coslat2 <- cos(y[, 2]*pi/180)
-		sinlat2 <- sin(y[, 2]*pi/180)
-		coslon2 <- cos(y[, 1]*pi/180)
-		sinlon2 <- sin(y[, 1]*pi/180)
-		pp <- cbind(coslat1 * coslon1, coslat1 * sinlon1, sinlat1) %*% 
-				t(cbind(coslat2 * coslon2, coslat2 * sinlon2, sinlat2))
-	}
-	## Earth radius used for approximation = 6371.009 = 1/3*(2*6378.137+6356.752)  [details on https://en.wikipedia.org/wiki/Great-circle_distance]
-	pp <- 6371.009 * acos(ifelse(abs(pp) > 1, 1 * sign(pp), pp))
-	if (is.null(y)) pp <- as.dist(pp)  ## spaMM wants an half matrix in this case, not a full one
-	return(pp)
-}
+.onLoad <-
+  function (
+    libname,
+    pkgname
+  ) {
+    ## This function should not be called by the user.
+    ## It changes the default beahviour of sp concerning lat/long boundaries
+    .IsoriX_options$sp_ll_warn <- get_ll_warn()
+    set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
+  }
 
+.onUnload <- function(libpath) {
+  ## This function should not be called by the user.
+  ## It restores the original behaviour of sp
+  set_ll_warn(.IsoriX_options$sp_ll_warn)
+  }
 
 .NiceRound <- function(x, digits) formatC(round(x, digits), digits=digits, format="f")
-
 
 .CreateRaster <-
 function(
