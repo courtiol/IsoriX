@@ -38,7 +38,7 @@ queryGNIP(
 
 \value{This function returns a \var{dataframe} containing the filtered data aggregated by weather station, or a \var{list}, see above argument \code{prop.random}. For each weather station the mean and variance sample estimates are computed.}
 
-\details{This functions allows the user to filter the world-wide weather station data (\var{GNIPdata}) based on time (years and/ or months) and space (locations given in geographic coordinates, i.e. longitude and latitude) to calculate tailored isoscapes matching e.g. the time of sampling and speeding up the model fit by cropping/ clipping a certain area. The dataframe produced by this function can be used as input to fit the isoscape (see \code{\link{isofit}}).
+\details{This function aggregates the data per location as required for the IsoriX workflow. The function also allows the user to filter the world-wide weather station data (\var{GNIPdata}) based on time (years and/ or months) and space (locations given in geographic coordinates, i.e. longitude and latitude) to calculate tailored isoscapes matching e.g. the time of sampling and speeding up the model fit by cropping/ clipping a certain area. The dataframe produced by this function can be used as input to fit the isoscape (see \code{\link{isofit}}).
 }
 
 \note{If one wants e.g. to select the winter months November to February, one has to select 11 as minimum and 2 as maximum and not the opposite.}
@@ -46,7 +46,6 @@ queryGNIP(
 \seealso{
 \code{\link{IsoriX}} for the complete work-flow
 \code{\link{GNIPdata}} for the complete dataset
-\code{\link{GNIPdataEU}} for an example of a dataset produced by this function
 
 }
 
@@ -54,34 +53,15 @@ queryGNIP(
 \examples{
 data(GNIPdata)
 
-### HOW DID WE CREATE THE OBJECT GNIPdataEU?
-
-## The following example require to have downloaded
-## a large elevation raster with the function getelev()
-## and will therefore not run unless you type:
-## example(queryGNIP, run.dontrun=TRUE)
-
-## we first correct the elevations in GNIPdata:
-\dontrun{
-if(require(raster)) {
-    elevationrasterbig <- raster("gmted2010_30mn.tif")
-            GNIPdata$elev <- extract(
-                elevationrasterbig,
-                cbind(GNIPdata$long, GNIPdata$lat))
-    }
-}
-
-## then we used our function:
+### CREATE A PROCESSED DATASET FOR EUROPE
 GNIPdataEU <- queryGNIP(
     data=GNIPdata,
-    long.min = -27.34, 
-    long.max = 57.1,
-    lat.min = 31.62, 
-    lat.max = 68.97)
-head(GNIPdataEU)
-## uncomment the following to store the file:
-# save(GNIPdataEU, file="GNIPdataEU.rda", compress="xz")
+    long.min = -30, 
+    long.max = 60,
+    lat.min = 30, 
+    lat.max = 70)
 
+head(GNIPdataEU)
 
 ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN EUROPE
 GNIPdataEU_Warm <- queryGNIP(
@@ -90,10 +70,10 @@ GNIPdataEU_Warm <- queryGNIP(
     month.max = 8,
     year.min =  1960,
     year.max =  2013,
-    long.min = -27.34, 
-    long.max = 57.1,
-    lat.min = 31.62, 
-    lat.max = 68.97)
+    long.min = -30, 
+    long.max = 60,
+    lat.min = 30, 
+    lat.max = 70)
 
 head(GNIPdataEU_Warm)
 

@@ -96,10 +96,19 @@ Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global application of stab
 
 \examples{
 
+## We extract the GNIP data for Europe
+
+data(GNIPdata)
+
+GNIPdataEU <- queryGNIP(
+    data=GNIPdata,
+    long.min = -30, 
+    long.max = 60,
+    lat.min = 30, 
+    lat.max = 70)
+
 ## We fit the isoscape model (on the first 50 rows only,
 ## otherwise it takes too long for a simple example)
-
-data(GNIPdataEU)
 
 isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:50, ],
     mean.model.fix=list(elev=TRUE, lat.abs=TRUE))
