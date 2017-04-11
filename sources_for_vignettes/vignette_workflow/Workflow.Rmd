@@ -218,9 +218,10 @@ assignment <- isofind(
 
 Note that we used the argument `mask=oceanmask` so to exclude with certainty that the origin of the bats comes from the water.
 
-```{r, save, echo=FALSE}
-save.image(file="./cache_knitr/all.rda")
+```{r save assignment, echo=FALSE}
+save(assignment, file="assignment.rda", compress="xz")
 ```
+
 Once the assignment done, we can draw several assignment maps. Let us start by plotting the assignment map for a specific bat by telling the function `plot` that `who` we want the plot for the bat with the `animalID` "Mbe_6" for example:
 
 ```{r, assign plot 1}
