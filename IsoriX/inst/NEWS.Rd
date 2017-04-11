@@ -37,6 +37,8 @@
 
 	\subsection{Minor changes}{
 			\itemize{
+			\item the modification of the option set_ll_warn from the 'sp' package has been moved to onLoad (instead of onAttached) and the original state is now restored while unloading 'IsoriX' 
+			\item the Earth distance method has been moved to the package 'spaMM'
 			\item function getelev lost its 'address' argument as downloadfile should now be used to download non-standard elevation rasters
 			\item some typo fixed in documentation files
 			\item RandomFields moved to suggest
