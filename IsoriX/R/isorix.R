@@ -20,14 +20,16 @@ isofind <- function(
 		## we predict the isotopic value at origin location	
 		assign.data$mean.origin <-
 			(assign.data$tissue.value - calibfit$param["intercept"])/calibfit$param["slope"]
-
 		## we create individual rasters containing the test statistics
 		list.stat.layers <- sapply(1:nrow(assign.data),
 			function(i) assign.data$mean.origin[i]-isoscape$isoscape$mean)
 		names(list.stat.layers) <- names.layers
 		stat.stack <- stack(list.stat.layers)
-
-
+    if(any(names.layers != names(stat.stack))) {
+      warning("Your animalID could not be used to name rasters (you may have used numbers), so they have been slightly modified by IsoriX.")
+      names.layers <- names(stat.stack) ## trick to track the good names as they can change during stacking (if numbers)
+		}
+		
 		### WE COMPUTE THE VARIANCE OF THE TEST
 
 		## we compute fixedVar
@@ -77,7 +79,7 @@ isofind <- function(
 
 	## remove log scale
 	pv.stack <- exp(logpv.stack)
-	names(pv.stack) <- names.layers
+	names(pv.stack) <- names.layers  ## we restore the names as they are not kept when computing
 	rm(logpv.stack)
 
 	## replacing values by zeros if they fall in the mask (e.g. in water)
@@ -88,18 +90,15 @@ isofind <- function(
 		## turn mask into raster with NA inside polygons
 		raster.mask <- is.na(rasterize(mask, stat.stack))
 
-		## saving raster names
-		names.ind.backup <- names(stat.stack)
-
 		## multiplying rasters by the raster.mask		
 		stat.stack <- stat.stack*raster.mask
-		names(stat.stack) <- names.ind.backup
+		names(stat.stack) <- names.layers ## we restore the names as they are not kept when computing
 
 		varstat.stack <- varstat.stack*raster.mask
-		names(varstat.stack) <- names.ind.backup
+		names(varstat.stack) <- names.layers ## we restore the names as they are not kept when computing
 
 		pv.stack <- pv.stack*raster.mask
-		names(pv.stack) <- names.ind.backup
+		names(pv.stack) <- names.layers ## we restore the names as they are not kept when computing
 		
 		group.pv <- overlay(group.pv, raster.mask, fun=prod)
 	}
