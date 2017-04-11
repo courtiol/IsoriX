@@ -1,0 +1,200 @@
+---
+title: "How to export spatial objects from IsoriX to GIS?"
+author: "Alexandre Courtiol, François Rousset & Stephanie Kramer-Schadt"
+date: '`r Sys.Date()`'
+output:
+  pdf_document
+vignette: >
+  %\VignetteIndexEntry{Export to GIS}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, initialization, echo=FALSE, results='hide', message=FALSE}
+library(knitr)
+library(IsoriX)
+library(raster)
+library(rgdal)
+library(GISTools)
+# set global options for knitr (if changed, all cashed chunked will be rerun!)
+knitr::opts_chunk$set(cache = FALSE, cache.path = "./cache_knitr/")
+do.eval <- TRUE ## to check that it does work, put TRUE
+```
+
+Welcome to __IsoriX__, in this vignette we present the steps required for you to export the spatial object created in IsoriX to your favorite GIS software (e.g. ArcGIS)... but it is good to know that with the help of a few R packages designed for easy handling and plotting spatial data, you can probably do all your GIS work without leaving the R environment!
+
+# Before starting
+
+Please read the vignette ___Workflow___, if you haven't done so. You can access it by simply typing:
+
+```{r, workflow, eval=FALSE}
+vignette("Workflow", package="IsoriX")
+```
+
+We assume that you are still in the same R session than the one created during the simple workflow example. That implies that the objects we will use below have already been created.
+
+
+```{r, load isoscape, echo=FALSE, message=FALSE, results='hide'}
+data(countries)
+data(oceanmask)
+data(Europefit)
+load("../vignette_workflow/isoscape.rda")
+load("../vignette_workflow/assignment.rda")
+elevationraster <- raster("../vignette_workflow/gmted2010_30mn.tif")
+elev <- relevate(elevation.raster = elevationraster, isofit = Europefit, aggregation.factor = 10)
+```
+
+You can test if you have all the object we need by running the following code:
+
+```{r test if objects are here, eval = FALSE}
+all(c("countries", "oceanmask", "elev", "isoscape", "assignment") %in% ls())
+```
+
+If the result is TRUE, you can proceed! If not, then go back to the vignette ___Workflow___.
+
+We will also need to have a few packages installed and loaded:
+
+```{r packages, eval=FALSE}
+library(IsoriX)
+library(raster)
+library(GISTools)
+library(rgdal)
+```
+
+# Getting to know the spatial files used in IsoriX
+
+Let's first explain which spatial data formats we use in IsoriX and where to find the spatial data in the objects created by IsoriX.
+
+## RasterLayers, RasterStacks (RasterBricks),  and SpatialPolygons, SpatialPointsDataFrames
+
+There are four types of spatial objects in IsoriX that one should know about. ```RasterLayers``` are 2-dimensional matrix-like grids, with each grid cell containing a value representing information, e.g. the mean predicted isotopic value or elevation. ```RasterStacks``` or ```RasterBricks``` are very similar multilayer-raster objects, i.e. multi-band satellite images. As their names suggest it, these previous object are handled by the package __raster__. Then, we also have ```SpatialPolygons``` and ```SpatialPoints```. Those are objects of containing polygons or points; they are be handled by the package __sp__.
+
+## Accessing the spatial information stored in the objects produced by IsoriX
+
+The object 'countries' and the 'oceanmask' are ready-to-use ```SpatialPolygons``` stored in IsoriX. Further spatial information is stored a little bit more deeply in the objects of class *isoscape* and *isorix*.
+
+### The guts of the objects of class *isoscape*
+
+The objects of class *isoscape* (such as the object actually called ```isoscape``` which we created in the workflow) are lists that contain information stored in the element ```$isoscape``` (a RasterStack) and ```$sp.points``` (a list containing itself ```$sources``` a SpatialPointsDataFrame). All of this can be deduced from the analysis of the object in R:
+
+```{r AccessIsoscape1, R.options=list(max.print=10)}
+head(isoscape)
+class(isoscape$isoscape)
+class(isoscape$sp.points$sources)
+```
+
+The ```RasterStack``` consists of the following 8 layers:
+
+```{r AccessIsoscape2}
+names(isoscape$isoscape) 
+```
+
+You can access a single ```RasterLayers``` as you handle any element in a list. For example this is how you access to the raster containing the mean predictions:
+```{r AccessIsoscape3}
+isoscape$isoscape$mean ## similar to: isoscape$isoscape[[1]] or isoscape$isoscape[["mean"]]
+```
+In a similar way, you can access the weather station data, called sources:
+```{r AccessIsoscape4}
+isoscape$sp.points$sources
+```
+
+### The guts of the objects of class *isorix*
+
+Analogously, one can access all the information stored in the object of class *isorix*:
+
+```{r AccessIsorix1}
+assignment
+```
+
+Here, for each statistical output (e.g. p-value), a ```RasterBrick``` is stored containing the information for each single individual entered into the assignment dataset. You can thus retrieve the ```RasterLayer``` for a given statistic and a given individual. For example, the assignment probability of the individual 'Mbe_1' can be extracted from the``` RasterBrick``` ```$indiv$pv``` in the following way:
+
+```{r AccessIsorix2}
+assignment$indiv$pv$Mbe_1 ## similar to: assignment$indiv$pv[["Mbe_1"]]
+```
+
+The objects of class *isorix* also store the sources (e.g. water stations used to create the isoscape) as well as the locations of the calibrationdata as ```SpatialPointsDataFrames``` and can be accessed accordingly:
+
+```{r AccessIsorix3}
+assignment$sp.points$sources
+assignment$sp.points$calibs
+```
+
+# Export your data to a GIS
+
+Now that you know where you spatial information is, you can extract it by creating files that can be read by your GIS software.
+
+## Export ```SpatialPolygons``` and ```SpatialPointsDataFrames``
+
+We will use for this the ESRI shapefile format, which is a widely used interchange format to store vector data, i.e. in our case the ```SpatialPolygons``` (countries, oceanmask) and the ```SpatialPointsDataFrames``` (sources, calibration locations). There are two libraries in R that can be used to create such shapefile: __rgdal__ and __maptools__ (https://www.nceas.ucsb.edu/scicomp/usecases/ReadWriteESRIShapeFiles).
+
+To save ```SpatialPolygons```, a little workaround is needed as we have to add an attribute. Before to export anything, make sure that the projection is defined for all spatial data. By default, we are working with the projection WGS84.
+
+
+```{r ExportShape}
+## getting 'sources' ready
+SourceLocations <- assignment$sp.points$sources
+projection(SourceLocations) ## checking projection
+
+
+## getting 'countries' ready
+df <- data.frame(id = rownames(coordinates(countries)))
+rownames(df) <- df$id
+wrld_cntrs <- SpatialPolygonsDataFrame(countries, data = df)
+projection(wrld_cntrs)
+```
+
+Everything is ready, we can now export the spatial files in the current working directory:
+
+```{r Export}
+writeOGR(
+  obj = SourceLocations,
+  dsn = getwd(),
+  layer = 'SourceLocs_rgdal',
+  driver = 'ESRI Shapefile',
+  overwrite = TRUE
+  )
+
+writeOGR(
+  obj = wrld_cntrs,
+  dsn = getwd(),
+  layer = 'SourceLocs_rgdal',
+  driver = 'ESRI Shapefile',
+  overwrite = TRUE
+  )
+```
+
+## Export ```RasterLayers```
+
+```RasterLayers``` can be exported with the package __raster__ as ascii format or geotiff. More raster formats are available, depending on the GIS-system you have. e.g. SAGA, IDRISI or Erdas Imagine (type ?writeRaster). We will export the raster storing the p-value for the individual 'Mbe_1':
+
+```{r ExportRaster}
+
+Assignment_Prob_Mbe_1 <- assignment$indiv$pv[['Mbe_1']]
+projection(Assignment_Prob_Mbe_1)
+
+writeRaster(
+  Assignment_Prob_Mbe_1,
+  filename = "ap1.asc",
+  format = "ascii",
+  overwrite = TRUE,
+  NAflag = -9999
+)
+
+writeRaster(
+  Assignment_Prob_Mbe_1,
+  filename = "ap2.tif",
+  format = "GTiff",
+  overwrite = TRUE,
+  NAflag = -9999
+) ## this requires the package rgdal
+```
+
+# The End
+
+That is all for now! Here are the information of the R session we used:
+
+
+```{r R session}
+sessionInfo()
+```
+
