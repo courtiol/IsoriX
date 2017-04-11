@@ -1,16 +1,4 @@
-Isosim <- function(
-  simu.data,
-  mean.model.fix.coef=c(intercept=64, elev=-0.01, lat.abs=-2.3, lat.2=0, long=0, long.2=0),
-  disp.model.fix.coef=c(intercept=5.8, elev=0, lat.abs=0, lat.2=0, long=0, long.2=0),
-  mean.model.matern.coef=c(nu=0.35, rho=5e-5, lambda=899),
-  disp.model.matern.coef=c(nu=3.2e-01, rho=1.5e-05, lambda=5),
-  mean.model.uncorr.coef=c(nugget=0, lambda=0),
-  disp.model.uncorr.coef=c(nugget=0, lambda=0),
-  dist.method="Earth",
-  seed=NULL,
-  save.dataframe=FALSE,
-  verbose=interactive()
-) {
+Isosim <- function(...) {
   .Defunct("isosim")
 }
 

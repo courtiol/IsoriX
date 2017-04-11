@@ -1,12 +1,4 @@
-RElevate <-
-  function(
-    elevation.raster,
-    isofit=NULL,
-    aggregation.factor=0L,
-    aggregation.fun=mean,
-    manual.crop=NULL,
-    verbose=interactive()
-  ) {
+RElevate <- function(...) {
     .Defunct("relevate")
   }
 

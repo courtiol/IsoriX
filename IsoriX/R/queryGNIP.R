@@ -1,17 +1,4 @@
-QueryGNIP <- function(
-  data,
-  month.min = 1,
-  month.max = 12,
-  year.min,
-  year.max,
-  long.min ,
-  long.max,
-  lat.min,
-  lat.max,
-  prop.random = 0,
-  random.level = "station"
-)
-{
+QueryGNIP <- function(...) {
   .Defunct("queryGNIP")
 }
 
