@@ -1,0 +1,142 @@
+---
+title: "XXX"
+author: "Alexandre Courtiol, François Rousset & Stephanie Kramer-Schadt"
+date: '`r Sys.Date()`'
+output:
+  pdf_document
+vignette: >
+  %\VignetteIndexEntry{XXX}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, initialization, echo=FALSE, results='hide', message=FALSE}
+library(knitr)
+library(IsoriX)
+library(raster)
+# set global options for knitr (if changed, all cashed chunked will be rerun!)
+knitr::opts_chunk$set(cache=TRUE, cache.path="./cache_knitr/", fig.path="./fig_knitr/", global.par=TRUE, width="\\linewidth", fig.align="center", dev="CairoPNG", dpi=500) # use dpi=100 for small pdfs
+do.eval <- TRUE ## to check that it does work, put TRUE
+```
+
+Welcome to __IsoriX__, in this vignette we present the steps required for you to perform several usefull GIS related taks in IsoriX.
+
+# Before starting
+
+Please read the vignette ___Workflow___, if you haven't done so. You can access it by simply typing:
+
+```{r, workflow, eval=FALSE}
+vignette("Workflow", package="IsoriX")
+```
+
+We assume that you are still in the same R session than the one created during the simple workflow example. That implies that __IsoriX__ is loaded and that the objects we will use below have already been created.
+
+
+```{r, load isoscape, echo=FALSE, message=FALSE, results='hide'}
+data(countries)
+data(oceanmask)
+data(Europefit)
+load("../vignette_workflow/isoscape.rda")
+load("../vignette_workflow/assignment.rda")
+elevationraster <- raster("../vignette_workflow/gmted2010_30mn.tif")
+elev <- relevate(elevation.raster=elevationraster, isofit=Europefit, aggregation.factor=10)
+```
+
+You can test if you have all the object we need by running the following code:
+
+```{r test if objects are here}
+all(c("countries", "oceanmask", "elev", "isoscape", "assignment") %in% ls())
+```
+
+If the result is TRUE, you can proceed! If not, then go back to the vignette ___Workflow___.
+
+## Pimping up your plots
+### Add a 3D-image to your plot
+```{r hillshade I}
+slope <- terrain(x = elev, opt = "slope",unit = "radians", neighbors = 8)
+aspect <- terrain(x = elev, opt = "aspect",unit = "radians", neighbors = 8)
+hillsh <- hillShade(slope, aspect, angle = 45,direction = 270)
+```
+
+```{r hillshade II,warning=FALSE,fig.pos='t', fig.width=4, fig.height=3}
+plot(hillsh, col=grey(0:100/100), legend=FALSE)
+#and colors on top: alpha value gives semi-transparency
+image(isoscape$isoscape$mean, col=terrain.colors(100,alpha=0.3),add=T)
+points(isoscape$sp.points$sources,cex=0.5,pch='+')
+plot(oceanmask,col='grey',border='transparent',add=T)
+plot(countries,col='transparent',border='white',add=T)
+box()
+```
+
+
+### Add Gridlines
+```{r gridline, fig.pos='t', fig.width=3, fig.height=3}
+plot(hillsh, col=grey(0:100/100), legend=FALSE)
+#and colors on top: alpha value gives semi-transparency
+image(isoscape$isoscape$mean, col=terrain.colors(100,alpha=0.3),add=T)
+points(isoscape$sp.points$sources,cex=0.5,pch='+')
+plot(oceanmask,col='grey',border='transparent',add=T)
+plot(countries,col='transparent',border='white',add=T)
+box()
+grd <- gridlines(isoscape$isoscape$mean, 
+                    easts = pretty(bbox(isoscape$isoscape$mean)[1,]),
+                    norths = pretty(bbox(isoscape$isoscape$mean)[2,]), 
+                    ndiscr = 20)
+plot(grd, add=T, col='pink', lty=2)
+```
+
+
+### Add North Arrow and Scale Bar
+```{r north arrow, fig.pos='t', fig.width=3, fig.height=3}
+plot(hillsh, col=grey(0:100/100), legend=FALSE)
+#and colors on top: alpha value gives semi-transparency
+image(isoscape$isoscape$mean, col=terrain.colors(100,alpha=0.3),add=T)
+points(isoscape$sp.points$sources,cex=0.5,pch='+')
+plot(oceanmask,col='grey',border='transparent',add=T)
+plot(countries,col='transparent',border='white',add=T)
+box()
+grd <- gridlines(isoscape$isoscape$mean, 
+                    easts = pretty(bbox(isoscape$isoscape$mean)[1,]),
+                    norths = pretty(bbox(isoscape$isoscape$mean)[2,]), 
+                    ndiscr = 20)
+plot(grd, add=T, col='pink', lty=2)
+library(GISTools)
+library(maps)
+north.arrow(-20, 40, 2.25, cex.lab=0.7, col="grey80")
+GISTools::map.scale(-15, 35, 10,"Km",1, 1000, sfcol='red')   #should be approx correct
+```
+
+
+### Change the projection of your map
+For certain parts of the world it is better to use a different projection than our geographic coordinate system (WGS84). Data can easily be projected in R, however, there is no 'on the fly' projection like in GIS systems - each layer has to be projected separately. To find the optimal reference system for your area, please check here:
+http://www.spatialreference.org
+As an example, we will use a Mollenweide-projection. There is different commands for vector and raster data.
+
+```{r projections}
+sources_moll <-  spTransform(isoscape$sp.points$sources,   CRS("+proj=moll +datum=WGS84"))
+wrld_moll <- spTransform(countries,   CRS("+proj=moll +datum=WGS84"))
+ocma_moll <- spTransform(oceanmask,   CRS("+proj=moll +datum=WGS84")) ##### ALEX: the oceanmask get inverted, shiott...
+
+iso_mean_moll <- projectRaster(isoscape$isoscape$mean, crs=CRS("+proj=moll +datum=WGS84"))
+hillsh_moll <- projectRaster(hillsh, crs=CRS("+proj=moll +datum=WGS84"))
+```
+
+
+### Redo the plot
+
+```{r hillshade IIb,warning=FALSE,fig.pos='t', fig.width=4, fig.height=3}
+plot(hillsh_moll, col=grey(0:100/100), legend=FALSE)
+image(iso_mean_moll, col=terrain.colors(100,alpha=0.3),add=T)
+points(sources_moll,cex=0.5,pch='+')
+#plot(ocma_moll,col='grey',border='transparent',add=T)############## taken out
+plot(wrld_moll,col='transparent',border='white',add=T)
+box()
+
+```
+
+
+
+
+
+
+
