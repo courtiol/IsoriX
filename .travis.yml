@@ -14,7 +14,7 @@ before_install:
   - make
   - sudo make install
   - cd
-  - cd IsoriX
+  - cd /home/travis/build/courtiol/IsoriX_project/IsoriX/
 cache: packages
 r:
   - release
