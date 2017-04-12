@@ -96,6 +96,10 @@ Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global application of stab
 
 \examples{
 
+## The following example takes some time and will therefore not
+## be run unless you type: example(isofit, run.dontrun=TRUE)
+
+\dontrun{
 ## We extract the GNIP data for Europe
 
 data(GNIPdata)
@@ -107,10 +111,10 @@ GNIPdataEU <- queryGNIP(
     lat.min = 30, 
     lat.max = 70)
 
-## We fit the isoscape model (on the first 30 rows only,
+## We fit the isoscape model (on the first 50 rows only,
 ## otherwise it takes too long for a simple example)
 
-isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:30, ],
+isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:50, ],
     mean.model.fix=list(elev=TRUE, lat.abs=TRUE))
 
 isoscapemodel1
@@ -119,10 +123,6 @@ isoscapemodel1
 plot(isoscapemodel1)
 
 
-## The following example takes some time and will therefore not
-## be run unless you type: example(isofit, run.dontrun=TRUE)
-
-\dontrun{
 ## Model with one uncorrelated random effect using the Lambda
 ## parametrization for the fitting the mean model and with one 
 ## uncorrelated random effect using the Nugget parametrization 
