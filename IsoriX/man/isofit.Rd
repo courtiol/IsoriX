@@ -107,10 +107,10 @@ GNIPdataEU <- queryGNIP(
     lat.min = 30, 
     lat.max = 70)
 
-## We fit the isoscape model (on the first 50 rows only,
+## We fit the isoscape model (on the first 30 rows only,
 ## otherwise it takes too long for a simple example)
 
-isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:50, ],
+isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:30, ],
     mean.model.fix=list(elev=TRUE, lat.abs=TRUE))
 
 isoscapemodel1
