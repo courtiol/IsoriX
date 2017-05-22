@@ -57,7 +57,7 @@ Calibfit <- function(...) {
 #' perform the calibration fit and their names.
 #' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @keywords models regression
-#' @examples \dontrun{
+#' @examples
 #' ## The following example takes some time and will therefore not
 #' ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 #' data(calibdata)
@@ -70,7 +70,7 @@ Calibfit <- function(...) {
 #' summary(calib)
 #' ## plot the calibration function
 #' plot(calib)
-#' }
+#' 
 #' 
 #' @export calibfit
 calibfit <- function(calib.data,
