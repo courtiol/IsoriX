@@ -5,6 +5,8 @@ bibentry(bibtype="Manual",
   author = personList(as.person("Alexandre Courtiol"),
 
                       as.person("François Rousset"),
+                      
+                      as.person("Marie-Sophie Rohwaeder"),
   
                       as.person("Stephanie Kramer-Schadt")),
   year = "2016",

@@ -1,10 +1,13 @@
 Package: IsoriX
-Version: 0.5.1.9000
+Version: 0.5.1.9001
 Date: 2017-04-11
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
-Author: Alexandre Courtiol [aut, cre], François Rousset [aut],
-    Stephanie Kramer-Schadt [aut]
+Author:
+    Alexandre Courtiol [aut, cre],
+    François Rousset [aut],
+    Marie-Sophie Rohwaeder [aut],
+    Stephanie Kramer-Schadt [aut, cre]
 Maintainer: Alexandre Courtiol <alexandre.courtiol@gmail.com>
 Depends:
     R (>= 3.1.0)
