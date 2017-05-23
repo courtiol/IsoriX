@@ -22,7 +22,7 @@ cache: packages
 script: 
   - |
     R CMD build .
-    travis_wait 30 R CMD check IsoriX_0.5.1.9003.tar.gz
+    travis_wait 30 R CMD check --as-cran --run-dontrun IsoriX_0.5.1.9003.tar.gz
 
 r:
   - release
