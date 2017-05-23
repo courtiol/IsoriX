@@ -29,4 +29,4 @@ r_packages:
   - covr
   
 after_success:
-  - Rscript -e 'library(covr); codecov(type = "examples")'
+  - Rscript -e 'library(covr); codecov(type = "all")'

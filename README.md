@@ -16,7 +16,7 @@ You can download and install the stable version of IsoriX directly from within R
 install.packages("IsoriX")
 ```
 
-If you want the development version of IsoriX, you can  download and install it by typing:
+If you want the development version of IsoriX, you can download and install it by typing:
 
 ```R
 devtools::install_github("courtiol/IsoriX_project/IsoriX")
