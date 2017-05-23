@@ -22,6 +22,7 @@ cache: packages
 script: 
   - |
     R CMD build .
+    Rscript -e "if(require(IsoriX)) getelev()"
     travis_wait 50 R CMD check --as-cran --run-dontrun IsoriX_0.5.1.9003.tar.gz
 
 r:
