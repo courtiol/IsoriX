@@ -1,6 +1,6 @@
 ---
 title: "XXX"
-author: "Alexandre Courtiol, François Rousset & Stephanie Kramer-Schadt"
+author: "The IsoriX core team"
 date: '`r Sys.Date()`'
 output:
   pdf_document
