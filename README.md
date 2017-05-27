@@ -3,6 +3,8 @@
 [![CRAN](http://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX
 [![Rdoc](http://www.rdocumentation.org/badges/version/IsoriX)](http://www.rdocumentation.org/packages/IsoriX)
+[![codecov](https://codecov.io/gh/courtiol/IsoriX_project/branch/master/graph/badge.svg)](https://codecov.io/gh/courtiol/IsoriX_project)
+
 
 
 This is the development repository of __IsoriX__, an [R](https://www.r-project.org/) package aiming at building isoscapes using mixed models and inferring the geographic origin of organisms based on their isotopic ratios.
@@ -22,7 +24,7 @@ If you want the development version of IsoriX, you can  download and install it 
 devtools::install_github("courtiol/IsoriX_project/IsoriX")
 ```
 
-Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master). The current built status is provided at the top of this readme document.
+Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ```build:passing```. The current built status is provided at the top of this readme document.
 
 Also, if you access the network via a proxy, you may experience troubles with ```install_github```. In such case try something like:
 
