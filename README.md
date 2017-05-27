@@ -1,8 +1,10 @@
 # Welcome to IsoriX
 [![Build Status](https://travis-ci.org/courtiol/IsoriX_project.svg?branch=master)](https://travis-ci.org/courtiol/IsoriX_project)
 [![CRAN](http://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX
+[![Rdoc](http://www.rdocumentation.org/badges/version/IsoriX)](http://www.rdocumentation.org/packages/IsoriX)
 [![codecov](https://codecov.io/gh/courtiol/IsoriX_project/branch/master/graph/badge.svg)](https://codecov.io/gh/courtiol/IsoriX_project)
+
 
 
 This is the development repository of __IsoriX__, an [R](https://www.r-project.org/) package aiming at building isoscapes using mixed models and inferring the geographic origin of organisms based on their isotopic ratios.
