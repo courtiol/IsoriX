@@ -33,6 +33,7 @@
       \item function getelev can perform MD5 sum checks if the package 'tools' is installed
       \item function getelev can display additional information during download if verbose > 1
       \item the column animalID in the assignment dataset can now handle names with spaces
+      \item added Codecov to track test coverage for the package
       }
   }
 

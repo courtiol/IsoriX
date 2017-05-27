@@ -19,14 +19,22 @@ before_install:
   
 cache: packages
 
+script: 
+  - |
+    R CMD build .
+    Rscript -e "if(require(IsoriX)) getelev()"
+    travis_wait 50 R CMD check --as-cran --run-dontrun IsoriX_0.5.1.9003.tar.gz
+
 r:
   - release
   - devel
   
-r_check_args: --as-cran
+r_check_args: 
+  --as-cran
+  --run-dontrun
 
 r_packages:
   - covr
   
 after_success:
-  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'library(covr); codecov(type = "all")'
