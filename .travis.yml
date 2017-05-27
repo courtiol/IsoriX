@@ -2,7 +2,10 @@ language: r
 
 before_install:
   - cd /home/travis/build/courtiol/IsoriX_project/IsoriX/
-  
+
+before_script:
+  - Rscript -e 'install.packages("rgdal", type = "source")'
+
 cache: packages
 
 r:
@@ -13,7 +16,6 @@ r_check_args:
   --as-cran
 
 r_packages:
-  - rgdal
   - covr
   
 after_success:
