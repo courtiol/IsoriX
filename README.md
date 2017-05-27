@@ -78,5 +78,6 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 
 ## Authors
 * [Alexandre Courtiol](https://sites.google.com/site/alexandrecourtiol/home)
-* [Stephanie Kramer-Schadt](https://www.researchgate.net/profile/Stephanie_Kramer-Schadt)
 * [François Rousset](http://www.isem.univ-montp2.fr/recherche/teams/evolutionary-genetics/staff/roussetfrancois/?lang=en)
+* Marie-Sophie Rohwaeder
+* [Stephanie Kramer-Schadt](https://www.researchgate.net/profile/Stephanie_Kramer-Schadt)
