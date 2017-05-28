@@ -16,6 +16,7 @@
   \subsection{New feature(s)}{
       \itemize{
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
+        \item new function isomultifit fitting isoscapes per month, year, or any "split"
       }
   }
 }
