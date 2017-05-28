@@ -335,9 +335,9 @@ isofit <- function(iso.data,
   ## Interactive display
   if (verbose) {
     nug.string <- ifelse(uncorr.terms$disp.model == "nugget", "with a Nugget", "")
-    print(paste("fitting the following residual dispersion model using spaMM", nug.string, ":"))
+    print(paste("Fitting the following residual dispersion model using spaMM", nug.string, ":"), quote = FALSE)
     print(disp.formula)
-    if (sum(unlist(disp.model.rand)) > 0) print(paste("it may take a while..."))
+    if (sum(unlist(disp.model.rand)) > 0) print(paste("(it may take a while...)"), quote = FALSE)
   }
 
   ## Fit disp.fit
@@ -349,9 +349,9 @@ isofit <- function(iso.data,
   ## Interactive display
   if (verbose) {
     nug.string <- ifelse(uncorr.terms$mean.model == "nugget", "with a Nugget", "")
-    print(paste("fitting the following mean model using spaMM", nug.string, ":"))
+    print(paste("Fitting the following mean model using spaMM", nug.string, ":"), quote = FALSE)
     print(mean.formula)
-    if (sum(unlist(mean.model.rand)) > 0) print(paste("it may take a while..."))
+    if (sum(unlist(mean.model.rand)) > 0) print(paste("(it may take a while...)"), quote = FALSE)
   }
 
   ## Fit mean.fit
@@ -359,17 +359,17 @@ isofit <- function(iso.data,
 
   ## Interactive display of fit time duration
   total.time <- round(as.numeric((time.mean + time.disp)[3]))
-  if (verbose)
-    print(paste("Done! Models were fitted in", total.time, "sec."))
+  if (verbose) {
+    print(paste("Done!"), quote = FALSE)
+    print(paste("Models were fitted in", total.time, "sec."))
+  }
 
   ## Store the time
   info.fit$time.fit <- total.time
 
   ## Create the return object
-  out <- list("mean.fit" = mean.fit,
-              "disp.fit" = disp.fit,
-              "info.fit" = info.fit
-              )
+  out <- list("mean.fit" = mean.fit, "disp.fit" = disp.fit, "info.fit" = info.fit)
+  
   class(out) <- c("isofit", "list")
 
   return(invisible(out))
@@ -439,7 +439,7 @@ isomultifit <- function(iso.data,
   info.multifit$verbose <- verbose
   
   if (is.null(iso.data[, split.by])) {
-      stop(paste("You used 'split.by =", split.by, "' but no column called ',", split.by, "' is found in 'iso.data'..."))
+      stop(paste("you used 'split.by =", split.by, "' but no column called ',", split.by, "' is found in 'iso.data'..."))
   }
   
   ## Prepare arguments for call(s) to isofit
