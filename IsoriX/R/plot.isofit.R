@@ -1,5 +1,5 @@
-#' @rdname plot.methods
-
+#' @rdname plots
+#' @method plot isofit
 plot.isofit <- function(x, cex.scale = 0.2, ...) {
 
   ## Test if RStudio is in use

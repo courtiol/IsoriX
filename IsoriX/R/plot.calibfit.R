@@ -1,4 +1,5 @@
-#' @rdname plot.methods
+#' @rdname plots
+#' @method plot calibfit
 plot.calibfit <- function(x, ...) {
   xs <- with(x$calib.data,
              seq(min(mean.iso),
