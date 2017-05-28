@@ -1,10 +1,12 @@
 language: r
 
 before_install:
-  # install gdal and proj4 from ubuntugis ppa
+  # install gdal and proj4 from ubuntugis ppa (from github.com/jannes-m/RQGIS/)
   - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
   - sudo apt update -y
-  - sudo apt install libhdf5-serial-dev gdal-bin libgdal-dev python-gdal python3-gdal
+  - sudo apt upgrade -y
+  - sudo apt-get remove -y postgresql-9.*
+  - sudo apt install gdal-bin libgdal-dev python-gdal python3-gdal
   # go to the IsoirX folder
   - cd IsoriX
 
