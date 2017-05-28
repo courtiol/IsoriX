@@ -68,6 +68,27 @@ to obtained precipitation weighted annual averages.
 \details{
 This function is a wrapper around the function \code{\link{isofit}}.
 }
+\examples{
+
+## We prepare the GNIP monthly data for part of Europe
+
+data(GNIPdata)
+
+GNIPdataMonthly <- queryGNIP(
+    data = GNIPdata,
+    split.by = "month",
+    long.min = -20,
+    long.max = 20,
+    lat.min = 45, 
+    lat.max = 55)
+
+## We fit the isoscapes
+
+isoscapemulti <- isofit(iso.data = GNIPdataMonthly,
+    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+
+
+}
 \seealso{
 \code{\link{isofit}} for information about the fitting procedure of 
   each sub-isoscape.
