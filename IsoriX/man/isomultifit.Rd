@@ -4,12 +4,12 @@
 \alias{isomultifit}
 \title{Fit isoscape models per time interval (typically month) and then aggregate}
 \usage{
-isomultifit(iso.data, split.by = "month", weighting = NULL,
-  mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long =
-  FALSE, long.2 = FALSE), disp.model.fix = list(elev = FALSE, lat.abs = FALSE,
-  lat.2 = FALSE, long = FALSE, long.2 = FALSE), mean.model.rand = list(uncorr
-  = FALSE, spatial = TRUE), disp.model.rand = list(uncorr = FALSE, spatial =
-  TRUE), uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"),
+isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev =
+  FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+  disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long =
+  FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = FALSE, spatial =
+  TRUE), disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+  uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"),
   spaMM.method = list(mean.model = "fitme", disp.model = "fitme"),
   dist.method = "Earth", control.mean = list(), control.disp = list(),
   verbose = interactive())
@@ -22,11 +22,6 @@ isoscape model}
 \code{iso.data} used to split the dataset. The function
 \code{\link{isofit}} will then be called on each of these sub-datasets. The
 default split the dataset per months (\code{split.by = "month"}).}
-
-\item{weighting}{A \var{data.frame} providing the weights for the
-aggregation. When no dataset is provided, the default (\code{weighting =
-NULL}) is to produce a average isoscape giving equal weight to each
-sub-isoscape.}
 
 \item{mean.model.fix}{A \var{list} of \var{logical} indicating which fixed
 effects to consider in mean.fit}
@@ -82,9 +77,11 @@ GNIPdataMonthly <- queryGNIP(
     lat.min = 45, 
     lat.max = 55)
 
+dim(GNIPdataMonthly)
+
 ## We fit the isoscapes
 
-isoscapemulti <- isofit(iso.data = GNIPdataMonthly,
+isoscapemulti <- isomultifit(iso.data = GNIPdataMonthly,
     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 
