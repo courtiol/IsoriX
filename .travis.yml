@@ -7,7 +7,7 @@ before_install:
   - sudo apt update -y
   # 6. install gdal
   - sudo apt-get install -f
-  - sudo apt install -y libhdf5-serial-dev gdal-bin libgdal-dev python-gdal python3-gdal
+  - sudo apt install -y libhdf5-dev libhdf5-serial-dev gdal-bin libgdal-dev python-gdal python3-gdal
   ## go to the IsoirX folder
   - cd IsoriX
 
