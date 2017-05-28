@@ -1,13 +1,18 @@
 language: r
 
 before_install:
-  - export DEBIAN_FRONTEND=noninteractive
-  # install gdal and proj4 from ubuntugis ppa (from github.com/jannes-m/RQGIS/)
+  # install gdal and proj4 from ubuntugis ppa (inspired from github.com/jannes-m/RQGIS/)
+  # 1. remove postgresql installs which create some error otherwise
   - sudo apt-get remove -y postgresql-9.*
+  # 2. install riak which creates some error otherwise
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install riak
+  # 3. add GIS repos
   - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+  # 4. refresh
   - sudo apt update -y
-  - sudo apt upgrade -q -y
-  - sudo apt install gdal-bin libgdal-dev python-gdal python3-gdal
+  - sudo apt upgrade -y
+  # 5. install gdal
+  - sudo apt install -y gdal-bin libgdal-dev python-gdal python3-gdal
   # go to the IsoirX folder
   - cd IsoriX
 
