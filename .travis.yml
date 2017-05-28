@@ -6,7 +6,8 @@ before_install:
   - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
   - sudo apt update -y
   # 6. install gdal
-  - sudo apt install -y gdal-bin libgdal-dev python-gdal python3-gdal
+  - sudo apt-get install -f
+  - sudo apt install -y libhdf5-serial-dev gdal-bin libgdal-dev python-gdal python3-gdal
   ## go to the IsoirX folder
   - cd IsoriX
 
