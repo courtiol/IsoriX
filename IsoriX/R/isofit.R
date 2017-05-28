@@ -385,6 +385,11 @@ isofit <- function(iso.data,
 #' 
 #' This function is a wrapper around the function \code{\link{isofit}}.
 #' 
+#' @return This function returns a \var{list} of class \code{multiisofit} containing
+#' all pairs of inter-related fits: \code{multi.fits}. The returned
+#' \var{list} also contains the object \code{info.fit} that contains all the
+#' call arguments.
+#' 
 #' @inheritParams isofit
 #' @param split.by A \var{string} indicating the name of the column of
 #'   \code{iso.data} used to split the dataset. The function
@@ -396,12 +401,14 @@ isofit <- function(iso.data,
 #' 
 #' @examples
 #' 
-#' ## We prepare the GNIP monthly data for part of Europe
+#' ## We prepare the GNIP monthly data between January and March for part of Europe
 #' 
 #' data(GNIPdata)
 #' 
 #' GNIPdataMonthly <- queryGNIP(
 #'     data = GNIPdata,
+#'     month.min = 1,
+#'     month.max = 3,
 #'     split.by = "month",
 #'     long.min = -20,
 #'     long.max = 20,
@@ -461,10 +468,11 @@ isomultifit <- function(iso.data,
   total.time <- system.time({
     multi.fits <- lapply(unique(iso.data[, split.by]), function(s) {
       info.fit$iso.data <- iso.data[iso.data[, split.by] == s, ]
-      do.call(isofit, info.fit)
+      fit <- do.call(isofit, info.fit)
       if (verbose) {
-        print(paste("pairs of models for", split.by, s, "done"), quote = FALSE)
+        print(paste("fit of the pair of models for", split.by, s, "done"), quote = FALSE)
       }
+      return(fit)
       })
   })
   names(multi.fits) <- unique(iso.data[, split.by])
@@ -551,22 +559,27 @@ print.isofit <- function(x, ...) {
 
 
 summary.isofit <- function(object, ...) {
-  cat("\n")
-  cat("##################################################", "\n")
-  cat("### spaMM summary of the fit of the mean model ###", "\n")
-  cat("##################################################", "\n")
-  cat("\n")
-  print(summary.HLfit(object$mean.fit))
-  cat("\n")
-  cat("\n")
-  cat("#################################################################", "\n")
-  cat("### spaMM summary of the fit of the residual dispersion model ###", "\n")
-  cat("#################################################################", "\n")
-  cat("\n")
-  print(summary.HLfit(object$disp.fit))
-  cat("\n")
-  cat(paste("[models fitted with spaMM version ", object$mean.fit$spaMM.version, "]", sep = ""), "\n")
-  cat("\n")
+  if (!any(class(object) %in% "multiisofit")) {
+    cat("\n")
+    cat("### spaMM summary of the fit of the mean model ###", "\n")
+    cat("\n")
+    print(spaMM::summary.HLfit(object$mean.fit))
+    cat("\n")
+    cat("\n")
+    cat("### spaMM summary of the fit of the residual dispersion model ###", "\n")
+    cat("\n")
+    print(spaMM::summary.HLfit(object$disp.fit))
+    cat("\n")
+    cat(paste("[models fitted with spaMM version ", object$mean.fit$spaMM.version, "]", sep = ""), "\n")
+    cat("\n")
+  } else {
+    for (fit in 1:length(object$multi.fits)) {
+      cat("\n")
+      cat(paste("##### Pair of models", names(object$multi.fits)[fit]), "#####")
+      cat("\n")
+      summary(object$multi.fits[[fit]])
+      }
+  }
   return(invisible(NULL))
 }
 
