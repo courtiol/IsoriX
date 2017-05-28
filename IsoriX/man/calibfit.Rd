@@ -70,7 +70,6 @@ See \code{\link{calibdata}} to know which variables are needed to
 perform the calibration fit and their names.
 }
 \examples{
-\dontrun{
 ## The following example takes some time and will therefore not
 ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 data(calibdata)
@@ -83,7 +82,7 @@ calib
 summary(calib)
 ## plot the calibration function
 plot(calib)
-}
+
 
 }
 \seealso{
