@@ -54,6 +54,12 @@ progress of the procedure should be displayed or not while the function is
 running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise.}
 }
+\value{
+This function returns a \var{list} of class \code{multiisofit} containing
+all pairs of inter-related fits: \code{multi.fits}. The returned
+\var{list} also contains the object \code{info.fit} that contains all the
+call arguments.
+}
 \description{
 This function fits several isocape (e.g. one per month), which we call 
 sub-isoscape and then aggregate them into a single one (e.g. yearly average).
@@ -65,12 +71,14 @@ This function is a wrapper around the function \code{\link{isofit}}.
 }
 \examples{
 
-## We prepare the GNIP monthly data for part of Europe
+## We prepare the GNIP monthly data between January and March for part of Europe
 
 data(GNIPdata)
 
 GNIPdataMonthly <- queryGNIP(
     data = GNIPdata,
+    month.min = 1,
+    month.max = 3,
     split.by = "month",
     long.min = -20,
     long.max = 20,
