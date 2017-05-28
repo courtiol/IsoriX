@@ -28,7 +28,7 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
   ## Plots from spaMM
   plot(x$mean.fit,
        "predict",
-       cex = 0.1+cex.scale*log(x$mean.fit$data$weights.mean),
+       cex = 0.1 + cex.scale*log(x$mean.fit$data$weights.mean),
        las = 1, ...
        )
   title(main = "Pred vs Obs in mean.fit")
@@ -36,7 +36,7 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
 
   plot(x$disp.fit,
        "predict",
-       cex = 0.1+cex.scale*log(x$disp.fit$data$weights.disp),
+       cex = 0.1 + cex.scale*log(x$disp.fit$data$weights.disp),
        las = 1, ...
        )
   title(main = "Pred vs Obs in disp.fit")
