@@ -44,6 +44,7 @@
 #' maks) expects an object of the class \var{SpatialPolygons} such as the object
 #' oceanmask provided with this package (see examples).
 #' 
+#' @name plots
 #' @aliases plot.isofit plot.isoscape plot.calibfit plot.isorix plot
 #' @param x The return object of an \code{\link{isofit}},
 #'   \code{\link{isoscape}}, \code{\link{calibfit}}, or \code{\link{isofind}}
@@ -86,10 +87,10 @@
 #' @keywords plot
 #' @examples ## See ?isoscape or ?isofind for examples
 #'   
-#' @name plot.methods
 NULL
 
-#' @rdname plot.methods
+#' @rdname plots
+#' @method plot isoscape
 plot.isoscape <- function(x,
                           which   = "mean",
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
@@ -168,7 +169,8 @@ plot.isoscape <- function(x,
     
   }
 
-#' @rdname plot.methods
+#' @rdname plots
+#' @method plot isorix
 plot.isorix <- function(x,
                         who     = "group",
                         what    = "pv",
