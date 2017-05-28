@@ -5,7 +5,8 @@
 \title{Filter the dataset to create an isoscape}
 \usage{
 queryGNIP(data, month.min = 1, month.max = 12, year.min, year.max, long.min,
-  long.max, lat.min, lat.max, prop.random = 0, random.level = "station")
+  long.max, lat.min, lat.max, split.by = NULL, prop.random = 0,
+  random.level = "station")
 }
 \arguments{
 \item{data}{A \var{dataframe} containing original isotopic measurements
@@ -42,6 +43,11 @@ considered.}
 from. Should be a number between -90 and 90. If not provided, 90 will be
 considered.}
 
+\item{split.by}{A \var{string} indicating whether data should be aggregated 
+per location (\code{split.by = NULL}, the default), per location:month
+combination (\code{split.by = "month"}), or per location:year combination
+(\code{split.by = "year"}).}
+
 \item{prop.random}{A \var{numeric} indicating the proportion of observations
 or weather stations (depending on the argument for \code{random.level}) that
 will be kept. If \code{prop.random} is greater than 0, then the function
@@ -65,18 +71,30 @@ estimates are computed.
 This function prepares the worldwide GNIP data (\var{GNIPdata}) to be used
 for creating the isoscape. This function allows the trimming of data by
 months, years and location, and for the aggregation of selected data per
-weather station. The function can also be used to randomly exclude some
-observations.
+location, location:month combination or location:year combination.
+The function can also be used to randomly exclude some observations.
 }
 \details{
-This function aggregates the data per location as required for the IsoriX
-workflow. The function also allows the user to filter the world-wide weather
+This function aggregates the data as required for the IsoriX workflow. Three
+aggregation schemes are possible. The most simple one, used as default,
+aggregates the data so to obtained a single row per weather station. Datasets
+prepared in this way can be readily fitted with the function 
+\code{\link{isofit}} to build an isoscape. It is also possible to aggregate
+data in a different way in order to build sub-isoscapes representing temporal
+variation in isotope composition, or in order to perform precipitation
+weighting averages. The two possible options are to either split the
+aggregation for each weather station by month or to split the aggregation by
+year. This is set with the \code{split.by} argument of the function. Datasets
+prepared in this way should be fitted with the function 
+\code{\link{isomultifit}}.
+
+The function also allows the user to filter the world-wide weather
 station data (\var{GNIPdata}) based on time (years and/ or months) and space
 (locations given in geographic coordinates, i.e. longitude and latitude) to
 calculate tailored isoscapes matching e.g. the time of sampling and speeding
 up the model fit by cropping/ clipping a certain area. The dataframe
 produced by this function can be used as input to fit the isoscape (see
-\code{\link{isofit}}).
+\code{\link{isofit}} and  \code{\link{isomultifit}}).
 }
 \note{
 If one wants e.g. to select the winter months November to February,
@@ -96,8 +114,30 @@ GNIPdataEU <- queryGNIP(
 
 head(GNIPdataEU)
 
+### CREATE A PROCESSED DATASET FOR EUROPE PER MONTH
+GNIPdataEUmonthly <- queryGNIP(
+    data = GNIPdata,
+    split.by = "month",
+    long.min = -30, 
+    long.max = 60,
+    lat.min = 30, 
+    lat.max = 70)
+
+head(GNIPdataEUmonthly)
+
+### CREATE A PROCESSED DATASET FOR EUROPE PER YEAR
+GNIPdataEUyearly <- queryGNIP(
+    data = GNIPdata,
+    split.by = "year",
+    long.min = -30, 
+    long.max = 60,
+    lat.min = 30, 
+    lat.max = 70)
+
+head(GNIPdataEUyearly)
+
 ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN EUROPE
-GNIPdataEU_Warm <- queryGNIP(
+GNIPdataEUwarm <- queryGNIP(
     data=GNIPdata,
     month.min = 5,  
     month.max = 8,
@@ -108,28 +148,37 @@ GNIPdataEU_Warm <- queryGNIP(
     lat.min = 30, 
     lat.max = 70)
 
-head(GNIPdataEU_Warm)
+head(GNIPdataEUwarm)
 
 
 ### CREATE A DATASET WITH 90\% OF OBS
-GNIPdata_90pct <- queryGNIP(
+GNIPdata90pct <- queryGNIP(
     data = GNIPdata,
     prop.random = 0.9,
     random.level = "obs")
 
-lapply(GNIPdata_90pct, head) # show beginnng of both datasets
+lapply(GNIPdata90pct, head) # show beginning of both datasets
 
 ### CREATE A DATASET WITH HALF THE WEATHER STATIONS
-GNIPdata_50pctStations <- queryGNIP(
+GNIPdata50pctStations <- queryGNIP(
     data = GNIPdata,
     prop.random = 0.5,
     random.level = "station")
 
-lapply(GNIPdata_50pctStations, head)
-    
+lapply(GNIPdata50pctStations, head)
+
+
+### CREATE A DATASET WITH HALF THE WEATHER STATIONS SPLIT PER MONTH
+GNIPdata50pctStationsMonthly <- queryGNIP(
+    data = GNIPdata,
+    split.by = "month",
+    prop.random = 0.5,
+    random.level = "station")
+
+lapply(GNIPdata50pctStationsMonthly, head)
 
 }
 \seealso{
-\code{\link{IsoriX}} for the complete work-flow
+\code{\link{IsoriX}} for the complete workflow
 \code{\link{GNIPdata}} for the complete dataset
 }
