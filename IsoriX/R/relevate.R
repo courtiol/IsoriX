@@ -117,6 +117,9 @@ relevate <- function(elevation.raster,
 
   time <- system.time({
     if (!is.null(isofit)) {  ## test if cropping is needed
+      if (any(class(isofit) %in% "multiisofit")) {
+        isofit <- isofit$multi.fits[[1]]
+        }
       if (!is.null(manual.crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
       if (## test if the elevation raster is not smaller than the area covered by the weather sources.
           ## If yes crop will not proceed!
