@@ -56,20 +56,20 @@ getelev <- function (path = NULL,
   md5sum.elev <- "9fbbb014e2f27299137bae21be31ac7c" 
   
   ## Download and check file
-  out <- downloadfile(address = address.elev,
-                      filename = filename.elev,
-                      path = path,
-                      overwrite = overwrite,
-                      md5sum = md5sum.elev,
-                      verbose = verbose
-                      )
+  downloadfile(address = address.elev,
+               filename = filename.elev,
+               path = path,
+               overwrite = overwrite,
+               md5sum = md5sum.elev,
+               verbose = verbose
+               )
 
-  return(invisible(out))
+  return(invisible(NULL))
 }
 
 
 ## The following function is a generic function to download files and check 
-## their binary intergrity
+## their binary integrity
 
 downloadfile <- function (address = NULL, filename = NULL, path = NULL,
                           overwrite = FALSE, md5sum = NULL, verbose = interactive()
@@ -132,6 +132,6 @@ downloadfile <- function (address = NULL, filename = NULL, path = NULL,
   ## Restore original internet options
   options(internet.info = opt.ori)
   
-  return(invisible(NULL))
+  return(invisible(complete.path))
 }
 
