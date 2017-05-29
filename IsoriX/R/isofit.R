@@ -476,7 +476,7 @@ isomultifit <- function(iso.data,
       return(fit)
       })
   })
-  names(multi.fits) <- unique(iso.data[, split.by])
+  names(multi.fits) <- paste(split.by, unique(iso.data[, split.by]), sep = "_")
   
   ## Interactive display
   if (verbose) {
