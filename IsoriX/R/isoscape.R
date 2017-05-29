@@ -169,53 +169,8 @@ Isoscape <- function(...) {
 #'     print(plot.disp.predVar,   split = c(2, 1, 2, 2), more = TRUE)
 #'     print(plot.disp.residVar,  split = c(1, 2, 2, 2), more = TRUE)
 #'     print(plot.disp.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+#' } 
 #' }
-#' 
-#' #### Example with isomultifit ####
-#' 
-#' data(GNIPdata)
-#' 
-#' GNIPdataMonthly <- queryGNIP(
-#'     data = GNIPdata,
-#'     month.min = 1,
-#'     month.max = 3,
-#'     split.by = "month",
-#'     long.min = -20,
-#'     long.max = 20,
-#'     lat.min = 45, 
-#'     lat.max = 55)
-#' 
-#' dim(GNIPdataMonthly)
-#' 
-#' ## We fit the isoscapes
-#' 
-#' isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
-#'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
-#' 
-#' ## We crop the elevation raster to the extent of Europefit
-#' elevationraster2 <- relevate(
-#'     elevation.raster = elevraster,
-#'     isofit = isoscapemodels)
-#' 
-#' ## We build the isoscapes
-#' test <- stack(elevationraster2, elevationraster2, elevationraster2)
-#' names(test) <- c("month_1", "month_2", "month_3")
-#' 
-#' isoscape2 <- isomultiscape(
-#'     elevation.raster = elevationraster2,
-#'     isofit = isoscapemodels,
-#'     weighting = NULL)
-#'     
-#' plot(x = isoscape2,
-#'     which = "mean",
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
-#'     plot = TRUE)
-#' 
-#' 
-#' }
-#' 
 #' 
 #' @export isoscape
 isoscape <- function(elevation.raster, ## change as method?
@@ -380,6 +335,93 @@ isoscape <- function(elevation.raster, ## change as method?
   return(out)
 }
 
+#' Predicts the average spatial distribution of isotopic values over months,
+#' years...
+#' 
+#' This function is the counterpart of \code{\link{isoscape}} for the objects
+#' created with \code{\link{isomultifit}}. It creates the isoscapes for each
+#' strata (e.g. month) defined by \code{split.by} during the call to
+#' \code{\link{isomultifit}} and the aggregate them. The function can handle
+#' weighting for the aggregation process and can thus be used to predict annual
+#' averages precipitation weighted isoscapes.
+#' 
+#' @inheritParams isoscape
+#' @param weighting An optional RasterBrick containing the weights
+#' #' @return This function returns a \var{list} of class \var{isoscape}
+#' containing a stack of all 8 raster layers mentioned above (all being of
+#' class \var{RasterLayer}), and the location of the sources as spatial points.
+#' @seealso
+#' 
+#' \code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
+
+#' \code{\link{isofit}} for the function fitting the isoscape
+#' 
+#' \code{\link{plot.isoscape}} for the function plotting the isoscape model
+#' 
+#' \code{\link{plot.isoscape}} for the function plotting the isoscape model
+#' 
+#' \code{\link{IsoriX}} for the complete work-flow
+#' 
+#' @keywords models regression prediction predict
+#' @examples
+#' 
+#' 
+#' ## The following example will not be run unless you type:
+#' ## example(isoscape, run.dontrun = TRUE)
+#' 
+#' \dontrun{
+#' 
+#' data(GNIPdata)
+#' data(elevraster)
+#' data(countries)
+#' data(oceanmask)
+#' data(isopalette1)
+#' 
+#' ## We prepare the data and split them by month
+#' 
+#' GNIPdataMonthly <- queryGNIP(
+#'     data = GNIPdata,
+#'     split.by = "month",
+#'     long.min = -20,
+#'     long.max = 20,
+#'     lat.min = 45, 
+#'     lat.max = 55)
+#' 
+#' dim(GNIPdataMonthly)
+#' 
+#' ## We fit the isoscapes
+#' 
+#' isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
+#'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' 
+#' ## We crop the elevation raster to the extent of isoscapemodels
+#' elevationraster <- relevate(
+#'     elevation.raster = elevraster,
+#'     isofit = isoscapemodels)
+#' 
+#' ## We build the annual isoscapes by simple averaging (equal weighting)
+#' 
+#' isoscapes <- isomultiscape(
+#'     elevation.raster = elevationraster,
+#'     isofit = isoscapemodels)
+#'     
+#' plot(x = isoscapes,
+#'     which = "mean",
+#'     borders = list(borders = countries),
+#'     mask = list(mask = oceanmask),
+#'     palette = isopalette1)
+#' 
+#' ## How to plot the isoscape for January?
+#' isoscape.jan <- isoscape(
+#'     elevation.raster = elevationraster,
+#'     isofit = isoscapemodels$multi.fits[["month_1"]])
+#'     
+#' plot(x = isoscape.jan,
+#'     which = "mean",
+#'     borders = list(borders = countries),
+#'     mask = list(mask = oceanmask),
+#'     palette = isopalette1)
+#' }
 
 isomultiscape <- function(elevation.raster, ## change as method?
                          isofit,
