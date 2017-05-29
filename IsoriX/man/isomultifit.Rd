@@ -89,9 +89,10 @@ dim(GNIPdataMonthly)
 
 ## We fit the isoscapes
 
-isoscapemulti <- isomultifit(iso.data = GNIPdataMonthly,
+isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
+isoscapemodels
 
 }
 \seealso{
