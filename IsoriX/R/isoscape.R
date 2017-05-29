@@ -448,7 +448,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
     if (extent(weighting) != extent(elevation.raster)) {
       stop("the extent of the object 'weighting' and 'elevation.raster' differ")
     }
-    if (ncell(weighting) != ncell(elevation.raster)) {
+    if (raster::ncell(weighting) != raster::ncell(elevation.raster)) {
       stop("the resolution of the object 'weighting' and 'elevation.raster' differ")
     }
   }
@@ -469,16 +469,16 @@ isomultiscape <- function(elevation.raster, ## change as method?
   names(isoscapes) <- names(isofit$multi.fits)
   
   ## Combining mean isoscapes into RasterBricks
-  brick.mean <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean))
-  brick.mean.predVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean.predVar))
-  brick.mean.residVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean.residVar))
-  brick.mean.respVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean.respVar))
+  brick.mean <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$mean))
+  brick.mean.predVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$mean.predVar))
+  brick.mean.residVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$mean.residVar))
+  brick.mean.respVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$mean.respVar))
 
   ## Combining disp isoscapes into RasterBricks
-  brick.disp <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp))
-  brick.disp.predVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp.predVar))
-  brick.disp.residVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp.residVar))
-  brick.disp.respVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp.respVar))
+  brick.disp <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$disp))
+  brick.disp.predVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$disp.predVar))
+  brick.disp.residVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$disp.residVar))
+  brick.disp.respVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscape$disp.respVar))
   
   ## Compute the weights
   if (is.null(weighting)) {
