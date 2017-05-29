@@ -171,21 +171,71 @@ Isoscape <- function(...) {
 #'     print(plot.disp.respVar,   split = c(2, 2, 2, 2), more = FALSE)
 #' }
 #' 
+#' #### Example with isomultifit ####
+#' 
+#' data(GNIPdata)
+#' 
+#' GNIPdataMonthly <- queryGNIP(
+#'     data = GNIPdata,
+#'     month.min = 1,
+#'     month.max = 3,
+#'     split.by = "month",
+#'     long.min = -20,
+#'     long.max = 20,
+#'     lat.min = 45, 
+#'     lat.max = 55)
+#' 
+#' dim(GNIPdataMonthly)
+#' 
+#' ## We fit the isoscapes
+#' 
+#' isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
+#'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' 
+#' ## We crop the elevation raster to the extent of Europefit
+#' elevationraster2 <- relevate(
+#'     elevation.raster = elevraster,
+#'     isofit = isoscapemodels)
+#' 
+#' ## We build the isoscapes
+#' test <- stack(elevationraster2, elevationraster2, elevationraster2)
+#' names(test) <- c("month_1", "month_2", "month_3")
+#' 
+#' isoscape2 <- isomultiscape(
+#'     elevation.raster = elevationraster2,
+#'     isofit = isoscapemodels,
+#'     weighting = NULL)
+#'     
+#' plot(x = isoscape2,
+#'     which = "mean",
+#'     borders = list(borders = countries),
+#'     mask = list(mask = oceanmask),
+#'     palette = isopalette1,
+#'     plot = TRUE)
+#' 
+#' 
 #' }
 #' 
 #' 
 #' @export isoscape
-isoscape <- function(elevation.raster,
+isoscape <- function(elevation.raster, ## change as method?
                      isofit,
                      verbose = interactive()
                      ) {
 
-  if (verbose)
-    print(paste("building the isoscape... (may take a while)"))
-
-  if (isofit$mean.fit$spaMM.version != packageVersion(pkg = "spaMM"))
+  if (any(class(isofit) %in% "multiisofit")) {
+    stop("object 'isofit' of class multiisofit; use isomultiscape instead.")
+    }
+  
+  if (verbose) {
+    print("Building the isoscapes... ", quote = FALSE)
+    print("(this may take a while)", quote = FALSE)
+  }
+  
+  if (isofit$mean.fit$spaMM.version != packageVersion(pkg = "spaMM")) {
     warning("The isofit has been fitted on a different version of spaMM than the one called by IsoriX. This may create troubles in paradize...")
-
+  }
+  
   time <- system.time({
 
     ## we extract lat/long from all cells of the elevation raster
@@ -276,7 +326,8 @@ isoscape <- function(elevation.raster,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("predictions for all", length(long.to.do), "locations have been computed in", time, "sec."))
+    print(paste("predictions for all", length(long.to.do),
+                "locations have been computed in", time, "sec."), quote = FALSE)
   }
 
   ## we store the predictions for mean isotopic values into a raster
@@ -330,6 +381,99 @@ isoscape <- function(elevation.raster,
 }
 
 
+isomultiscape <- function(elevation.raster, ## change as method?
+                         isofit,
+                         weighting = NULL,
+                         verbose = interactive()) {
+  
+  ## In case the function is called on the output of isofit by mistake
+  if (!any(class(isofit) %in% "multiisofit")) {
+    return(isoscape(elevation.raster = elevation.raster,
+                    isofit = isofit,
+                    verbose = verbose
+                    )
+           )
+  }
+  
+  ## Checking the inputs
+  if (!is.null(weighting)) {
+    if (!any(class(weighting) %in% c("RasterStack", "RasterBrick"))) {
+      stop("the argument 'weighting' should be a RasterStack or a RasterBrick")
+    }
+    if (!all(names(isofit$multi.fits) %in% names(weighting))) {
+      stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
+    }
+    if (extent(weighting) != extent(elevation.raster)) {
+      stop("the extent of the object 'weighting' and 'elevation.raster' differ")
+    }
+    if (ncell(weighting) != ncell(elevation.raster)) {
+      stop("the resolution of the object 'weighting' and 'elevation.raster' differ")
+    }
+  }
+  
+  isoscapes <- lapply(names(isofit$multi.fits),
+                      function(fit) {
+                         if (verbose) {
+                           print(paste("#### Isoscapes for", fit, "####"), quote = FALSE)
+                         }
+                         iso <- isoscape(elevation.raster = elevation.raster,
+                                  isofit = isofit$multi.fits[[fit]],
+                                  verbose = verbose)
+                         iso$sp.points$sources$values <- fit  ## set values for sp.points
+                         return(iso)
+                      }
+                    )
+  
+  names(isoscapes) <- names(isofit$multi.fits)
+  
+  ## Combining mean isoscapes into RasterBricks
+  brick.mean <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean))
+  brick.mean.predVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean.predVar))
+  brick.mean.residVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean.residVar))
+  brick.mean.respVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$mean.respVar))
+
+  ## Combining disp isoscapes into RasterBricks
+  brick.disp <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp))
+  brick.disp.predVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp.predVar))
+  brick.disp.residVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp.residVar))
+  brick.disp.respVar <- brick(lapply(isoscapes, function(iso) iso$isoscape$disp.respVar))
+  
+  ## Compute the weights
+  if (is.null(weighting)) {
+    weights <- raster::raster(elevation.raster)
+    weights <- raster::setValues(weights, 1/length(isoscapes))
+  } else {
+    weights <- weighting / sum(weighting)
+  }
+  
+  ## Compute the weighted averages and store then in a list of RasterBricks
+  isoscape <- raster::brick(list("mean" = sum(brick.mean * weights),
+                                 "mean.predVar" = sum(brick.mean.predVar * weights^2),
+                                 "mean.residVar" = sum(brick.mean.residVar * weights^2),
+                                 "mean.respVar" = sum(brick.mean.respVar * weights^2),
+                                 "disp" = sum(brick.disp * weights),
+                                 "disp.predVar" = sum(brick.disp.predVar * weights^2),
+                                 "disp.residVar" = sum(brick.disp.residVar * weights^2),
+                                 "disp.respVar" = sum(brick.disp.respVar * weights^2)
+                                )
+                            )
+  
+  ## Agglomerate the sources spatial points
+  source.points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp.points$sources))
+  
+  ## we put the stack in a list that also contains
+  ## the spatial points for the sources
+  out <- list(isoscape = isoscape,
+              sp.points = list(sources = source.points)
+  )
+  
+  ## we define a new class
+  class(out) <- c("isoscape", "isofit", "list")
+  
+  return(out)
+  }
+
+
 print.isoscape <- function(x, ...) {
   print(summary(x))
   return(invisible(NULL))
@@ -339,9 +483,7 @@ print.isoscape <- function(x, ...) {
 summary.isoscape <- function(object, ...) {
   if ("isosim" %in% class(object)) {
     cat("\n")
-    cat("##############################################", "\n")
     cat("### Note: this isoscape has been simulated ###", "\n")
-    cat("##############################################", "\n")
     cat("\n")
   }
   cat("### stack containing the isoscape")
