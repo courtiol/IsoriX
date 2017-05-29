@@ -419,9 +419,10 @@ isofit <- function(iso.data,
 #' 
 #' ## We fit the isoscapes
 #' 
-#' isoscapemulti <- isomultifit(iso.data = GNIPdataMonthly,
+#' isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
 #'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
+#' isoscapemodels
 #' 
 isomultifit <- function(iso.data,
                         split.by = "month",
@@ -552,7 +553,7 @@ isomultifit <- function(iso.data,
 }
 
 
-print.isofit <- function(x, ...) {
+print.isofit <- function(x, ...) { ## we should recode this to make a table more succint than that from summary!
   print(summary(x))
   return(invisible(NULL))
 }
