@@ -135,7 +135,7 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
                         ) {
   
   if (verbose > 0) {
-    print(paste("the function attempts to download", filename, "from internet"))
+    print(paste("the function attempts to download", filename, "from internet"), quote = FALSE)
   }
   
   ## Change internet options to display more information
@@ -154,7 +154,7 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   ## Create directory if missing
   if (!dir.exists(path)) {
     if (verbose > 0) {
-     print("(the folder you specified does not exist and will therefore be created)")
+     print("(the folder you specified does not exist and will therefore be created)", quote = FALSE)
     }
     dir.create(path, recursive = TRUE)
   }
@@ -174,9 +174,9 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   if (!is.null(md5sum)) {
     if (requireNamespace("tools", quietly = TRUE)) {
       if (tools::md5sum(complete.path) == md5sum) {
-        print("the file seems OK (md5sums do match)")
+        print("the file seems OK (md5sums do match)", quote = FALSE)
       } else {
-        warning("the file seems to be corructed (md5sums do not match)")
+        warning("the file seems to be corructed (md5sums do not match)", quote = FALSE)
       }
     } else {
       warning("the package 'tools' is not installed, so the integrity of the downloaded file has not been checked")
@@ -185,7 +185,7 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   
   ## Display outcome
   if (verbose > 0) {
-    print(paste("the file", filename, "is stored in the folder", path))
+    print(paste("the file", filename, "is stored in the folder", path), quote = FALSE)
   }
   
   ## Restore original internet options
