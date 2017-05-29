@@ -118,7 +118,7 @@ getprecip <- function(path = NULL,
   if (verbose > 0) {
     print("unzipping in progress...", quote = FALSE)
   }
-  unzip(path.to.zip, exdir = "wc2.0_30s_prec")
+  utils::unzip(path.to.zip, exdir = "wc2.0_30s_prec")
   
   if (verbose > 0) {
     print("unzipping done!", quote = FALSE)
