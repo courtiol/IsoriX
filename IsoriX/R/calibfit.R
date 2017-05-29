@@ -60,6 +60,8 @@ Calibfit <- function(...) {
 #' @examples
 #' ## The following example takes some time and will therefore not
 #' ## be run unless you type: example(calibfit, run.dontrun = TRUE)
+#' 
+#' \dontrun{
 #' data(calibdata)
 #' data(Europefit)
 #' ## fit the calibration model
@@ -70,7 +72,7 @@ Calibfit <- function(...) {
 #' summary(calib)
 #' ## plot the calibration function
 #' plot(calib)
-#' 
+#' }
 #' 
 #' @export calibfit
 calibfit <- function(calib.data,
