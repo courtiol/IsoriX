@@ -74,22 +74,22 @@ isoscapes <- isomultiscape(
     elevation.raster = elevationraster,
     isofit = isoscapemodels)
     
-plot(x = isoscape,
+plot(x = isoscapes,
     which = "mean",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette)
+    palette = isopalette1)
 
 ## How to plot the isoscape for January?
 isoscape.jan <- isoscape(
-    elevation.raster = elevationraster[["month_1"]],
-    isofit = isoscapemodels)
+    elevation.raster = elevationraster,
+    isofit = isoscapemodels$multi.fits[["month_1"]])
     
 plot(x = isoscape.jan,
     which = "mean",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette)
+    palette = isopalette1)
 }
 }
 \seealso{
