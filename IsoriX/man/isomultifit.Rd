@@ -2,7 +2,7 @@
 % Please edit documentation in R/isofit.R
 \name{isomultifit}
 \alias{isomultifit}
-\title{Fit isoscape models per time interval (typically month) and then aggregate}
+\title{Fit isoscape models per strata (typically time interval such as months)}
 \usage{
 isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev =
   FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
@@ -61,24 +61,28 @@ all pairs of inter-related fits: \code{multi.fits}. The returned
 call arguments.
 }
 \description{
-This function fits several isocape (e.g. one per month), which we call 
-sub-isoscape and then aggregate them into a single one (e.g. yearly average).
-The aggregation can be based on weighting depending on precipitation amounts 
-to obtained precipitation weighted annual averages.
+This function fits several bunch of isocapes (e.g. one per strata), which we
+call sub-isoscape. It can thus be used to predict annual averages
+precipitation weighted isoscapes.
 }
 \details{
 This function is a wrapper around the function \code{\link{isofit}}.
 }
 \examples{
 
-## We prepare the GNIP monthly data between January and March for part of Europe
+## The following example takes some time and will therefore not
+## be run unless you type: example(isomultifit, run.dontrun = TRUE)
+
+\dontrun{
+
+## We prepare the GNIP monthly data between January and June for part of Europe
 
 data(GNIPdata)
 
 GNIPdataMonthly <- queryGNIP(
     data = GNIPdata,
     month.min = 1,
-    month.max = 3,
+    month.max = 6,
     split.by = "month",
     long.min = -20,
     long.max = 20,
@@ -93,6 +97,7 @@ isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 isoscapemodels
+}
 
 }
 \seealso{

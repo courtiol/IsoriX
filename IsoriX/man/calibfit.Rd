@@ -72,6 +72,8 @@ perform the calibration fit and their names.
 \examples{
 ## The following example takes some time and will therefore not
 ## be run unless you type: example(calibfit, run.dontrun = TRUE)
+
+\dontrun{
 data(calibdata)
 data(Europefit)
 ## fit the calibration model
@@ -82,7 +84,7 @@ calib
 summary(calib)
 ## plot the calibration function
 plot(calib)
-
+}
 
 }
 \seealso{
