@@ -15,8 +15,10 @@
 \section{version 0.6}{
   \subsection{New feature(s)}{
       \itemize{
+        \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
-        \item new function isomultifit fitting isoscapes per month, year, or any "split"
+        \item new function isomultifit fitting isoscapes per strata (month, year, or any "split")
+        \item new function isomultiscape building isoscapes averaged across strata
       }
   }
 }
