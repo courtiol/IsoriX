@@ -170,53 +170,8 @@ if (require(lattice)) {
     print(plot.disp.predVar,   split = c(2, 1, 2, 2), more = TRUE)
     print(plot.disp.residVar,  split = c(1, 2, 2, 2), more = TRUE)
     print(plot.disp.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+} 
 }
-
-#### Example with isomultifit ####
-
-data(GNIPdata)
-
-GNIPdataMonthly <- queryGNIP(
-    data = GNIPdata,
-    month.min = 1,
-    month.max = 3,
-    split.by = "month",
-    long.min = -20,
-    long.max = 20,
-    lat.min = 45, 
-    lat.max = 55)
-
-dim(GNIPdataMonthly)
-
-## We fit the isoscapes
-
-isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
-
-## We crop the elevation raster to the extent of Europefit
-elevationraster2 <- relevate(
-    elevation.raster = elevraster,
-    isofit = isoscapemodels)
-
-## We build the isoscapes
-test <- stack(elevationraster2, elevationraster2, elevationraster2)
-names(test) <- c("month_1", "month_2", "month_3")
-
-isoscape2 <- isomultiscape(
-    elevation.raster = elevationraster2,
-    isofit = isoscapemodels,
-    weighting = test)
-    
-plot(x = isoscape2,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    palette = isopalette1,
-    plot = TRUE)
-
-
-}
-
 
 }
 \seealso{
