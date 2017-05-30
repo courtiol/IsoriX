@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 QueryGNIP <- function(...) {
   .Defunct("queryGNIP")
 }
@@ -157,7 +158,7 @@ QueryGNIP <- function(...) {
 #' 
 #' lapply(GNIPdata50pctStationsMonthly, head)
 #' 
-#' @export queryGNIP
+#' @export
 queryGNIP <- function(data,
                       month.min = 1,
                       month.max = 12,
@@ -231,7 +232,7 @@ queryGNIP <- function(data,
     df <- data.frame(split = factor(c(tapply(as.character(split), split, unique2, key = "split"))),
                      stationID = factor(c(tapply(as.character(d$stationID), split, unique2, key = "stationID"))),
                      isoscape.value = c(tapply(d$isoscape.value, split, mean, na.rm = TRUE)),
-                     var.isoscape.value = c(tapply(d$isoscape.value, split, var, na.rm = TRUE)),
+                     var.isoscape.value = c(tapply(d$isoscape.value, split, stats::var, na.rm = TRUE)),
                      n.isoscape.value = c(tapply(d$stationID, split, length)),
                      lat = c(tapply(d$lat, split, unique2, key = "latitude")),
                      long = c(tapply(d$long, split, unique2, key = "longitude")),

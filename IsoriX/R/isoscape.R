@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 Isoscape <- function(...) {
   .Defunct("isoscape")
 }
@@ -172,7 +173,7 @@ Isoscape <- function(...) {
 #' } 
 #' }
 #' 
-#' @export isoscape
+#' @export
 isoscape <- function(elevation.raster, ## change as method?
                      isofit,
                      verbose = interactive()
@@ -187,14 +188,14 @@ isoscape <- function(elevation.raster, ## change as method?
     print("(this may take a while)", quote = FALSE)
   }
   
-  if (isofit$mean.fit$spaMM.version != packageVersion(pkg = "spaMM")) {
+  if (isofit$mean.fit$spaMM.version != utils::packageVersion(pkg = "spaMM")) {
     warning("The isofit has been fitted on a different version of spaMM than the one called by IsoriX. This may create troubles in paradize...")
   }
   
   time <- system.time({
 
     ## we extract lat/long from all cells of the elevation raster
-    coord <- coordinates(elevation.raster)
+    coord <- sp::coordinates(elevation.raster)
     long.to.do <- coord[, 1]  # extract the longitude
     lat.to.do <-  coord[, 2]  # extract the lattitude
     rm(coord); gc()  ## remove coord as it can be a large object
@@ -206,7 +207,7 @@ isoscape <- function(elevation.raster, ## change as method?
     steps <- c(seq(1, length(long.to.do), by = chunk.size.for.predict), length(long.to.do))
     
     ## a logical indicating if a progression bar must be used
-    draw.pb <- interactive() & (length(steps)-1) > 2
+    draw.pb <- interactive() & (length(steps) - 1) > 2
 
     ## create empty vectors to store predictions
     mean.pred <- disp.pred <- rep(NA, length(long.to.do))
@@ -215,20 +216,20 @@ isoscape <- function(elevation.raster, ## change as method?
 
     ## initiate the progress bar
     if (draw.pb) {
-      pb <- txtProgressBar(min = 1,
-                           max = (length(steps)-1),
+      pb <- utils::txtProgressBar(min = 1,
+                           max = (length(steps) - 1),
                            style = 3)
     }
     
     ## we loop on each chunk of 150 locations
-    for(i in 1:(length(steps)-1)) {
+    for (i in 1:(length(steps) - 1)) {
       
       if (draw.pb) {
-        setTxtProgressBar(pb, i) ## update progress bar
+        utils::setTxtProgressBar(pb, i) ## update progress bar
       }
       
       ## compute indexes for covariate values matching the current chunk
-      within.steps <- steps[i]:steps[i+1]
+      within.steps <- steps[i]:steps[i + 1]
       
       ## select coordinates for prediction within chunk
       long <- long.to.do[within.steps]
@@ -242,24 +243,24 @@ isoscape <- function(elevation.raster, ## change as method?
                        lat = lat,
                        lat.abs = abs(lat),
                        lat.2 = lat^2,
-                       elev = extract(elevation.raster, cbind(long, lat)),
+                       elev = raster::extract(elevation.raster, cbind(long, lat)),
                        stationID = as.factor(paste("new", within.steps, sep = "_"))
                        )
       
       ## predictions from disp.fit
-      pred.disp.fit <- predict.HLfit(object = isofit$disp.fit,
-                                     newdata = xs,
-                                     variances = list(respVar = TRUE)
-                                     )
+      pred.disp.fit <- spaMM::predict.HLfit(object = isofit$disp.fit,
+                                            newdata = xs,
+                                            variances = list(respVar = TRUE)
+                                            )
       
       ## transmission of phi to mean.fit
       xs$pred.disp <- pred.disp.fit[, 1]
 
       ## predictions from mean.fit
-      pred.mean.fit <- predict.HLfit(object = isofit$mean.fit,
-                                     newdata = xs,
-                                     variances = list(respVar = TRUE)
-                                     )
+      pred.mean.fit <- spaMM::predict.HLfit(object = isofit$mean.fit,
+                                            newdata = xs,
+                                            variances = list(respVar = TRUE)
+                                            )
 
       ## we save the predictions
       mean.pred[within.steps] <- pred.mean.fit[, 1]
@@ -312,7 +313,7 @@ isoscape <- function(elevation.raster, ## change as method?
                                          )
 
   ## we put all rasters in a stack
-  isoscape <- stack(list("mean" = mean.raster,
+  isoscape <- raster::stack(list("mean" = mean.raster,
                          "mean.predVar" = mean.predVar.raster,
                          "mean.residVar" = mean.residVar.raster,
                          "mean.respVar" = mean.respVar.raster,
@@ -422,6 +423,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #'     mask = list(mask = oceanmask),
 #'     palette = isopalette1)
 #' }
+#' @export
 
 isomultiscape <- function(elevation.raster, ## change as method?
                          isofit,
@@ -445,7 +447,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
-    if (extent(weighting) != extent(elevation.raster)) {
+    if (raster::extent(weighting) != raster::extent(elevation.raster)) {
       stop("the extent of the object 'weighting' and 'elevation.raster' differ")
     }
     if (raster::ncell(weighting) != raster::ncell(elevation.raster)) {
@@ -459,8 +461,9 @@ isomultiscape <- function(elevation.raster, ## change as method?
                            print(paste("#### Isoscapes for", fit, "####"), quote = FALSE)
                          }
                          iso <- isoscape(elevation.raster = elevation.raster,
-                                  isofit = isofit$multi.fits[[fit]],
-                                  verbose = verbose)
+                                         isofit = isofit$multi.fits[[fit]],
+                                         verbose = verbose
+                                         )
                          iso$sp.points$sources$values <- fit  ## set values for sp.points
                          return(iso)
                       }
@@ -507,7 +510,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
   ## the spatial points for the sources
   out <- list(isoscape = isoscape,
               sp.points = list(sources = source.points)
-  )
+              )
   
   ## we define a new class
   class(out) <- c("isoscape", "isofit", "list")
@@ -533,7 +536,7 @@ summary.isoscape <- function(object, ...) {
   cat("\n")
   if (length(object) > 1) {
     cat("### first 5 locations of the dataset")
-    print(head(object[[2]][[1]], 5L))
+    print(utils::head(object[[2]][[1]], 5L))
   }
   return(invisible(NULL))
 }

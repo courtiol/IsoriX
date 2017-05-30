@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 GetElev <- function(...) {
   .Defunct("getelev")
 }
@@ -41,7 +42,7 @@ GetElev <- function(...) {
 #' ## directory, just type:
 #' ## getelev()
 #' 
-#' @export getelev
+#' @export
 getelev <- function(path = NULL,
                     overwrite = FALSE,
                     verbose = interactive()
@@ -92,6 +93,7 @@ getelev <- function(path = NULL,
 #' ## directory, just type:
 #' ## getprecip()
 #' ## Mind that the file weights ca. 1GB!
+#' @export
 getprecip <- function(path = NULL,
                       overwrite = FALSE,
                       verbose = interactive()
@@ -112,7 +114,7 @@ getprecip <- function(path = NULL,
                               overwrite = overwrite,
                               md5sum = md5sum.elev,
                               verbose = verbose
-  )
+                              )
   
   ## Unzip the file
   if (verbose > 0) {
@@ -129,10 +131,11 @@ getprecip <- function(path = NULL,
 
 ## The following function is a generic function to download files and check 
 ## their binary integrity
+## We should write the help and export it.
 
 downloadfile <- function(address = NULL, filename = NULL, path = NULL,
                          overwrite = FALSE, md5sum = NULL, verbose = interactive()
-                        ) {
+                         ) {
   
   if (verbose > 0) {
     print(paste("the function attempts to download", filename, "from internet"), quote = FALSE)
@@ -167,7 +170,7 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
                   )
             )
   } else {
-    download.file(address, destfile = complete.path, mode = "wb")
+    utils::download.file(address, destfile = complete.path, mode = "wb")
   }
   
   ## Checking MD5sum

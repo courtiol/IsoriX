@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 Isosim <- function(...) {
   .Defunct("isosim")
 }
@@ -158,7 +159,7 @@ Isosim <- function(...) {
 #' 
 #' }
 #' 
-#' @export isosim
+#' @export
 isosim <- function(simu.data,
                    mean.model.fix.coef = c(intercept = 64, elev = -0.01, lat.abs = -2.3, lat.2 = 0, long = 0, long.2 = 0),
                    disp.model.fix.coef = c(intercept = 5.8, elev = 0, lat.abs = 0, lat.2 = 0, long = 0, long.2 = 0),
@@ -180,13 +181,13 @@ isosim <- function(simu.data,
   ## if simu.data is a raster, we convert it as data.frame
   if (class(simu.data) == "RasterLayer") {
     elevation.raster <- simu.data
-    coord <- coordinates(elevation.raster)
+    coord <- sp::coordinates(elevation.raster)
     simu.data <- data.frame(long = coord[, 1],
                             long.2 = coord[, 1]^2,
                             lat = coord[, 2],
                             lat.2 = coord[, 2]^2,
                             lat.abs = abs(coord[, 2]),
-                            elev = extract(elevation.raster, coord),
+                            elev = raster::extract(elevation.raster, coord),
                             n.isoscape.value = rep(1e6, nrow(coord)),
                             stationID = as.factor(paste("simu", 1:nrow(coord), sep = "_"))
                             )
@@ -198,15 +199,15 @@ isosim <- function(simu.data,
     stop("the argument you chose for dist.method is unknown")
   }
 
-  if (sum(mean.model.uncorr.coef>0)>1 | sum(disp.model.uncorr.coef>0)>1) {
+  if (sum(mean.model.uncorr.coef > 0) > 1 | sum(disp.model.uncorr.coef > 0) > 1) {
     stop("mean.model.uncorr.coef and disp.model.uncorr.coef must have at least one coeficient equals to zero each (considering two parameterizations of uncorrelated random effects does not make any sense.)")
   }
 
-  if (any(c(mean.model.uncorr.coef, disp.model.uncorr.coef)<0)) {
+  if (any(c(mean.model.uncorr.coef, disp.model.uncorr.coef) < 0)) {
     stop("all nugget and lambda coefficients must be null or positive")
   }
 
-  if (any(c(mean.model.matern.coef, disp.model.matern.coef)<0)) {
+  if (any(c(mean.model.matern.coef, disp.model.matern.coef) < 0)) {
     stop("all spatial coefficients must be null or positive")
   }
 
@@ -252,10 +253,10 @@ isosim <- function(simu.data,
   simu.data$disp.mean <- exp(linpred.disp$eta.sum)
 
   ## add residual variance
-  simu.data$var.isoscape.value <- rgamma(nrow(simu.data),
-                                         shape = (simu.data$disp.mean^2)/2,
-                                         scale = 2/simu.data$disp.mean
-                                         )
+  simu.data$var.isoscape.value <- stats::rgamma(nrow(simu.data),
+                                                shape = (simu.data$disp.mean^2)/2,
+                                                scale = 2/simu.data$disp.mean
+                                                )
 
   ### Simulate the mean
   if (verbose) {
@@ -296,13 +297,13 @@ isosim <- function(simu.data,
   ### Buidling return object
   out <- list()
 
-  out$isoscape <- stack(list(
+  out$isoscape <- raster::stack(list(
     "mean" = mean.raster,
     "disp" = disp.raster
     ))
 
   if (!save.dataframe & interactive()) {
-    message(paste("Note: simulated data not saved as data.frame (save.dataframe is set to FALSE). Saving the simulated data as data.frame would require", format(object.size(simu.data), units = "MB")))
+    message(paste("Note: simulated data not saved as data.frame (save.dataframe is set to FALSE). Saving the simulated data as data.frame would require", format(utils::object.size(simu.data), units = "MB")))
   } else {
     out$data <- simu.data
   }
@@ -341,7 +342,7 @@ isosim <- function(simu.data,
   }
 
   ## uncorr random effects
-  uncorr <- rnorm(nrow(data), mean = 0, sd = sqrt(uncorr.coef["lambda"]))
+  uncorr <- stats::rnorm(nrow(data), mean = 0, sd = sqrt(uncorr.coef["lambda"]))
   if (uncorr.coef["nugget"] > 0) {
     uncorr <- uncorr + RandomFields::RFsimulate(RandomFields::RMnugget(var = uncorr.coef["nugget"]),
                                                 x = data$long, y = data$lat

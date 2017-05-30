@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 Isofit <- function(...) {
   .Defunct("isofit")
 }
@@ -224,7 +225,7 @@ Isofit <- function(...) {
 #' }
 #' 
 #' 
-#' @export isofit
+#' @export
 isofit <- function(iso.data,
                    mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                    disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
@@ -243,7 +244,7 @@ isofit <- function(iso.data,
 
   ## Save the call information
   info.fit <- mget(names(formals()))
-  info.fit$IsoriX_version <- packageDescription("IsoriX")$Version
+  info.fit$IsoriX_version <- utils::packageDescription("IsoriX")$Version
   info.fit$verbose <- verbose
 
   ## Check that arguments are correct and to some extent test that they make sense
@@ -286,15 +287,15 @@ isofit <- function(iso.data,
   }
     
   ## Define the baseline argument lists for the models irrespective of the spaMM.method       
-  args.disp.fit <- list(formula = formula(disp.formula),
-                        family = Gamma(log),
+  args.disp.fit <- list(formula = stats::formula(disp.formula),
+                        family = stats::Gamma(log),
                         prior.weights = iso.data$weights.disp,
                         data = iso.data
                         )
 
-  args.mean.fit <- list(formula = formula(mean.formula),
+  args.mean.fit <- list(formula = stats::formula(mean.formula),
                         prior.weights = iso.data$weights.mean,
-                        resid.model = list(formula = ~ 0 + offset(pred.disp),family = Gamma(identity)),
+                        resid.model = list(formula = ~ 0 + offset(pred.disp), family = stats::Gamma(identity)),
                         data = iso.data
                         )
 
@@ -344,7 +345,7 @@ isofit <- function(iso.data,
   time.disp <- system.time(disp.fit <- do.call(spaMM.method$disp.model, c(args.disp.fit, control.disp)))
 
   ## Predict the values for the residual variance
-  args.mean.fit$data$pred.disp <- predict(disp.fit, newdata = iso.data)[, 1]
+  args.mean.fit$data$pred.disp <- spaMM::predict.HLfit(disp.fit, newdata = iso.data)[, 1]
 
   ## Interactive display
   if (verbose) {
@@ -428,7 +429,7 @@ isofit <- function(iso.data,
 #' 
 #' isoscapemodels
 #' }
-#' 
+#' @export
 isomultifit <- function(iso.data,
                         split.by = "month",
                         mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
@@ -448,7 +449,7 @@ isomultifit <- function(iso.data,
   
   ## Save the call information
   info.multifit <- info.fit <- mget(names(formals()))
-  info.multifit$IsoriX_version <- packageDescription("IsoriX")$Version
+  info.multifit$IsoriX_version <- utils::packageDescription("IsoriX")$Version
   info.multifit$verbose <- verbose
   
   if (is.null(iso.data[, split.by])) {
@@ -557,13 +558,15 @@ isomultifit <- function(iso.data,
   return(base.formula)
 }
 
-
+#' @export
+#' @method print isofit
 print.isofit <- function(x, ...) { ## we should recode this to make a table more succint than that from summary!
   print(summary(x))
   return(invisible(NULL))
 }
 
-
+#' @export
+#' @method summary isofit
 summary.isofit <- function(object, ...) {
   if (!any(class(object) %in% "multiisofit")) {
     cat("\n")
@@ -588,4 +591,3 @@ summary.isofit <- function(object, ...) {
   }
   return(invisible(NULL))
 }
-

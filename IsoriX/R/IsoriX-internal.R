@@ -4,7 +4,7 @@
   ## This function should not be called by the user.
   ## It display a message when the package is being loaded
   packageStartupMessage(## display message
-                        "\n IsoriX version ", packageDescription("IsoriX")$Version," is loaded!",
+                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is loaded!",
                         "\n",
                         "\n Many functions and objects have changed names since the version 0.4.",
                         "\n This is to make IsoriX more intuitive for you to use.",
@@ -25,15 +25,15 @@
 .onLoad <- function(libname, pkgname) {
   ## This function should not be called by the user.
   ## It changes the default beahviour of sp concerning lat/long boundaries
-  .IsoriX_options$sp_ll_warn <- get_ll_warn()
-  set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
+  .IsoriX_options$sp_ll_warn <- sp::get_ll_warn()
+  sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
 }
 
 
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
   ## It restores the original behaviour of sp
-  set_ll_warn(.IsoriX_options$sp_ll_warn)
+  sp::set_ll_warn(.IsoriX_options$sp_ll_warn)
 }
 
 
@@ -59,10 +59,10 @@
   ##   The raster.
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  coordinates(data) <- ~long+lat  ## coordonates are being set for the raster
-  proj4string(data) <- CRS(proj)  ## projection is being set for the raster
-  gridded(data) <- TRUE  ## a gridded structure is being set for the raster
-  data.raster <- raster(data)  ## the raster is being created
+  sp::coordinates(data) <- ~long+lat  ## coordonates are being set for the raster
+  sp::proj4string(data) <- sp::CRS(proj)  ## projection is being set for the raster
+  sp::gridded(data) <- TRUE  ## a gridded structure is being set for the raster
+  data.raster <- raster::raster(data)  ## the raster is being created
   # if(save.spatial.files) writeRaster(
   #   data.raster,
   #   filename = paste(filename, ".asc", sep = ""),
@@ -75,16 +75,8 @@
 .CreateSpatialPoints <- function(long, lat, values = -9999, proj) {
   ##  This function should not be called by the user but is itself called by .CreateRasterFromAssignment().
   data.sp <- data.frame(long = long, lat = lat, values = values)
-  coordinates(data.sp) <- ~long+lat
-  proj4string(data.sp) <- CRS(proj)
-  # THE FOLLOWING IS COMMENTED AS GDAL IS SOURCE OF TROUBLE
-  # if(save.spatial.files)   writeOGR(
-  #   data.sp,
-  #   dsn = ".",
-  #   layer = filename,
-  #   driver = "ESRI Shapefile",
-  #   overwrite_layer = overwrite.spatial.files
-  #   )
+  sp::coordinates(data.sp) <- ~long+lat
+  sp::proj4string(data.sp) <- sp::CRS(proj)
   return(data.sp)
 }
 
@@ -93,7 +85,7 @@
   ## This function should not be called by the user but is itself called by other functions.
   ## It ask the user to press return in RStudio (for plotting).
   if (interactive() & .Platform$GUI == "RStudio") {
-    cat ("Hit <Return> for next plot")
+    cat("Hit <Return> for next plot")
     readline()
   }
   return(NULL)
@@ -106,12 +98,12 @@
   ## a new list with fewer elements is provided
   env <- parent.frame()
   args <- formals(fn)
-  for(arg.name in names(args)) {
+  for (arg.name in names(args)) {
     if (is.call(arg <- args[[arg.name]])) {
       if (arg[1] == "list()") {
         arg.input <- mget(names(args), envir = env)[[arg.name]]
         arg.full  <- eval(formals(fn)[[arg.name]])
-        arg.full.updated <- modifyList(arg.full, arg.input)
+        arg.full.updated <- utils::modifyList(arg.full, arg.input)
         assign(arg.name, arg.full.updated, envir = env)
       }
     }
@@ -126,36 +118,36 @@
 
   ## layer for sources
   if (!sources$draw) {
-    sources.layer <- layer()
+    sources.layer <- latticeExtra::layer()
   } else {
-    sources.layer <- layer(sp.points(sources,
-                                     col = pt$col,
-                                     cex = pt$cex,
-                                     pch = pt$pch,
-                                     lwd = pt$lwd
-                                     ),
+    sources.layer <- latticeExtra::layer(sp::sp.points(sources,
+                                                   col = pt$col,
+                                                   cex = pt$cex,
+                                                   pch = pt$pch,
+                                                   lwd = pt$lwd
+                                                   ),
                            data = list(sources = x$sp.points$sources,
                                        pt = sources,
-                                       sp.points = sp.points
+                                       sp.points = sp::sp.points
                                        )
                            )
   }
 
   ## layer for calibration points
   if (is.null(calib)) {
-    calib.layer <- layer()
+    calib.layer <- latticeExtra::layer()
   } else {
     if (!calib$draw) {
-      calib.layer <- layer()
+      calib.layer <- latticeExtra::layer()
     } else {
-      calib.layer <- layer(sp.points(calib, col = pt$col,
-                                     cex = pt$cex,
-                                     pch = pt$pch,
-                                     lwd = pt$lwd
-                                     ),
+      calib.layer <- latticeExtra::layer(sp::sp.points(calib, col = pt$col,
+                                         cex = pt$cex,
+                                         pch = pt$pch,
+                                         lwd = pt$lwd
+                                         ),
                            data = list(calib = x$sp.points$calibs,
                                        pt = calib,
-                                       sp.points = sp.points
+                                       sp.points = sp::sp.points
                                        )
                            )
     }
@@ -163,44 +155,44 @@
 
   ## layer for country borders
   if (is.null(borders$borders)) {
-    borders.layer <- layer()
+    borders.layer <- latticeExtra::layer()
   }  else {
-    borders.layer <- layer(sp.polygons(b$borders,
-                                       lwd = b$lwd,
-                                       col = b$col,
-                                       fill = "transparent"
-                                       ),
+    borders.layer <- latticeExtra::layer(sp::sp.polygons(b$borders,
+                                                     lwd = b$lwd,
+                                                     col = b$col,
+                                                     fill = "transparent"
+                                                     ),
                            data = list(b = borders,
-                                       sp.polygons = sp.polygons
+                                       sp.polygons = sp::sp.polygons
                                        )
                            )
   }
   
   ## layer for mask
   if (is.null(mask$mask)) {
-    mask.layer <- layer()
+    mask.layer <- latticeExtra::layer()
   } else {
-    mask.layer <- layer(sp.polygons(m$mask,
-                                    fill = m$fill,
-                                    col = m$col,
-                                    lwd = m$lwd
-                                    ),
+    mask.layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
+                                      fill = m$fill,
+                                      col = m$col,
+                                      lwd = m$lwd
+                                      ),
                         data = list(m = mask,
-                                    sp.polygons = sp.polygons
+                                    sp.polygons = sp::sp.polygons
                                     )
                         )
   }
   
   if (is.null(mask2$mask)) {
-    mask2.layer <- layer()
+    mask2.layer <- latticeExtra::layer()
   } else {
-    mask2.layer <- layer(sp.polygons(m$mask,
-                                     fill = m$fill,
-                                     col = m$col,
-                                     lwd = m$lwd
-                                     ),
+    mask2.layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
+                                       fill = m$fill,
+                                       col = m$col,
+                                       lwd = m$lwd
+                                       ),
                          data = list(m = mask2,
-                                     sp.polygons = sp.polygons
+                                     sp.polygons = sp::sp.polygons
                                      )
                          )
   }

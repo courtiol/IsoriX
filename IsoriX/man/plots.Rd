@@ -20,7 +20,7 @@
 \method{plot}{isoscape}(x, which = "mean", sources = list(draw = TRUE, cex =
   0.5, pch = 2, lwd = 1, col = "red"), borders = list(borders = NULL, lwd =
   0.5, col = "black"), mask = list(mask = NULL, lwd = 0, col = "black", fill =
-  "black"), palette = terrain.colors(20), plot = TRUE, ...)
+  "black"), palette = grDevices::terrain.colors(20), plot = TRUE, ...)
 
 \method{plot}{isorix}(x, who = "group", what = "pv", cutoff = list(draw =
   TRUE, level = 0.05, col = "#909090"), sources = list(draw = TRUE, cex = 0.5,
@@ -28,7 +28,7 @@
   4, lwd = 1, col = "blue"), borders = list(borders = NULL, lwd = 0.5, col =
   "black"), mask = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
   mask2 = list(mask = NULL, lwd = 0, col = "purple", fill = "purple"),
-  palette = rev(terrain.colors(100)), plot = TRUE, ...)
+  palette = rev(grDevices::terrain.colors(100)), plot = TRUE, ...)
 }
 \arguments{
 \item{x}{The return object of an \code{\link{isofit}},

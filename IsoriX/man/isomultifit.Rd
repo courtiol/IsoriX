@@ -98,7 +98,6 @@ isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
 
 isoscapemodels
 }
-
 }
 \seealso{
 \code{\link{isofit}} for information about the fitting procedure of 

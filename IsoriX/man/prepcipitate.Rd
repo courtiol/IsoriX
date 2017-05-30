@@ -51,7 +51,6 @@ precipitation.brick <- prepcipitate(path = "~/Desktop/",
  }
 
 }
-
 }
 \seealso{
 \code{\link{getprecip}} to download the relevant precipitation data

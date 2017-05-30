@@ -47,7 +47,7 @@
 #'  }
 #' 
 #' }
-#' 
+#' @export
 prepcipitate <- function(path = NULL,
                          elevation.raster,
                          verbose = interactive()

@@ -91,12 +91,13 @@ NULL
 
 #' @rdname plots
 #' @method plot isoscape
+#' @export
 plot.isoscape <- function(x,
                           which   = "mean",
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                           borders  = list(borders = NULL, lwd = 0.5, col = "black"),
                           mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
-                          palette = terrain.colors(20),
+                          palette = grDevices::terrain.colors(20),
                           plot    = TRUE,
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
@@ -107,7 +108,7 @@ plot.isoscape <- function(x,
     .CompleteArgs(plot.isoscape)
     
     ## checking the inputs
-    if (length(palette)<2) {
+    if (length(palette) < 2) {
       stop("wrong palette, more colours needed")
     }
     
@@ -138,13 +139,13 @@ plot.isoscape <- function(x,
     ##  note the use of bquote() which contrary to expression(paste())
     ##  allows for the evaluation of arguments.
     ##  (the stars are used to remove spaces)
-    map <- levelplot(x$isoscape[[which]],
-                     maxpixels = 4e6,
-                     margin = FALSE,
-                     cuts = length(palette)-1,
-                     col.regions = palette,
-                     main = bquote(.(simu.title)~.(sub(".", " ", which, fixed = TRUE))~delta*D[p])
-                     )
+    map <- rasterVis::levelplot(x$isoscape[[which]],
+                                maxpixels = 4e6,
+                                margin = FALSE,
+                                cuts = length(palette) - 1,
+                                col.regions = palette,
+                                main = bquote(.(simu.title)~.(sub(".", " ", which, fixed = TRUE))~delta*D[p])
+                                )
     
     ## create the additional plot(s)
     decor <- .BuildAdditionalLayers(x = x,
@@ -171,6 +172,7 @@ plot.isoscape <- function(x,
 
 #' @rdname plots
 #' @method plot isorix
+#' @export
 plot.isorix <- function(x,
                         who     = "group",
                         what    = "pv",
@@ -180,7 +182,7 @@ plot.isorix <- function(x,
                         borders = list(borders = NULL, lwd = 0.5, col = "black"),
                         mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
                         mask2   = list(mask = NULL, lwd = 0, col = "purple", fill = "purple"),
-                        palette = rev(terrain.colors(100)),
+                        palette = rev(grDevices::terrain.colors(100)),
                         plot     = TRUE,
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
@@ -207,26 +209,26 @@ plot.isorix <- function(x,
   splits <- seq(0, 1, length = length(palette))
 
   if ("group" %in% who) {
-    map <- levelplot(x$group$pv * (x$group$pv > cutoff$level),
-                     maxpixels = 4e6,
-                     margin = FALSE,
-                     at = splits,
-                     col.regions = palette,
-                     main = "Group assignment"
-                     )
+    map <- rasterVis::levelplot(x$group$pv * (x$group$pv > cutoff$level),
+                                maxpixels = 4e6,
+                                margin = FALSE,
+                                at = splits,
+                                col.regions = palette,
+                                main = "Group assignment"
+                                )
   } else {
     main.title <- if (length(who) == 1) {
       names(x$indiv[[what]][[who]]) 
     } else {
       NULL
     }
-    map <- levelplot(x$indiv[[what]][[who]] * (x$indiv$pv[[who]] > cutoff$level),
-                     maxpixels = 4e6,
-                     margin = FALSE,
-                     at = splits,
-                     col.regions = palette,
-                     main = main.title
-                     )
+    map <- rasterVis::levelplot(x$indiv[[what]][[who]] * (x$indiv$pv[[who]] > cutoff$level),
+                                maxpixels = 4e6,
+                                margin = FALSE,
+                                at = splits,
+                                col.regions = palette,
+                                main = main.title
+                                )
   }
     
   ## create the additional plot(s)
@@ -246,9 +248,9 @@ plot.isorix <- function(x,
 
   ## we add the legend for the side bar
   ## (thanks to Deepayan Sarkar, for solving a device opening hicup at this stage)
-  map$legend$right <- list(fun = mergedTrellisLegendGrob,
+  map$legend$right <- list(fun = latticeExtra::mergedTrellisLegendGrob,
                            args = list(map$legend$right,
-                                       list(fun = textGrob,
+                                       list(fun = grid::textGrob,
                                             args = list(label = "P-value", rot = 90)
                                             ),
                                        vertical = FALSE
