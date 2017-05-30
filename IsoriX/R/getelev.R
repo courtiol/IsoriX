@@ -67,7 +67,8 @@ getelev <- function(path = NULL,
   return(invisible(NULL))
 }
 
-#' Download an rasters of monthly precipitation from internet
+
+#' Download rasters of monthly precipitation from internet
 #' 
 #' The function \code{getprecip} allows for the download of rasters of monthly
 #' precipitation from internet. It downloads the "precipitation (mm) WorldClim
@@ -82,7 +83,6 @@ getelev <- function(path = NULL,
 #' after a call to \code{getprecip}. In case of corruption, try downloading the
 #' file again, specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
-#' @aliases getprecip downloadfile
 #' @inheritParams getelev
 #' @source \url{http://worldclim.org/version2}
 #' @examples

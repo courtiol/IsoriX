@@ -2,8 +2,7 @@
 % Please edit documentation in R/getelev.R
 \name{getprecip}
 \alias{getprecip}
-\alias{downloadfile}
-\title{Download an rasters of monthly precipitation from internet}
+\title{Download rasters of monthly precipitation from internet}
 \source{
 \url{http://worldclim.org/version2}
 }
