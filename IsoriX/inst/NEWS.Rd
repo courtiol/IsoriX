@@ -17,9 +17,10 @@
       \itemize{
         \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
+        \item new function prepcipitate to prepare the precipitation brick
+        \item new function getprecip to download monthly precipitation rasters from WorldClim
         \item new function isomultifit fitting isoscapes per strata (month, year, or any "split")
         \item new function isomultiscape building isoscapes averaged across strata
-        \item new function getprecip to download monthly precipitation rasters from WorldClim
       }
   }
 }
