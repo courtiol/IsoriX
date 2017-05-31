@@ -24,8 +24,10 @@
       }
   }
     \subsection{Minor changes}{
+      \itemize{
         \item the namespace is now generated with Roxygen2
       }
+    }
 }
 
 \section{version 0.5}{
