@@ -13,7 +13,7 @@
 }
 
 \section{version 0.6}{
-  \subsection{New feature(s)}{
+  \subsection{New features}{
       \itemize{
         \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
@@ -23,6 +23,9 @@
         \item new function isomultiscape building isoscapes averaged across strata
       }
   }
+    \subsection{Minor changes}{
+        \item the namespace is now generated with Roxygen2
+      }
 }
 
 \section{version 0.5}{
