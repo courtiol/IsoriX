@@ -240,6 +240,12 @@ queryGNIP <- function(data,
                      )
     ## Note that above the c() prevent the creation of 1d arrays that are troublesome in spaMM
     
+     null.var <- !is.na(df$var.isoscape.value) & df$var.isoscape.value == 0
+     if (sum(null.var) > 0) {
+       df$var.isoscape.value[null.var] <- 0.01
+       warnings(paste(length(null.var), "null variances were obtained during aggregation. They were changed to 0.01 assuming that the actual variance cannot be smaller than the measurement error variance."))
+       }
+    
     ## Retrieve the relevant splitting information
     if (is.null(split.by)) {
       df <- df[order(df$stationID), ]
