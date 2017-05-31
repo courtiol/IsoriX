@@ -342,7 +342,10 @@ isofit <- function(iso.data,
   }
 
   ## Fit disp.fit
-  time.disp <- system.time(disp.fit <- do.call(spaMM.method$disp.model, c(args.disp.fit, control.disp)))
+  time.disp <- system.time(disp.fit <- do.call(eval(parse(text = paste0("spaMM::", spaMM.method$disp.model))),
+                                               c(args.disp.fit, control.disp)
+                                               )
+                          )
 
   ## Predict the values for the residual variance
   args.mean.fit$data$pred.disp <- spaMM::predict.HLfit(disp.fit, newdata = iso.data)[, 1]
@@ -356,7 +359,10 @@ isofit <- function(iso.data,
   }
 
   ## Fit mean.fit
-  time.mean <- system.time(mean.fit <- do.call(spaMM.method$mean.model, c(args.mean.fit, control.mean)))
+  time.mean <- system.time(mean.fit <- do.call(eval(parse(text = paste0("spaMM::", spaMM.method$mean.model))),
+                                               c(args.mean.fit, control.mean)
+                                               )
+                           )
 
   ## Interactive display of fit time duration
   total.time <- round(as.numeric((time.mean + time.disp)[3]))
