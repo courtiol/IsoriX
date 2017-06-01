@@ -1,9 +1,8 @@
 #' @rdname IsoriX-defunct
+#' @export
 Isofit <- function(...) {
   .Defunct("isofit")
 }
-
-
 
 
 #' Fit the isoscape model
@@ -226,7 +225,7 @@ Isofit <- function(...) {
 #' }
 #' 
 #' 
-#' @export isofit
+#' @export
 isofit <- function(iso.data,
                    mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                    disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
@@ -245,7 +244,7 @@ isofit <- function(iso.data,
 
   ## Save the call information
   info.fit <- mget(names(formals()))
-  info.fit$IsoriX_version <- packageDescription("IsoriX")$Version
+  info.fit$IsoriX_version <- utils::packageDescription("IsoriX")$Version
   info.fit$verbose <- verbose
 
   ## Check that arguments are correct and to some extent test that they make sense
@@ -282,34 +281,34 @@ isofit <- function(iso.data,
 
   ## Define weights
   iso.data$weights.mean <- as.numeric(iso.data$n.isoscape.value)
-  iso.data$weights.disp <- as.numeric(iso.data$n.isoscape.value)-1
-  if (any(iso.data$weights.disp<1)) {
+  iso.data$weights.disp <- as.numeric(iso.data$n.isoscape.value) - 1
+  if (any(iso.data$weights.disp < 1)) {
     warning("some prior weights seem to be null")
   }
     
   ## Define the baseline argument lists for the models irrespective of the spaMM.method       
-  args.disp.fit <- list(formula = formula(disp.formula),
-                        family = Gamma(log),
+  args.disp.fit <- list(formula = stats::formula(disp.formula),
+                        family = stats::Gamma(log),
                         prior.weights = iso.data$weights.disp,
                         data = iso.data
                         )
 
-  args.mean.fit <- list(formula = formula(mean.formula),
+  args.mean.fit <- list(formula = stats::formula(mean.formula),
                         prior.weights = iso.data$weights.mean,
-                        resid.model = list(formula = ~ 0 + offset(pred.disp),family = Gamma(identity)),
+                        resid.model = list(formula = ~ 0 + offset(pred.disp), family = stats::Gamma(identity)),
                         data = iso.data
                         )
 
   ## Inclusion of additional arguments for corrHLfit, if necessary
-  if (spaMM.method[1] == "corrHLfit"){
+  if (spaMM.method[1] == "corrHLfit") {
     args.mean.fit[["control.corrHLfit"]] <- list(maxcorners = 0)
-    if (mean.model.rand$spatial){
+    if (mean.model.rand$spatial) {
       args.mean.fit[["control.dist"]] <- list(dist.method = dist.method)
       if (uncorr.terms$mean.model == "nugget") args.mean.fit[["init.corrHLfit"]] <- list(Nugget = 0.01)
     }
   }
-  if (spaMM.method[2] == "corrHLfit"){
-    if (disp.model.rand$spatial){
+  if (spaMM.method[2] == "corrHLfit") {
+    if (disp.model.rand$spatial) {
       args.disp.fit[["control.dist"]] <- list(dist.method = dist.method)
       if (uncorr.terms$disp.model == "nugget") args.disp.fit[["init.corrHLfit"]] <- list(Nugget = 0.01)
     }
@@ -320,15 +319,15 @@ isofit <- function(iso.data,
   ## Inclusion of additional arguments for fitme, if necessary
   if (spaMM.method[1] == "fitme") {
     args.mean.fit[["method"]] <- "REML"
-    if (mean.model.rand$spatial){
+    if (mean.model.rand$spatial) {
       args.mean.fit[["control.dist"]] <- list(dist.method = dist.method)
       if (uncorr.terms$mean.model == "nugget") args.mean.fit[["init"]] <- list(Nugget = 0.01)
     }
   }
-  if (spaMM.method[2] == "fitme"){
+  if (spaMM.method[2] == "fitme") {
     args.disp.fit[["method"]] <- "REML"
     args.disp.fit[["fixed"]] <- list(phi = 2)
-    if (disp.model.rand$spatial){
+    if (disp.model.rand$spatial) {
       args.disp.fit[["control.dist"]] <- list(dist.method = dist.method)
       if (uncorr.terms$disp.model == "nugget") args.disp.fit[["init"]] <- list(Nugget = 0.01)
     }
@@ -337,43 +336,174 @@ isofit <- function(iso.data,
   ## Interactive display
   if (verbose) {
     nug.string <- ifelse(uncorr.terms$disp.model == "nugget", "with a Nugget", "")
-    print(paste("fitting the following residual dispersion model using spaMM", nug.string, ":"))
+    print(paste("Fitting the following residual dispersion model using spaMM", nug.string, ":"), quote = FALSE)
     print(disp.formula)
-    if (sum(unlist(disp.model.rand))>0) print(paste("it may take a while..."))
+    if (sum(unlist(disp.model.rand)) > 0) print(paste("(it may take a while...)"), quote = FALSE)
   }
 
   ## Fit disp.fit
-  time.disp <- system.time(disp.fit <- do.call(spaMM.method$disp.model, c(args.disp.fit, control.disp)))
+  time.disp <- system.time(disp.fit <- do.call(eval(parse(text = paste0("spaMM::", spaMM.method$disp.model))),
+                                               c(args.disp.fit, control.disp)
+                                               )
+                          )
 
   ## Predict the values for the residual variance
-  args.mean.fit$data$pred.disp <- predict(disp.fit)[, 1]
+  args.mean.fit$data$pred.disp <- spaMM::predict.HLfit(disp.fit, newdata = iso.data)[, 1]
 
   ## Interactive display
   if (verbose) {
     nug.string <- ifelse(uncorr.terms$mean.model == "nugget", "with a Nugget", "")
-    print(paste("fitting the following mean model using spaMM", nug.string, ":"))
+    print(paste("Fitting the following mean model using spaMM", nug.string, ":"), quote = FALSE)
     print(mean.formula)
-    if (sum(unlist(mean.model.rand))>0) print(paste("it may take a while..."))
+    if (sum(unlist(mean.model.rand)) > 0) print(paste("(it may take a while...)"), quote = FALSE)
   }
 
   ## Fit mean.fit
-  time.mean <- system.time(mean.fit <- do.call(spaMM.method$mean.model, c(args.mean.fit, control.mean)))
+  time.mean <- system.time(mean.fit <- do.call(eval(parse(text = paste0("spaMM::", spaMM.method$mean.model))),
+                                               c(args.mean.fit, control.mean)
+                                               )
+                           )
 
   ## Interactive display of fit time duration
-  total.time <- round(as.numeric((time.mean+time.disp)[3]))
-  if (verbose)
-    print(paste("Done! Models were fitted in", total.time, "sec."))
+  total.time <- round(as.numeric((time.mean + time.disp)[3]))
+  if (verbose) {
+    print(paste("Done!"), quote = FALSE)
+    print(paste("Models were fitted in", total.time, "sec."))
+  }
 
   ## Store the time
   info.fit$time.fit <- total.time
 
   ## Create the return object
-  out <- list("mean.fit" = mean.fit,
-              "disp.fit" = disp.fit,
-              "info.fit" = info.fit
-              )
+  out <- list("mean.fit" = mean.fit, "disp.fit" = disp.fit, "info.fit" = info.fit)
+  
   class(out) <- c("isofit", "list")
 
+  return(invisible(out))
+}
+
+
+#' Fit isoscape models per strata (typically time interval such as months)
+#' 
+#' This function fits several bunch of isocapes (e.g. one per strata), which we
+#' call sub-isoscape. It can thus be used to predict annual averages
+#' precipitation weighted isoscapes.
+#' 
+#' This function is a wrapper around the function \code{\link{isofit}}.
+#' 
+#' @return This function returns a \var{list} of class \code{multiisofit} containing
+#' all pairs of inter-related fits: \code{multi.fits}. The returned
+#' \var{list} also contains the object \code{info.fit} that contains all the
+#' call arguments.
+#' 
+#' @inheritParams isofit
+#' @param split.by A \var{string} indicating the name of the column of
+#'   \code{iso.data} used to split the dataset. The function
+#'   \code{\link{isofit}} will then be called on each of these sub-datasets. The
+#'   default split the dataset per months (\code{split.by = "month"}).
+#'   
+#' @seealso \code{\link{isofit}} for information about the fitting procedure of 
+#'   each sub-isoscape.
+#' 
+#' @examples
+#' 
+#' ## The following example takes some time and will therefore not
+#' ## be run unless you type: example(isomultifit, run.dontrun = TRUE)
+#' 
+#' \dontrun{
+#' 
+#' ## We prepare the GNIP monthly data between January and June for part of Europe
+#' 
+#' data(GNIPdata)
+#' 
+#' GNIPdataMonthly <- queryGNIP(
+#'     data = GNIPdata,
+#'     month.min = 1,
+#'     month.max = 6,
+#'     split.by = "month",
+#'     long.min = -20,
+#'     long.max = 20,
+#'     lat.min = 45, 
+#'     lat.max = 55)
+#' 
+#' dim(GNIPdataMonthly)
+#' 
+#' ## We fit the isoscapes
+#' 
+#' isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
+#'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' 
+#' isoscapemodels
+#' }
+#' @export
+isomultifit <- function(iso.data,
+                        split.by = "month",
+                        mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+                        disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+                        mean.model.rand = list(uncorr = FALSE, spatial = TRUE),
+                        disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+                        uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"), ## or: "nugget"
+                        spaMM.method = list(mean.model = "fitme", disp.model = "fitme"), ## or: "corrHLfit", "HLfit"
+                        dist.method = "Earth", ## or: "Euclidean"
+                        control.mean = list(),
+                        control.disp = list(),
+                        verbose = interactive()
+) {
+  
+  ## Complete the arguments
+  .CompleteArgs(isomultifit)
+  
+  ## Save the call information
+  info.multifit <- info.fit <- mget(names(formals()))
+  info.multifit$IsoriX_version <- utils::packageDescription("IsoriX")$Version
+  info.multifit$verbose <- verbose
+  
+  if (is.null(iso.data[, split.by])) {
+      stop(paste("you used 'split.by =", split.by, "' but no column called ',", split.by, "' is found in 'iso.data'..."))
+  }
+  
+  ## Prepare arguments for call(s) to isofit
+  info.fit$split.by <- info.fit$weighting <- NULL  ## removes arguments unknown to isofit
+  
+  ## Trivial case if no splitting is done
+  if (is.null(split.by)) {
+    return(do.call(isofit, info.fit))
+  }
+
+  ## Interactive display
+  if (verbose) {
+    print(paste("Fitting the all", length(unique(iso.data[, split.by])), "pairs of models using spaMM:"), quote = FALSE)
+    print(paste("(it may take a while...)"), quote = FALSE)
+  }
+
+  ## Run all fits
+  info.fit$verbose <- FALSE ## no display for each fit  
+  total.time <- system.time({
+    multi.fits <- lapply(unique(iso.data[, split.by]), function(s) {
+      info.fit$iso.data <- iso.data[iso.data[, split.by] == s, ]
+      fit <- do.call(isofit, info.fit)
+      if (verbose) {
+        print(paste("fit of the pair of models for", split.by, s, "done"), quote = FALSE)
+      }
+      return(fit)
+      })
+  })
+  names(multi.fits) <- paste(split.by, unique(iso.data[, split.by]), sep = "_")
+  
+  ## Interactive display
+  if (verbose) {
+    print(paste("Done!"), quote = FALSE)
+    print(paste("All models have been fitted in", round(as.numeric((total.time)[3])), "sec."), quote = FALSE)
+  }
+  
+  ## Store the time
+  info.multifit$time.fit <- total.time
+  
+  ## Create the return object
+  out <- list("multi.fits" = multi.fits, "info.fit" = info.multifit)
+  
+  class(out) <- c("multiisofit", "isofit", "list")
+  
   return(invisible(out))
 }
 
@@ -381,9 +511,6 @@ isofit <- function(iso.data,
 .PrepareDataIso <- function(data) {
   ## This function should not be called by the user but is itself called by other functions.
   ## It prepares data for the prediction procedures.
-  if (max(table(data$lat, data$long)) > 1) {
-    warning("the dataset does not seem to be aggregated, make sure you only have a single row per location in your dataset")
-  }
   if (!all(c("lat", "long") %in% colnames(data))) {
     stop("the dataset does not seem to contain the required variable(s) lat and/or long")
   }
@@ -393,14 +520,14 @@ isofit <- function(iso.data,
   if (is.null(data$n.isoscape.value)) {
     stop("the dataset does not seem to contain the required variable n.isoscape.value")
   }
-  if (any(data$var.isoscape.value <= 0)) {
+  if (any(!is.na(data$var.isoscape.value) & data$var.isoscape.value <= 0)) {
     stop("the dataset seem to contain null or negative value for var.isoscape.value")
   }
   if (!is.null(data$stationID)) {
     data$stationID <- factor(data$stationID)
-  } else {
-    data$stationID <- factor(1:nrow(data))
-  }
+  } #else {
+    #data$stationID <- factor(1:nrow(data))
+  #}
     
   data$lat.abs <- abs(data$lat)
   data$lat.2 <- data$lat^2
@@ -437,30 +564,36 @@ isofit <- function(iso.data,
   return(base.formula)
 }
 
-
-print.isofit <- function(x, ...) {
+#' @export
+#' @method print isofit
+print.isofit <- function(x, ...) { ## we should recode this to make a table more succint than that from summary!
   print(summary(x))
   return(invisible(NULL))
 }
 
-
+#' @export
+#' @method summary isofit
 summary.isofit <- function(object, ...) {
-  cat("\n")
-  cat("##################################################", "\n")
-  cat("### spaMM summary of the fit of the mean model ###", "\n")
-  cat("##################################################", "\n")
-  cat("\n")
-  print(summary.HLfit(object$mean.fit))
-  cat("\n")
-  cat("\n")
-  cat("#################################################################", "\n")
-  cat("### spaMM summary of the fit of the residual dispersion model ###", "\n")
-  cat("#################################################################", "\n")
-  cat("\n")
-  print(summary.HLfit(object$disp.fit))
-  cat("\n")
-  cat(paste("[models fitted with spaMM version ", object$mean.fit$spaMM.version, "]", sep = ""), "\n")
-  cat("\n")
+  if (!any(class(object) %in% "multiisofit")) {
+    cat("\n")
+    cat("### spaMM summary of the fit of the mean model ###", "\n")
+    cat("\n")
+    print(spaMM::summary.HLfit(object$mean.fit))
+    cat("\n")
+    cat("\n")
+    cat("### spaMM summary of the fit of the residual dispersion model ###", "\n")
+    cat("\n")
+    print(spaMM::summary.HLfit(object$disp.fit))
+    cat("\n")
+    cat(paste("[models fitted with spaMM version ", object$mean.fit$spaMM.version, "]", sep = ""), "\n")
+    cat("\n")
+  } else {
+    for (fit in 1:length(object$multi.fits)) {
+      cat("\n")
+      cat(paste("##### Pair of models", names(object$multi.fits)[fit]), "#####")
+      cat("\n")
+      summary(object$multi.fits[[fit]])
+      }
+  }
   return(invisible(NULL))
 }
-

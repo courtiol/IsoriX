@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 Calibfit <- function(...) {
   .Defunct("calibfit")
 }
@@ -60,6 +61,8 @@ Calibfit <- function(...) {
 #' @examples
 #' ## The following example takes some time and will therefore not
 #' ## be run unless you type: example(calibfit, run.dontrun = TRUE)
+#' 
+#' \dontrun{
 #' data(calibdata)
 #' data(Europefit)
 #' ## fit the calibration model
@@ -70,9 +73,9 @@ Calibfit <- function(...) {
 #' summary(calib)
 #' ## plot the calibration function
 #' plot(calib)
+#' }
 #' 
-#' 
-#' @export calibfit
+#' @export
 calibfit <- function(calib.data,
                      isofit,
                      verbose = interactive(),
@@ -91,9 +94,10 @@ calibfit <- function(calib.data,
       print("predicting the isoscape value in each calibration site...")
     }
   
-    calib.mean <- predict(isofit[["mean.fit"]], newdata = calib.data,
-                          variances = list(predVar = TRUE, cov = TRUE)
-                          )
+    calib.mean <- spaMM::predict.HLfit(isofit[["mean.fit"]],
+                                       newdata = calib.data,
+                                       variances = list(predVar = TRUE, cov = TRUE)
+                                      )
     
     ## store the mean prediction
     calib.data$mean.iso <- c(calib.mean)
@@ -116,7 +120,7 @@ calibfit <- function(calib.data,
     }
   
     ## estimation of intercept and slope of the calibration function
-    opt.res <- optim(par = c(0, 1),
+    opt.res <- stats::optim(par = c(0, 1),
                      fn = .ObjectiveFnCalib,
                      control = c(list(fnscale = -1), control.optim),
                      data = calib.data,
@@ -140,13 +144,13 @@ calibfit <- function(calib.data,
       print("computing the covariance matrix of fixed effects...")
     }
   
-    fixefCov.calibfit <- solve(-hessian(.ObjectiveFnCalib,
-                                        param.calibfit,
-                                        data = calib.data,
-                                        predcov = predcov.isofit, 
-                                        lik.method = "ML"
-                                        )
-                               )
+    fixefCov.calibfit <- solve(-numDeriv::hessian(.ObjectiveFnCalib,
+                                                  param.calibfit,
+                                                  data = calib.data,
+                                                  predcov = predcov.isofit, 
+                                                  lik.method = "ML"
+                                                  )
+                              )
   
     rownames(fixefCov.calibfit) <- names(param.calibfit)
     colnames(fixefCov.calibfit) <- names(param.calibfit)
@@ -207,18 +211,19 @@ calibfit <- function(calib.data,
   ## It computes the likelihood of a given calibration function
   data$intercept <- param[1]
   data$slope <- param[2]
-  calib.fit <- HLCor(formula = tissue.value ~ 0 + offset(intercept+slope*mean.iso) +
-                       corrMatrix(1|siteID) + (1|siteID),
-                     corrMatrix = predcov,
-                     ranPars = list(lambda = c(1e-6 + unique(data$slope)^2, NA)),
-                     data = data,
-                     method = lik.method
-                     )
+  calib.fit <- spaMM::HLCor(formula = tissue.value ~ 0 + offset(intercept+slope*mean.iso) +
+                            corrMatrix(1|siteID) + (1|siteID),
+                            corrMatrix = predcov,
+                            ranPars = list(lambda = c(1e-6 + unique(data$slope)^2, NA)),
+                            data = data,
+                            method = lik.method
+                            )
   if (return.fit) return(calib.fit)
   return(calib.fit$APHLs$p_v)
 }
 
-
+#' @export
+#' @method print calibfit
 print.calibfit <- function(x, ...) {
   cat("\n")
   cat("Fixed effect estimates of the calibration fit", "\n")
@@ -234,7 +239,8 @@ print.calibfit <- function(x, ...) {
   return(invisible(NULL))
 }
 
-
+#' @export
+#' @method summary calibfit
 summary.calibfit <- function(object, ...) {
   cat("\n")
   cat("Fixed effect estimates of the calibration fit", "\n")
@@ -247,7 +253,7 @@ summary.calibfit <- function(object, ...) {
   cat("### spaMM summary of the fit of the calibration model ###", "\n")
   cat("#########################################################", "\n")
   cat("\n")
-  print(summary.HLfit(object$calib.fit))
+  print(spaMM::summary.HLfit(object$calib.fit))
   cat("\n")
   cat(paste("[model fitted with spaMM version ", object$calib.fit$spaMM.version, "]", sep = ""), "\n")
   cat("\n")

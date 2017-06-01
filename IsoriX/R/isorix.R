@@ -9,6 +9,7 @@
 NULL
 
 #' @rdname IsoriX-defunct
+#' @export
 Isorix <- function(...) {
   .Defunct("isofind")
 }
@@ -134,7 +135,7 @@ Isorix <- function(...) {
 #' 
 #' }
 #' 
-#' @export isofind
+#' @export
 isofind <- function(assign.data,
                     isoscape,
                     calibfit,
@@ -155,10 +156,12 @@ isofind <- function(assign.data,
       (assign.data$tissue.value - calibfit$param["intercept"])/calibfit$param["slope"]
     ## we create individual rasters containing the test statistics
     list.stat.layers <- sapply(1:nrow(assign.data),
-                               function(i) assign.data$mean.origin[i]-isoscape$isoscape$mean
+                               function(i) {
+                                 assign.data$mean.origin[i] - isoscape$isoscape$mean
+                               }
                                )
     names(list.stat.layers) <- names.layers
-    stat.stack <- stack(list.stat.layers)
+    stat.stack <- raster::stack(list.stat.layers)
     if (any(names.layers != names(stat.stack))) {
       warning("Your animalID could not be used to name rasters (you may have used numbers), so they have been slightly modified by IsoriX.")
       names.layers <- names(stat.stack) ## trick to track the good names as they can change during stacking (if numbers)
@@ -172,15 +175,16 @@ isofind <- function(assign.data,
 
     ## we create individual rasters containing the variance of the test statistics
     list.varstat.layers <- sapply(1:nrow(assign.data),
-                                  function(i)
+                                  function(i) {
                                     isoscape$isoscape$mean.predVar +
                                     calibfit$calib.fit$phi/calibfit$param["slope"]^2 +
                                     fixedVar[i]/calibfit$param["slope"]^2 +
                                     0 ## ToDo compute fourth variance term
+                                  }
                                   )
 
     names(list.varstat.layers) <- names.layers
-    varstat.stack <- stack(list.varstat.layers)
+    varstat.stack <- raster::stack(list.varstat.layers)
 
     ### WE COMPUTE THE INDIVIDUAL LOG P-VALUE SURFACES
     if (verbose) {
@@ -188,10 +192,10 @@ isofind <- function(assign.data,
     }
 
     ## we initialize the stack
-    logpv.stack <- raster(varstat.stack)
+    logpv.stack <- raster::raster(varstat.stack)
 
     ## we create individual rasters containing the p-values of the test
-    for(animalID in names.layers) {
+    for (animalID in names.layers) {
       name.layer <- paste("logpv.stack$", animalID, sep = "")
       expr.to.run <- paste(name.layer,
                            "<- .AssignTest(values(stat.stack[[animalID]]), values(varstat.stack[[animalID]]))"
@@ -204,7 +208,7 @@ isofind <- function(assign.data,
       print("combining individual assignments...")
     }
 
-    group.pv <- calc(logpv.stack, .FisherMethod)
+    group.pv <- raster::calc(logpv.stack, .FisherMethod)
   })  ## end of system.time
 
   ## display time
@@ -225,7 +229,7 @@ isofind <- function(assign.data,
     }
 
     ## turn mask into raster with NA inside polygons
-    raster.mask <- is.na(rasterize(mask, stat.stack))
+    raster.mask <- is.na(raster::rasterize(mask, stat.stack))
 
     ## multiplying rasters by the raster.mask    
     stat.stack <- stat.stack*raster.mask
@@ -237,7 +241,7 @@ isofind <- function(assign.data,
     pv.stack <- pv.stack*raster.mask
     names(pv.stack) <- names.layers ## we restore the names as they are not kept when computing
     
-    group.pv <- overlay(group.pv, raster.mask, fun = prod)
+    group.pv <- raster::overlay(group.pv, raster.mask, fun = prod)
   }
 
 
@@ -277,19 +281,19 @@ isofind <- function(assign.data,
 
 .AssignTest <- function(stats, vars, log.scale = TRUE) {
   if (!log.scale) {
-    return(2*(1-pnorm(abs(stats), mean = 0, sd = sqrt(vars))))
+    return(2*(1 - stats::pnorm(abs(stats), mean = 0, sd = sqrt(vars))))
   }
-  log.pva <- pnorm(stats, mean = 0,
-                   sd = sqrt(vars),
-                   log.p = TRUE,
-                   lower.tail = TRUE
-                   )
-  log.pvb <- pnorm(stats, mean = 0,
-                   sd = sqrt(vars),
-                   log.p = TRUE,
-                   lower.tail = FALSE
-                   )
-  log.pv <- log(2) + apply(cbind(log.pva, log.pvb), 1, min)
+  log.pva <- stats::pnorm(stats, mean = 0,
+                          sd = sqrt(vars),
+                          log.p = TRUE,
+                          lower.tail = TRUE
+                          )
+  log.pvb <- stats::pnorm(stats, mean = 0,
+                          sd = sqrt(vars),
+                          log.p = TRUE,
+                          lower.tail = FALSE
+                          )
+  log.pv <- log(2) + apply(cbind(log.pva, log.pvb), 1, min)  ## To check!!!
   return(log.pv)
 }
 
@@ -297,19 +301,21 @@ isofind <- function(assign.data,
 .FisherMethod <- function(logpv) {
   fisher.stat <- -2*sum(logpv)
   df <- 2*length(logpv)
-  pv <- pchisq(q = fisher.stat, df = df, lower.tail = FALSE)
+  pv <- stats::pchisq(q = fisher.stat, df = df, lower.tail = FALSE)
   return(pv)
 }
 
-
+#' @export
+#' @method print isorix
 print.isorix <- function(x, ...) {
   print(summary(x))
   return(invisible(NULL))
 }
 
-
+#' @export
+#' @method summary isorix
 summary.isorix <- function(object, ...) {
-  for(i in names(object)[names(object) != "sp.points"]){
+  for (i in names(object)[names(object) != "sp.points"]) {
     cat(paste("######### assignment raster(s): '", i, "'"), "\n")
     print(object[[i]])
     cat("\n")

@@ -1,5 +1,6 @@
 #' @rdname IsoriX-defunct
-GetElev <- function (...) {
+#' @export
+GetElev <- function(...) {
   .Defunct("getelev")
 }
 
@@ -41,11 +42,11 @@ GetElev <- function (...) {
 #' ## directory, just type:
 #' ## getelev()
 #' 
-#' @export getelev
-getelev <- function (path = NULL,
-                     overwrite = FALSE,
-                     verbose = interactive()
-                     ) {
+#' @export
+getelev <- function(path = NULL,
+                    overwrite = FALSE,
+                    verbose = interactive()
+                    ) {
 
   ## Define web address and file name
   address.elev <- "http://62.141.164.7/download/gmted2010_30mn.tif"
@@ -56,27 +57,88 @@ getelev <- function (path = NULL,
   md5sum.elev <- "9fbbb014e2f27299137bae21be31ac7c" 
   
   ## Download and check file
-  out <- downloadfile(address = address.elev,
-                      filename = filename.elev,
-                      path = path,
-                      overwrite = overwrite,
-                      md5sum = md5sum.elev,
-                      verbose = verbose
-                      )
+  downloadfile(address = address.elev,
+               filename = filename.elev,
+               path = path,
+               overwrite = overwrite,
+               md5sum = md5sum.elev,
+               verbose = verbose
+               )
 
-  return(invisible(out))
+  return(invisible(NULL))
 }
 
 
-## The following function is a generic function to download files and check 
-## their binary intergrity
-
-downloadfile <- function (address = NULL, filename = NULL, path = NULL,
-                          overwrite = FALSE, md5sum = NULL, verbose = interactive()
-                          ) {
+#' Download rasters of monthly precipitation from internet
+#' 
+#' The function \code{getprecip} allows for the download of rasters of monthly
+#' precipitation from internet. It downloads the "precipitation (mm) WorldClim
+#' Version2" at a spatial resolution of 30 seconds (~1 km2). After download, the
+#' function also unzip the file. The function
+#' \code{getprecip} uses the generic function \code{downloadfile} that can also be
+#' used to download directly other files.
+#' 
+#' In the argument "path" is not provided, the file will be stored in the 
+#' current working directory. The functions can create new directories, so you 
+#' can also indicate a new path. The integrity of the elevation raster is tested
+#' after a call to \code{getprecip}. In case of corruption, try downloading the
+#' file again, specifying overwrite = TRUE to overwrite the corrupted file.
+#' 
+#' @inheritParams getelev
+#' @source \url{http://worldclim.org/version2}
+#' @examples
+#' 
+#' ## To download the monthly precipitation
+#' ## in your current working
+#' ## directory, just type:
+#' ## getprecip()
+#' ## Mind that the file weights ca. 1GB!
+#' @export
+getprecip <- function(path = NULL,
+                      overwrite = FALSE,
+                      verbose = interactive()
+                      ) {
+  
+  ## Define web address and file name
+  address.precip <- "http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_30s_prec.zip"
+  filename.precip <- "wc2.0_30s_prec.zip"
+  
+  ## Define md5sum
+  ## (created with tools::md5sum("wc2.0_30s_prec.zip"))
+  md5sum.elev <- "afd435222a328efb4ab9487a3fe0b6d4"
+  
+  ## Download and check file
+  path.to.zip <- downloadfile(address = address.precip,
+                              filename = filename.precip,
+                              path = path,
+                              overwrite = overwrite,
+                              md5sum = md5sum.elev,
+                              verbose = verbose
+                              )
+  
+  ## Unzip the file
+  if (verbose > 0) {
+    print("unzipping in progress...", quote = FALSE)
+  }
+  utils::unzip(path.to.zip, exdir = "wc2.0_30s_prec")
   
   if (verbose > 0) {
-    print(paste("the function attempts to download", filename, "from internet"))
+    print("unzipping done!", quote = FALSE)
+  }
+  
+  return(invisible(NULL))
+}
+
+## The following function is a generic function to download files and check 
+## their binary integrity
+## We should write the help and export it.
+
+downloadfile <- function(address = NULL, filename = NULL, path = NULL,
+                         overwrite = FALSE, md5sum = NULL, verbose = interactive()
+                         ) {
+  
+  if (verbose > 0) {
+    print(paste("the function attempts to download", filename, "from internet"), quote = FALSE)
   }
   
   ## Change internet options to display more information
@@ -95,7 +157,7 @@ downloadfile <- function (address = NULL, filename = NULL, path = NULL,
   ## Create directory if missing
   if (!dir.exists(path)) {
     if (verbose > 0) {
-     print("(the folder you specified does not exist and will therefore be created)")
+     print("(the folder you specified does not exist and will therefore be created)", quote = FALSE)
     }
     dir.create(path, recursive = TRUE)
   }
@@ -108,16 +170,16 @@ downloadfile <- function (address = NULL, filename = NULL, path = NULL,
                   )
             )
   } else {
-    download.file(address, destfile = complete.path, mode = "wb")
+    utils::download.file(address, destfile = complete.path, mode = "wb")
   }
   
   ## Checking MD5sum
   if (!is.null(md5sum)) {
     if (requireNamespace("tools", quietly = TRUE)) {
-      if(tools::md5sum(complete.path) == md5sum) {
-        print("the file seems OK (md5sums do match)")
+      if (tools::md5sum(complete.path) == md5sum) {
+        print("the file seems OK (md5sums do match)", quote = FALSE)
       } else {
-        warning("the file seems to be corructed (md5sums do not match)")
+        warning("the file seems to be corructed (md5sums do not match)", quote = FALSE)
       }
     } else {
       warning("the package 'tools' is not installed, so the integrity of the downloaded file has not been checked")
@@ -126,12 +188,12 @@ downloadfile <- function (address = NULL, filename = NULL, path = NULL,
   
   ## Display outcome
   if (verbose > 0) {
-    print(paste("the file", filename, "is stored in the folder", path))
+    print(paste("the file", filename, "is stored in the folder", path), quote = FALSE)
   }
   
   ## Restore original internet options
   options(internet.info = opt.ori)
   
-  return(invisible(NULL))
+  return(invisible(complete.path))
 }
 

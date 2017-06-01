@@ -170,10 +170,8 @@ if (require(lattice)) {
     print(plot.disp.predVar,   split = c(2, 1, 2, 2), more = TRUE)
     print(plot.disp.residVar,  split = c(1, 2, 2, 2), more = TRUE)
     print(plot.disp.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+} 
 }
-
-}
-
 
 }
 \seealso{

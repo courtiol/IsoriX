@@ -113,8 +113,6 @@ if(require(rasterVis)) {
 }
 }
 
-
-
 }
 \seealso{
 \code{\link{elevraster}} for information on elevation rasters

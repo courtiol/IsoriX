@@ -20,6 +20,7 @@ before_install:
 cache: packages
 
 r:
+  - oldrel
   - release
   - devel
   
@@ -28,6 +29,11 @@ r_check_args:
 
 r_packages:
   - covr
+
+addons:
+  apt:
+    packages:
+      - ghostscript
   
 after_success:
   - Rscript -e 'library(covr); codecov(type = "examples")'

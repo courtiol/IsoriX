@@ -70,9 +70,10 @@ See \code{\link{calibdata}} to know which variables are needed to
 perform the calibration fit and their names.
 }
 \examples{
-\dontrun{
 ## The following example takes some time and will therefore not
 ## be run unless you type: example(calibfit, run.dontrun = TRUE)
+
+\dontrun{
 data(calibdata)
 data(Europefit)
 ## fit the calibration model

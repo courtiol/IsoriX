@@ -1,4 +1,5 @@
 #' @rdname IsoriX-defunct
+#' @export
 RElevate <- function(...) {
     .Defunct("relevate")
   }
@@ -104,9 +105,7 @@ RElevate <- function(...) {
 #' }
 #' }
 #' 
-#' 
-#' 
-#' @export relevate
+#' @export
 relevate <- function(elevation.raster,
                      isofit = NULL,
                      aggregation.factor = 0L,
@@ -117,13 +116,16 @@ relevate <- function(elevation.raster,
 
   time <- system.time({
     if (!is.null(isofit)) {  ## test if cropping is needed
+      if (any(class(isofit) %in% "multiisofit")) {
+        isofit <- isofit$multi.fits[[1]]
+        }
       if (!is.null(manual.crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
       if (## test if the elevation raster is not smaller than the area covered by the weather sources.
           ## If yes crop will not proceed!
-          xmin(elevation.raster)>min(isofit$mean.fit$data$long) |
-          xmax(elevation.raster)<max(isofit$mean.fit$data$long) |
-          ymin(elevation.raster)>min(isofit$mean.fit$data$lat) |
-          ymax(elevation.raster)<max(isofit$mean.fit$data$lat)
+          raster::xmin(elevation.raster) > min(isofit$mean.fit$data$long) |
+          raster::xmax(elevation.raster) < max(isofit$mean.fit$data$long) |
+          raster::ymin(elevation.raster) > min(isofit$mean.fit$data$lat) |
+          raster::ymax(elevation.raster) < max(isofit$mean.fit$data$lat)
           ) {
         stop("cropping not possible (sources located outside elevation raster)")
       }
@@ -131,23 +133,23 @@ relevate <- function(elevation.raster,
         print(paste("cropping..."))
       }
       ## crop is performed:
-      elevation.raster <- crop(elevation.raster,
-                               extent(min(isofit$mean.fit$data$long),
-                                      max(isofit$mean.fit$data$long),
-                                      min(isofit$mean.fit$data$lat),
-                                      max(isofit$mean.fit$data$lat)
-                                      )
+      elevation.raster <- raster::crop(elevation.raster,
+                               raster::extent(min(isofit$mean.fit$data$long),
+                                              max(isofit$mean.fit$data$long),
+                                              min(isofit$mean.fit$data$lat),
+                                              max(isofit$mean.fit$data$lat)
+                                              )
                                )
     } else {
       if (length(manual.crop) == 4) {
-        elevation.raster <- crop(elevation.raster, manual.crop)
+        elevation.raster <- raster::crop(elevation.raster, manual.crop)
       }
     }
-    if (aggregation.factor>1) {  ## test if aggregation is needed
+    if (aggregation.factor > 1) {  ## test if aggregation is needed
       if (interactive()) {
         print(paste("aggregating..."))
       }
-      elevation.raster <- aggregate(elevation.raster, fact = aggregation.factor, fun = aggregation.fun)  ## aggregation
+      elevation.raster <- raster::aggregate(elevation.raster, fact = aggregation.factor, fun = aggregation.fun)  ## aggregation
     }
   })
 
