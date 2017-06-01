@@ -23,6 +23,7 @@ Imports:
     sp,
     spaMM (>= 2.0),
     stats,
+    tools,
     utils
 Description:
   Building isoscapes using mixed models and inferring the geographic origin of 
