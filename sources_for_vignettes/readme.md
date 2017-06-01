@@ -8,7 +8,7 @@ Static vignette won't be compiled during build time and thus allows the presenta
 
 * create the asis file (see pdf in this folder for how to)
 
-* if vignettes are pdfs, you can reduce their size by creating png pictures at 100 dpi and by comrpessing the pdfs using Ghostscript. The can be done easily in R by typing:
+* if vignettes are pdfs, you can reduce their size by creating png pictures at 100 dpi and by compressing the pdfs using Ghostscript. The can be done easily in R by typing:
 
 ```
 #!R
