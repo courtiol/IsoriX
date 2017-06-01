@@ -48,4 +48,6 @@ sources_for_vignettes/**/*.shx
 sources_for_vignettes/**/*.prj
 sources_for_vignettes/**/*.asc
 sources_for_vignettes/**/*.pdf
+sources_for_vignettes/**/species_14123/
+sources_for_vignettes/**/*.zip
 
