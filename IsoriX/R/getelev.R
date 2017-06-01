@@ -175,14 +175,10 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   
   ## Checking MD5sum
   if (!is.null(md5sum)) {
-    if (requireNamespace("tools", quietly = TRUE)) {
-      if (tools::md5sum(complete.path) == md5sum) {
-        print("the file seems OK (md5sums do match)", quote = FALSE)
-      } else {
-        warning("the file seems to be corructed (md5sums do not match)", quote = FALSE)
-      }
+    if (tools::md5sum(complete.path) == md5sum) {
+      print("the file seems OK (md5sums do match)", quote = FALSE)
     } else {
-      warning("the package 'tools' is not installed, so the integrity of the downloaded file has not been checked")
+      warning("the file seems to be corructed (md5sums do not match). Try to download it again setting the argument overwrite to TRUE.", quote = FALSE)
     }
   }
   
