@@ -63,6 +63,7 @@
       \item some typo fixed in documentation files
       \item RandomFields moved to suggest
       \item .Rd files for documentation are now generated with Roxygen2
+      \item queryGNIP is now provided with a single month argument specifying the months to select
       }
   }
 }

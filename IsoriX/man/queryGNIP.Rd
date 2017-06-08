@@ -4,27 +4,21 @@
 \alias{queryGNIP}
 \title{Filter the dataset to create an isoscape}
 \usage{
-queryGNIP(data, month.min = 1, month.max = 12, year.min, year.max, long.min,
-  long.max, lat.min, lat.max, split.by = NULL, prop.random = 0,
-  random.level = "station")
+queryGNIP(data, month = 1:12, year.min, year.max, long.min, long.max, lat.min,
+  lat.max, split.by = NULL, prop.random = 0, random.level = "station")
 }
 \arguments{
 \item{data}{A \var{dataframe} containing original isotopic measurements
 similar in structure to \code{\link{GNIPdata}}}
 
-\item{month.min}{A \var{numeric} indicating the minimum month to select
-from. Should be a round number between 1 and 12. The default value is 1
-(January).}
-
-\item{month.max}{A \var{numeric} indicating the maximum month to select
-from. Should be a round number between 1 and 12.  The default value is 12
-(December).}
+\item{month}{A \var{numeric vector} indicating the months to select
+from. Should be a vector of round numbers between 1 and 12. The default is 1:12 selecting all months.}
 
 \item{year.min}{A \var{numeric} indicating the oldest year to select from.
 If not provided, the oldest year of \code{GNIPdata} will be considered}
 
 \item{year.max}{A \var{numeric} indicating the most recent year to select
-from.  If not provided, the most recent year of \code{\link{GNIPdata}} will
+from. If not provided, the most recent year of \code{\link{GNIPdata}} will
 be considered}
 
 \item{long.min}{A \var{numeric} indicating the minimum longitude to select
@@ -95,10 +89,6 @@ up the model fit by cropping/ clipping a certain area. The dataframe
 produced by this function can be used as input to fit the isoscape (see
 \code{\link{isofit}} and  \code{\link{isomultifit}}).
 }
-\note{
-If one wants e.g. to select the winter months November to February,
-one has to select 11 as minimum and 2 as maximum and not the opposite.
-}
 \examples{
 
 data(GNIPdata)
@@ -138,8 +128,7 @@ head(GNIPdataEUyearly)
 ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN EUROPE
 GNIPdataEUwarm <- queryGNIP(
     data=GNIPdata,
-    month.min = 5,  
-    month.max = 8,
+    month = 5:8,
     year.min = 1960,
     year.max = 2013,
     long.min = -30, 
