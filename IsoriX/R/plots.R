@@ -47,15 +47,17 @@
 #' package (see examples).
 #' 
 #' The argument "palette" is used to define how to colour the isoscape and 
-#' assignment plot. Within this list, "fn" is used to specify the function that 
-#' is used to sample the colours. "step" defines the number of units on the 
-#' z-scale that shares a given colour and "range" can be used to constrain the 
-#' minimum and/or maximum values to be drawn (e.g. range = c(0, 1)). This latter
+#' assignment plot. Within this list, "step" defines the number of units on the 
+#' z-scale that shares a given colour; "range" can be used to constrain the 
+#' minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
 #' argument is usefull if one wants to create several plots with the same 
-#' z-scale. The argument "n.labels" allows for the user to approximatively 
-#' define the maximum number of numbers plotted on the z-scale. The argument 
-#' "digits" defines the number of digits displayed for the numbers used as
-#' labels.
+#' z-scale); "n.labels" allows for the user to approximatively define the 
+#' maximum number of numbers plotted on the z-scale; "digits" defines the number
+#' of digits displayed for the numbers used as labels; and "fn" is used to 
+#' specify the function that is used to sample the colours. If "fn" is NULL
+#' (default) the palette functions derived from \code{\link{isopalette1}} and
+#' \code{\link{isopalette2}} are used when ploting isoscape and assignments,
+#' respectivelly.
 #' 
 #' @name plots
 #' @aliases plot.isofit plot.isoscape plot.calibfit plot.isorix plot
@@ -111,7 +113,7 @@ plot.isoscape <- function(x,
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                           borders = list(borders = NULL, lwd = 0.5, col = "black"),
                           mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
-                          palette = list(fn = grDevices::colorRampPalette(IsoriX::isopalette1, bias = 0.5), step = NA, range = c(NA, NA), n.labels = 11, digits = 2),
+                          palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NULL),
                           plot    = TRUE,
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
@@ -121,9 +123,11 @@ plot.isoscape <- function(x,
     ## complete input with default setting
     .CompleteArgs(plot.isoscape)
     
-    ## checking the inputs
-    if (length(palette) < 2) {
-      stop("wrong palette, more colours needed")
+    ## importing palette if missing
+    if (is.null(palette$fn)) {
+      isopalette1 <- NULL ## to please R CMD check
+      utils::data("isopalette1", envir = environment(), package = "IsoriX")
+      palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 0.5)
     }
     
     if (("isosim" %in% class(x))) {
@@ -200,7 +204,7 @@ plot.isorix <- function(x,
                         borders = list(borders = NULL, lwd = 0.5, col = "black"),
                         mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
                         mask2   = list(mask = NULL, lwd = 0, col = "purple", fill = "purple"),
-                        palette = list(fn = grDevices::colorRampPalette(IsoriX::isopalette2, bias = 0.5), step = NA, range = c(0, 1), n.labels = 11, digits = 2),
+                        palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn = NULL),
                         plot    = TRUE,
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
@@ -208,9 +212,11 @@ plot.isorix <- function(x,
   ## complete input with default setting
   .CompleteArgs(plot.isorix)
   
-  ## checking the inputs
-  if (length(palette) < 2) {
-    stop("wrong palette, more colors needed")  
+  ## importing palette if missing
+  if (is.null(palette$fn)) {
+    isopalette2 <- NULL ## to please R CMD check
+    utils::data("isopalette2", envir = environment(), package = "IsoriX")
+    palette$fn <- grDevices::colorRampPalette(isopalette2, bias = 0.5)
   }
   
   ## changing cutoff level to null when we don't want to draw the cutoff
