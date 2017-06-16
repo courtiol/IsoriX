@@ -108,16 +108,14 @@ Isosim <- function(...) {
 #'     which = "mean",
 #'     sources = list(draw = FALSE),
 #'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1)
+#'     mask = list(mask = oceanmask))
 #' 
 #' plot.disp.fitted <- plot(
 #'     x = isoscape,
 #'     which = "disp",
 #'     sources = list(draw = FALSE),
 #'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1)
+#'     mask = list(mask = oceanmask))
 #' 
 #' ## We compare simulated and fitted data visually
 #' if(require(lattice)){
