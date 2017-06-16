@@ -39,11 +39,11 @@ Suggests:
     GISTools,
     lattice,
     maps,
-    tools,
     RandomFields,
     R.rsp,
     rgdal
 VignetteBuilder: R.rsp
+LazyData: false
 URL: https://github.com/courtiol/IsoriX_project/
 BugReports: https://github.com/courtiol/IsoriX_project/issues/
 RoxygenNote: 6.0.1
