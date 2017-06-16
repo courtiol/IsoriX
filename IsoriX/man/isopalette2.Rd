@@ -12,7 +12,10 @@ For information on how to use themes, check:
 \url{https://oscarperpinan.github.io/rastervis/#themes}
 }
 \description{
-These datasets contain colour vectors that can be used for plotting.
+These datasets contain colour vectors that can be used for plotting. In our
+examples, we use the \code{isopalette1} for plotting the isoscape using
+\code{\link{plot.isoscape}} and \code{isopalette2} for plotting the
+assignment outcoume using \code{\link{plot.isorix}}.
 }
 \details{
 Colour palettes can be created by using the function \code{\link{colorRamp}}
