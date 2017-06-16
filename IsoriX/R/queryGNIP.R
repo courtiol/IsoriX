@@ -35,16 +35,13 @@ QueryGNIP <- function(...) {
 #' 
 #' @param data A \var{dataframe} containing original isotopic measurements
 #' similar in structure to \code{\link{GNIPdata}}
-#' @param month.min A \var{numeric} indicating the minimum month to select
-#' from. Should be a round number between 1 and 12. The default value is 1
-#' (January).
-#' @param month.max A \var{numeric} indicating the maximum month to select
-#' from. Should be a round number between 1 and 12.  The default value is 12
-#' (December).
+#' @param month A \var{numeric vector} indicating the months to select
+#' from. Should be a vector of round numbers between 1 and 12. The default is 
+#' 1:12 selecting all months.
 #' @param year.min A \var{numeric} indicating the oldest year to select from.
 #' If not provided, the oldest year of \code{GNIPdata} will be considered
 #' @param year.max A \var{numeric} indicating the most recent year to select
-#' from.  If not provided, the most recent year of \code{\link{GNIPdata}} will
+#' from. If not provided, the most recent year of \code{\link{GNIPdata}} will
 #' be considered
 #' @param long.min A \var{numeric} indicating the minimum longitude to select
 #' from. Should be a number between -180 and 180. If not provided, -180 will be
@@ -77,8 +74,6 @@ QueryGNIP <- function(...) {
 #' aggregated by weather station, or a \var{list}, see above argument
 #' \code{prop.random}. For each weather station the mean and variance sample
 #' estimates are computed.
-#' @note If one wants e.g. to select the winter months November to February,
-#' one has to select 11 as minimum and 2 as maximum and not the opposite.
 #' @seealso \code{\link{IsoriX}} for the complete workflow
 #' \code{\link{GNIPdata}} for the complete dataset
 #' @examples
@@ -120,8 +115,7 @@ QueryGNIP <- function(...) {
 #' ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN EUROPE
 #' GNIPdataEUwarm <- queryGNIP(
 #'     data=GNIPdata,
-#'     month.min = 5,  
-#'     month.max = 8,
+#'     month = 5:8,
 #'     year.min = 1960,
 #'     year.max = 2013,
 #'     long.min = -30, 
@@ -160,8 +154,7 @@ QueryGNIP <- function(...) {
 #' 
 #' @export
 queryGNIP <- function(data,
-                      month.min = 1,
-                      month.max = 12,
+                      month = 1:12,
                       year.min,
                       year.max,
                       long.min ,
@@ -174,8 +167,8 @@ queryGNIP <- function(data,
                       ) {
 
   ## Some checks
-  if ((month.min %% 1 != 0) | (month.max %% 1 != 0)) {
-    stop("Months must be provided as a round numeric values or as an integer.")
+  if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
+    stop("Months must be provided as a vector of round numeric values or integers and should be between 1 and 12.")
   }
 
   if (prop.random > 1) {
@@ -191,12 +184,7 @@ queryGNIP <- function(data,
   if (missing("lat.max")) lat.max <- 90 
 
   ## Prepare selection
-  if (month.max < month.min) {
-    month.select <- data$month >= month.min | data$month <= month.max
-  } else {
-    month.select <- data$month >= month.min & data$month <= month.max
-  }
-
+  month.select <- data$month %in% month 
   year.select <- data$year >= year.min & data$year >= year.min
   long.select <- data$long >= long.min & data$long <= long.max
   lat.select  <- data$lat  >= lat.min  & data$lat  <= lat.max
