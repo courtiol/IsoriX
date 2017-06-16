@@ -145,7 +145,6 @@ We can finally plot the precipitation-weighted annual average isoscape. We first
 ```{r load plot deco}
 data(countries)
 data(oceanmask)
-data(isopalette1)
 ```
 
 We now produce the plot as we did in the ___Workflow___:
@@ -155,7 +154,7 @@ plot(x = isoscapes,
      which = "mean",
      borders = list(borders = countries),
      mask = list(mask = oceanmask),
-     palette = isopalette1)
+     palette = list(fn = viridisLite::viridis))
 ```
 
 As for any isoscape fitted with __IsoriX__ we can also plot the isoscape for the prediction variance, the one for the residual variance, and the one for the response variance:
@@ -165,7 +164,7 @@ plot(x = isoscapes,
      which = "mean.predVar",
      borders = list(borders = countries),
      mask = list(mask = oceanmask),
-     palette = isopalette1)
+     palette = list(fn = viridisLite::viridis))
 ```
 
 ```{r plot residVar}
@@ -173,7 +172,7 @@ plot(x = isoscapes,
      which = "mean.residVar",
      borders = list(borders = countries),
      mask = list(mask = oceanmask),
-     palette = isopalette1)
+     palette = list(fn = viridisLite::viridis))
 ```
 
 ```{r plot respVar}
@@ -181,7 +180,7 @@ plot(x = isoscapes,
      which = "mean.respVar",
      borders = list(borders = countries),
      mask = list(mask = oceanmask),
-     palette = isopalette1)
+     palette = list(fn = viridisLite::viridis))
 ```
 
 
@@ -214,7 +213,8 @@ plotdiff <- plot(x = isoscape.diff,
                  which = "mean",
                  borders = list(borders = countries),
                  mask = list(mask = oceanmask),
-                 palette = isopalette1,
+                 palette = list(range = c(-13, 13), step = 2,
+                                n.labels = Inf, fn = viridisLite::viridis),
                  plot = FALSE)  ## We create the plot
 plotdiff$main <- "Difference in" ~ delta * D[p] ~ "(simple - weighted by monthly precipitation amounts)"
 plotdiff  ## We display the plot
