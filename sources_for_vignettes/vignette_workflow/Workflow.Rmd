@@ -42,12 +42,11 @@ Start by selecting the GNIP data needed for us to build an isoscape. In this exa
 data(GNIPdata)
 
 ## select the relevant data
-GNIPdataEU <- queryGNIP(
-    data=GNIPdata,
-    long.min = -30, 
-    long.max = 60,
-    lat.min = 30, 
-    lat.max = 70)
+GNIPdataEU <- queryGNIP(data = GNIPdata,
+                        long.min = -30,
+                        long.max = 60,
+                        lat.min = 30,
+                        lat.max = 70)
 ```
 A warning appears because repeated measurements at one location are associated with different elevations. This is a mismatch in the original data, and the function `queryGNIP()` will only select the first elevation found for this location in the dataset.
 
@@ -63,10 +62,10 @@ kable(head(GNIPdataEU))
 The second thing you need to do is to fit the geostatisical model using the function `isofit()`. This function has many parameters that can be ajusted to fit different models, but we will here use its default settings.
 
 ```{r, isofit, eval=FALSE}
-Europefit <- isofit(iso.data=GNIPdataEU,
-    mean.model.fix=list(elev=TRUE, lat.abs=TRUE),
-    mean.model.rand=list("uncorr"=TRUE),
-    disp.model.rand=list("uncorr"=TRUE))
+Europefit <- isofit(iso.data = GNIPdataEU,
+    mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
+    mean.model.rand = list("uncorr" = TRUE),
+    disp.model.rand = list("uncorr" = TRUE))
 ```
 
 ```{r, loadmodel, echo=FALSE}
@@ -106,7 +105,7 @@ elevationraster
 Then, we crop and resize it using our function `relevate()`. The crop is automatically set by default to the extent corresponding to the dataset we used above (`GNIPdataEU`), which the function access through the fitted `Europefit`. To resize the raster we chose here an aggregation factor of 10. The lower the aggregation factor, the higher the resolution of the elevation raster will be, but the longest the computation time and the largest the map produced will also be. We recommend to use the lowest aggregation factor that you hardware and patience can handle.
 
 ```{r, relevate2, cache=docache}
-elev <- relevate(elevation.raster=elevationraster, isofit=Europefit, aggregation.factor=10)
+elev <- relevate(elevation.raster = elevationraster, isofit = Europefit, aggregation.factor = 10)
 ```
 
 
@@ -115,51 +114,41 @@ elev <- relevate(elevation.raster=elevationraster, isofit=Europefit, aggregation
 We will now build the isocape using the function `isoscape()`.
 
 ```{r, isoscape, warning=FALSE}
-isoscape <- isoscape(elevation.raster=elev, isofit=Europefit)
+isoscape <- isoscape(elevation.raster = elev, isofit = Europefit)
 ```
 
 ```{r, saveiso, echo=FALSE}
-save(isoscape, file="isoscape.rda", compress="xz")
+save(isoscape, file = "isoscape.rda", compress = "xz")
 ```
 
 ```{r, plot1}
 ## we load the objects that are used to decorate the maps
 data(countries)
 data(oceanmask)
-data(isopalette1)
 
 ## we plot the prediction for the mean isotopic values
-plot(
-    x=isoscape,
-    which="mean",
-    borders=list(borders=countries),
-    mask=list(mask=oceanmask),
-    palette=isopalette1
-)
+plot(x = isoscape,
+     which = "mean",
+     borders = list(borders = countries),
+     mask = list(mask = oceanmask))
 ```
 
 The function `isoscape()` creates 8 different rasters that correspond to different aspects of the isoscape (see `?isoscape()` for details). For example, we will now plot the variation in isotopic values predicted at each location.
 
 ```{r, respVar}
-plot(
-    x=isoscape,
-    which="mean.respVar",
-    borders=list(borders=countries),
-    mask=list(mask=oceanmask),
-    palette=isopalette1
-)
+plot(x = isoscape,
+     which = "mean.respVar",
+     borders = list(borders = countries),
+     mask = list(mask = oceanmask))
 ```
 
 We can also plot the prediction variance, which will be useful to discuss the quality of our assignment:
 
 ```{r, predVar}
-plot(
-    x=isoscape,
-    which="mean.predVar",
-    borders=list(borders=countries),
-    mask=list(mask=oceanmask),
-    palette=isopalette1
-)
+plot(x = isoscape,
+     which = "mean.predVar",
+     borders = list(borders = countries),
+     mask = list(mask = oceanmask)))
 ```
 
 ## Step 5 - Fit the calibration function
@@ -171,10 +160,8 @@ We now use the function `calibfit()` to fit the relationship between the isotope
 data(calibdata)
 
 ## fit the calibration model
-calib <- calibfit(
-	calib.data=calibdata,
-	isofit=Europefit
-	)
+calib <- calibfit(calib.data = calibdata,
+                  isofit = Europefit)
 ```
 
 These warnings should disappear in the future. They reflect limitations of the current version of the package __spaMM__, which we use to fit our models.
@@ -196,7 +183,7 @@ We will now perform the assignment procedure that aims at identifying areas with
 data(assigndata)
 
 ## keep only one bat species
-M_bechsteinii <- subset(assigndata, species=="Myotis_bechsteinii")
+M_bechsteinii <- subset(assigndata, species == "Myotis_bechsteinii")
 
 ## first 6 rows of the dataset
 head(M_bechsteinii)
@@ -208,18 +195,16 @@ nrow(M_bechsteinii)
 We now perform the assignment:
 
 ```{r, assign comput}
-assignment <- isofind(
-    assign.data=M_bechsteinii,
-    isoscape=isoscape,
-    calibfit=calib,
-    mask=oceanmask
-    )
+assignment <- isofind(assign.data = M_bechsteinii,
+                      isoscape = isoscape,
+                      calibfit = calib,
+                      mask = oceanmask)
 ```
 
 Note that we used the argument `mask=oceanmask` so to exclude with certainty that the origin of the bats comes from the water.
 
 ```{r save assignment, echo=FALSE}
-save(assignment, file="assignment.rda", compress="xz")
+save(assignment, file = "assignment.rda", compress = "xz")
 ```
 
 Once the assignment done, we can draw several assignment maps. Let us start by plotting the assignment map for a specific bat by telling the function `plot` that `who` we want the plot for the bat with the `animalID` "Mbe_6" for example:
@@ -229,34 +214,31 @@ Once the assignment done, we can draw several assignment maps. Let us start by p
 data(isopalette2)
 
 ## we plot
-plot(x=assignment,
-     who="Mbe_6",
-     borders=list(borders=countries),
-     mask=list(mask=oceanmask),
-     palette=isopalette2)
+plot(x = assignment,
+     who = "Mbe_6",
+     borders = list(borders = countries),
+     mask = list(mask = oceanmask))
 ```
 
 We can also use number for individuals and plot several at once:
 
 ```{r, assign plot 2}
 ## plot the first 9 bats
-plot(x=assignment,
-     who=1:9,
-     borders=list(borders=countries),
-     mask=list(mask=oceanmask),
-     sources=list(draw=FALSE),
-     calib=  list(draw=FALSE),
-     palette=isopalette2)
+plot(x = assignment,
+     who = 1:9,
+     borders = list(borders = countries),
+     mask = list(mask = oceanmask),
+     sources = list(draw = FALSE),
+     calib = list(draw = FALSE))
 ```
 
 Note that we removed the plotting of sources and calibration points in the previous plot by setting using `draw=FALSE`. Assuming that all bats originate from the same place we can also plot the global assignment for the group by setting `who="group"`:
 
 ```{r, assign plot3}
-plot(x=assignment,
-     who="group",
-     borders=list(borders=countries),
-     mask=list(mask=oceanmask),
-     palette=isopalette2)
+plot(x = assignment,
+     who = "group",
+     borders = list(borders = countries),
+     mask = list(mask = oceanmask))
 ```
 
 We can easily add information on these plots. As an example, we will add the point that is the most compatible with the unknown origin of these bats. We start by extracting its location using functions from the package __raster__:
@@ -264,7 +246,7 @@ We can easily add information on these plots. As an example, we will add the poi
 ```{r, maximum}
 coord <- coordinates(assignment$group$pv)
 max.location <- coord[which.max(values(assignment$group$pv)), ]
-maximum <- data.frame(long=max.location[1], lat=max.location[2])
+maximum <- data.frame(long = max.location[1], lat = max.location[2])
 maximum
 ```
 
@@ -272,7 +254,7 @@ Let us also compute for comparison the point that corresponds to the real origin
 
 ```{r, origin}
 ## the real origin of these bats (as known by us)
-origin <- data.frame(long=25.982122, lat=43.611536)
+origin <- data.frame(long = 25.982122, lat = 43.611536)
 ```
 
 We add these plots to the last plot we created using the package __lattice__:
@@ -280,10 +262,10 @@ We add these plots to the last plot we created using the package __lattice__:
 ```{r, assign plot 4, message=FALSE}
 library(lattice)
 trellis.last.object() + 
-  xyplot(origin$lat~origin$long, pch=13, col="purple", cex=5, lwd=2, 
-      panel=panel.points) +
-  xyplot(maximum$lat~maximum$long, pch=13, col="orange", cex=5, lwd=2, 
-      panel=panel.points)
+  xyplot(origin$lat~origin$long, pch = 13, col = "purple", cex = 5, lwd = 2, 
+      panel = panel.points) +
+  xyplot(maximum$lat~maximum$long, pch = 13, col = "orange", cex = 5, lwd = 2, 
+      panel = panel.points)
 ```
 
 The function `trellis.last.object()` is very handy: it retrieves the last plot created using __lattice__ and our plot functions for isoscapes and assignments use __lattice__ since they use __rasterVis__ which is a package itself based on __lattice__.
