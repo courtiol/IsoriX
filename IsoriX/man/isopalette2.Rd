@@ -12,10 +12,7 @@ For information on how to use themes, check:
 \url{https://oscarperpinan.github.io/rastervis/#themes}
 }
 \description{
-These datasets contain colour vectors that can be used for plotting. In our
-examples, we use the \code{isopalette1} for plotting the isoscape using
-\code{\link{plot.isoscape}} and \code{isopalette2} for plotting the
-assignment outcoume using \code{\link{plot.isorix}}.
+These datasets contain colour vectors that can be used for plotting.
 }
 \details{
 Colour palettes can be created by using the function \code{\link{colorRamp}}
@@ -59,6 +56,15 @@ my.palette  <- colorRampPalette(c("blue", "green", "red"), bias=0.7)
 par(mfrow=c(1, 1))
 pie(1:100, col=my.palette(100), border=NA, labels=NA,
     clockwise=TRUE, main="a home-made palette")
+
+### TURNING PALETTES INTO FUNCTIONS (FOR USE IN ISORIX)
+Isopalette1Fn <- colorRampPalette(isopalette1, bias = 0.5)
+Isopalette2Fn <- colorRampPalette(isopalette2, bias = 0.5)
+par(mfrow=c(1, 2))
+pie(1:100, col=Isopalette1Fn(100), border=NA, labels=NA,
+    clockwise=TRUE, main="isopalette1")
+pie(1:100, col=Isopalette2Fn(100), border=NA, labels=NA,
+    clockwise=TRUE, main="isopalette2")
 
 }
 \seealso{
