@@ -66,7 +66,6 @@ Isosim <- function(...) {
 #' data(elevraster)
 #' data(countries)
 #' data(oceanmask)
-#' data(isopalette1)
 #' 
 #' elevationraster <- relevate(elevraster,
 #'     manual.crop = c(-30, 60, 30, 70))
@@ -82,15 +81,13 @@ Isosim <- function(...) {
 #'     x = simu,
 #'     which = "mean",
 #'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1)
+#'     mask = list(mask = oceanmask))
 #' 
 #' plot.disp.simu <- plot(
 #'     x = simu,
 #'     which = "disp",
 #'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1)
+#'     mask = list(mask = oceanmask))
 #' 
 #' 
 #' ## We fit the simulated data by sampling 200 locations
