@@ -80,7 +80,6 @@ data(elevraster)
 data(Europefit)
 data(countries)
 data(oceanmask)
-data(isopalette1)
 
 ## We crop the elevation raster to the extent of Europefit
 elevationraster <- relevate(
@@ -99,7 +98,6 @@ plot.mean <- plot(
     which = "mean",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 plot.mean.predVar <- plot(
@@ -107,7 +105,6 @@ plot.mean.predVar <- plot(
     which = "mean.predVar",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 plot.mean.residVar <- plot(
@@ -115,7 +112,6 @@ plot.mean.residVar <- plot(
     which = "mean.residVar",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 plot.mean.respVar <- plot(
@@ -123,7 +119,6 @@ plot.mean.respVar <- plot(
     which = "mean.respVar",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 if(require(lattice)) {
@@ -138,7 +133,6 @@ plot.disp <- plot(
     which = "disp",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 plot.disp.predVar <- plot(
@@ -146,7 +140,6 @@ plot.disp.predVar <- plot(
     which = "disp.predVar",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 plot.disp.residVar <- plot(
@@ -154,7 +147,7 @@ plot.disp.residVar <- plot(
     which = "disp.residVar",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
+    palette = list(range = c(1.99, 2.00), step = 0.01),
     plot = FALSE)
     
 plot.disp.respVar <- plot(
@@ -162,7 +155,6 @@ plot.disp.respVar <- plot(
     which = "disp.respVar",
     borders = list(borders = countries),
     mask = list(mask = oceanmask),
-    palette = isopalette1,
     plot = FALSE)
 
 if (require(lattice)) {

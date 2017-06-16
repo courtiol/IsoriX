@@ -80,7 +80,6 @@ Isoscape <- function(...) {
 #' data(Europefit)
 #' data(countries)
 #' data(oceanmask)
-#' data(isopalette1)
 #' 
 #' ## We crop the elevation raster to the extent of Europefit
 #' elevationraster <- relevate(
@@ -99,7 +98,6 @@ Isoscape <- function(...) {
 #'     which = "mean",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' plot.mean.predVar <- plot(
@@ -107,7 +105,6 @@ Isoscape <- function(...) {
 #'     which = "mean.predVar",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' plot.mean.residVar <- plot(
@@ -115,7 +112,6 @@ Isoscape <- function(...) {
 #'     which = "mean.residVar",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' plot.mean.respVar <- plot(
@@ -123,7 +119,6 @@ Isoscape <- function(...) {
 #'     which = "mean.respVar",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' if(require(lattice)) {
@@ -138,7 +133,6 @@ Isoscape <- function(...) {
 #'     which = "disp",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' plot.disp.predVar <- plot(
@@ -146,7 +140,6 @@ Isoscape <- function(...) {
 #'     which = "disp.predVar",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' plot.disp.residVar <- plot(
@@ -154,7 +147,7 @@ Isoscape <- function(...) {
 #'     which = "disp.residVar",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
+#'     palette = list(range = c(1.99, 2.00), step = 0.01),
 #'     plot = FALSE)
 #'     
 #' plot.disp.respVar <- plot(
@@ -162,7 +155,6 @@ Isoscape <- function(...) {
 #'     which = "disp.respVar",
 #'     borders = list(borders = countries),
 #'     mask = list(mask = oceanmask),
-#'     palette = isopalette1,
 #'     plot = FALSE)
 #' 
 #' if (require(lattice)) {
