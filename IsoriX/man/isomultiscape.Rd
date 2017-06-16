@@ -44,7 +44,6 @@ data(GNIPdata)
 data(elevraster)
 data(countries)
 data(oceanmask)
-data(isopalette1)
 
 ## We prepare the data and split them by month
 
@@ -77,8 +76,7 @@ isoscapes <- isomultiscape(
 plot(x = isoscapes,
     which = "mean",
     borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    palette = isopalette1)
+    mask = list(mask = oceanmask))
 
 ## How to plot the isoscape for January?
 isoscape.jan <- isoscape(
@@ -88,8 +86,7 @@ isoscape.jan <- isoscape(
 plot(x = isoscape.jan,
     which = "mean",
     borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    palette = isopalette1)
+    mask = list(mask = oceanmask))
 }
 }
 \seealso{
