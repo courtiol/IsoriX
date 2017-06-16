@@ -70,7 +70,7 @@
 #'   (e.g. an ocean mask) (see details)
 #' @param mask2 A \var{list} containing information for the display of a mask
 #'   (e.g. a distribution mask) (see details)
-#' @param palette A vector of colours (\var{character})
+#' @param palette An optional vector of colours (\var{character})
 #' @param plot A \var{logical} indicating whether the plot shall be plotted or
 #'   just returned
 #' @param ... Additional arguments (not in use)
@@ -265,4 +265,28 @@ plot.isorix <- function(x,
   
   return(invisible(complete.map))
 
+}
+
+
+.cutandcolor <- function(var, step, range = NA, palette = viridisLite::viridis) {
+  where.cut <- seq(floor(min(var, na.rm = TRUE)),
+                   ceiling(max(var, na.rm = TRUE)) + step, step)
+  if (!any(is.na(range))) {
+    where.cut <- seq(min(range), max(range), step)
+    if ((min(var, na.rm = TRUE) < min(where.cut)) ||
+        (max(var, na.rm = TRUE) > max(where.cut)))
+      stop(
+        paste0("Range too small! It should be at least: [",
+               floor(min(var, na.rm = TRUE)), "-", ceiling(max(var, na.rm = TRUE)),
+               "]")
+      )
+  }
+  cats <- cut(var, where.cut, ordered_result = TRUE)
+  all.cols <- do.call(palette, list(n = length(levels(cats))))
+  cols <- all.cols[match(cats, levels(cats))]
+  return(list(
+    cols = cols,
+    at = where.cut,
+    all.cols = all.cols
+  ))
 }
