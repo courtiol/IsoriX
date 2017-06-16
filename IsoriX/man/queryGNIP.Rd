@@ -12,7 +12,8 @@ queryGNIP(data, month = 1:12, year.min, year.max, long.min, long.max, lat.min,
 similar in structure to \code{\link{GNIPdata}}}
 
 \item{month}{A \var{numeric vector} indicating the months to select
-from. Should be a vector of round numbers between 1 and 12. The default is 1:12 selecting all months.}
+from. Should be a vector of round numbers between 1 and 12. The default is 
+1:12 selecting all months.}
 
 \item{year.min}{A \var{numeric} indicating the oldest year to select from.
 If not provided, the oldest year of \code{GNIPdata} will be considered}
