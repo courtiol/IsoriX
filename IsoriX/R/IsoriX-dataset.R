@@ -315,6 +315,65 @@ NULL
 
 
 
+#' The fitted isoscape model for Germany
+#' 
+#' This dataset contains an object of class \code{isofit} containing the mean
+#' model and residual dispersion model fitted on the data for Germany (see
+#' example).
+#' 
+#' This fitted isoscape model has been obtained by running the function
+#' \code{\link{isofit}} on the isotopic source data stored in GNIPdataDE (see
+#' example).
+#' 
+#' @name GermanFit
+#' @docType data
+#' @format An object of class \code{isofit}
+#' @seealso \code{\link{isofit}} for information about how to fit an isoscape
+#' model
+#' @keywords datasets models
+#' @examples
+#' 
+#' 
+#' data(GermanFit)
+#' GermanFit
+#' plot(GermanFit)
+#' 
+#' ## The following example takes a lot of time and will therefore not
+#' ## be run unless you type: example(GermanFit, run.dontrun=TRUE)
+#' 
+#' \dontrun{
+#' ## We load the data for the entire world
+#' data(GNIPdata)
+#' 
+#' ## We prepare the data for Germany
+#' GNIPdataDE <- queryGNIP(data=GNIPdata,
+#'                         long.min = -30, 
+#'                         long.max = 60,
+#'                         lat.min = 30, 
+#'                         lat.max = 70
+#'                         )
+#' 
+#' ## We fit the isoscape model
+#' GermanFit <- isofit(iso.data=GNIPDataDE,
+#'                     mean.model.fix=list(elev=TRUE, lat.abs=TRUE),
+#'                     mean.model.rand=list("uncorr"=TRUE),
+#'                     disp.model.rand=list("uncorr"=TRUE)
+#'                     )
+#' 
+#' ## We created the object GermanFit stored in this package using
+#' ## save(GermanFit, file="GermanFit.rda", compress="xz")
+#' 
+#' GermanFit
+#' plot(GermanFit)
+#' }
+#' 
+#' 
+NULL
+
+
+
+
+
 #' World-wide weather station data
 #' 
 #' This dataset contains the mean and variance of Deuterium delta precipitation
