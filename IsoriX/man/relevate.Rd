@@ -63,25 +63,25 @@ predictions.
 ### DIFFERENCES IN AGGREGATION
 
 ## Loading objects
-data(elevraster)
-data(Europefit)
-data(countries)
-data(oceanmask)
+data(ElevRaster)
+data(GermanFit)
+data(CountryBorders)
+data(OceanMask)
 
 ## We aggregate and crop using different settings
 elevation.raster1 <- relevate(
-    elevation.raster = elevraster,
-    isofit = Europefit,
+    elevation.raster = ElevRaster,
+    isofit = GermanFit,
     aggregation.factor = 0)
 
 elevation.raster2 <- relevate(
-    elevation.raster = elevraster,
-    isofit = Europefit,
+    elevation.raster = ElevRaster,
+    isofit = GermanFit,
     aggregation.factor = 5)
 
 elevation.raster3 <- relevate(
-    elevation.raster = elevraster,
-    isofit = Europefit,
+    elevation.raster = ElevRaster,
+    isofit = GermanFit,
     aggregation.factor = 5, aggregation.fun = max)
 
 
@@ -92,20 +92,20 @@ elevation.raster3 <- relevate(
 \dontrun{
     ## We plot the outcome of the 3 different aggregation schemes
 if(require(rasterVis)) {
-    data(countries)
-    data(oceanmask)
+    data(CountryBorders)
+    data(OceanMask)
     plot.aggregation1 <- levelplot(elevation.raster1,
             margin = FALSE, main = "Original small raster") + 
-        layer(sp.polygons(countries)) +
-        layer(sp.polygons(oceanmask, fill = "blue"))
+        layer(sp.polygons(CountryBorders)) +
+        layer(sp.polygons(OceanMask, fill = "blue"))
     plot.aggregation2 <- levelplot(elevation.raster2,
             margin = FALSE, main = "Small raster aggregated (by mean)") + 
-        layer(sp.polygons(countries)) +
-        layer(sp.polygons(oceanmask, fill = "blue"))
+        layer(sp.polygons(CountryBorders)) +
+        layer(sp.polygons(OceanMask, fill = "blue"))
     plot.aggregation3 <- levelplot(elevation.raster3,
             margin = FALSE, main = "Small raster aggregated (by max)") + 
-        layer(sp.polygons(countries)) +
-        layer(sp.polygons(oceanmask, fill = "blue"))  
+        layer(sp.polygons(CountryBorders)) +
+        layer(sp.polygons(OceanMask, fill = "blue"))  
     ## panel using lattice syntax:
     print(plot.aggregation1, split = c(1, 1, 1, 3), more = TRUE)
     print(plot.aggregation2, split = c(1, 2, 1, 3), more = TRUE)
@@ -115,7 +115,7 @@ if(require(rasterVis)) {
 
 }
 \seealso{
-\code{\link{elevraster}} for information on elevation rasters
+\code{\link{ElevRaster}} for information on elevation rasters
 
 \code{\link{IsoriX}} for the complete workflow
 }

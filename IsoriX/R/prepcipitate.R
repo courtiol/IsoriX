@@ -28,18 +28,18 @@
 #' ## example(prepcipitate, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' data(elevraster)
+#' data(ElevRaster)
 #' data(GermanFit)
 #' 
 #' elevation.raster <- relevate(
-#'     elevation.raster = elevraster,
+#'     elevation.raster = ElevRaster,
 #'     isofit = GermanFit,
 #'     aggregation.factor = 0)
 #' 
 #' getprecip(path = "~/Desktop/")
 #' 
 #' precipitation.brick <- prepcipitate(path = "~/Desktop/",
-#'                                     elevation.raster = elevraster
+#'                                     elevation.raster = ElevRaster
 #'                                     )
 #'  
 #'  if (require(rasterVis)) {

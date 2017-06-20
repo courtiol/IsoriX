@@ -75,9 +75,9 @@ perform the calibration fit and their names.
 
 \dontrun{
 data(calibdata)
-data(Europefit)
+data(GermanFit)
 ## fit the calibration model
-calib <- calibfit(calib.data = calibdata, isofit = Europefit)
+calib <- calibfit(calib.data = calibdata, isofit = GermanFit)
 ## display minimal information
 calib
 ## display more information

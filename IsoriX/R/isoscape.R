@@ -76,13 +76,13 @@ Isoscape <- function(...) {
 #' 
 #' \dontrun{
 #' 
-#' data(elevraster)
+#' data(ElevRaster)
 #' data(GermanFit)
-#' data(countries)
-#' data(oceanmask)
+#' data(CountryBorders)
+#' data(OceanMask)
 #' 
 #' ## We crop the elevation raster to the extent of GermanFit
-#' elevationraster <- relevate(elevation.raster = elevraster,
+#' elevationraster <- relevate(elevation.raster = ElevRaster,
 #'                             isofit = GermanFit)
 #' 
 #' ## We build the isoscape
@@ -93,29 +93,29 @@ Isoscape <- function(...) {
 #' 
 #' plot.mean <- plot(x = isoscape,
 #'                   which = "mean",
-#'                   borders = list(borders = countries),
-#'                   mask = list(mask = oceanmask),
+#'                   borders = list(borders = CountryBorders),
+#'                   mask = list(mask = OceanMask),
 #'                   palette = isopalette1,
 #'                   plot = FALSE)
 #' 
 #' plot.mean.predVar <- plot(x = isoscape,
 #'                           which = "mean.predVar",
-#'                           borders = list(borders = countries),
-#'                           mask = list(mask = oceanmask),
+#'                           borders = list(borders = CountryBorders),
+#'                           mask = list(mask = OceanMask),
 #'                           palette = isopalette1,
 #'                           plot = FALSE)
 #' 
 #' plot.mean.residVar <- plot(x = isoscape,
 #'                            which = "mean.residVar",
-#'                            borders = list(borders = countries),
-#'                            mask = list(mask = oceanmask),
+#'                            borders = list(borders = CountryBorders),
+#'                            mask = list(mask = OceanMask),
 #'                            palette = isopalette1,
 #'                            plot = FALSE)
 #' 
 #' plot.mean.respVar <- plot(x = isoscape,
 #'                           which = "mean.respVar",
-#'                           borders = list(borders = countries),
-#'                           mask = list(mask = oceanmask),
+#'                           borders = list(borders = CountryBorders),
+#'                           mask = list(mask = OceanMask),
 #'                           palette = isopalette1,
 #'                           plot = FALSE)
 
@@ -129,29 +129,29 @@ Isoscape <- function(...) {
 #' 
 #' plot.disp <- plot(x = isoscape,
 #'                   which = "disp",
-#'                   borders = list(borders = countries),
-#'                   mask = list(mask = oceanmask),
+#'                   borders = list(borders = CountryBorders),
+#'                   mask = list(mask = OceanMask),
 #'                   palette = isopalette1,
 #'                   plot = FALSE)
 #' 
 #' plot.disp.predVar <- plot(x = isoscape,
 #'                           which = "disp.predVar",
-#'                           borders = list(borders = countries),
-#'                           mask = list(mask = oceanmask),
+#'                           borders = list(borders = CountryBorders),
+#'                           mask = list(mask = OceanMask),
 #'                           palette = isopalette1,
 #'                           plot = FALSE)
 #' 
 #' plot.disp.residVar <- plot(x = isoscape,
 #'                            which = "disp.residVar",
-#'                            borders = list(borders = countries),
-#'                            mask = list(mask = oceanmask),
+#'                            borders = list(borders = CountryBorders),
+#'                            mask = list(mask = OceanMask),
 #'                            palette = isopalette1,
 #'                            plot = FALSE)
 #'     
 #' plot.disp.respVar <- plot(x = isoscape,
 #'                           which = "disp.respVar",
-#'                           borders = list(borders = countries),
-#'                           mask = list(mask = oceanmask),
+#'                           borders = list(borders = CountryBorders),
+#'                           mask = list(mask = OceanMask),
 #'                           palette = isopalette1,
 #'                           plot = FALSE)
 #' 
@@ -362,60 +362,53 @@ isoscape <- function(elevation.raster, ## change as method?
 #' 
 #' \dontrun{
 #' 
-#' data(GNIPdata)
-#' data(elevraster)
-#' data(countries)
-#' data(oceanmask)
+#' data(GNIPDataDE)
+#' data(ElevRaster)
+#' data(CountryBorders)
+#' data(OceanMask)
 #' 
 #' ## We prepare the data and split them by month
 #' 
-#' GNIPdataMonthly <- queryGNIP(
-#'     data = GNIPdata,
-#'     split.by = "month",
-#'     long.min = -20,
-#'     long.max = 20,
-#'     lat.min = 45, 
-#'     lat.max = 55)
+#' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
+#'                                split.by = "month")
 #' 
-#' dim(GNIPdataMonthly)
+#' dim(GNIPDataDEmonthly)
 #' 
 #' ## We fit the isoscapes
 #' 
-#' isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
-#'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
+#'                               mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' ## We crop the elevation raster to the extent of isoscapemodels
-#' elevationraster <- relevate(
-#'     elevation.raster = elevraster,
-#'     isofit = isoscapemodels)
+#' elevationraster <- relevate(elevation.raster = ElevRaster,
+#'                             isofit = isoscapemodels)
 #' 
 #' ## We build the annual isoscapes by simple averaging (equal weighting)
 #' 
-#' isoscapes <- isomultiscape(
-#'     elevation.raster = elevationraster,
-#'     isofit = isoscapemodels)
+#' isoscapes <- isomultiscape(elevation.raster = elevationraster,
+#'                            isofit = isoscapemodels)
 #'     
 #' plot(x = isoscapes,
-#'     which = "mean",
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask))
+#'      which = "mean",
+#'      borders = list(borders = CountryBorders),
+#'      mask = list(mask = OceanMask))
 #' 
 #' ## How to plot the isoscape for January?
-#' isoscape.jan <- isoscape(
-#'     elevation.raster = elevationraster,
-#'     isofit = isoscapemodels$multi.fits[["month_1"]])
+#' isoscape.jan <- isoscape(elevation.raster = elevationraster,
+#'                          isofit = isoscapemodels$multi.fits[["month_1"]])
 #'     
 #' plot(x = isoscape.jan,
-#'     which = "mean",
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask))
+#'      which = "mean",
+#'      borders = list(borders = CountryBorders),
+#'      mask = list(mask = OceanMask))
 #' }
 #' @export
 
 isomultiscape <- function(elevation.raster, ## change as method?
-                         isofit,
-                         weighting = NULL,
-                         verbose = interactive()) {
+                          isofit,
+                          weighting = NULL,
+                          verbose = interactive()
+                          ) {
   
   ## In case the function is called on the output of isofit by mistake
   if (!any(class(isofit) %in% "multiisofit")) {

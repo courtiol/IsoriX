@@ -49,7 +49,7 @@
 #' We will soon provide a link to download an elevation raster for the entire
 #' world at a resolution of one altitude per square-km, and other rasters may
 #' be used. We have also stored a low resolution raster in our package (see
-#' \code{\link{elevraster}}) for users to try things out, but we do not
+#' \code{\link{ElevRaster}}) for users to try things out, but we do not
 #' encourage its use for real application.
 #' 
 #' \item Predicting the isoscape across the area covered by the elevation

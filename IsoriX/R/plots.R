@@ -41,9 +41,9 @@
 #' \code{\link{par}} for details). The element "draw" should be a \var{logical} 
 #' that indicates whether the layer must be created or not. The argument 
 #' "borders" (within the list borders) expects an object of the class 
-#' \var{SpatialPolygons} such as the object "countries" provided with this 
+#' \var{SpatialPolygons} such as the object "CountryBorders" provided with this 
 #' package. The argument "mask" (within the list maks) expects an object of the 
-#' class \var{SpatialPolygons} such as the object oceanmask provided with this 
+#' class \var{SpatialPolygons} such as the object "OceanMask" provided with this 
 #' package (see examples).
 #' 
 #' The argument "palette" is used to define how to colour the isoscape and 

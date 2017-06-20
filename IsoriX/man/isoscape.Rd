@@ -76,86 +76,83 @@ The isoscape can be plotted using the function \code{\link{plot.isoscape}}
 
 \dontrun{
 
-data(elevraster)
-data(Europefit)
-data(countries)
-data(oceanmask)
+data(ElevRaster)
+data(GermanFit)
+data(CountryBorders)
+data(OceanMask)
 
-## We crop the elevation raster to the extent of Europefit
-elevationraster <- relevate(
-    elevation.raster = elevraster,
-    isofit = Europefit)
+## We crop the elevation raster to the extent of GermanFit
+elevationraster <- relevate(elevation.raster = ElevRaster,
+                            isofit = GermanFit)
 
 ## We build the isoscape
-isoscape <- isoscape(
-    elevation.raster = elevationraster,
-    isofit = Europefit)
+isoscape <- isoscape(elevation.raster = elevationraster,
+                     isofit = GermanFit)
 
 isoscape
 
-plot.mean <- plot(
-    x = isoscape,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.mean <- plot(x = isoscape,
+                  which = "mean",
+                  borders = list(borders = CountryBorders),
+                  mask = list(mask = OceanMask),
+                  palette = isopalette1,
+                  plot = FALSE)
 
-plot.mean.predVar <- plot(
-    x = isoscape,
-    which = "mean.predVar",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.mean.predVar <- plot(x = isoscape,
+                          which = "mean.predVar",
+                          borders = list(borders = CountryBorders),
+                          mask = list(mask = OceanMask),
+                          palette = isopalette1,
+                          plot = FALSE)
 
-plot.mean.residVar <- plot(
-    x = isoscape,
-    which = "mean.residVar",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.mean.residVar <- plot(x = isoscape,
+                           which = "mean.residVar",
+                           borders = list(borders = CountryBorders),
+                           mask = list(mask = OceanMask),
+                           palette = isopalette1,
+                           plot = FALSE)
 
-plot.mean.respVar <- plot(
-    x = isoscape,
-    which = "mean.respVar",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.mean.respVar <- plot(x = isoscape,
+                          which = "mean.respVar",
+                          borders = list(borders = CountryBorders),
+                          mask = list(mask = OceanMask),
+                          palette = isopalette1,
+                          plot = FALSE)
 
 if(require(lattice)) {
-    print(plot.mean, split = c(1, 1, 2, 2), more = TRUE)
-    print(plot.mean.predVar,   split = c(2, 1, 2, 2), more = TRUE)
-    print(plot.mean.residVar,  split = c(1, 2, 2, 2), more = TRUE)
-    print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+ print(plot.mean, split = c(1, 1, 2, 2), more = TRUE)
+ print(plot.mean.predVar,   split = c(2, 1, 2, 2), more = TRUE)
+ print(plot.mean.residVar,  split = c(1, 2, 2, 2), more = TRUE)
+ print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
 }
 
-plot.disp <- plot(
-    x = isoscape,
-    which = "disp",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.disp <- plot(x = isoscape,
+                  which = "disp",
+                  borders = list(borders = CountryBorders),
+                  mask = list(mask = OceanMask),
+                  palette = isopalette1,
+                  plot = FALSE)
 
-plot.disp.predVar <- plot(
-    x = isoscape,
-    which = "disp.predVar",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.disp.predVar <- plot(x = isoscape,
+                          which = "disp.predVar",
+                          borders = list(borders = CountryBorders),
+                          mask = list(mask = OceanMask),
+                          palette = isopalette1,
+                          plot = FALSE)
 
-plot.disp.residVar <- plot(
-    x = isoscape,
-    which = "disp.residVar",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    palette = list(range = c(1.99, 2.00), step = 0.01),
-    plot = FALSE)
+plot.disp.residVar <- plot(x = isoscape,
+                           which = "disp.residVar",
+                           borders = list(borders = CountryBorders),
+                           mask = list(mask = OceanMask),
+                           palette = isopalette1,
+                           plot = FALSE)
     
-plot.disp.respVar <- plot(
-    x = isoscape,
-    which = "disp.respVar",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    plot = FALSE)
+plot.disp.respVar <- plot(x = isoscape,
+                          which = "disp.respVar",
+                          borders = list(borders = CountryBorders),
+                          mask = list(mask = OceanMask),
+                          palette = isopalette1,
+                          plot = FALSE)
 
 if (require(lattice)) {
     print(plot.disp, split = c(1, 1, 2, 2), more = TRUE)

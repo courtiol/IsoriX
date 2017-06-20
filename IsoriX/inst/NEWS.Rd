@@ -28,6 +28,7 @@
     \subsection{Minor changes}{
       \itemize{
         \item the namespace is now generated with Roxygen2
+        \item changed object names following our coding convention
       }
     }
 }

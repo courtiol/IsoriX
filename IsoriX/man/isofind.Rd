@@ -30,10 +30,10 @@ This function returns a \var{list} of class \var{isorix} containing
 itself three lists (\code{indiv}, \code{group}, and \code{sp.points})
 storing all rasters built during assignment and the spatial points for
 sources and calibration. The \var{list} \code{indiv} contains three stack of
-rater layers: one storing the value of the test statistic ("stat"), one
+raster layers: one storing the value of the test statistic ("stat"), one
 storing the value of the variance of the test statistic ("var") and one
 storing the p-value of the test ("pv"). The \var{list} \code{group} contains
-one rater storing the p-values of the assignment for the group. The
+one raster storing the p-values of the assignment for the group. The
 \var{list} \code{sp.points} contains two spatial point objects:
 \code{source.points} and \code{calib.points}.
 }
@@ -71,25 +71,25 @@ perform the assignment and their names.
 
 data(calibdata)
 data(assigndata)
-data(elevraster)
-data(countries)
-data(oceanmask)
-data(Europefit)
+data(ElevRaster)
+data(CountryBorders)
+data(OceanMask)
+data(GermanFit)
 
 ## prepare the elevation raster
 elevationraster <- relevate(
-    elevation.raster = elevraster,
-    isofit = Europefit)
+    elevation.raster = ElevRaster,
+    isofit = GermanFit)
 
 ## build the isoscape
 isoscape <- isoscape(
     elevation.raster = elevationraster,
-    isofit = Europefit)
+    isofit = GermanFit)
 
 ## fit the calibration model
 calib <- calibfit(
     calib.data = calibdata,
-    isofit = Europefit)
+    isofit = GermanFit)
 
 
 ## perform the assignment on land and water
@@ -107,7 +107,7 @@ assignment.dry <- isofind(
     assign.data = subset(assigndata, species == "Myotis_bechsteinii"),
     isoscape = isoscape,
     calibfit = calib,
-    mask = oceanmask)
+    mask = OceanMask)
 
 ## plot the group assignment
 plot(assignment, who = "group") ## without decoration
@@ -115,20 +115,20 @@ plot(assignment, who = "group") ## without decoration
 plot(assignment.dry, who = "group") ## without decoration
 
 plot(assignment.dry, who = "group",
-  borders = list(borders = countries),
-  mask = list(mask = oceanmask))
+  borders = list(borders = CountryBorders),
+  mask = list(mask = OceanMask))
 
 ## plot the assignment for the 4 first individuals
 plot(assignment.dry, who = 1:4,
-  borders = list(borders = countries),
-  mask = list(mask = oceanmask),
+  borders = list(borders = CountryBorders),
+  mask = list(mask = OceanMask),
   sources = list(draw = FALSE),
   calib = list(draw = FALSE))
 
 ## plot the assignment for the individual "Mbe_8"
 plot(assignment.dry, who = "Mbe_8",
-  borders = list(borders = countries),
-  mask = list(mask = oceanmask))
+  borders = list(borders = CountryBorders),
+  mask = list(mask = OceanMask))
 
 }
 

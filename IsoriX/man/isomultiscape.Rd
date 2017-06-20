@@ -40,53 +40,45 @@ averages precipitation weighted isoscapes.
 
 \dontrun{
 
-data(GNIPdata)
-data(elevraster)
-data(countries)
-data(oceanmask)
+data(GNIPDataDE)
+data(ElevRaster)
+data(CountryBorders)
+data(OceanMask)
 
 ## We prepare the data and split them by month
 
-GNIPdataMonthly <- queryGNIP(
-    data = GNIPdata,
-    split.by = "month",
-    long.min = -20,
-    long.max = 20,
-    lat.min = 45, 
-    lat.max = 55)
+GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
+                               split.by = "month")
 
-dim(GNIPdataMonthly)
+dim(GNIPDataDEmonthly)
 
 ## We fit the isoscapes
 
-isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
+                              mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 ## We crop the elevation raster to the extent of isoscapemodels
-elevationraster <- relevate(
-    elevation.raster = elevraster,
-    isofit = isoscapemodels)
+elevationraster <- relevate(elevation.raster = ElevRaster,
+                            isofit = isoscapemodels)
 
 ## We build the annual isoscapes by simple averaging (equal weighting)
 
-isoscapes <- isomultiscape(
-    elevation.raster = elevationraster,
-    isofit = isoscapemodels)
+isoscapes <- isomultiscape(elevation.raster = elevationraster,
+                           isofit = isoscapemodels)
     
 plot(x = isoscapes,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+     which = "mean",
+     borders = list(borders = CountryBorders),
+     mask = list(mask = OceanMask))
 
 ## How to plot the isoscape for January?
-isoscape.jan <- isoscape(
-    elevation.raster = elevationraster,
-    isofit = isoscapemodels$multi.fits[["month_1"]])
+isoscape.jan <- isoscape(elevation.raster = elevationraster,
+                         isofit = isoscapemodels$multi.fits[["month_1"]])
     
 plot(x = isoscape.jan,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+     which = "mean",
+     borders = list(borders = CountryBorders),
+     mask = list(mask = OceanMask))
 }
 }
 \seealso{

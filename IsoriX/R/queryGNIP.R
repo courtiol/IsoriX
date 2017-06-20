@@ -7,7 +7,7 @@ QueryGNIP <- function(...) {
 
 #' Filter the dataset to create an isoscape
 #' 
-#' This function prepares the worldwide GNIP data (\var{GNIPdata}) to be used
+#' This function prepares the available GNIP data (e.g. \var{GNIPDataDE}) to be used
 #' for creating the isoscape. This function allows the trimming of data by
 #' months, years and location, and for the aggregation of selected data per
 #' location, location:month combination or location:year combination.
@@ -25,23 +25,23 @@ QueryGNIP <- function(...) {
 #' set with the \code{split.by} argument of the function. Datasets prepared in
 #' this way should be fitted with the function \code{\link{isomultifit}}.
 #' 
-#' The function also allows the user to filter the world-wide weather
-#' station data (\var{GNIPdata}) based on time (years and/ or months) and space
+#' The function also allows the user to filter the weather
+#' station data (\var{GNIPDataDE}) based on time (years and/ or months) and space
 #' (locations given in geographic coordinates, i.e. longitude and latitude) to
 #' calculate tailored isoscapes matching e.g. the time of sampling and speeding
-#' up the model fit by cropping/ clipping a certain area. The dataframe
+#' up the model fit by cropping/clipping a certain area. The dataframe
 #' produced by this function can be used as input to fit the isoscape (see
 #' \code{\link{isofit}} and  \code{\link{isomultifit}}).
 #' 
 #' @param data A \var{dataframe} containing original isotopic measurements
-#' similar in structure to \code{\link{GNIPdata}}
+#' similar in structure to \code{\link{GNIPDataDE}}
 #' @param month A \var{numeric vector} indicating the months to select
 #' from. Should be a vector of round numbers between 1 and 12. The default is 
 #' 1:12 selecting all months.
 #' @param year.min A \var{numeric} indicating the oldest year to select from.
-#' If not provided, the oldest year of \code{GNIPdata} will be considered
+#' If not provided, the oldest year of \code{\link{GNIPDataDE}} will be considered
 #' @param year.max A \var{numeric} indicating the most recent year to select
-#' from. If not provided, the most recent year of \code{\link{GNIPdata}} will
+#' from. If not provided, the most recent year of \code{\link{GNIPDataDE}} will
 #' be considered
 #' @param long.min A \var{numeric} indicating the minimum longitude to select
 #' from. Should be a number between -180 and 180. If not provided, -180 will be
@@ -75,82 +75,59 @@ QueryGNIP <- function(...) {
 #' \code{prop.random}. For each weather station the mean and variance sample
 #' estimates are computed.
 #' @seealso \code{\link{IsoriX}} for the complete workflow
-#' \code{\link{GNIPdata}} for the complete dataset
+#' \code{\link{GNIPDataDE}} for the complete dataset
 #' @examples
 #' 
-#' data(GNIPdata)
+#' data(GNIPDataDE)
 #' 
-#' ### CREATE A PROCESSED DATASET FOR EUROPE
-#' GNIPdataEU <- queryGNIP(
-#'     data = GNIPdata,
-#'     long.min = -30, 
-#'     long.max = 60,
-#'     lat.min = 30, 
-#'     lat.max = 70)
+#' ### CREATE A PROCESSED DATASET FOR GERMANY
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' head(GNIPdataEU)
+#' head(GNIPDataDEagg)
 #' 
-#' ### CREATE A PROCESSED DATASET FOR EUROPE PER MONTH
-#' GNIPdataEUmonthly <- queryGNIP(
-#'     data = GNIPdata,
-#'     split.by = "month",
-#'     long.min = -30, 
-#'     long.max = 60,
-#'     lat.min = 30, 
-#'     lat.max = 70)
+#' ### CREATE A PROCESSED DATASET FOR GERMANY PER MONTH
+#' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
+#'                                split.by = "month")
 #' 
-#' head(GNIPdataEUmonthly)
+#' head(GNIPDataDEmonthly)
 #' 
-#' ### CREATE A PROCESSED DATASET FOR EUROPE PER YEAR
-#' GNIPdataEUyearly <- queryGNIP(
-#'     data = GNIPdata,
-#'     split.by = "year",
-#'     long.min = -30, 
-#'     long.max = 60,
-#'     lat.min = 30, 
-#'     lat.max = 70)
+#' ### CREATE A PROCESSED DATASET FOR GERMANY PER YEAR
+#' GNIPDataDEyearly <- queryGNIP(data = GNIPDataDE,
+#'                               split.by = "year")
 #' 
-#' head(GNIPdataEUyearly)
+#' head(GNIPDataDEyearly)
 #' 
-#' ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN EUROPE
-#' GNIPdataEUwarm <- queryGNIP(
-#'     data=GNIPdata,
-#'     month = 5:8,
-#'     year.min = 1960,
-#'     year.max = 2013,
-#'     long.min = -30, 
-#'     long.max = 60,
-#'     lat.min = 30, 
-#'     lat.max = 70)
+#' ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY
+#' GNIPDataDEUwarm <- queryGNIP(data = GNIPDataDE,
+#'                              month = 5:8,
+#'                              year.min = 1960,
+#'                              year.max = 2013)
 #' 
-#' head(GNIPdataEUwarm)
+#' head(GNIPDataDEwarm)
 #' 
 #' 
 #' ### CREATE A DATASET WITH 90% OF OBS
-#' GNIPdata90pct <- queryGNIP(
-#'     data = GNIPdata,
-#'     prop.random = 0.9,
-#'     random.level = "obs")
+#' GNIPDataDE90pct <- queryGNIP(data = GNIPDataDE,
+#'                              prop.random = 0.9,
+#'                              random.level = "obs")
 #' 
-#' lapply(GNIPdata90pct, head) # show beginning of both datasets
+#' lapply(GNIPDataDE90pct, head) # show beginning of both datasets
 #' 
 #' ### CREATE A DATASET WITH HALF THE WEATHER STATIONS
-#' GNIPdata50pctStations <- queryGNIP(
-#'     data = GNIPdata,
-#'     prop.random = 0.5,
-#'     random.level = "station")
+#' GNIPDataDE50pctStations <- queryGNIP(data = GNIPDataDE,
+#'                                      prop.random = 0.5,
+#'                                      random.level = "station")
 #' 
-#' lapply(GNIPdata50pctStations, head)
+#' lapply(GNIPDataDE50pctStations, head)
 #'
 #'
 #' ### CREATE A DATASET WITH HALF THE WEATHER STATIONS SPLIT PER MONTH
-#' GNIPdata50pctStationsMonthly <- queryGNIP(
-#'     data = GNIPdata,
-#'     split.by = "month",
-#'     prop.random = 0.5,
-#'     random.level = "station")
+#' GNIPDataDE50pctStationsMonthly <- queryGNIP(data = GNIPDataDE
+#'                                             split.by = "month",
+#'                                             prop.random = 0.5,
+#'                                             random.level = "station")
 #' 
-#' lapply(GNIPdata50pctStationsMonthly, head)
+#' lapply(GNIPDataDE50pctStationsMonthly, head)
 #' 
 #' @export
 queryGNIP <- function(data,

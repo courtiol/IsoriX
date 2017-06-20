@@ -75,25 +75,19 @@ This function is a wrapper around the function \code{\link{isofit}}.
 
 \dontrun{
 
-## We prepare the GNIP monthly data between January and June for part of Europe
+## We prepare the GNIP monthly data between January and June for Germany
 
-data(GNIPdata)
+data(GNIPDataDE)
 
-GNIPdataMonthly <- queryGNIP(
-    data = GNIPdata,
-    month.min = 1,
-    month.max = 6,
-    split.by = "month",
-    long.min = -20,
-    long.max = 20,
-    lat.min = 45, 
-    lat.max = 55)
+GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
+                               month = 1:6,
+                               split.by = "month")
 
-dim(GNIPdataMonthly)
+dim(GNIPDataDEmonthly)
 
 ## We fit the isoscapes
 
-isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
+isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 isoscapemodels

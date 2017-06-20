@@ -73,14 +73,14 @@ Isorix <- function(...) {
 #' 
 #' data(calibdata)
 #' data(assigndata)
-#' data(elevraster)
-#' data(countries)
-#' data(oceanmask)
+#' data(ElevRaster)
+#' data(CountryBorders)
+#' data(OceanMask)
 #' data(GermanFit)
 #' 
 #' ## prepare the elevation raster
 #' elevationraster <- relevate(
-#'     elevation.raster = elevraster,
+#'     elevation.raster = ElevRaster,
 #'     isofit = GermanFit)
 #' 
 #' ## build the isoscape
@@ -109,7 +109,7 @@ Isorix <- function(...) {
 #'     assign.data = subset(assigndata, species == "Myotis_bechsteinii"),
 #'     isoscape = isoscape,
 #'     calibfit = calib,
-#'     mask = oceanmask)
+#'     mask = OceanMask)
 #' 
 #' ## plot the group assignment
 #' plot(assignment, who = "group") ## without decoration
@@ -117,20 +117,20 @@ Isorix <- function(...) {
 #' plot(assignment.dry, who = "group") ## without decoration
 #' 
 #' plot(assignment.dry, who = "group",
-#'   borders = list(borders = countries),
-#'   mask = list(mask = oceanmask))
+#'   borders = list(borders = CountryBorders),
+#'   mask = list(mask = OceanMask))
 #' 
 #' ## plot the assignment for the 4 first individuals
 #' plot(assignment.dry, who = 1:4,
-#'   borders = list(borders = countries),
-#'   mask = list(mask = oceanmask),
+#'   borders = list(borders = CountryBorders),
+#'   mask = list(mask = OceanMask),
 #'   sources = list(draw = FALSE),
 #'   calib = list(draw = FALSE))
 #' 
 #' ## plot the assignment for the individual "Mbe_8"
 #' plot(assignment.dry, who = "Mbe_8",
-#'   borders = list(borders = countries),
-#'   mask = list(mask = oceanmask))
+#'   borders = list(borders = CountryBorders),
+#'   mask = list(mask = OceanMask))
 #' 
 #' }
 #' 

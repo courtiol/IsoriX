@@ -63,11 +63,11 @@ Isosim <- function(...) {
 #' 
 #' \dontrun{
 #' ## We load an elevation raster
-#' data(elevraster)
-#' data(countries)
-#' data(oceanmask)
+#' data(ElevRaster)
+#' data(CountryBorders)
+#' data(OceanMask)
 #' 
-#' elevationraster <- relevate(elevraster,
+#' elevationraster <- relevate(ElevRaster,
 #'     manual.crop = c(-30, 60, 30, 70))
 #' 
 #' ## We simulate data under default settings
@@ -80,14 +80,14 @@ Isosim <- function(...) {
 #' plot.mean.simu <- plot(
 #'     x = simu,
 #'     which = "mean",
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask))
+#'     borders = list(borders = CountryBorders),
+#'     mask = list(mask = OceanMask))
 #' 
 #' plot.disp.simu <- plot(
 #'     x = simu,
 #'     which = "disp",
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask))
+#'     borders = list(borders = CountryBorders),
+#'     mask = list(mask = OceanMask))
 #' 
 #' 
 #' ## We fit the simulated data by sampling 200 locations
@@ -104,15 +104,15 @@ Isosim <- function(...) {
 #'     x = isoscape,
 #'     which = "mean",
 #'     sources = list(draw = FALSE),
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask))
+#'     borders = list(borders = CountryBorders),
+#'     mask = list(mask = OceanMask))
 #' 
 #' plot.disp.fitted <- plot(
 #'     x = isoscape,
 #'     which = "disp",
 #'     sources = list(draw = FALSE),
-#'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask))
+#'     borders = list(borders = CountryBorders),
+#'     mask = list(mask = OceanMask))
 #' 
 #' ## We compare simulated and fitted data visually
 #' if(require(lattice)){

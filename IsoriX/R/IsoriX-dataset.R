@@ -1,4 +1,4 @@
-#' Assignment dataset
+#' Assignment dataset for bat species
 #' 
 #' This dataset contains data from Voigt, Lehmann and Greif (2015). It contains
 #' deuterium delta values of fur keratin from bats captured in 2008, 2009 and
@@ -7,7 +7,7 @@
 #' perform assignments using the function \code{\link{isofind}}.
 #' 
 #' 
-#' @name assigndata
+#' @name AssignDataBat
 #' @docType data
 #' @format A \var{dataframe} with 244 observations on 3 variables:
 #' \tabular{rlll}{ [, 1] \tab animalID \tab (\var{Factor}) \tab Identification
@@ -22,9 +22,9 @@
 #' @keywords datasets
 #' @examples
 #' 
-#' data(assigndata)
-#' head(assigndata)
-#' str(assigndata)
+#' data(AssignDataBat)
+#' head(AssignDataBat)
+#' str(AssignDataBat)
 #' 
 NULL
 
@@ -32,7 +32,7 @@ NULL
 
 
 
-#' Calibration dataset
+#' Calibration dataset for bat species
 #' 
 #' This dataset contains deuterium delta values of fur keratin from sedentary
 #' bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
@@ -49,7 +49,7 @@ NULL
 #' 2010. Note that the original study used a different source of elevation
 #' data.
 #' 
-#' @name calibdata
+#' @name CalibDataBat
 #' @docType data
 #' @format A \var{dataframe} with 178 observations on 7 variables:
 #' \tabular{rlll}{ [, 1] \tab siteID \tab (\var{Factor}) \tab Identification of
@@ -70,27 +70,27 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(calibdata)
-#' head(calibdata)
-#' str(calibdata)
+#' data(CalibDataBat)
+#' head(CalibDataBat)
+#' str(CalibDataBat)
 #' 
 #' ## The following example require to have downloaded
 #' ## a large elevation raster with the function getelev()
 #' ## and will therefore not run unless you type:
-#' ## example(calibdata, run.dontrun=TRUE)
+#' ## example(CalibDataBat, run.dontrun=TRUE)
 #' 
 #' \dontrun{
 #' if(require(raster)){
 #'     ### DELETE AND RECREATE ELEVATION DATA
-#'     calibdata$elev <- NULL  ## we delete them
+#'     CalibDataBat$elev <- NULL  ## we delete them
 #' 
 #'     ## we reconstruct the elevation data using an elevation raster:
 #'     ## (see ?getelev for details on how to get the tif file)
 #'     elevationrasterbig <- raster("gmted2010_30mn.tif")
-#'     calibdata$elev <- extract(
+#'     CalibDataBat$elev <- extract(
 #'         elevationrasterbig,
-#'         cbind(calibdata$long, calibdata$lat))
-#'     head(calibdata)
+#'         cbind(CalibDataBat$long, CalibDataBat$lat))
+#'     head(CalibDataBat)
 #' }
 #' 
 #' }
@@ -98,6 +98,93 @@ NULL
 #' 
 NULL
 
+
+
+
+
+#' Simulated assignment dataset
+#' 
+#' This dataset contains simulated deuterium delta values. 
+#' The data can be used as an example to perform assignments using the function \code{\link{isofind}}.
+#' 
+#' @name AssignDataAlien
+#' @docType data
+#' @format A \var{dataframe} with x observations on 3 variables:
+#' \tabular{rlll}{ [, 1] \tab animalID \tab (\var{Factor}) \tab Identification
+#' of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
+#' name\cr [, 3] \tab tissue.value \tab (\var{numeric}) \tab Deuterium delta
+#' value of the tissue\cr }
+#' @seealso \code{\link{isofind}} to perform assignments
+#' @keywords datasets
+#' @examples
+#' 
+#' data(AssignDataAlien)
+#' head(AssignDataAlien)
+#' str(AssignDataAlien)
+#' 
+NULL
+
+
+
+
+
+#' Simulated calibration dataset
+#' 
+#' This dataset contains simulated deuterium delta values for corresponding locations
+#' based on an assumed linear relationship between the animal tissue value and the 
+#' deuterium delta values in the environment.
+#' The data can be used as an example to fit a calibration model using the
+#' function \code{\link{calibfit}}.
+#' 
+#' Users who wish to use their own dataset for calibration should create a
+#' \var{dataframe} of similar structure than this one. The columns should possess 
+#' the same names as the ones described above. If the elevation is unknown at the 
+#' sampling sites, elevation information can be extracted from a high resolution elevation
+#' raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+#' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
+#' 2010.
+#' 
+#' @name CalibDataAlien
+#' @docType data
+#' @format A \var{dataframe} with x observations on 6 variables:
+#' \tabular{rlll}{ [, 1] \tab siteID \tab (\var{Factor}) \tab Identification of
+#' the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
+#' coordinate [decimal degrees]\cr [, 3] \tab lat \tab (\var{numeric}) \tab
+#' Latitude coordinate [decimal degrees]\cr [, 4] \tab elev \tab
+#' (\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab animalID \tab
+#' (\var{Factor}) \tab Identification of the sampled animal\cr [, 6] \tab tissue.value
+#' \tab (\var{numeric}) \tab Deuterium delta value of the tissue\cr }
+#' @seealso \code{\link{calibfit}} to fit a calibration model
+#' @keywords datasets
+#' @examples
+#' 
+#' data(CalibDataAlien)
+#' head(CalibDataAlien)
+#' str(CalibDataAlien)
+#' 
+#' ## The following example require to have downloaded
+#' ## a large elevation raster with the function getelev()
+#' ## and will therefore not run unless you type:
+#' ## example(CalibDataAlien, run.dontrun=TRUE)
+#' 
+#' \dontrun{
+#' if(require(raster)){
+#'     ### DELETE AND RECREATE ELEVATION DATA
+#'     CalibDataAlien$elev <- NULL  ## we delete them
+#' 
+#'     ## we reconstruct the elevation data using an elevation raster:
+#'     ## (see ?getelev for details on how to get the tif file)
+#'     elevationrasterbig <- raster("gmted2010_30mn.tif")
+#'     CalibDataAlien$elev <- extract(
+#'         elevationrasterbig,
+#'         cbind(CalibDataAlien$long, CalibDataAlien$lat))
+#'     head(CalibDataAlien)
+#' }
+#' 
+#' }
+#' 
+#' 
+NULL
 
 
 
@@ -109,33 +196,33 @@ NULL
 #' bodies of water.
 #' 
 #' 
-#' @name oceanmask
+#' @name OceanMask
 #' @docType data
 #' @format A \var{SpatialPolygons} object
-#' @seealso \code{\link{countries}} for another polygon shapefile used to
+#' @seealso \code{\link{CountryBorders}} for another polygon shapefile used to
 #' embellish the plots
 #' @source This \var{SpatialPolygons} is derived from the
-#' \code{\link{countries}}. See example for details on how we created the
+#' \code{\link{CountryBorders}}. See example for details on how we created the
 #' dataset.
 #' @keywords datasets
 #' @examples
 #' 
-#' data(oceanmask)
+#' data(OceanMask)
 #' if(require(sp))
-#'     plot(oceanmask, col='blue')
+#'     plot(OceanMask, col='blue')
 #' 
 #' ## HOW DID WE CREATE THIS FILE?
 #' ## (This example takes some time and will therefore not be run
-#' ##  unless you type: example(oceanmask, run.dontrun=TRUE) )
+#' ##  unless you type: example(OceanMask, run.dontrun=TRUE) )
 #'   
 #' \dontrun{
 #' if(require(raster) & require(rgeos)){
-#'     worldlimit <- as(extent(countries), "SpatialPolygons")
-#'     proj4string(worldlimit) <- crs(countries)
-#'     oceanmask <- gDifference(worldlimit, countries)  
-#'     oceanmask
+#'     worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
+#'     proj4string(worldlimit) <- crs(CountryBorders)
+#'     OceanMask <- gDifference(worldlimit, CountryBorders)  
+#'     OceanMask
 #'     ## uncomment the following to store the file:
-#'     #save(oceanmask, file="oceanmask.rda", compress="xz")
+#'     #save(OceanMask, file = "OceanMask.rda", compress = "xz")
 #' }
 #' }
 #' 
@@ -146,16 +233,16 @@ NULL
 
 
 
-#' Borders of world countries
+#' Borders of world CountryBorders
 #' 
 #' This dataset contains a polygon shapefile that can be used to plot the
-#' borders of countries.
+#' borders of CountryBorders.
 #' 
 #' 
-#' @name countries
+#' @name CountryBorders
 #' @docType data
 #' @format A \var{SpatialPolygons}
-#' @seealso \code{\link{oceanmask}} for another polygon shapefile used to
+#' @seealso \code{\link{OceanMask}} for another polygon shapefile used to
 #' embellish the plots
 #' @source This \var{SpatialPolygons} is derived from the
 #' \code{\link[maps]{world}} of the package \pkg{maps}. Please refer to this
@@ -164,25 +251,25 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(countries)
+#' data(CountryBorders)
 #' 
 #' if(require(sp))
-#'   plot(countries, border="red", col="darkgrey")
+#'   plot(CountryBorders, border="red", col="darkgrey")
 #' 
 #' 
 #' ### HOW DID WE CREATE THIS FILE?
 #' ### (This example takes some time and will therefore not be run
-#' ###  unless you type: example(countries, run.dontrun=TRUE) )
+#' ###  unless you type: example(CountryBorders, run.dontrun = TRUE) )
 #' 
 #' \dontrun{
 #' if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
-#'     worldmap <- map("world", fill=TRUE, plot=FALSE)
-#'     countries <- map2SpatialPolygons(worldmap, IDs=worldmap$names)
-#'     countries <- gBuffer(countries, byid=TRUE, width=0)
-#'     proj4string(countries) <- CRS("+proj=longlat +datum=WGS84")
-#'     countries
+#'     worldmap <- map("world", fill = TRUE, plot = FALSE)
+#'     CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
+#'     CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
+#'     proj4string(CountryBorders) <- CRS("+ proj = longlat + datum = WGS84")
+#'     CountryBorders
 #'     ## uncomment the following to store the file:
-#'     #save(countries, file="countries.rda", compress="xz")
+#'     #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
 #' }
 #' }
 #' 
@@ -217,7 +304,7 @@ NULL
 #' into a \var{tif} file. Because the original file is very large, we directly
 #' provide the url link of the \var{tif} file in the example below.
 #' 
-#' @name elevraster
+#' @name ElevRaster
 #' @docType data
 #' @format A \var{RasterLayer}
 #' @seealso \code{\link{relevate}} to crop and/or aggregate the elevation
@@ -230,10 +317,10 @@ NULL
 #' ## The following example require to have downloaded
 #' ## a large elevation raster with the function getelev()
 #' ## and will therefore not run unless you type:
-#' ## example(elevraster, run.dontrun=TRUE)
+#' ## example(ElevRaster, run.dontrun=TRUE)
 #' 
 #' \dontrun{
-#' ### CREATING THE OBJECT elevraster
+#' ### CREATING THE OBJECT ElevRaster
 #' 
 #' ## download the tif file (ca. 700 Mb):
 #' ## (see ?getelev for details on how to get the tif file)
@@ -245,9 +332,9 @@ NULL
 #' 
 #' ## create the highly agregated elevation raster
 #' ## (90 sec on one of our computers):
-#' elevraster <- relevate(
+#' ElevRaster <- relevate(
 #'     elevationrasterbig,
-#'     aggregation.factor=100)
+#'     aggregation.factor = 100)
 #' }
 #' 
 #' 
@@ -286,9 +373,12 @@ NULL
 #' ## We load the data for Germany
 #' data(GNIPDataDE)
 #' 
+#' ## We prepare the data using the function \code{\link{queryGNIP}}
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' 
 #' ## We fit the isoscape model
-#' GermanFit <- isofit(iso.data = GNIPDataDE,
-#'                     mean.model.fix = list(elev=TRUE, lat.abs = TRUE),
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
+#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
 #'                     mean.model.rand = list("uncorr" = TRUE),
 #'                     disp.model.rand = list("uncorr" = TRUE)
 #'                     )
@@ -307,15 +397,14 @@ NULL
 
 
 
-#' World-wide weather station data
+#' Weather station data for Germany
 #' 
 #' This dataset contains the mean and variance of Deuterium delta precipitation
 #' values of weather stations sampled between 1960 and 2015. Data have been
 #' compiled by the International Atomic Energy Agency IAEA in Vienna (GNIP
 #' Project: Global Network of Isotopes in Precipitation).
 #' 
-#' The dataset contains non-aggregated data for 920 weather stations across the
-#' world.
+#' The dataset contains non-aggregated data for 27 weather stations across Germany.
 #' 
 #' This dataset is the raw data source and should not be directly used for
 #' fitting isoscapes.
@@ -324,11 +413,11 @@ NULL
 #' location.
 #' 
 #' If you want to use your own dataset, you must format your data as those
-#' produced by the function code\link{queryGNIP}.
+#' produced by the function \code{\link{queryGNIP}}.
 #' 
-#' @name GNIPdata
+#' @name GNIPDataDE
 #' @docType data
-#' @format The \var{dataframe} includes 62040 observations on the following
+#' @format The \var{dataframe} includes 8591 observations on the following
 #' variables: \tabular{rlll}{ [, 1] \tab lat \tab (\var{numeric}) \tab Latitude
 #' coordinate [decimal degrees]\cr [, 2] \tab long \tab (\var{numeric}) \tab
 #' Longitude coordinate [decimal degrees]\cr [, 3] \tab elev \tab
@@ -346,8 +435,8 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(GNIPdata)
-#' head(GNIPdata)
+#' data(GNIPDataDE)
+#' head(GNIPDataDE)
 #' 
 NULL
 
@@ -394,33 +483,33 @@ NULL
 #' data(isopalette1)
 #' data(isopalette2)
 #' 
-#' par(mfrow=c(2, 3))
+#' par(mfrow = c(2, 3))
 #' pie(rep(1, length(isopalette1)), col = isopalette1,
-#' 	border=NA, labels=NA, clockwise=TRUE, main="isopalette1")
+#' 	border = NA, labels = NA, clockwise = TRUE, main = "isopalette1")
 #' pie(rep(1, length(isopalette2)), col = isopalette2,
-#' 	border=NA, labels=NA, clockwise=TRUE, main="isopalette2")
-#' pie(rep(1, 100), col = terrain.colors(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="terrain.colors")
-#' pie(rep(1, 100), col = rainbow(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="rainbow")
-#' pie(rep(1, 100), col = topo.colors(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="topo.colors")
-#' pie(rep(1, 100), col = heat.colors(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="heat.colors")
+#' 	border = NA, labels = NA, clockwise = TRUE, main = "isopalette2")
+#' pie(rep(1, 100), col = terrain.colors(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "terrain.colors")
+#' pie(rep(1, 100), col = rainbow(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "rainbow")
+#' pie(rep(1, 100), col = topo.colors(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "topo.colors")
+#' pie(rep(1, 100), col = heat.colors(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "heat.colors")
 #' 
 #' ### CREATING YOUR OWN COLOUR PALETTE
-#' my.palette  <- colorRampPalette(c("blue", "green", "red"), bias=0.7)
-#' par(mfrow=c(1, 1))
-#' pie(1:100, col=my.palette(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="a home-made palette")
+#' my.palette  <- colorRampPalette(c("blue", "green", "red"), bias = 0.7)
+#' par(mfrow = c(1, 1))
+#' pie(1:100, col = my.palette(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "a home-made palette")
 #' 
 #' ### TURNING PALETTES INTO FUNCTIONS (FOR USE IN ISORIX)
 #' Isopalette1Fn <- colorRampPalette(isopalette1, bias = 0.5)
 #' Isopalette2Fn <- colorRampPalette(isopalette2, bias = 0.5)
-#' par(mfrow=c(1, 2))
-#' pie(1:100, col=Isopalette1Fn(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="isopalette1")
-#' pie(1:100, col=Isopalette2Fn(100), border=NA, labels=NA,
-#'     clockwise=TRUE, main="isopalette2")
+#' par(mfrow = c(1, 2))
+#' pie(1:100, col = Isopalette1Fn(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "isopalette1")
+#' pie(1:100, col = Isopalette2Fn(100), border = NA, labels = NA,
+#'     clockwise = TRUE, main = "isopalette2")
 #'
 NULL

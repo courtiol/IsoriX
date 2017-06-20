@@ -197,22 +197,17 @@ explaining how to do so.
 ## be run unless you type: example(isofit, run.dontrun = TRUE)
 
 \dontrun{
-## We extract the GNIP data for Europe
+## We extract the GNIP data for Germany
 
-data(GNIPdata)
+data(GNIPDataDE)
 
-GNIPdataEU <- queryGNIP(
-    data = GNIPdata,
-    long.min = -30,
-    long.max = 60,
-    lat.min = 30, 
-    lat.max = 70)
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 ## We fit the isoscape model (on the first 50 rows only,
 ## otherwise it takes too long for a simple example)
 
-isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:50, ],
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+isoscapemodel1 <- isofit(iso.data=GNIPDataDEagg[1:50, ],
+                         mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 isoscapemodel1
 
@@ -225,11 +220,11 @@ plot(isoscapemodel1)
 ## uncorrelated random effect using the Nugget parametrization 
 ## for the fitting the residual dispersion model:
 
-isoscapemodel2 <- isofit(iso.data = GNIPdataEU[1:50, ],
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
-    mean.model.rand = list(uncorr = TRUE),
-    disp.model.rand = list(uncorr = TRUE),
-    uncorr.terms = list(disp.model = "nugget"))
+isoscapemodel2 <- isofit(iso.data = GNIPDataDEagg[1:50, ],
+                         mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
+                         mean.model.rand = list(uncorr = TRUE),
+                         disp.model.rand = list(uncorr = TRUE),
+                         uncorr.terms = list(disp.model = "nugget"))
         
 isoscapemodel2
 }
