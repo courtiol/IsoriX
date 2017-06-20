@@ -1,6 +1,6 @@
 Package: IsoriX
-Version: 0.5.1.9004
-Date: 2017-05-23
+Version: 0.5.1.9007
+Date: 2017-06-08
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
 Author:
@@ -24,7 +24,8 @@ Imports:
     spaMM (>= 2.0),
     stats,
     tools,
-    utils
+    utils,
+    viridisLite
 Description:
   Building isoscapes using mixed models and inferring the geographic origin of 
   organisms based on their isotopic ratios. This package is essentially a 
@@ -38,12 +39,11 @@ Suggests:
     GISTools,
     lattice,
     maps,
-    tools,
     RandomFields,
     R.rsp,
-    rgdal,
-    viridisLite
+    rgdal
 VignetteBuilder: R.rsp
+LazyData: false
 URL: https://github.com/courtiol/IsoriX_project/
 BugReports: https://github.com/courtiol/IsoriX_project/issues/
 RoxygenNote: 6.0.1

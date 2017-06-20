@@ -14,7 +14,7 @@ vignette: >
 library(knitr)
 set.seed(123)  ## set seed for entire manuscript
 # set global options for knitr (if changed, all cashed chunked will be rerun!)
-knitr::opts_chunk$set(cache=FALSE)
+knitr::opts_chunk$set(cache = FALSE)
 do.eval <- TRUE ## to check that it does work, put TRUE
 ```
 
@@ -61,24 +61,22 @@ Our goal is to save the plot of this isoscape on the hard drive so we can includ
 ## we load the objects that are used to decorate the maps
 data(countries)
 data(oceanmask)
-data(isopalette1)
 
 ## we create the plot (but do not display it)
 plot.mean.isoscape <- plot(
-    x=isoscape,
-    which="mean",
-    borders=list(borders=countries),
-    mask=list(mask=oceanmask),
-    palette=isopalette1,
-    plot=FALSE
-)
+    x = isoscape,
+    which = "mean",
+    borders = list(borders = countries),
+    mask = list(mask = oceanmask),
+    palette = list(step = 1, range = c(-123, 1), n.labels = 21),
+    plot = FALSE)
 ```
 Note that we used the argument `plot=FALSE` so that the plot does not show up, you can also keep the default setting that will once again display the plot on your screen. It does not make any difference by when you handle many plots, it may be good to know that you don't have to display them (display takes time).
 
 Let us first save this plot as a png file:
 
 ```{r, save plot, fig.show="hide", eval=do.eval}
-CairoPNG(filename="Myisoscape.png", height=1080, width=1920, res=100)
+CairoPNG(filename = "Myisoscape.png", height = 1080, width = 1920, res = 100)
 plot.mean.isoscape
 dev.off()
 ```
@@ -94,7 +92,7 @@ If, like us, you don't indicate the path in the filename. The file will be now i
 Let us now save this plot as a pdf file:
 
 ```{r, save plot2, fig.show="hide", eval=do.eval}
-CairoPDF(file="Myisoscape.pdf", height=10, width=15)
+CairoPDF(file = "Myisoscape.pdf", height = 10, width = 15)
 plot.mean.isoscape
 dev.off()
 ```

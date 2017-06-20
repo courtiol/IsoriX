@@ -15,6 +15,7 @@
 \section{version 0.6}{
   \subsection{New features}{
       \itemize{
+        \item it is now possible to control the colours and labels for the levels of isotopes or p-values in plots
         \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
         \item new function prepcipitate to prepare the precipitation brick
@@ -63,6 +64,7 @@
       \item some typo fixed in documentation files
       \item RandomFields moved to suggest
       \item .Rd files for documentation are now generated with Roxygen2
+      \item queryGNIP is now provided with a single month argument specifying the months to select
       }
   }
 }

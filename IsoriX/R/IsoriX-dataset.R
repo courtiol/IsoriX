@@ -414,8 +414,13 @@ NULL
 #' pie(1:100, col=my.palette(100), border=NA, labels=NA,
 #'     clockwise=TRUE, main="a home-made palette")
 #' 
+#' ### TURNING PALETTES INTO FUNCTIONS (FOR USE IN ISORIX)
+#' Isopalette1Fn <- colorRampPalette(isopalette1, bias = 0.5)
+#' Isopalette2Fn <- colorRampPalette(isopalette2, bias = 0.5)
+#' par(mfrow=c(1, 2))
+#' pie(1:100, col=Isopalette1Fn(100), border=NA, labels=NA,
+#'     clockwise=TRUE, main="isopalette1")
+#' pie(1:100, col=Isopalette2Fn(100), border=NA, labels=NA,
+#'     clockwise=TRUE, main="isopalette2")
+#'
 NULL
-
-
-
-

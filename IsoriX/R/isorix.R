@@ -106,8 +106,7 @@ Isorix <- function(...) {
 #' 
 #' ## perform the assignment on land only
 #' assignment.dry <- isofind(
-#'     assign.data = subset(assigndata,
-#'       species == "Myotis_bechsteinii"),
+#'     assign.data = subset(assigndata, species == "Myotis_bechsteinii"),
 #'     isoscape = isoscape,
 #'     calibfit = calib,
 #'     mask = oceanmask)

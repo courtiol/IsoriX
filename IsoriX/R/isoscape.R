@@ -80,7 +80,6 @@ Isoscape <- function(...) {
 #' data(GermanFit)
 #' data(countries)
 #' data(oceanmask)
-#' data(isopalette1)
 #' 
 #' ## We crop the elevation raster to the extent of GermanFit
 #' elevationraster <- relevate(elevation.raster = elevraster,
@@ -119,6 +118,7 @@ Isoscape <- function(...) {
 #'                           mask = list(mask = oceanmask),
 #'                           palette = isopalette1,
 #'                           plot = FALSE)
+
 #' 
 #' if(require(lattice)) {
 #'  print(plot.mean, split = c(1, 1, 2, 2), more = TRUE)
@@ -366,7 +366,6 @@ isoscape <- function(elevation.raster, ## change as method?
 #' data(elevraster)
 #' data(countries)
 #' data(oceanmask)
-#' data(isopalette1)
 #' 
 #' ## We prepare the data and split them by month
 #' 
@@ -399,8 +398,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #' plot(x = isoscapes,
 #'     which = "mean",
 #'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1)
+#'     mask = list(mask = oceanmask))
 #' 
 #' ## How to plot the isoscape for January?
 #' isoscape.jan <- isoscape(
@@ -410,8 +408,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #' plot(x = isoscape.jan,
 #'     which = "mean",
 #'     borders = list(borders = countries),
-#'     mask = list(mask = oceanmask),
-#'     palette = isopalette1)
+#'     mask = list(mask = oceanmask))
 #' }
 #' @export
 
