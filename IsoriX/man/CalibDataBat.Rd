@@ -35,7 +35,6 @@ data.
 }
 \examples{
 
-data(CalibDataBat)
 head(CalibDataBat)
 str(CalibDataBat)
 

@@ -197,9 +197,7 @@ explaining how to do so.
 ## be run unless you type: example(isofit, run.dontrun = TRUE)
 
 \dontrun{
-## We extract the GNIP data for Germany
-
-data(GNIPDataDE)
+## We filter the GNIP data for Germany
 
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 

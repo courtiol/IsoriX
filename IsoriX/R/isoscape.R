@@ -76,11 +76,6 @@ Isoscape <- function(...) {
 #' 
 #' \dontrun{
 #' 
-#' data(ElevRaster)
-#' data(GermanFit)
-#' data(CountryBorders)
-#' data(OceanMask)
-#' 
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
@@ -365,11 +360,6 @@ isoscape <- function(elevation.raster, ## change as method?
 #' ## example(isoscape, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' 
-#' data(GNIPDataDE)
-#' data(ElevRaster)
-#' data(CountryBorders)
-#' data(OceanMask)
 #' 
 #' ## We prepare the data and split them by month
 #' 

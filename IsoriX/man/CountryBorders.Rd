@@ -17,8 +17,6 @@ borders of CountryBorders.
 }
 \examples{
 
-data(CountryBorders)
-
 if(require(sp))
   plot(CountryBorders, border="red", col="darkgrey")
 

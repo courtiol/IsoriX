@@ -74,8 +74,6 @@ perform the calibration fit and their names.
 ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 
 \dontrun{
-data(CalibDataAlien)
-data(GermanFit)
 ## fit the calibration model
 calib <- calibfit(calib.data = CalibDataAlien, isofit = GermanFit)
 ## display minimal information

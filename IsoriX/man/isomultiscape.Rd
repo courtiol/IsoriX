@@ -40,11 +40,6 @@ averages precipitation weighted isoscapes.
 
 \dontrun{
 
-data(GNIPDataDE)
-data(ElevRaster)
-data(CountryBorders)
-data(OceanMask)
-
 ## We prepare the data and split them by month
 
 GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,

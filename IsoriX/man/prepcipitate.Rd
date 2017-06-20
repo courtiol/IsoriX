@@ -32,8 +32,6 @@ extent as the elevation raster. This function is designed to be used with
 ## example(prepcipitate, run.dontrun = TRUE)
 
 \dontrun{
-data(ElevRaster)
-data(GermanFit)
 
 elevation.raster <- relevate(
     elevation.raster = ElevRaster,

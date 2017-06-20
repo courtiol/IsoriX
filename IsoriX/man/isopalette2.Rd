@@ -37,8 +37,6 @@ lattice graphic environment (see source for details).
 \examples{
 
 ### A COMPARISON OF SOME COLOUR PALETTES
-data(isopalette1)
-data(isopalette2)
 
 par(mfrow = c(2, 3))
 pie(rep(1, length(isopalette1)), col = isopalette1,

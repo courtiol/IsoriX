@@ -92,8 +92,6 @@ produced by this function can be used as input to fit the isoscape (see
 }
 \examples{
 
-data(GNIPDataDE)
-
 ### CREATE A PROCESSED DATASET FOR GERMANY
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 

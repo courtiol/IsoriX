@@ -30,7 +30,6 @@ retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 }
 \examples{
 
-data(CalibDataAlien)
 head(CalibDataAlien)
 str(CalibDataAlien)
 

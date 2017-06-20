@@ -15,7 +15,6 @@ The data can be used as an example to perform assignments using the function \co
 }
 \examples{
 
-data(AssignDataAlien)
 head(AssignDataAlien)
 str(AssignDataAlien)
 

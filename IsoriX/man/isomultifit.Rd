@@ -77,8 +77,6 @@ This function is a wrapper around the function \code{\link{isofit}}.
 
 ## We prepare the GNIP monthly data between January and June for Germany
 
-data(GNIPDataDE)
-
 GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
                                month = 1:6,
                                split.by = "month")

@@ -185,8 +185,6 @@ Isofit <- function(...) {
 #' 
 #' ## Fitting the models for Germany
 #' 
-#' data(GNIPDataDE)
-#' 
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
@@ -381,8 +379,6 @@ isofit <- function(iso.data,
 #' @examples
 #' 
 #' ## We prepare the GNIP monthly data between January and June for Germany
-#' 
-#' data(GNIPDataDE)
 #' 
 #' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
 #'                                month = 1:6,
