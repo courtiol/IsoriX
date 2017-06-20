@@ -183,49 +183,27 @@ Isofit <- function(...) {
 #' @examples
 #' 
 #' 
-#' ## The following example takes some time and will therefore not
-#' ## be run unless you type: example(isofit, run.dontrun = TRUE)
-#' 
-#' \dontrun{
-#' ## We extract the GNIP data for Germany
+#' ## Fitting the models for Germany
 #' 
 #' data(GNIPDataDE)
 #' 
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' ## We fit the isoscape model (on the first 50 rows only,
-#' ## otherwise it takes too long for a simple example)
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
+#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
-#' isoscapemodel1 <- isofit(iso.data=GNIPDataDEagg[1:50, ],
-#'                          mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
-#' 
-#' isoscapemodel1
+#' GermanFit
 #' 
 #' ## Diagnostics for the fits
-#' plot(isoscapemodel1)
-#' 
-#' 
-#' ## Model with one uncorrelated random effect using the Lambda
-#' ## parametrization for the fitting the mean model and with one 
-#' ## uncorrelated random effect using the Nugget parametrization 
-#' ## for the fitting the residual dispersion model:
-#' 
-#' isoscapemodel2 <- isofit(iso.data = GNIPDataDEagg[1:50, ],
-#'                          mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
-#'                          mean.model.rand = list(uncorr = TRUE),
-#'                          disp.model.rand = list(uncorr = TRUE),
-#'                          uncorr.terms = list(disp.model = "nugget"))
-#'         
-#' isoscapemodel2
-#' }
+#' plot(GermanFit)
 #' 
 #' 
 #' @export
 isofit <- function(iso.data,
                    mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                    disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
-                   mean.model.rand = list(uncorr = FALSE, spatial = TRUE),
-                   disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+                   mean.model.rand = list(uncorr = TRUE, spatial = TRUE),
+                   disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
                    uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"), ## or: "nugget"
                    spaMM.method = list(mean.model = "fitme", disp.model = "fitme"), ## or: "corrHLfit", "HLfit"
                    dist.method = "Earth", ## or: "Euclidean"
@@ -402,11 +380,6 @@ isofit <- function(iso.data,
 #' 
 #' @examples
 #' 
-#' ## The following example takes some time and will therefore not
-#' ## be run unless you type: example(isomultifit, run.dontrun = TRUE)
-#' 
-#' \dontrun{
-#' 
 #' ## We prepare the GNIP monthly data between January and June for Germany
 #' 
 #' data(GNIPDataDE)
@@ -420,17 +393,16 @@ isofit <- function(iso.data,
 #' ## We fit the isoscapes
 #' 
 #' isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
-#'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#'                               mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' isoscapemodels
-#' }
 #' @export
 isomultifit <- function(iso.data,
                         split.by = "month",
                         mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                         disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
-                        mean.model.rand = list(uncorr = FALSE, spatial = TRUE),
-                        disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+                        mean.model.rand = list(uncorr = TRUE, spatial = TRUE),
+                        disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
                         uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"), ## or: "nugget"
                         spaMM.method = list(mean.model = "fitme", disp.model = "fitme"), ## or: "corrHLfit", "HLfit"
                         dist.method = "Earth", ## or: "Euclidean"
