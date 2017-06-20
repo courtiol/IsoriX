@@ -81,6 +81,11 @@ Isoscape <- function(...) {
 #' data(CountryBorders)
 #' data(OceanMask)
 #' 
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' 
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
+#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' 
 #' ## We crop the elevation raster to the extent of GermanFit
 #' elevationraster <- relevate(elevation.raster = ElevRaster,
 #'                             isofit = GermanFit)
@@ -95,7 +100,6 @@ Isoscape <- function(...) {
 #'                   which = "mean",
 #'                   borders = list(borders = CountryBorders),
 #'                   mask = list(mask = OceanMask),
-#'                   palette = isopalette1,
 #'                   plot = FALSE)
 #' 
 #' plot.mean.predVar <- plot(x = isoscape,
