@@ -66,9 +66,10 @@ Europefit <- isofit(iso.data = GNIPdataEU,
     mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
     mean.model.rand = list("uncorr" = TRUE),
     disp.model.rand = list("uncorr" = TRUE))
+save(Europefit, file = "Europefit.rda", compress = "xz")
 ```
 
-```{r, loadmodel, echo=FALSE}
+```{r, loadmodel, eval=TRUE}
 data(Europefit)
 ```
 
@@ -148,7 +149,7 @@ We can also plot the prediction variance, which will be useful to discuss the qu
 plot(x = isoscape,
      which = "mean.predVar",
      borders = list(borders = countries),
-     mask = list(mask = oceanmask)))
+     mask = list(mask = oceanmask))
 ```
 
 ## Step 5 - Fit the calibration function
