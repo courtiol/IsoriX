@@ -63,9 +63,6 @@ Isosim <- function(...) {
 #' 
 #' \dontrun{
 #' ## We load an elevation raster
-#' data(ElevRaster)
-#' data(CountryBorders)
-#' data(OceanMask)
 #' 
 #' elevationraster <- relevate(ElevRaster,
 #'     manual.crop = c(-30, 60, 30, 70))

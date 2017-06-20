@@ -187,9 +187,7 @@ Isofit <- function(...) {
 #' ## be run unless you type: example(isofit, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' ## We extract the GNIP data for Germany
-#' 
-#' data(GNIPDataDE)
+#' ## We filter the GNIP data for Germany
 #' 
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
@@ -408,8 +406,6 @@ isofit <- function(iso.data,
 #' \dontrun{
 #' 
 #' ## We prepare the GNIP monthly data between January and June for Germany
-#' 
-#' data(GNIPDataDE)
 #' 
 #' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
 #'                                month = 1:6,

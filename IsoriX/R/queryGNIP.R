@@ -78,8 +78,6 @@ QueryGNIP <- function(...) {
 #' \code{\link{GNIPDataDE}} for the complete dataset
 #' @examples
 #' 
-#' data(GNIPDataDE)
-#' 
 #' ### CREATE A PROCESSED DATASET FOR GERMANY
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 

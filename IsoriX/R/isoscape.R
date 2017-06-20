@@ -76,11 +76,6 @@ Isoscape <- function(...) {
 #' 
 #' \dontrun{
 #' 
-#' data(ElevRaster)
-#' data(GermanFit)
-#' data(CountryBorders)
-#' data(OceanMask)
-#' 
 #' ## We crop the elevation raster to the extent of GermanFit
 #' elevationraster <- relevate(elevation.raster = ElevRaster,
 #'                             isofit = GermanFit)
@@ -361,11 +356,6 @@ isoscape <- function(elevation.raster, ## change as method?
 #' ## example(isoscape, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' 
-#' data(GNIPDataDE)
-#' data(ElevRaster)
-#' data(CountryBorders)
-#' data(OceanMask)
 #' 
 #' ## We prepare the data and split them by month
 #' 

@@ -28,8 +28,6 @@
 #' ## example(prepcipitate, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' data(ElevRaster)
-#' data(GermanFit)
 #' 
 #' elevation.raster <- relevate(
 #'     elevation.raster = ElevRaster,

@@ -22,7 +22,6 @@
 #' @keywords datasets
 #' @examples
 #' 
-#' data(AssignDataBat)
 #' head(AssignDataBat)
 #' str(AssignDataBat)
 #' 
@@ -70,7 +69,6 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(CalibDataBat)
 #' head(CalibDataBat)
 #' str(CalibDataBat)
 #' 
@@ -118,7 +116,6 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(AssignDataAlien)
 #' head(AssignDataAlien)
 #' str(AssignDataAlien)
 #' 
@@ -158,7 +155,6 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(CalibDataAlien)
 #' head(CalibDataAlien)
 #' str(CalibDataAlien)
 #' 
@@ -207,7 +203,6 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(OceanMask)
 #' if(require(sp))
 #'     plot(OceanMask, col='blue')
 #' 
@@ -250,8 +245,6 @@ NULL
 #' details on how we created the dataset.
 #' @keywords datasets
 #' @examples
-#' 
-#' data(CountryBorders)
 #' 
 #' if(require(sp))
 #'   plot(CountryBorders, border="red", col="darkgrey")
@@ -362,7 +355,6 @@ NULL
 #' @keywords datasets models
 #' @examples
 #' 
-#' data(GermanFit)
 #' GermanFit
 #' plot(GermanFit)
 #' 
@@ -370,9 +362,6 @@ NULL
 #' ## be run unless you type: example(GermanFit, run.dontrun=TRUE)
 #' 
 #' \dontrun{
-#' ## We load the data for Germany
-#' data(GNIPDataDE)
-#' 
 #' ## We prepare the data using the function \code{\link{queryGNIP}}
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
@@ -435,7 +424,6 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' data(GNIPDataDE)
 #' head(GNIPDataDE)
 #' 
 NULL
@@ -480,8 +468,6 @@ NULL
 #' @examples
 #' 
 #' ### A COMPARISON OF SOME COLOUR PALETTES
-#' data(isopalette1)
-#' data(isopalette2)
 #' 
 #' par(mfrow = c(2, 3))
 #' pie(rep(1, length(isopalette1)), col = isopalette1,

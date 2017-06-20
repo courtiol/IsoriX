@@ -126,7 +126,7 @@ plot.isoscape <- function(x,
     ## importing palette if missing
     if (is.null(palette$fn)) {
       isopalette1 <- NULL ## to please R CMD check
-      utils::data("isopalette1", envir = environment(), package = "IsoriX")
+      utils::data("isopalette1", envir = environment(), package = "IsoriX") # to modify for lazy data?
       palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 0.5)
     }
     
