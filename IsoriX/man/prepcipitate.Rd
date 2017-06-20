@@ -33,8 +33,14 @@ extent as the elevation raster. This function is designed to be used with
 
 \dontrun{
 
+## We fit the models for Germany:
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+
+GermanFit <- isofit(iso.data = GNIPDataDEagg,
+                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+
 elevation.raster <- relevate(
-    elevation.raster = ElevRaster,
+    elevation.raster = ElevRasterDE,
     isofit = GermanFit,
     aggregation.factor = 0)
 

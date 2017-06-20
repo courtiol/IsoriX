@@ -7,8 +7,8 @@
 isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev =
   FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
   disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long =
-  FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = FALSE, spatial =
-  TRUE), disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+  FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = TRUE, spatial =
+  TRUE), disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
   uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"),
   spaMM.method = list(mean.model = "fitme", disp.model = "fitme"),
   dist.method = "Earth", control.mean = list(), control.disp = list(),
@@ -70,11 +70,6 @@ This function is a wrapper around the function \code{\link{isofit}}.
 }
 \examples{
 
-## The following example takes some time and will therefore not
-## be run unless you type: example(isomultifit, run.dontrun = TRUE)
-
-\dontrun{
-
 ## We prepare the GNIP monthly data between January and June for Germany
 
 GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
@@ -86,10 +81,9 @@ dim(GNIPDataDEmonthly)
 ## We fit the isoscapes
 
 isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+                              mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 isoscapemodels
-}
 }
 \seealso{
 \code{\link{isofit}} for information about the fitting procedure of 

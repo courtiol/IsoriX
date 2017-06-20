@@ -45,28 +45,33 @@ RElevate <- function(...) {
 #' assignment, because the elevation of raster cells changes depending on the
 #' aggregation function (see example below), which in turn affects model
 #' predictions.
-#' @seealso \code{\link{ElevRaster}} for information on elevation rasters
+#' @seealso \code{\link{ElevRasterDE}} for information on elevation rasters
 #' 
 #' \code{\link{IsoriX}} for the complete workflow
 #' @keywords utilities
 #' @examples
 #' 
+#' ## We fit the models for Germany:
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' 
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
+#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' ### DIFFERENCES IN AGGREGATION
 #' 
-#' ## We aggregate and crop using different settings
+#' ## We aggregate and crop using different settings:
 #' elevation.raster1 <- relevate(
-#'     elevation.raster = ElevRaster,
+#'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     aggregation.factor = 0)
 #' 
 #' elevation.raster2 <- relevate(
-#'     elevation.raster = ElevRaster,
+#'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     aggregation.factor = 5)
 #' 
 #' elevation.raster3 <- relevate(
-#'     elevation.raster = ElevRaster,
+#'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     aggregation.factor = 5, aggregation.fun = max)
 #' 
@@ -76,7 +81,7 @@ RElevate <- function(...) {
 #' ## example(relevate, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#'     ## We plot the outcome of the 3 different aggregation schemes
+#'     ## We build the plots of the outcome of the 3 different aggregation schemes:
 #' if(require(rasterVis)) {
 #'     plot.aggregation1 <- levelplot(elevation.raster1,
 #'             margin = FALSE, main = "Original small raster") + 
@@ -90,7 +95,8 @@ RElevate <- function(...) {
 #'             margin = FALSE, main = "Small raster aggregated (by max)") + 
 #'         layer(sp.polygons(CountryBorders)) +
 #'         layer(sp.polygons(OceanMask, fill = "blue"))  
-#'     ## panel using lattice syntax:
+#'     
+#'     ## We plot as a panel using lattice syntax:
 #'     print(plot.aggregation1, split = c(1, 1, 1, 3), more = TRUE)
 #'     print(plot.aggregation2, split = c(1, 2, 1, 3), more = TRUE)
 #'     print(plot.aggregation3, split = c(1, 3, 1, 3))

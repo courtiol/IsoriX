@@ -111,9 +111,9 @@ head(GNIPDataDEyearly)
 
 ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY
 GNIPDataDEwarm <- queryGNIP(data = GNIPDataDE,
-                             month = 5:8,
-                             year.min = 1960,
-                             year.max = 2013)
+                            month = 5:8,
+                            year.min = 1960,
+                            year.max = 2013)
 
 head(GNIPDataDEwarm)
 

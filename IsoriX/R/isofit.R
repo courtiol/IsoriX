@@ -183,7 +183,7 @@ Isofit <- function(...) {
 #' @examples
 #' 
 #' 
-#' ## Fitting the models for Germany
+#' ## Fitting the models for Germany:
 #' 
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
@@ -192,7 +192,7 @@ Isofit <- function(...) {
 #' 
 #' GermanFit
 #' 
-#' ## Diagnostics for the fits
+#' ## Diagnostics for the fits:
 #' plot(GermanFit)
 #' 
 #' 

@@ -71,90 +71,50 @@ The isoscape can be plotted using the function \code{\link{plot.isoscape}}
 \examples{
 
 
-## The following display takes a few seconds too many and will therefore not
-## be run unless you type: example(isoscape, run.dontrun = TRUE)
+## We prepare the data:
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-\dontrun{
+## We fit the models:
+GermanFit <- isofit(iso.data = GNIPDataDEagg,
+                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
-## We crop the elevation raster to the extent of GermanFit
-elevationraster <- relevate(elevation.raster = ElevRaster,
-                            isofit = GermanFit)
-
-## We build the isoscape
-isoscape <- isoscape(elevation.raster = elevationraster,
+## We build the isoscapes:
+isoscape <- isoscape(elevation.raster = ElevRasterDE,
                      isofit = GermanFit)
 
 isoscape
 
+## We build the plots:
 plot.mean <- plot(x = isoscape,
                   which = "mean",
                   borders = list(borders = CountryBorders),
                   mask = list(mask = OceanMask),
-                  palette = isopalette1,
                   plot = FALSE)
 
 plot.mean.predVar <- plot(x = isoscape,
                           which = "mean.predVar",
                           borders = list(borders = CountryBorders),
                           mask = list(mask = OceanMask),
-                          palette = isopalette1,
                           plot = FALSE)
 
 plot.mean.residVar <- plot(x = isoscape,
                            which = "mean.residVar",
                            borders = list(borders = CountryBorders),
                            mask = list(mask = OceanMask),
-                           palette = isopalette1,
                            plot = FALSE)
 
 plot.mean.respVar <- plot(x = isoscape,
                           which = "mean.respVar",
                           borders = list(borders = CountryBorders),
                           mask = list(mask = OceanMask),
-                          palette = isopalette1,
                           plot = FALSE)
 
+## We display the plots:
 if(require(lattice)) {
  print(plot.mean, split = c(1, 1, 2, 2), more = TRUE)
  print(plot.mean.predVar,   split = c(2, 1, 2, 2), more = TRUE)
  print(plot.mean.residVar,  split = c(1, 2, 2, 2), more = TRUE)
  print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
-}
-
-plot.disp <- plot(x = isoscape,
-                  which = "disp",
-                  borders = list(borders = CountryBorders),
-                  mask = list(mask = OceanMask),
-                  palette = isopalette1,
-                  plot = FALSE)
-
-plot.disp.predVar <- plot(x = isoscape,
-                          which = "disp.predVar",
-                          borders = list(borders = CountryBorders),
-                          mask = list(mask = OceanMask),
-                          palette = isopalette1,
-                          plot = FALSE)
-
-plot.disp.residVar <- plot(x = isoscape,
-                           which = "disp.residVar",
-                           borders = list(borders = CountryBorders),
-                           mask = list(mask = OceanMask),
-                           palette = isopalette1,
-                           plot = FALSE)
-    
-plot.disp.respVar <- plot(x = isoscape,
-                          which = "disp.respVar",
-                          borders = list(borders = CountryBorders),
-                          mask = list(mask = OceanMask),
-                          palette = isopalette1,
-                          plot = FALSE)
-
-if (require(lattice)) {
-    print(plot.disp, split = c(1, 1, 2, 2), more = TRUE)
-    print(plot.disp.predVar,   split = c(2, 1, 2, 2), more = TRUE)
-    print(plot.disp.residVar,  split = c(1, 2, 2, 2), more = TRUE)
-    print(plot.disp.respVar,   split = c(2, 2, 2, 2), more = FALSE)
-} 
 }
 
 }

@@ -71,38 +71,36 @@ Isorix <- function(...) {
 #' ## The following example takes some time and will therefore not
 #' ## be run unless you type: example(isofind, run.dontrun = TRUE)
 #' 
-#' ## prepare the elevation raster
-#' elevationraster <- relevate(
-#'     elevation.raster = ElevRaster,
-#'     isofit = GermanFit)
+#' ## We fit the models for Germany:
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' ## build the isoscape
-#' isoscape <- isoscape(
-#'     elevation.raster = elevationraster,
-#'     isofit = GermanFit)
-#' 
-#' ## fit the calibration model
-#' calib <- calibfit(
-#'     calib.data = CalibDataAlien,
-#'     isofit = GermanFit)
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
+#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' 
-#' ## perform the assignment on land and water
-#' assignment <- isofind(
-#'     assign.data = subset(AssignDataAlien,
-#'       species == "Myotis_bechsteinii"),
-#'     isoscape = isoscape,
-#'     calibfit = calib)
+#' ## We build the isoscape:
+#' isoscape <- isoscape(elevation.raster = ElevRasterDE,
+#'                      isofit = GermanFit)
+#' 
+#' 
+#' ## We fit the calibration model:
+#' calib <- calibfit(calib.data = CalibDataAlien,
+#'                   isofit = GermanFit)
+#' 
+#' 
+#' ## We perform the assignment on land and water:
+#' assignment <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+#'                       isoscape = isoscape,
+#'                       calibfit = calib)
 #' 
 #' assignment
 #' 
 #' 
 #' ## perform the assignment on land only
-#' assignment.dry <- isofind(
-#'     assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
-#'     isoscape = isoscape,
-#'     calibfit = calib,
-#'     mask = OceanMask)
+#' assignment.dry <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+#'                           isoscape = isoscape,
+#'                           calibfit = calib,
+#'                           mask = OceanMask)
 #' 
 #' ## plot the group assignment
 #' plot(assignment, who = "group") ## without decoration
@@ -110,20 +108,20 @@ Isorix <- function(...) {
 #' plot(assignment.dry, who = "group") ## without decoration
 #' 
 #' plot(assignment.dry, who = "group",
-#'   borders = list(borders = CountryBorders),
-#'   mask = list(mask = OceanMask))
+#'      borders = list(borders = CountryBorders),
+#'      mask = list(mask = OceanMask))
 #' 
 #' ## plot the assignment for the 4 first individuals
 #' plot(assignment.dry, who = 1:4,
-#'   borders = list(borders = CountryBorders),
-#'   mask = list(mask = OceanMask),
-#'   sources = list(draw = FALSE),
-#'   calib = list(draw = FALSE))
+#'      borders = list(borders = CountryBorders),
+#'      mask = list(mask = OceanMask),
+#'      sources = list(draw = FALSE),
+#'      calib = list(draw = FALSE))
 #' 
 #' ## plot the assignment for the individual "Mbe_8"
 #' plot(assignment.dry, who = "Mbe_8",
-#'   borders = list(borders = CountryBorders),
-#'   mask = list(mask = OceanMask))
+#'      borders = list(borders = CountryBorders),
+#'      mask = list(mask = OceanMask))
 #' 
 #' }
 #' 

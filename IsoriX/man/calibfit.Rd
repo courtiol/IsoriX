@@ -74,13 +74,22 @@ perform the calibration fit and their names.
 ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 
 \dontrun{
-## fit the calibration model
+## We fit the models for Germany:
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+
+GermanFit <- isofit(iso.data = GNIPDataDEagg,
+                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+
+## We fit the calibration model:
 calib <- calibfit(calib.data = CalibDataAlien, isofit = GermanFit)
-## display minimal information
+
+## We display minimal information:
 calib
-## display more information
+
+## We display more information:
 summary(calib)
-## plot the calibration function
+
+## We plot the calibration function:
 plot(calib)
 }
 

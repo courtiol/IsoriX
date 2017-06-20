@@ -30,9 +30,7 @@
 #' at weather stations, but one may also use measurements performed on
 #' sedentary organisms. In either case, the accuracy of the isoscape (and
 #' thereby the accuracy of assignments) increases with the number and spatial
-#' coverage of the sources. Because fitting a geostatistical model may take
-#' several hours for large datasets, we have stored an already fitted model for
-#' users willing to explore our package (see \code{\link{GermanFit}}).
+#' coverage of the sources.
 #' 
 #' \item Preparing the elevation raster with \code{\link{relevate}}:
 #' 
@@ -49,7 +47,7 @@
 #' We will soon provide a link to download an elevation raster for the entire
 #' world at a resolution of one altitude per square-km, and other rasters may
 #' be used. We have also stored a low resolution raster in our package (see
-#' \code{\link{ElevRaster}}) for users to try things out, but we do not
+#' \code{\link{ElevRasterDE}}) for users to try things out, but we do not
 #' encourage its use for real application.
 #' 
 #' \item Predicting the isoscape across the area covered by the elevation

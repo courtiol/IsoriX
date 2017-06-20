@@ -62,14 +62,10 @@ Isosim <- function(...) {
 #' ## unless you type: example(isosim, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' ## We load an elevation raster
-#' 
-#' elevationraster <- relevate(ElevRaster,
-#'     manual.crop = c(-30, 60, 30, 70))
 #' 
 #' ## We simulate data under default settings
-#' simu <- isosim(simu.data = elevationraster,
-#'     save.dataframe = TRUE, seed = 2)
+#' simu <- isosim(simu.data = ElevRasterDE,
+#'     save.dataframe = TRUE, seed = 1)
 #' 
 #' simu
 #' 
@@ -87,15 +83,15 @@ Isosim <- function(...) {
 #'     mask = list(mask = OceanMask))
 #' 
 #' 
-#' ## We fit the simulated data by sampling 200 locations
+#' ## We fit the simulated data by sampling 50 locations
 #' 
 #' set.seed(123)
-#' newdat <- simu$data[sample(1:nrow(simu$data), 200), ]
+#' newdat <- simu$data[sample(1:nrow(simu$data), 50), ]
 #' 
 #' isoscapemodel <- isofit(iso.data = newdat,
 #'     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
-#' isoscape <- isoscape(elevationraster, isoscapemodel)
+#' isoscape <- isoscape(ElevRasterDE, isoscapemodel)
 #' 
 #' plot.mean.fitted <- plot(
 #'     x = isoscape,
@@ -131,10 +127,12 @@ Isosim <- function(...) {
 #'         nu = 0.35,
 #'         rho = 5e-5,
 #'         rho_div_nu  =  5e-5/0.35,
+#'         lambda.ID = 0,
 #'         lambda.matern = 899,
 #'         intercept.disp = 5.8,
 #'         nu.disp = 3.2e-01,
 #'         rho.disp = 1.5e-05,
+#'         lambda.matern.stationID = 0,
 #'         lambda.matern.disp = 5),
 #'     fitted = c(
 #'         intercept = isoscapemodel$mean.fit$fixef[1],
