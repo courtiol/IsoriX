@@ -53,10 +53,10 @@ Isorix <- function(...) {
 #' itself three lists (\code{indiv}, \code{group}, and \code{sp.points})
 #' storing all rasters built during assignment and the spatial points for
 #' sources and calibration. The \var{list} \code{indiv} contains three stack of
-#' rater layers: one storing the value of the test statistic ("stat"), one
+#' raster layers: one storing the value of the test statistic ("stat"), one
 #' storing the value of the variance of the test statistic ("var") and one
 #' storing the p-value of the test ("pv"). The \var{list} \code{group} contains
-#' one rater storing the p-values of the assignment for the group. The
+#' one raster storing the p-values of the assignment for the group. The
 #' \var{list} \code{sp.points} contains two spatial point objects:
 #' \code{source.points} and \code{calib.points}.
 #' @note See \code{\link{assigndata}} to know which variables are needed to
@@ -76,22 +76,22 @@ Isorix <- function(...) {
 #' data(elevraster)
 #' data(countries)
 #' data(oceanmask)
-#' data(Europefit)
+#' data(GermanFit)
 #' 
 #' ## prepare the elevation raster
 #' elevationraster <- relevate(
 #'     elevation.raster = elevraster,
-#'     isofit = Europefit)
+#'     isofit = GermanFit)
 #' 
 #' ## build the isoscape
 #' isoscape <- isoscape(
 #'     elevation.raster = elevationraster,
-#'     isofit = Europefit)
+#'     isofit = GermanFit)
 #' 
 #' ## fit the calibration model
 #' calib <- calibfit(
 #'     calib.data = calibdata,
-#'     isofit = Europefit)
+#'     isofit = GermanFit)
 #' 
 #' 
 #' ## perform the assignment on land and water

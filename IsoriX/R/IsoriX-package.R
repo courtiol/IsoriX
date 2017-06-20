@@ -32,7 +32,7 @@
 #' thereby the accuracy of assignments) increases with the number and spatial
 #' coverage of the sources. Because fitting a geostatistical model may take
 #' several hours for large datasets, we have stored an already fitted model for
-#' users willing to explore our package (see \code{\link{Europefit}}).
+#' users willing to explore our package (see \code{\link{GermanFit}}).
 #' 
 #' \item Preparing the elevation raster with \code{\link{relevate}}:
 #' 

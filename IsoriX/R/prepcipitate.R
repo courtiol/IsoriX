@@ -29,11 +29,11 @@
 #' 
 #' \dontrun{
 #' data(elevraster)
-#' data(Europefit)
+#' data(GermanFit)
 #' 
 #' elevation.raster <- relevate(
 #'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     isofit = GermanFit,
 #'     aggregation.factor = 0)
 #' 
 #' getprecip(path = "~/Desktop/")
