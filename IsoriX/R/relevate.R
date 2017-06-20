@@ -56,24 +56,24 @@ RElevate <- function(...) {
 #' 
 #' ## Loading objects
 #' data(elevraster)
-#' data(Europefit)
+#' data(GermanFit)
 #' data(countries)
 #' data(oceanmask)
 #' 
 #' ## We aggregate and crop using different settings
 #' elevation.raster1 <- relevate(
 #'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     isofit = GermanFit,
 #'     aggregation.factor = 0)
 #' 
 #' elevation.raster2 <- relevate(
 #'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     isofit = GermanFit,
 #'     aggregation.factor = 5)
 #' 
 #' elevation.raster3 <- relevate(
 #'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     isofit = GermanFit,
 #'     aggregation.factor = 5, aggregation.fun = max)
 #' 
 #' 

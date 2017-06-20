@@ -257,64 +257,6 @@ NULL
 
 
 
-#' The fitted isoscape model for Europe
-#' 
-#' This dataset contains an object of class \code{isofit} containing the mean
-#' model and residual dispersion model fitted on the data for Europe (see
-#' example).
-#' 
-#' This fitted isoscape model has been obtained by running the function
-#' \code{\link{isofit}} on the isotopic source data stored in GNIPdataEU (see
-#' example).
-#' 
-#' @name Europefit
-#' @docType data
-#' @format An object of class \code{isofit}
-#' @seealso \code{\link{isofit}} for information about how to fit an isoscape
-#' model
-#' @keywords datasets models
-#' @examples
-#' 
-#' 
-#' data(Europefit)
-#' Europefit
-#' plot(Europefit)
-#' 
-#' ## The following example takes a lot of time and will therefore not
-#' ## be run unless you type: example(Europefit, run.dontrun=TRUE)
-#' 
-#' \dontrun{
-#' ## We load the data for the entire world
-#' data(GNIPdata)
-#' 
-#' ## We prepare the data for Europe
-#' GNIPdataEU <- queryGNIP(
-#'     data=GNIPdata,
-#'     long.min = -30, 
-#'     long.max = 60,
-#'     lat.min = 30, 
-#'     lat.max = 70)
-#' 
-#' ## We fit the isoscape model
-#' Europefit <- isofit(iso.data=GNIPdataEU,
-#'     mean.model.fix=list(elev=TRUE, lat.abs=TRUE),
-#'     mean.model.rand=list("uncorr"=TRUE),
-#'     disp.model.rand=list("uncorr"=TRUE))
-#' 
-#' ## We created the object Europefit stored in this package using
-#' ## save(Europefit, file="Europefit.rda", compress="xz")
-#' 
-#' Europefit
-#' plot(Europefit)
-#' }
-#' 
-#' 
-NULL
-
-
-
-
-
 #' The fitted isoscape model for Germany
 #' 
 #' This dataset contains an object of class \code{isofit} containing the mean
@@ -322,7 +264,7 @@ NULL
 #' example).
 #' 
 #' This fitted isoscape model has been obtained by running the function
-#' \code{\link{isofit}} on the isotopic source data stored in GNIPdataDE (see
+#' \code{\link{isofit}} on the isotopic source data stored in GNIPDataDE (see
 #' example).
 #' 
 #' @name GermanFit
@@ -333,7 +275,6 @@ NULL
 #' @keywords datasets models
 #' @examples
 #' 
-#' 
 #' data(GermanFit)
 #' GermanFit
 #' plot(GermanFit)
@@ -342,26 +283,18 @@ NULL
 #' ## be run unless you type: example(GermanFit, run.dontrun=TRUE)
 #' 
 #' \dontrun{
-#' ## We load the data for the entire world
-#' data(GNIPdata)
-#' 
-#' ## We prepare the data for Germany
-#' GNIPdataDE <- queryGNIP(data=GNIPdata,
-#'                         long.min = -30, 
-#'                         long.max = 60,
-#'                         lat.min = 30, 
-#'                         lat.max = 70
-#'                         )
+#' ## We load the data for Germany
+#' data(GNIPDataDE)
 #' 
 #' ## We fit the isoscape model
-#' GermanFit <- isofit(iso.data=GNIPDataDE,
-#'                     mean.model.fix=list(elev=TRUE, lat.abs=TRUE),
-#'                     mean.model.rand=list("uncorr"=TRUE),
-#'                     disp.model.rand=list("uncorr"=TRUE)
+#' GermanFit <- isofit(iso.data = GNIPDataDE,
+#'                     mean.model.fix = list(elev=TRUE, lat.abs = TRUE),
+#'                     mean.model.rand = list("uncorr" = TRUE),
+#'                     disp.model.rand = list("uncorr" = TRUE)
 #'                     )
 #' 
 #' ## We created the object GermanFit stored in this package using
-#' ## save(GermanFit, file="GermanFit.rda", compress="xz")
+#' ## save(GermanFit, file = "GermanFit.rda", compress = "xz")
 #' 
 #' GermanFit
 #' plot(GermanFit)
