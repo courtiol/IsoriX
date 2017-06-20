@@ -76,11 +76,6 @@ The isoscape can be plotted using the function \code{\link{plot.isoscape}}
 
 \dontrun{
 
-data(ElevRaster)
-data(GermanFit)
-data(CountryBorders)
-data(OceanMask)
-
 ## We crop the elevation raster to the extent of GermanFit
 elevationraster <- relevate(elevation.raster = ElevRaster,
                             isofit = GermanFit)

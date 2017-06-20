@@ -36,7 +36,6 @@ produced by the function \code{\link{queryGNIP}}.
 }
 \examples{
 
-data(GNIPDataDE)
 head(GNIPDataDE)
 
 }

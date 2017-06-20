@@ -21,7 +21,6 @@ perform assignments using the function \code{\link{isofind}}.
 }
 \examples{
 
-data(AssignDataBat)
 head(AssignDataBat)
 str(AssignDataBat)
 

@@ -16,7 +16,6 @@ bodies of water.
 }
 \examples{
 
-data(OceanMask)
 if(require(sp))
     plot(OceanMask, col='blue')
 

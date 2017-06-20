@@ -62,12 +62,6 @@ predictions.
 
 ### DIFFERENCES IN AGGREGATION
 
-## Loading objects
-data(ElevRaster)
-data(GermanFit)
-data(CountryBorders)
-data(OceanMask)
-
 ## We aggregate and crop using different settings
 elevation.raster1 <- relevate(
     elevation.raster = ElevRaster,
@@ -92,8 +86,6 @@ elevation.raster3 <- relevate(
 \dontrun{
     ## We plot the outcome of the 3 different aggregation schemes
 if(require(rasterVis)) {
-    data(CountryBorders)
-    data(OceanMask)
     plot.aggregation1 <- levelplot(elevation.raster1,
             margin = FALSE, main = "Original small raster") + 
         layer(sp.polygons(CountryBorders)) +

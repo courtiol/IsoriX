@@ -69,13 +69,6 @@ perform the assignment and their names.
 ## The following example takes some time and will therefore not
 ## be run unless you type: example(isofind, run.dontrun = TRUE)
 
-data(CalibDataAlien)
-data(AssignDataAlien)
-data(ElevRaster)
-data(CountryBorders)
-data(OceanMask)
-data(GermanFit)
-
 ## prepare the elevation raster
 elevationraster <- relevate(
     elevation.raster = ElevRaster,

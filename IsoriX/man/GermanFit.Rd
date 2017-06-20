@@ -17,7 +17,6 @@ example).
 }
 \examples{
 
-data(GermanFit)
 GermanFit
 plot(GermanFit)
 
@@ -25,9 +24,6 @@ plot(GermanFit)
 ## be run unless you type: example(GermanFit, run.dontrun=TRUE)
 
 \dontrun{
-## We load the data for Germany
-data(GNIPDataDE)
-
 ## We prepare the data using the function \\code{\\link{queryGNIP}}
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
