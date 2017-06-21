@@ -15,7 +15,7 @@
 \section{version 0.6}{
   \subsection{New features}{
       \itemize{
-        \item new function create_aliens() allowing for the simulation of orgnanism data
+        \item due to new GNIP policies, we no longer provide the GNIP dataset for the entire World, but only a subset containing data from Germany. Users should thus compile their data themselves from the 'wiser' plateform provided by GNIP 
         \item it is now possible to control the colours and labels for the levels of isotopes or p-values in plots
         \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
@@ -23,13 +23,15 @@
         \item new function getprecip to download monthly precipitation rasters from WorldClim
         \item new function isomultifit fitting isoscapes per strata (month, year, or any "split")
         \item new function isomultiscape building isoscapes averaged across strata
-        \item new vignette for coding conventions
+        \item new function create_aliens simulating of organism data
       }
   }
-    \subsection{Minor changes}{
+    \subsection{Geeky changes}{
       \itemize{
         \item the namespace is now generated with Roxygen2
-        \item changed object names following our coding convention
+        \item the datasets are now 'lazy-loaded'
+        \item new vignette for coding conventions
+        \item changed some object names following our coding convention (more to come)
       }
     }
 }
