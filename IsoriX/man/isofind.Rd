@@ -101,25 +101,17 @@ assignment.dry <- isofind(assign.data = subset(AssignDataAlien, species == "Myot
                           mask = OceanMask)
 
 ## plot the group assignment
-plot(assignment, who = "group") ## without decoration
+plot(assignment, who = "group")
 
-plot(assignment.dry, who = "group") ## without decoration
-
-plot(assignment.dry, who = "group",
-     borders = list(borders = CountryBorders),
-     mask = list(mask = OceanMask))
+plot(assignment.dry, who = "group")
 
 ## plot the assignment for the 4 first individuals
 plot(assignment.dry, who = 1:4,
-     borders = list(borders = CountryBorders),
-     mask = list(mask = OceanMask),
      sources = list(draw = FALSE),
      calib = list(draw = FALSE))
 
 ## plot the assignment for the individual "Mbe_8"
-plot(assignment.dry, who = "Mbe_8",
-     borders = list(borders = CountryBorders),
-     mask = list(mask = OceanMask))
+plot(assignment.dry, who = "Mbe_8")
 
 }
 

@@ -85,29 +85,13 @@ isoscape <- isoscape(elevation.raster = ElevRasterDE,
 isoscape
 
 ## We build the plots:
-plot.mean <- plot(x = isoscape,
-                  which = "mean",
-                  borders = list(borders = CountryBorders),
-                  mask = list(mask = OceanMask),
-                  plot = FALSE)
+plot.mean <- plot(x = isoscape, which = "mean", plot = FALSE)
 
-plot.mean.predVar <- plot(x = isoscape,
-                          which = "mean.predVar",
-                          borders = list(borders = CountryBorders),
-                          mask = list(mask = OceanMask),
-                          plot = FALSE)
+plot.mean.predVar <- plot(x = isoscape, which = "mean.predVar", plot = FALSE)
 
-plot.mean.residVar <- plot(x = isoscape,
-                           which = "mean.residVar",
-                           borders = list(borders = CountryBorders),
-                           mask = list(mask = OceanMask),
-                           plot = FALSE)
+plot.mean.residVar <- plot(x = isoscape, which = "mean.residVar", plot = FALSE)
 
-plot.mean.respVar <- plot(x = isoscape,
-                          which = "mean.respVar",
-                          borders = list(borders = CountryBorders),
-                          mask = list(mask = OceanMask),
-                          plot = FALSE)
+plot.mean.respVar <- plot(x = isoscape, which = "mean.respVar", plot = FALSE)
 
 ## We display the plots:
 if(require(lattice)) {

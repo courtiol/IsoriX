@@ -56,20 +56,14 @@ isoscapes <- isomultiscape(elevation.raster = ElevRasterDE,
                            isofit = isoscapemodels)
 
 ## We plot the mean isoscape of the averaging:
-plot(x = isoscapes,
-     which = "mean",
-     borders = list(borders = CountryBorders),
-     mask = list(mask = OceanMask))
+plot(x = isoscapes, which = "mean")
 
 ## We build the isoscapes for a given month (here January):
 isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
                          isofit = isoscapemodels$multi.fits[["month_1"]])
                          
 ## We plot the mean isoscape for January:
-plot(x = isoscape.jan,
-     which = "mean",
-     borders = list(borders = CountryBorders),
-     mask = list(mask = OceanMask))
+plot(x = isoscape.jan, which = "mean")
 }
 }
 \seealso{

@@ -111,9 +111,9 @@ NULL
 plot.isoscape <- function(x,
                           which   = "mean",
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
-                          borders = list(borders = NULL, lwd = 0.5, col = "black"),
-                          mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
-                          palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NULL),
+                          borders = list(borders = NA, lwd = 0.5, col = "black"),
+                          mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+                          palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NA),
                           plot    = TRUE,
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
@@ -124,10 +124,24 @@ plot.isoscape <- function(x,
     .CompleteArgs(plot.isoscape)
     
     ## importing palette if missing
-    if (is.null(palette$fn)) {
+    if (!is.null(palette$fn) && is.na(palette$fn)) {
       isopalette1 <- NULL ## to please R CMD check
-      utils::data("isopalette1", envir = environment(), package = "IsoriX") # to modify for lazy data?
+      utils::data("isopalette1", envir = environment(), package = "IsoriX")
       palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 0.5)
+    }
+    
+    ## importing country borders if missing
+    if (!is.null(borders$borders) && is.na(borders$borders)) {
+      CountryBorders <- NULL
+      utils::data("CountryBorders", envir = environment(), package = "IsoriX")
+      borders$borders <- CountryBorders
+    }
+    
+    ## importing ocean if missing
+    if (!is.null(mask$mask) && is.na(mask$mask)) {
+      OceanMask <- NULL
+      utils::data("OceanMask", envir = environment(), package = "IsoriX")
+      mask$mask <- OceanMask
     }
     
     if (("isosim" %in% class(x))) {
@@ -201,22 +215,41 @@ plot.isorix <- function(x,
                         cutoff  = list(draw = TRUE, level = 0.05, col = "#909090"),
                         sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                         calib   = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
-                        borders = list(borders = NULL, lwd = 0.5, col = "black"),
-                        mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
-                        mask2   = list(mask = NULL, lwd = 0, col = "purple", fill = "purple"),
-                        palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn = NULL),
+                        borders = list(borders = NA, lwd = 0.5, col = "black"),
+                        mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+                        mask2   = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
+                        palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn = NA),
                         plot    = TRUE,
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
 
   ## complete input with default setting
   .CompleteArgs(plot.isorix)
-  
+
   ## importing palette if missing
-  if (is.null(palette$fn)) {
+  if (!is.null(palette$fn) && is.na(palette$fn)) {
     isopalette2 <- NULL ## to please R CMD check
     utils::data("isopalette2", envir = environment(), package = "IsoriX")
     palette$fn <- grDevices::colorRampPalette(isopalette2, bias = 0.5)
+  }
+  
+  ## importing country borders if missing
+  if (!is.null(borders$borders) && is.na(borders$borders)) {
+    CountryBorders <- NULL
+    utils::data("CountryBorders", envir = environment(), package = "IsoriX")
+    borders$borders <- CountryBorders
+  }
+  
+  ## importing ocean if missing
+  if (!is.null(mask$mask) && is.na(mask$mask)) {
+    OceanMask <- NULL
+    utils::data("OceanMask", envir = environment(), package = "IsoriX")
+    mask$mask <- OceanMask
+  }
+  
+  ## changing missing setting for mask2
+  if (!is.null(mask2$mask) && is.na(mask2$mask)) {
+    mask2$mask <- NULL
   }
   
   ## changing cutoff level to null when we don't want to draw the cutoff

@@ -85,29 +85,13 @@ Isoscape <- function(...) {
 #' isoscape
 #' 
 #' ## We build the plots:
-#' plot.mean <- plot(x = isoscape,
-#'                   which = "mean",
-#'                   borders = list(borders = CountryBorders),
-#'                   mask = list(mask = OceanMask),
-#'                   plot = FALSE)
+#' plot.mean <- plot(x = isoscape, which = "mean", plot = FALSE)
 #' 
-#' plot.mean.predVar <- plot(x = isoscape,
-#'                           which = "mean.predVar",
-#'                           borders = list(borders = CountryBorders),
-#'                           mask = list(mask = OceanMask),
-#'                           plot = FALSE)
+#' plot.mean.predVar <- plot(x = isoscape, which = "mean.predVar", plot = FALSE)
 #' 
-#' plot.mean.residVar <- plot(x = isoscape,
-#'                            which = "mean.residVar",
-#'                            borders = list(borders = CountryBorders),
-#'                            mask = list(mask = OceanMask),
-#'                            plot = FALSE)
+#' plot.mean.residVar <- plot(x = isoscape, which = "mean.residVar", plot = FALSE)
 #' 
-#' plot.mean.respVar <- plot(x = isoscape,
-#'                           which = "mean.respVar",
-#'                           borders = list(borders = CountryBorders),
-#'                           mask = list(mask = OceanMask),
-#'                           plot = FALSE)
+#' plot.mean.respVar <- plot(x = isoscape, which = "mean.respVar", plot = FALSE)
 #' 
 #' ## We display the plots:
 #' if(require(lattice)) {
@@ -332,20 +316,14 @@ isoscape <- function(elevation.raster, ## change as method?
 #'                            isofit = isoscapemodels)
 #' 
 #' ## We plot the mean isoscape of the averaging:
-#' plot(x = isoscapes,
-#'      which = "mean",
-#'      borders = list(borders = CountryBorders),
-#'      mask = list(mask = OceanMask))
+#' plot(x = isoscapes, which = "mean")
 #' 
 #' ## We build the isoscapes for a given month (here January):
 #' isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
 #'                          isofit = isoscapemodels$multi.fits[["month_1"]])
 #'                          
 #' ## We plot the mean isoscape for January:
-#' plot(x = isoscape.jan,
-#'      which = "mean",
-#'      borders = list(borders = CountryBorders),
-#'      mask = list(mask = OceanMask))
+#' plot(x = isoscape.jan, which = "mean")
 #' }
 #' @export
 
