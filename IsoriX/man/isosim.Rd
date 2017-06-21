@@ -92,17 +92,9 @@ simu <- isosim(simu.data = ElevRasterDE,
 simu
 
 ## We build the plots of the outcome using IsoriX
-plot.mean.simu <- plot(
-    x = simu,
-    which = "mean",
-    borders = list(borders = CountryBorders),
-    mask = list(mask = OceanMask))
+plot.mean.simu <- plot(x = simu, which = "mean")
 
-plot.disp.simu <- plot(
-    x = simu,
-    which = "disp",
-    borders = list(borders = CountryBorders),
-    mask = list(mask = OceanMask))
+plot.disp.simu <- plot(x = simu, which = "disp")
 
 
 ## We fit the simulated data by sampling 50 locations
@@ -115,19 +107,9 @@ isoscapemodel <- isofit(iso.data = newdat,
 
 isoscape <- isoscape(ElevRasterDE, isoscapemodel)
 
-plot.mean.fitted <- plot(
-    x = isoscape,
-    which = "mean",
-    sources = list(draw = FALSE),
-    borders = list(borders = CountryBorders),
-    mask = list(mask = OceanMask))
+plot.mean.fitted <- plot(x = isoscape, which = "mean", sources = list(draw = FALSE))
 
-plot.disp.fitted <- plot(
-    x = isoscape,
-    which = "disp",
-    sources = list(draw = FALSE),
-    borders = list(borders = CountryBorders),
-    mask = list(mask = OceanMask))
+plot.disp.fitted <- plot(x = isoscape, which = "disp", sources = list(draw = FALSE))
 
 ## We compare simulated and fitted data visually
 if(require(lattice)){
