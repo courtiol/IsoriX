@@ -27,6 +27,12 @@
         \item new function create_aliens simulating of organism data
       }
   }
+    \subsection{Minor changes}{
+      \itemize{
+      \item the inputs for filtering data by month or year using queryGNIP have changed
+      \item the default fixed effect structure for the mean model is isofit has changed 
+      }
+    }
     \subsection{Geeky changes}{
       \itemize{
         \item the namespace is now generated with Roxygen2
