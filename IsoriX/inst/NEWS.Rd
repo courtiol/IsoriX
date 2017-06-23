@@ -15,9 +15,10 @@
 \section{version 0.6}{
   \subsection{New features}{
       \itemize{
-        \item due to new GNIP policies, we no longer provide the GNIP dataset for the entire World, but only a subset containing data from Germany. Users should thus compile their data themselves from the 'wiser' plateform provided by GNIP.
+        \item due to new GNIP policies, we no longer provide the GNIP dataset for the entire World, but only a subset containing data from Germany (users should thus compile their data themselves from the 'wiser' plateform provided by GNIP; see vignette Workflow)
         \item it is now possible to control the colours and labels for the levels of isotopes or p-values in plots
-        \item for plotting, it is no longer needed to load the ocean mask and country borders. It now all happen automatically.
+        \item for plotting, it is no longer needed to load the ocean mask and country borders (it now happens automatically)
+        \item the function relevate now allows for a cropping larger than the extent of the weather stations by means of the argument margin_pct
         \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
         \item new function prepcipitate to prepare the precipitation brick
