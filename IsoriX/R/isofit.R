@@ -43,10 +43,7 @@ Isofit <- function(...) {
 #' (\code{elev}), the absolute value of the latitude (\code{lat.abs}), the
 #' squared latitude (\code{lat.2}), the longitude (\code{long}) and the squared
 #' longitude (\code{long.2}). An intercept is always considered in both models.
-#' By default, only intercept are being fitted. To fit an isoscape with the
-#' same fixed effect structure as the seminal Bowen model (Bowen et al. 2005),
-#' one should thus change \code{mean.model.fix} to \code{list(elev = TRUE,}
-#' \code{lat.abs = TRUE,} \code{lat.2 = TRUE)}.
+#' By default, only intercept are being fitted.
 #' 
 #' In the models, the mean (for the mean model) or the log residual variance
 #' (for the residual dispersion model) follow a Gaussian distribution around a
@@ -187,8 +184,7 @@ Isofit <- function(...) {
 #' 
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
-#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 
 #' GermanFit
 #' 
@@ -198,7 +194,7 @@ Isofit <- function(...) {
 #' 
 #' @export
 isofit <- function(iso.data,
-                   mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+                   mean.model.fix = list(elev = TRUE, lat.abs = TRUE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                    disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                    mean.model.rand = list(uncorr = TRUE, spatial = TRUE),
                    disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
@@ -388,14 +384,13 @@ isofit <- function(iso.data,
 #' 
 #' ## We fit the isoscapes
 #' 
-#' isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
-#'                               mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly)
 #' 
 #' isoscapemodels
 #' @export
 isomultifit <- function(iso.data,
                         split.by = "month",
-                        mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+                        mean.model.fix = list(elev = TRUE, lat.abs = TRUE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                         disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
                         mean.model.rand = list(uncorr = TRUE, spatial = TRUE),
                         disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
