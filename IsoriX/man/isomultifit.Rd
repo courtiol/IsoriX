@@ -4,8 +4,8 @@
 \alias{isomultifit}
 \title{Fit isoscape models per strata (typically time interval such as months)}
 \usage{
-isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev =
-  FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev = TRUE,
+  lat.abs = TRUE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
   disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long =
   FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = TRUE, spatial =
   TRUE), disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
@@ -80,8 +80,7 @@ dim(GNIPDataDEmonthly)
 
 ## We fit the isoscapes
 
-isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
-                              mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly)
 
 isoscapemodels
 }
