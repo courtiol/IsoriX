@@ -66,16 +66,19 @@ RElevate <- function(...) {
 #' elevation.raster1 <- relevate(
 #'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
+#'     margin_pct = 0,
 #'     aggregation.factor = 0)
 #' 
 #' elevation.raster2 <- relevate(
 #'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
+#'     margin_pct = 5,
 #'     aggregation.factor = 5)
 #' 
 #' elevation.raster3 <- relevate(
 #'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
+#'     margin_pct = 10,
 #'     aggregation.factor = 5, aggregation.fun = max)
 #' 
 #' 
