@@ -4,14 +4,19 @@
 \alias{relevate}
 \title{Prepare the elevation raster}
 \usage{
-relevate(elevation.raster, isofit = NULL, aggregation.factor = 0L,
-  aggregation.fun = mean, manual.crop = NULL, verbose = interactive())
+relevate(elevation.raster, isofit = NULL, margin_pct = 5,
+  aggregation.factor = 0L, aggregation.fun = mean, manual.crop = NULL,
+  verbose = interactive())
 }
 \arguments{
 \item{elevation.raster}{The elevation raster (\var{RasterLayer})}
 
 \item{isofit}{The fitted isoscape model returned by the function
 \code{\link{isofit}}}
+
+\item{margin_pct}{The percentage representing by how much the space should 
+extend outside the range of the coordinates of the weather stations
+(default = 5).}
 
 \item{aggregation.factor}{The number of neighbouring cells (\var{integer})
 to merge during aggregation}

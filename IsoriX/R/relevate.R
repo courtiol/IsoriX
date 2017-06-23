@@ -31,6 +31,9 @@ RElevate <- function(...) {
 #' @param elevation.raster The elevation raster (\var{RasterLayer})
 #' @param isofit The fitted isoscape model returned by the function
 #' \code{\link{isofit}}
+#' @param margin_pct The percentage representing by how much the space should 
+#' extend outside the range of the coordinates of the weather stations
+#' (default = 5). 
 #' @param aggregation.factor The number of neighbouring cells (\var{integer})
 #' to merge during aggregation
 #' @param aggregation.fun The \var{function} used to aggregate cells
@@ -106,6 +109,7 @@ RElevate <- function(...) {
 #' @export
 relevate <- function(elevation.raster,
                      isofit = NULL,
+                     margin_pct = 5,
                      aggregation.factor = 0L,
                      aggregation.fun = mean,
                      manual.crop = NULL,
@@ -125,19 +129,21 @@ relevate <- function(elevation.raster,
           raster::ymin(elevation.raster) > min(isofit$mean.fit$data$lat) |
           raster::ymax(elevation.raster) < max(isofit$mean.fit$data$lat)
           ) {
-        stop("cropping not possible (sources located outside elevation raster)")
+        warning("the cropping may not make sense (sources located outside elevation raster)")
       }
       if (verbose) {
         print(paste("cropping..."))
       }
+      
       ## crop is performed:
+      margin_long <- (max(isofit$mean.fit$data$long) - min(isofit$mean.fit$data$long)) * margin_pct/100
+      margin_lat <- (max(isofit$mean.fit$data$lat) - min(isofit$mean.fit$data$lat)) * margin_pct/100
+      
       elevation.raster <- raster::crop(elevation.raster,
-                               raster::extent(min(isofit$mean.fit$data$long),
-                                              max(isofit$mean.fit$data$long),
-                                              min(isofit$mean.fit$data$lat),
-                                              max(isofit$mean.fit$data$lat)
-                                              )
-                               )
+                               raster::extent(min(isofit$mean.fit$data$long) - margin_long,
+                                              max(isofit$mean.fit$data$long) + margin_long,
+                                              min(isofit$mean.fit$data$lat) - margin_lat,
+                                              max(isofit$mean.fit$data$lat) + margin_lat))
     } else {
       if (length(manual.crop) == 4) {
         elevation.raster <- raster::crop(elevation.raster, manual.crop)
