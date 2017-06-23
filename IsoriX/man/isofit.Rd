@@ -9,7 +9,7 @@
 \url{http://kimura.univ-montp2.fr/~rousset/spaMM.htm}
 }
 \usage{
-isofit(iso.data, mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 =
+isofit(iso.data, mean.model.fix = list(elev = TRUE, lat.abs = TRUE, lat.2 =
   FALSE, long = FALSE, long.2 = FALSE), disp.model.fix = list(elev = FALSE,
   lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
   mean.model.rand = list(uncorr = TRUE, spatial = TRUE),
@@ -98,10 +98,7 @@ which of the following fixed effects must be considered: the elevation
 (\code{elev}), the absolute value of the latitude (\code{lat.abs}), the
 squared latitude (\code{lat.2}), the longitude (\code{long}) and the squared
 longitude (\code{long.2}). An intercept is always considered in both models.
-By default, only intercept are being fitted. To fit an isoscape with the
-same fixed effect structure as the seminal Bowen model (Bowen et al. 2005),
-one should thus change \code{mean.model.fix} to \code{list(elev = TRUE,}
-\code{lat.abs = TRUE,} \code{lat.2 = TRUE)}.
+By default, only intercept are being fitted.
 
 In the models, the mean (for the mean model) or the log residual variance
 (for the residual dispersion model) follow a Gaussian distribution around a
@@ -197,8 +194,7 @@ explaining how to do so.
 
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-GermanFit <- isofit(iso.data = GNIPDataDEagg,
-                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 GermanFit
 
