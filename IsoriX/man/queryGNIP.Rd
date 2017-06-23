@@ -4,8 +4,8 @@
 \alias{queryGNIP}
 \title{Filter the dataset to create an isoscape}
 \usage{
-queryGNIP(data, month = 1:12, year.min, year.max, long.min, long.max, lat.min,
-  lat.max, split.by = NULL, prop.random = 0, random.level = "station")
+queryGNIP(data, month = 1:12, year, long.min, long.max, lat.min, lat.max,
+  split.by = NULL, prop.random = 0, random.level = "station")
 }
 \arguments{
 \item{data}{A \var{dataframe} containing original isotopic measurements
@@ -15,12 +15,9 @@ similar in structure to \code{\link{GNIPDataDE}}}
 from. Should be a vector of round numbers between 1 and 12. The default is 
 1:12 selecting all months.}
 
-\item{year.min}{A \var{numeric} indicating the oldest year to select from.
-If not provided, the oldest year of \code{\link{GNIPDataDE}} will be considered}
-
-\item{year.max}{A \var{numeric} indicating the most recent year to select
-from. If not provided, the most recent year of \code{\link{GNIPDataDE}} will
-be considered}
+\item{year}{A \var{numeric vector} indicating the years to select
+from. Should be a vector of round numbers. The default is 
+to select all years available.}
 
 \item{long.min}{A \var{numeric} indicating the minimum longitude to select
 from. Should be a number between -180 and 180. If not provided, -180 will be
@@ -109,11 +106,10 @@ GNIPDataDEyearly <- queryGNIP(data = GNIPDataDE,
 
 head(GNIPDataDEyearly)
 
-### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY
+### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY BETWEEN 1995 and 1996
 GNIPDataDEwarm <- queryGNIP(data = GNIPDataDE,
                             month = 5:8,
-                            year.min = 1960,
-                            year.max = 2013)
+                            year = 1995:1996)
 
 head(GNIPDataDEwarm)
 

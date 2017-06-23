@@ -38,11 +38,9 @@ QueryGNIP <- function(...) {
 #' @param month A \var{numeric vector} indicating the months to select
 #' from. Should be a vector of round numbers between 1 and 12. The default is 
 #' 1:12 selecting all months.
-#' @param year.min A \var{numeric} indicating the oldest year to select from.
-#' If not provided, the oldest year of \code{\link{GNIPDataDE}} will be considered
-#' @param year.max A \var{numeric} indicating the most recent year to select
-#' from. If not provided, the most recent year of \code{\link{GNIPDataDE}} will
-#' be considered
+#' @param year A \var{numeric vector} indicating the years to select
+#' from. Should be a vector of round numbers. The default is 
+#' to select all years available.
 #' @param long.min A \var{numeric} indicating the minimum longitude to select
 #' from. Should be a number between -180 and 180. If not provided, -180 will be
 #' considered.
@@ -95,11 +93,10 @@ QueryGNIP <- function(...) {
 #' 
 #' head(GNIPDataDEyearly)
 #' 
-#' ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY
+#' ### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY BETWEEN 1995 and 1996
 #' GNIPDataDEwarm <- queryGNIP(data = GNIPDataDE,
 #'                             month = 5:8,
-#'                             year.min = 1960,
-#'                             year.max = 2013)
+#'                             year = 1995:1996)
 #' 
 #' head(GNIPDataDEwarm)
 #' 
@@ -130,8 +127,7 @@ QueryGNIP <- function(...) {
 #' @export
 queryGNIP <- function(data,
                       month = 1:12,
-                      year.min,
-                      year.max,
+                      year,
                       long.min ,
                       long.max,
                       lat.min,
@@ -151,8 +147,7 @@ queryGNIP <- function(data,
   }
 
   ## Handle missing data
-  if (missing("year.min")) year.min <- min(data$year, na.rm = TRUE)
-  if (missing("year.max")) year.max <- max(data$year, na.rm = TRUE)
+  if (missing("year")) year <- sort(unique(data$year, na.rm = TRUE))
   if (missing("long.min")) long.min <- -180
   if (missing("long.max")) long.max <- 180
   if (missing("lat.min")) lat.min <- -90
@@ -160,7 +155,7 @@ queryGNIP <- function(data,
 
   ## Prepare selection
   month.select <- data$month %in% month 
-  year.select <- data$year >= year.min & data$year >= year.min
+  year.select <- data$year %in% year
   long.select <- data$long >= long.min & data$long <= long.max
   lat.select  <- data$lat  >= lat.min  & data$lat  <= lat.max
   all.select <-  month.select & year.select & long.select & lat.select
