@@ -17,48 +17,36 @@ set.seed(123)  ## set seed for entire manuscript
 knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache_knitr/", fig.path = "./fig_knitr/", global.par = TRUE, width = "\\linewidth", fig.align = "center", dev = "CairoPNG", dpi = 500) # use dpi=100 for small pdfs
 ```
 
-Welcome to __IsoriX__, in this vignette we present the steps required for you to build an annual average isoscape weighted by the amounth of monthly precipitation.
+Welcome to __IsoriX__, in this vignette we present the steps required for you to build an annual average isoscape weighted by the amount of monthly precipitation.
 
 ## Before starting
 
 Please read the vignette ___Workflow___, if you haven't done so. You can access it by simply typing:
 
 ```{r workflow, eval=FALSE}
-vignette("Workflow", package="IsoriX")
+vignette("Workflow", package = "IsoriX")
 ```
 
-Note that this vignette, like the one introducing the workflow takes a lot of time to run. It has thus not been compiled by CRAN but by us. We have included the sources of this vignette as a text file which you can find in your computer. This file is in the folder `IsoriX/doc` within the folder where you usually install your packages (the latter being usually the one that shows up when you type `.libPaths()[1]` in R).
-
-Again, due to constraints on how big this document could be, we had to reduce a lot the resolution of the figures. If you run it on your computer you will see that in fact figures produced by __IsoriX__ are great!
+Note that the current vignette, like the one introducing the workflow, takes some time to run. It has thus not been compiled by CRAN but by us. Again, due to constraints on how big this document could be, we had to reduce a lot the resolution of the figures.
 
 Before starting, don't forget to load our package:
-```{r load package, message = FALSE}
+
+```{r load package}
 library(IsoriX)
 ```
 
-
 ## Step 1 - Select the isoscape data
 
-Start by selecting the GNIP data needed for you to build an isoscape. In this example, we will consider all the data available in `GNIPdata` within an extent of latitude and longitude that covers roughly Europe. The difference with what we did in the vignette ___Workflow___ is that here the function `queryGNIP` is called with the argument `split.by = "month"`, we lead to data aggregated across years (as before), but not across months.
+Start by selecting the precipitation data needed for you to build an isoscape. In this example, we will consider all the data available in `GNIPDataDE`. The difference with what we did in the vignette ___Workflow___ is that here the function `queryGNIP` is called with the argument `split.by = "month"`, which lead to data aggregated across years (as before), but not across months.
 
 ```{r GNIP}
-## load all the GNIP data
-data(GNIPdata)
-
-## select the relevant data
-GNIPdataEU12 <- queryGNIP(data = GNIPdata,
-                          split.by = "month",
-                          long.min = -30, 
-                          long.max = 60,
-                          lat.min = 30, 
-                          lat.max = 70)
+GNIPDataDE12 <- queryGNIP(data = GNIPDataDE, split.by = "month")
 ```
 
-The dataset we created contains many more rows than the one used during the ___Workflow___ as we now have up to twelve different rows per location (i.e. one per month if records are available for all twelve months) instead of the single one.
+The dataset we created contains up to twelve different rows per location (i.e. one per month if records are available for all twelve months) instead of the single one:
 
-```{r GNIP2, echo=FALSE}
-dim(GNIPdataEU12)
-kable(head(GNIPdataEU12, 15L))
+```{r GNIP2}
+knitr::kable(head(GNIPDataDE12, 15L))
 ```
 
 
@@ -66,28 +54,16 @@ kable(head(GNIPdataEU12, 15L))
 
 We will now fit not one pair of models as during the ___Workflow___ but twelve pairs of models. We indeed want to fit one mean model and one residual dispersion model for each of the twelve months of a year. Each of the twelve pairs of models are technically fitted independently, but to save you the manual labor of calling twelve times the function `isofit`, we have created the function `isomultifit` that does that for you. This latter function also combines all fitted models in one object of class `multiisofit` which other functions will recognize. As `isofit`, `isomultifit` can fit several model structures, but we will restrict the demonstration to a single example.
 
-```{r isofits, eval = FALSE}
-Europefit12 <- isomultifit(iso.data = GNIPdataEU12,
-                           split.by = "month",
-                           mean.model.fix  = list(elev = TRUE, lat.abs = TRUE),
-                           mean.model.rand = list("uncorr" = TRUE),
-                           disp.model.rand = list("uncorr" = TRUE))
-```
-
-```{r isofits save, echo = FALSE, eval = FALSE}
-save(Europefit12, file = "Europefit12.rda", compress = "xz")
-```
-
-```{r isofits load, echo = FALSE}
-load("./Europefit12.rda")
+```{r isofits}
+GermanyFit12 <- isomultifit(iso.data = GNIPDataDE12, split.by = "month")
 ```
 
 We check that all models are there:
 ```{r models}
-names(Europefit12$multi.fits)
+names(GermanyFit12$multi.fits)
 ```
 
-You could then look at the output of a given model (here, January) by simply typing ```Europefit12$multi.fits$month_1```.
+You could then look at the output of a given model (here, January) by simply typing ```GermanyFit12$multi.fits$month_1```.
 
 
 ## Step 3 - Prepare the elevation raster
@@ -97,21 +73,19 @@ As for the ___Workflow___, we prepare the elevation raster from the tif file we 
 ```{r elev, message=FALSE}
 library(raster)
 elevationraster <- raster("../vignette_workflow/gmted2010_30mn.tif")
-
-elev <- relevate(elevation.raster = elevationraster,
-                 isofit = Europefit12,
-                 aggregation.factor = 10)
+elev <- relevate(elevation.raster = elevationraster, isofit = GermanyFit12)
 ```
 
 
 ## Step 4 - Prepare the precipitation rasters
 
-We now need the rasters containing the average precipitation amount for each month of the eyar and each location from the elevation raster.
-We start by dowloading such file (mind that the file is ca. 1Gb and takes a while to download):
+We now need the rasters containing the average precipitation amount for each month of the year and each location from the elevation raster. We start by downloading such file (mind that the file is ca. 1Gb and takes a while to download):
 
 ```{r precip download}
 getprecip()
 ```
+
+Note that if the zip file is already in the working directory (as it is the case here), it won't be downloaded again.
 
 We then resize the RasterBrick obtained to the size of the elevation raster:
 
@@ -122,83 +96,45 @@ precipitations <- prepcipitate(elevation.raster = elev)
 
 ## Step 5 - Build the isoscape
 
-To build the precipitation-weighted annual average isoscapes steming from `Europefit12` we need to use the function `isomultiscape`. This function is a wrapper to `isoscape` handling several models at once. This is also the function to which we need to provide the prepared precipitation data:
+To build the precipitation-weighted annual average isoscapes stemming from `GermanyFit12` we need to use the function `isomultiscape`. This function is a wrapper to `isoscape` handling several models at once. This is also the function to which we need to provide the prepared precipitation data:
 
-```{r isomulti, eval = FALSE}
+```{r isomulti}
 isoscapes <- isomultiscape(elevation.raster = elev,
-                           isofit = Europefit12,
+                           isofit = GermanyFit12,
                            weighting = precipitations)
 ```
 
-```{r saveiso, eval = FALSE, echo = FALSE}
-save(isoscapes, file = "isoscapes.rda", compress = "xz")
-```
-
-```{r loadiso, echo = FALSE}
-load("isoscapes.rda")
-```
 
 ## Step 6 - Plotting the isoscapes
 
-We can finally plot the precipitation-weighted annual average isoscape. We first load the objects that are used to decorate the maps:
+We can finally plot the precipitation-weighted annual average isoscape as we did in the ___Workflow___:
 
-```{r load plot deco}
-data(countries)
-data(oceanmask)
-```
-
-We now produce the plot as we did in the ___Workflow___:
-
-```{r plot mean}
-plot(x = isoscapes,
-     which = "mean",
-     borders = list(borders = countries),
-     mask = list(mask = oceanmask),
-     palette = list(fn = viridisLite::viridis))
+```{r plot mean, out.width = "0.8\\linewidth"}
+plot(x = isoscapes)
 ```
 
 As for any isoscape fitted with __IsoriX__ we can also plot the isoscape for the prediction variance, the one for the residual variance, and the one for the response variance:
 
-```{r plot predVar}
-plot(x = isoscapes,
-     which = "mean.predVar",
-     borders = list(borders = countries),
-     mask = list(mask = oceanmask),
-     palette = list(fn = viridisLite::viridis))
-```
-
-```{r plot residVar}
-plot(x = isoscapes,
-     which = "mean.residVar",
-     borders = list(borders = countries),
-     mask = list(mask = oceanmask),
-     palette = list(fn = viridisLite::viridis))
-```
-
-```{r plot respVar}
-plot(x = isoscapes,
-     which = "mean.respVar",
-     borders = list(borders = countries),
-     mask = list(mask = oceanmask),
-     palette = list(fn = viridisLite::viridis))
+```{r plot predVar, fig.show = "hold", out.width = "0.5\\linewidth"}
+plot(x = isoscapes, which = "mean.predVar")
+plot(x = isoscapes, which = "mean.residVar")
+plot(x = isoscapes, which = "mean.respVar")
 ```
 
 
 ## Does the isoscapes differ from the one not accounting for precitation?
 
-Above two differences were introduced compared to the simple approached followed during the ___Workflow___. First models were fitted by month, second they were weighted by predicipitation amounts before the aggregation. You can simply study the influence of such additional steps by comparing the isoscapes produced by different workflows.
+Above two differences were introduced compared to the simple approach we followed during the ___Workflow___. First, models were fitted by month; second, they were weighted by precipitation amounts before the aggregation. We can simply study the influence of such additional steps by comparing the isoscapes produced by different workflows.
 
-We will here compare the isoscape for point predictions produced during the ___Workflow___ to the one produced above. To do so, we assume here that you have run the ___Workflow___ and stored the isoscape as the following R object called `isoscape`:
+We will here compare the isoscape for point predictions produced between the two different workflow. To do so, we need to produce a simple isoscape for Germany using the simple workflow introduced in the vignette ___Workflow___:
 
-```{r load isoscape workflow, echo = FALSE}
-load("isoscape.rda")
+```{r isoscape 2}
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+GermanyFit    <- isofit(iso.data = GNIPDataDEagg)
+isoscape      <- isoscape(elevation.raster = elev, isofit = GermanyFit)
 ```
 
-```{r isoscape}
-isoscape
-```
-
-We now compute the difference between the two isoscapes (mind that the two isoscapes must have same resolution and extent to do that directly, which is the case here):
+We now compute the difference between the isoscapes produced by the two different workflows (mind that the two isoscapes must have same resolution and extent to do that directly, which is the case here):
 
 ```{r diff isoscapes}
 isoscape.diff <- isoscape  ## We create a new object of class isoscape
@@ -209,16 +145,17 @@ isoscape.diff$isoscape <- isoscape$isoscape - isoscapes$isoscape  ## We replace 
 You could plot the point predictions as before, but we choose to add one small step to adjust the title:
 
 ```{r plot mean diff}
-plotdiff <- plot(x = isoscape.diff,
-                 which = "mean",
-                 borders = list(borders = countries),
-                 mask = list(mask = oceanmask),
-                 palette = list(range = c(-13, 13), step = 2,
-                                n.labels = Inf, fn = viridisLite::viridis),
-                 plot = FALSE)  ## We create the plot
+plotdiff <- plot(x = isoscape.diff, plot = FALSE)  ## We create the plot
 plotdiff$main <- "Difference in" ~ delta * D[p] ~ "(simple - weighted by monthly precipitation amounts)"
 plotdiff  ## We display the plot
 ```
 
 
+## The End
+
+That is all for now! Here are the information of the R session we used:
+
+```{r R session}
+sessionInfo()
+```
 
