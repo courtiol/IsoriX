@@ -124,7 +124,7 @@ plot.isoscape <- function(x,
     .CompleteArgs(plot.isoscape)
     
     ## importing palette if missing
-    if (!is.null(palette$fn) && is.na(palette$fn)) {
+    if (!is.null(palette$fn) && !is.function(palette$fn) && is.na(palette$fn)) {
       isopalette1 <- NULL ## to please R CMD check
       utils::data("isopalette1", envir = environment(), package = "IsoriX")
       palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 1)
@@ -227,7 +227,7 @@ plot.isorix <- function(x,
   .CompleteArgs(plot.isorix)
 
   ## importing palette if missing
-  if (!is.null(palette$fn) && is.na(palette$fn)) {
+  if (!is.null(palette$fn) && !is.function(palette$fn) && is.na(palette$fn)) {
     isopalette2 <- NULL ## to please R CMD check
     utils::data("isopalette2", envir = environment(), package = "IsoriX")
     palette$fn <- grDevices::colorRampPalette(isopalette2, bias = 0.75)
