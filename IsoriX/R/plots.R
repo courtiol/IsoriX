@@ -341,7 +341,7 @@ plot.isorix <- function(x,
 .cutandcolor <- function(var,
                          step = NA,
                          range = NA,
-                         palette = viridisLite::viridis,
+                         palette = NULL,
                          cutoff = NA,
                          col.cutoff = "#909090",
                          n.labels = 99,
@@ -378,6 +378,9 @@ plot.isorix <- function(x,
     where.cut <- sort(unique(c(cutoff, where.cut)))
   }
   cats <- cut(var, where.cut, ordered_result = TRUE)
+  if (is.null(palette)) {
+    palette <- viridisLite::viridis
+  }
   all.cols <- do.call(palette, list(n = length(levels(cats))))
   if (!is.na(cutoff)) {
     all.cols[1:(which(where.cut == cutoff) - 1)] <- col.cutoff
