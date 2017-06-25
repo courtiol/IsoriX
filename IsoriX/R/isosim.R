@@ -142,8 +142,7 @@ isosim <- function(simu.data,
                    dist.method = "Earth",
                    seed = NULL,
                    save.dataframe = FALSE,
-                   verbose = interactive()
-                   ) {
+                   verbose = interactive()) {
 
   if (!requireNamespace("RandomFields", quietly = TRUE)) {
     stop("the package 'RandomFields' is needed for this function,
@@ -161,8 +160,7 @@ isosim <- function(simu.data,
                             lat.abs = abs(coord[, 2]),
                             elev = raster::extract(elevation.raster, coord),
                             n.isoscape.value = rep(1e6, nrow(coord)),
-                            stationID = as.factor(paste("simu", 1:nrow(coord), sep = "_"))
-                            )
+                            stationID = as.factor(paste("simu", 1:nrow(coord), sep = "_")))
     rm(coord); gc() ## remove coord as it can be a large object
   }
 
@@ -194,8 +192,7 @@ isosim <- function(simu.data,
   set.seed(seed)
   RandomFields::RFoptions(seed = ifelse(is.null(seed), NA, seed),
                           spConform = FALSE,  ##so that RFsimulte returns vector directly
-                          cPrintlevel = 1  ##cPrintlevel = 3 for more details
-                          )
+                          cPrintlevel = 1)  ##cPrintlevel = 3 for more details
 
   if (dist.method == "Earth") {
     RandomFields::RFoptions(new_coord_sys = "earth")
@@ -216,8 +213,7 @@ isosim <- function(simu.data,
   linpred.disp <- .LinPred(fix.coef = disp.model.fix.coef,
                            matern.coef = disp.model.matern.coef,
                            uncorr.coef = disp.model.uncorr.coef,
-                           data = simu.data
-                           )
+                           data = simu.data)
 
   simu.data$disp.logvar.fix <- linpred.disp$fix
   simu.data$disp.logvar.matern <- linpred.disp$matern
@@ -227,8 +223,7 @@ isosim <- function(simu.data,
   ## add residual variance
   simu.data$var.isoscape.value <- stats::rgamma(nrow(simu.data),
                                                 shape = (simu.data$disp.mean^2)/2,
-                                                scale = 2/simu.data$disp.mean
-                                                )
+                                                scale = 2/simu.data$disp.mean)
 
   ### Simulate the mean
   if (verbose) {
@@ -239,8 +234,7 @@ isosim <- function(simu.data,
   linpred.mean <- .LinPred(fix.coef = mean.model.fix.coef,
                            matern.coef = mean.model.matern.coef,
                            uncorr.coef = mean.model.uncorr.coef,
-                           data = simu.data
-                           )
+                           data = simu.data)
 
   simu.data$mean.var.fix <- linpred.mean$fix
   simu.data$mean.var.matern <- linpred.mean$matern
@@ -258,8 +252,7 @@ isosim <- function(simu.data,
       .CreateRaster(long = long,
                     lat = lat,
                     values = get(x),
-                    proj = "+proj=longlat +datum=WGS84"
-                   )
+                    proj = "+proj=longlat +datum=WGS84")
     })
   }
 
@@ -269,10 +262,8 @@ isosim <- function(simu.data,
   ### Buidling return object
   out <- list()
 
-  out$isoscape <- raster::stack(list(
-    "mean" = mean.raster,
-    "disp" = disp.raster
-    ))
+  out$isoscape <- raster::stack(list("mean" = mean.raster,
+                                     "disp" = disp.raster))
 
   if (!save.dataframe & interactive()) {
     message(paste("Note: simulated data not saved as data.frame (save.dataframe is set to FALSE). Saving the simulated data as data.frame would require", format(utils::object.size(simu.data), units = "MB")))
@@ -299,26 +290,22 @@ isosim <- function(simu.data,
   ## fixed effects
   fix <- with(as.list(fix.coef), intercept +
                 elev*data$elev + lat.abs*data$lat.abs + lat.2*data$lat.2 +
-                long*data$long + long.2*data$long.2
-              )
+                long*data$long + long.2*data$long.2)
 
   ## spatial random effects
   matern <- 0
   if (matern.coef["lambda"] > 0) {
     model.matern <- with(as.list(matern.coef),
-                         RandomFields::RMwhittle(nu = nu, var = lambda, scale = 1/rho)
-                         )
+                         RandomFields::RMwhittle(nu = nu, var = lambda, scale = 1/rho))
     matern <- RandomFields::RFsimulate(model.matern,
-                                       x = data$long, y = data$lat
-                                       )
+                                       x = data$long, y = data$lat)
   }
 
   ## uncorr random effects
   uncorr <- stats::rnorm(nrow(data), mean = 0, sd = sqrt(uncorr.coef["lambda"]))
   if (uncorr.coef["nugget"] > 0) {
     uncorr <- uncorr + RandomFields::RFsimulate(RandomFields::RMnugget(var = uncorr.coef["nugget"]),
-                                                x = data$long, y = data$lat
-                                                )
+                                                x = data$long, y = data$lat)
   }
   eta.sum <- fix + matern + uncorr
   return(list("fix" = fix, "matern" = matern, "uncorr" = uncorr, "eta.sum" = eta.sum))
