@@ -132,7 +132,7 @@ isofind <- function(assign.data,
   }
 
   ## importing ocean if missing
-  if (!is.null(mask) && is.na(mask)) {
+  if (!is.null(mask) && class(mask) != "SpatialPolygons" && is.na(mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask <- OceanMask

@@ -138,7 +138,7 @@ plot.isoscape <- function(x,
     }
     
     ## importing ocean if missing
-    if (!is.null(mask$mask) && is.na(mask$mask)) {
+    if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
       OceanMask <- NULL
       utils::data("OceanMask", envir = environment(), package = "IsoriX")
       mask$mask <- OceanMask
@@ -241,14 +241,14 @@ plot.isorix <- function(x,
   }
   
   ## importing ocean if missing
-  if (!is.null(mask$mask) && is.na(mask$mask)) {
+  if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask$mask <- OceanMask
   }
   
   ## changing missing setting for mask2
-  if (!is.null(mask2$mask) && is.na(mask2$mask)) {
+  if (!is.null(mask2$mask) && class(mask2$mask) != "SpatialPolygons" && is.na(mask2$mask)) {
     mask2$mask <- NULL
   }
   
