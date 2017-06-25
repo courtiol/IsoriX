@@ -73,8 +73,7 @@ perform the assignment and their names.
 ## We fit the models for Germany:
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-GermanFit <- isofit(iso.data = GNIPDataDEagg,
-                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 
 ## We build the isoscape:
@@ -102,9 +101,9 @@ assignment <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_b
                       mask = NULL)
 
 ## plot the group assignment
-plot(assignment, who = "group")
+plot(assignment, who = "group", mask = list(mask = NULL))
 
-plot(assignment.dry, who = "group")
+plot(assignment.dry, who = "group", mask = list(mask = NULL))
 
 ## plot the assignment for the 4 first individuals
 plot(assignment.dry, who = 1:4,
