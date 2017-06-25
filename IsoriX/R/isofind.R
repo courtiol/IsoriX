@@ -36,7 +36,9 @@ Isorix <- function(...) {
 #' 
 #' A mask can be used so to remove all values falling in the mask. This can be
 #' useful for performing for example assignments on lands only and discarded
-#' anything falling in large bodies of water (see example).
+#' anything falling in large bodies of water (see example). By default, such our
+#' \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows 
+#' to prevent this automatic behaviour.
 #' 
 #' @aliases isofind print.isorix summary.isorix
 #' @param assign.data A \var{dataframe} containing the assignment data (see
@@ -74,8 +76,7 @@ Isorix <- function(...) {
 #' ## We fit the models for Germany:
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
-#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 
 #' 
 #' ## We build the isoscape:
@@ -88,24 +89,24 @@ Isorix <- function(...) {
 #'                   isofit = GermanFit)
 #' 
 #' 
-#' ## We perform the assignment on land and water:
-#' assignment <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
-#'                       isoscape = isoscape,
-#'                       calibfit = calib)
-#' 
-#' assignment
-#' 
-#' 
-#' ## perform the assignment on land only
+#' ## We perform the assignment on land only:
 #' assignment.dry <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
 #'                           isoscape = isoscape,
-#'                           calibfit = calib,
-#'                           mask = OceanMask)
+#'                           calibfit = calib)
+#' 
+#' assignment.dry
+#' 
+#' 
+#' ## perform the assignment on land and water:
+#' assignment <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+#'                       isoscape = isoscape,
+#'                       calibfit = calib,
+#'                       mask = NULL)
 #' 
 #' ## plot the group assignment
-#' plot(assignment, who = "group")
+#' plot(assignment, who = "group", mask = list(mask = NULL))
 #' 
-#' plot(assignment.dry, who = "group")
+#' plot(assignment.dry, who = "group", mask = list(mask = NULL))
 #' 
 #' ## plot the assignment for the 4 first individuals
 #' plot(assignment.dry, who = 1:4,
@@ -121,7 +122,7 @@ Isorix <- function(...) {
 isofind <- function(assign.data,
                     isoscape,
                     calibfit,
-                    mask = NULL,
+                    mask = NA,
                     verbose = interactive()
                     ) {
 
@@ -130,8 +131,15 @@ isofind <- function(assign.data,
     print("computing the test statistic and its variance...")
   }
 
+  ## importing ocean if missing
+  if (!is.null(mask) && is.na(mask)) {
+    OceanMask <- NULL
+    utils::data("OceanMask", envir = environment(), package = "IsoriX")
+    mask <- OceanMask
+  }
+  
   names.layers <- gsub(" ", "_", as.character(assign.data$animalID))
-
+  
   time <- system.time({
     ## we predict the isotopic value at origin location  
     assign.data$mean.origin <-
