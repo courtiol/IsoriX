@@ -31,7 +31,7 @@ Note that the current vignette, like the one introducing the workflow, takes som
 
 Before starting, don't forget to load our package:
 
-```{r load package}
+```{r load package, cache = FALSE}
 library(IsoriX)
 ```
 
@@ -70,7 +70,7 @@ You could then look at the output of a given model (here, January) by simply typ
 
 As for the ___Workflow___, we prepare the elevation raster from the tif file we downloaded (see  ___Workflow___ for details):
 
-```{r elev, message=FALSE}
+```{r elev, message = FALSE, cache = FALSE}
 library(raster)
 elevationraster <- raster("../vignette_workflow/gmted2010_30mn.tif")
 elev <- relevate(elevation.raster = elevationraster, isofit = GermanyFit12)
@@ -104,6 +104,7 @@ isoscapes <- isomultiscape(elevation.raster = elev,
                            weighting = precipitations)
 ```
 
+\newpage
 
 ## Step 6 - Plotting the isoscapes
 
@@ -115,7 +116,7 @@ plot(x = isoscapes)
 
 As for any isoscape fitted with __IsoriX__ we can also plot the isoscape for the prediction variance, the one for the residual variance, and the one for the response variance:
 
-```{r plot predVar, fig.show = "hold", out.width = "0.5\\linewidth"}
+```{r plot predVar, fig.show = "hold", out.width = "0.4\\linewidth"}
 plot(x = isoscapes, which = "mean.predVar")
 plot(x = isoscapes, which = "mean.residVar")
 plot(x = isoscapes, which = "mean.respVar")
@@ -145,11 +146,14 @@ isoscape.diff$isoscape <- isoscape$isoscape - isoscapes$isoscape  ## We replace 
 You could plot the point predictions as before, but we choose to add one small step to adjust the title:
 
 ```{r plot mean diff}
-plotdiff <- plot(x = isoscape.diff, plot = FALSE)  ## We create the plot
+plotdiff <- plot(x = isoscape.diff,
+                 palette = list(step = 1.25, range = c(-11, 4), n.labels = Inf),
+                 plot = FALSE)
 plotdiff$main <- "Difference in" ~ delta * D[p] ~ "(simple - weighted by monthly precipitation amounts)"
-plotdiff  ## We display the plot
+plotdiff
 ```
 
+\newpage
 
 ## The End
 
