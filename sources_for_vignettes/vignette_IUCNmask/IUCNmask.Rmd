@@ -30,7 +30,9 @@ vignette: |
 library(knitr)
 library(IsoriX)
 # set global options for knitr (if changed, all cashed chunked will be rerun!)
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache_knitr/", fig.path = "./fig_knitr/")
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache_knitr/", fig.path = "./fig_knitr/",
+                      global.par = TRUE, width = "\\linewidth",
+                      fig.align = "center", dev = "CairoPNG", dpi = 500)
 do.eval <- TRUE ## to check that it does work, put TRUE
 ```
 
