@@ -101,13 +101,13 @@ plot(assignment, who = "group", mask = list(mask = NULL))
 
 plot(assignment.dry, who = "group", mask = list(mask = NULL))
 
-## plot the assignment for the 4 first individuals
-plot(assignment.dry, who = 1:4,
+## plot the assignment for the 8 first individuals
+plot(assignment.dry, who = 1:8,
      sources = list(draw = FALSE),
      calib = list(draw = FALSE))
 
-## plot the assignment for the individual "Alien_3"
-plot(assignment.dry, who = "Alien_3")
+## plot the assignment for the individual "Alien_10"
+plot(assignment.dry, who = "Alien_10")
 
 }
 

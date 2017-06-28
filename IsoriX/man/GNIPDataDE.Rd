@@ -3,7 +3,7 @@
 \docType{data}
 \name{GNIPDataDE}
 \alias{GNIPDataDE}
-\title{Weather station data for Germany}
+\title{Deuterium in precipitation water, Germany}
 \format{The \var{dataframe} includes 8591 observations on the following
 variables: \tabular{rlll}{ [, 1] \tab lat \tab (\var{numeric}) \tab Latitude
 coordinate [decimal degrees]\cr [, 2] \tab long \tab (\var{numeric}) \tab
@@ -14,13 +14,20 @@ Longitude coordinate [decimal degrees]\cr [, 3] \tab elev \tab
 month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab stationID
 \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }}
 \source{
-Data extracted from IAEA (see below for more details).
+Data provided by the IAEA.
 }
 \description{
-This dataset contains the mean and variance of Deuterium delta precipitation
-values of weather stations sampled between 1960 and 2015. Data have been
-compiled by the International Atomic Energy Agency IAEA in Vienna (GNIP
-Project: Global Network of Isotopes in Precipitation).
+This dataset contains the mean and variance of Deuterium delta value from
+precipitation water sampled at weather stations between 1961 and 2013 in
+Germany. These data have been kindly provided by Christine Stumpp and
+processed by the International Atomic Energy Agency IAEA in Vienna (GNIP
+Project: Global Network of Isotopes in Precipitation). These data are free to
+reuse provided the relevent citations (see references). These data represent
+a small sample of the much larger dataset compiled by the GNIP. We no longer
+provide larger GNIP dataset in the package are those are not free to reuse.
+You can still download the complete GNIP dataset for free, but you will have
+to proceed to a registration process with GNIP and use their downloading
+interface WISER (\url{https://nucleus.iaea.org/wiser}).
 }
 \details{
 The dataset contains non-aggregated data for 27 weather stations across Germany.
@@ -40,9 +47,11 @@ head(GNIPDataDE)
 
 }
 \references{
-GNIP Project IAEA Global Network of Isotopes in Precipitation:
+GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
 
-\url{http://www.iaea.org}
+Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
+
+Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in δ18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 }
 \seealso{
 \code{\link{queryGNIP}} to prepare the dataset for the analyses and
