@@ -51,7 +51,7 @@ GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.i
 
 Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
 
-Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in δ18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
+Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 }
 \seealso{
 \code{\link{queryGNIP}} to prepare the dataset for the analyses and
