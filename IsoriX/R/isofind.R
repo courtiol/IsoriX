@@ -88,17 +88,13 @@ Isorix <- function(...) {
 #' calib <- calibfit(calib.data = CalibDataAlien,
 #'                   isofit = GermanFit)
 #' 
-#' 
 #' ## We perform the assignment on land only:
-#' assignment.dry <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+#' assignment.dry <- isofind(assign.data = AssignDataAlien,
 #'                           isoscape = isoscape,
 #'                           calibfit = calib)
 #' 
-#' assignment.dry
-#' 
-#' 
 #' ## perform the assignment on land and water:
-#' assignment <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+#' assignment <- isofind(assign.data = AssignDataAlien,
 #'                       isoscape = isoscape,
 #'                       calibfit = calib,
 #'                       mask = NULL)
@@ -108,13 +104,13 @@ Isorix <- function(...) {
 #' 
 #' plot(assignment.dry, who = "group", mask = list(mask = NULL))
 #' 
-#' ## plot the assignment for the 4 first individuals
-#' plot(assignment.dry, who = 1:4,
+#' ## plot the assignment for the 8 first individuals
+#' plot(assignment.dry, who = 1:8,
 #'      sources = list(draw = FALSE),
 #'      calib = list(draw = FALSE))
 #' 
-#' ## plot the assignment for the individual "Mbe_8"
-#' plot(assignment.dry, who = "Mbe_8")
+#' ## plot the assignment for the individual "Alien_10"
+#' plot(assignment.dry, who = "Alien_10")
 #' 
 #' }
 #' 
@@ -270,21 +266,11 @@ isofind <- function(assign.data,
 
 
 .AssignTest <- function(stats, vars, log.scale = TRUE) {
-  if (!log.scale) {
-    return(2*(1 - stats::pnorm(abs(stats), mean = 0, sd = sqrt(vars))))
+  pv <- 2*(1 - stats::pnorm(abs(stats), mean = 0, sd = sqrt(vars)))
+  if (log.scale) {
+    pv <- log(pv)
   }
-  log.pva <- stats::pnorm(stats, mean = 0,
-                          sd = sqrt(vars),
-                          log.p = TRUE,
-                          lower.tail = TRUE
-                          )
-  log.pvb <- stats::pnorm(stats, mean = 0,
-                          sd = sqrt(vars),
-                          log.p = TRUE,
-                          lower.tail = FALSE
-                          )
-  log.pv <- log(2) + apply(cbind(log.pva, log.pvb), 1, min)  ## To check!!!
-  return(log.pv)
+  return(pv)
 }
 
 
