@@ -85,17 +85,13 @@ isoscape <- isoscape(elevation.raster = ElevRasterDE,
 calib <- calibfit(calib.data = CalibDataAlien,
                   isofit = GermanFit)
 
-
 ## We perform the assignment on land only:
-assignment.dry <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+assignment.dry <- isofind(assign.data = AssignDataAlien,
                           isoscape = isoscape,
                           calibfit = calib)
 
-assignment.dry
-
-
 ## perform the assignment on land and water:
-assignment <- isofind(assign.data = subset(AssignDataAlien, species == "Myotis_bechsteinii"),
+assignment <- isofind(assign.data = AssignDataAlien,
                       isoscape = isoscape,
                       calibfit = calib,
                       mask = NULL)
@@ -110,8 +106,8 @@ plot(assignment.dry, who = 1:4,
      sources = list(draw = FALSE),
      calib = list(draw = FALSE))
 
-## plot the assignment for the individual "Mbe_8"
-plot(assignment.dry, who = "Mbe_8")
+## plot the assignment for the individual "Alien_3"
+plot(assignment.dry, who = "Alien_3")
 
 }
 
