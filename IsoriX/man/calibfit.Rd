@@ -66,7 +66,7 @@ function \code{\link[stats]{lm}} by fitting tissue isotopic values as a
 function of source isotopic values.
 }
 \note{
-See \code{\link{calibdata}} to know which variables are needed to
+See \code{\link{CalibDataAlien}} to know which variables are needed to
 perform the calibration fit and their names.
 }
 \examples{
@@ -74,15 +74,21 @@ perform the calibration fit and their names.
 ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 
 \dontrun{
-data(calibdata)
-data(Europefit)
-## fit the calibration model
-calib <- calibfit(calib.data = calibdata, isofit = Europefit)
-## display minimal information
+## We fit the models for Germany:
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+
+GermanFit <- isofit(iso.data = GNIPDataDEagg)
+
+## We fit the calibration model:
+calib <- calibfit(calib.data = CalibDataAlien, isofit = GermanFit)
+
+## We display minimal information:
 calib
-## display more information
+
+## We display more information:
 summary(calib)
-## plot the calibration function
+
+## We plot the calibration function:
 plot(calib)
 }
 

@@ -9,11 +9,11 @@
 \url{http://kimura.univ-montp2.fr/~rousset/spaMM.htm}
 }
 \usage{
-isofit(iso.data, mean.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 =
+isofit(iso.data, mean.model.fix = list(elev = TRUE, lat.abs = TRUE, lat.2 =
   FALSE, long = FALSE, long.2 = FALSE), disp.model.fix = list(elev = FALSE,
   lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
-  mean.model.rand = list(uncorr = FALSE, spatial = TRUE),
-  disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+  mean.model.rand = list(uncorr = TRUE, spatial = TRUE),
+  disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
   uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"),
   spaMM.method = list(mean.model = "fitme", disp.model = "fitme"),
   dist.method = "Earth", control.mean = list(), control.disp = list(),
@@ -98,10 +98,7 @@ which of the following fixed effects must be considered: the elevation
 (\code{elev}), the absolute value of the latitude (\code{lat.abs}), the
 squared latitude (\code{lat.2}), the longitude (\code{long}) and the squared
 longitude (\code{long.2}). An intercept is always considered in both models.
-By default, only intercept are being fitted. To fit an isoscape with the
-same fixed effect structure as the seminal Bowen model (Bowen et al. 2005),
-one should thus change \code{mean.model.fix} to \code{list(elev = TRUE,}
-\code{lat.abs = TRUE,} \code{lat.2 = TRUE)}.
+By default, only intercept are being fitted.
 
 In the models, the mean (for the mean model) or the log residual variance
 (for the residual dispersion model) follow a Gaussian distribution around a
@@ -193,46 +190,16 @@ explaining how to do so.
 \examples{
 
 
-## The following example takes some time and will therefore not
-## be run unless you type: example(isofit, run.dontrun = TRUE)
+## Fitting the models for Germany:
 
-\dontrun{
-## We extract the GNIP data for Europe
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-data(GNIPdata)
+GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
-GNIPdataEU <- queryGNIP(
-    data = GNIPdata,
-    long.min = -30,
-    long.max = 60,
-    lat.min = 30, 
-    lat.max = 70)
+GermanFit
 
-## We fit the isoscape model (on the first 50 rows only,
-## otherwise it takes too long for a simple example)
-
-isoscapemodel1 <- isofit(iso.data=GNIPdataEU[1:50, ],
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
-
-isoscapemodel1
-
-## Diagnostics for the fits
-plot(isoscapemodel1)
-
-
-## Model with one uncorrelated random effect using the Lambda
-## parametrization for the fitting the mean model and with one 
-## uncorrelated random effect using the Nugget parametrization 
-## for the fitting the residual dispersion model:
-
-isoscapemodel2 <- isofit(iso.data = GNIPdataEU[1:50, ],
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE),
-    mean.model.rand = list(uncorr = TRUE),
-    disp.model.rand = list(uncorr = TRUE),
-    uncorr.terms = list(disp.model = "nugget"))
-        
-isoscapemodel2
-}
+## Diagnostics for the fits:
+plot(GermanFit)
 
 
 }

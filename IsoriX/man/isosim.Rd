@@ -84,57 +84,32 @@ part of the powerful package \pkg{\link[RandomFields]{RandomFields}}.
 ## unless you type: example(isosim, run.dontrun = TRUE)
 
 \dontrun{
-## We load an elevation raster
-data(elevraster)
-data(countries)
-data(oceanmask)
-
-elevationraster <- relevate(elevraster,
-    manual.crop = c(-30, 60, 30, 70))
 
 ## We simulate data under default settings
-simu <- isosim(simu.data = elevationraster,
-    save.dataframe = TRUE, seed = 2)
+simu <- isosim(simu.data = ElevRasterDE,
+    save.dataframe = TRUE, seed = 1)
 
 simu
 
 ## We build the plots of the outcome using IsoriX
-plot.mean.simu <- plot(
-    x = simu,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+plot.mean.simu <- plot(x = simu, which = "mean")
 
-plot.disp.simu <- plot(
-    x = simu,
-    which = "disp",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+plot.disp.simu <- plot(x = simu, which = "disp")
 
 
-## We fit the simulated data by sampling 200 locations
+## We fit the simulated data by sampling 50 locations
 
 set.seed(123)
-newdat <- simu$data[sample(1:nrow(simu$data), 200), ]
+newdat <- simu$data[sample(1:nrow(simu$data), 50), ]
 
 isoscapemodel <- isofit(iso.data = newdat,
     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
-isoscape <- isoscape(elevationraster, isoscapemodel)
+isoscape <- isoscape(ElevRasterDE, isoscapemodel)
 
-plot.mean.fitted <- plot(
-    x = isoscape,
-    which = "mean",
-    sources = list(draw = FALSE),
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+plot.mean.fitted <- plot(x = isoscape, which = "mean", sources = list(draw = FALSE))
 
-plot.disp.fitted <- plot(
-    x = isoscape,
-    which = "disp",
-    sources = list(draw = FALSE),
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+plot.disp.fitted <- plot(x = isoscape, which = "disp", sources = list(draw = FALSE))
 
 ## We compare simulated and fitted data visually
 if(require(lattice)){
@@ -156,10 +131,12 @@ round(cbind(
         nu = 0.35,
         rho = 5e-5,
         rho_div_nu  =  5e-5/0.35,
+        lambda.ID = 0,
         lambda.matern = 899,
         intercept.disp = 5.8,
         nu.disp = 3.2e-01,
         rho.disp = 1.5e-05,
+        lambda.matern.stationID = 0,
         lambda.matern.disp = 5),
     fitted = c(
         intercept = isoscapemodel$mean.fit$fixef[1],

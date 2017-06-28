@@ -54,7 +54,7 @@ Calibfit <- function(...) {
 #' covariance of the fixed effects, the fitted calibration model, the original
 #' calibration data set with additional information added during the fit, and
 #' the location of the calibration points as spatial points.
-#' @note See \code{\link{calibdata}} to know which variables are needed to
+#' @note See \code{\link{CalibDataAlien}} to know which variables are needed to
 #' perform the calibration fit and their names.
 #' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @keywords models regression
@@ -63,15 +63,21 @@ Calibfit <- function(...) {
 #' ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#' data(calibdata)
-#' data(Europefit)
-#' ## fit the calibration model
-#' calib <- calibfit(calib.data = calibdata, isofit = Europefit)
-#' ## display minimal information
+#' ## We fit the models for Germany:
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' 
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg)
+#' 
+#' ## We fit the calibration model:
+#' calib <- calibfit(calib.data = CalibDataAlien, isofit = GermanFit)
+#' 
+#' ## We display minimal information:
 #' calib
-#' ## display more information
+#' 
+#' ## We display more information:
 #' summary(calib)
-#' ## plot the calibration function
+#' 
+#' ## We plot the calibration function:
 #' plot(calib)
 #' }
 #' 

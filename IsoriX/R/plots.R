@@ -41,9 +41,9 @@
 #' \code{\link{par}} for details). The element "draw" should be a \var{logical} 
 #' that indicates whether the layer must be created or not. The argument 
 #' "borders" (within the list borders) expects an object of the class 
-#' \var{SpatialPolygons} such as the object "countries" provided with this 
+#' \var{SpatialPolygons} such as the object "CountryBorders" provided with this 
 #' package. The argument "mask" (within the list maks) expects an object of the 
-#' class \var{SpatialPolygons} such as the object oceanmask provided with this 
+#' class \var{SpatialPolygons} such as the object "OceanMask" provided with this 
 #' package (see examples).
 #' 
 #' The argument "palette" is used to define how to colour the isoscape and 
@@ -111,9 +111,9 @@ NULL
 plot.isoscape <- function(x,
                           which   = "mean",
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
-                          borders = list(borders = NULL, lwd = 0.5, col = "black"),
-                          mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
-                          palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NULL),
+                          borders = list(borders = NA, lwd = 0.5, col = "black"),
+                          mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+                          palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NA),
                           plot    = TRUE,
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
@@ -124,10 +124,24 @@ plot.isoscape <- function(x,
     .CompleteArgs(plot.isoscape)
     
     ## importing palette if missing
-    if (is.null(palette$fn)) {
+    if (!is.null(palette$fn) && !is.function(palette$fn) && is.na(palette$fn)) {
       isopalette1 <- NULL ## to please R CMD check
       utils::data("isopalette1", envir = environment(), package = "IsoriX")
-      palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 0.5)
+      palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 1)
+    }
+    
+    ## importing country borders if missing
+    if (!is.null(borders$borders) && is.na(borders$borders)) {
+      CountryBorders <- NULL
+      utils::data("CountryBorders", envir = environment(), package = "IsoriX")
+      borders$borders <- CountryBorders
+    }
+    
+    ## importing ocean if missing
+    if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
+      OceanMask <- NULL
+      utils::data("OceanMask", envir = environment(), package = "IsoriX")
+      mask$mask <- OceanMask
     }
     
     if (("isosim" %in% class(x))) {
@@ -201,22 +215,41 @@ plot.isorix <- function(x,
                         cutoff  = list(draw = TRUE, level = 0.05, col = "#909090"),
                         sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                         calib   = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
-                        borders = list(borders = NULL, lwd = 0.5, col = "black"),
-                        mask    = list(mask = NULL, lwd = 0, col = "black", fill = "black"),
-                        mask2   = list(mask = NULL, lwd = 0, col = "purple", fill = "purple"),
-                        palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn = NULL),
+                        borders = list(borders = NA, lwd = 0.5, col = "black"),
+                        mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+                        mask2   = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
+                        palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn = NA),
                         plot    = TRUE,
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
 
   ## complete input with default setting
   .CompleteArgs(plot.isorix)
-  
+
   ## importing palette if missing
-  if (is.null(palette$fn)) {
+  if (!is.null(palette$fn) && !is.function(palette$fn) && is.na(palette$fn)) {
     isopalette2 <- NULL ## to please R CMD check
     utils::data("isopalette2", envir = environment(), package = "IsoriX")
-    palette$fn <- grDevices::colorRampPalette(isopalette2, bias = 0.5)
+    palette$fn <- grDevices::colorRampPalette(isopalette2, bias = 0.75)
+  }
+  
+  ## importing country borders if missing
+  if (!is.null(borders$borders) && is.na(borders$borders)) {
+    CountryBorders <- NULL
+    utils::data("CountryBorders", envir = environment(), package = "IsoriX")
+    borders$borders <- CountryBorders
+  }
+  
+  ## importing ocean if missing
+  if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
+    OceanMask <- NULL
+    utils::data("OceanMask", envir = environment(), package = "IsoriX")
+    mask$mask <- OceanMask
+  }
+  
+  ## changing missing setting for mask2
+  if (!is.null(mask2$mask) && class(mask2$mask) != "SpatialPolygons" && is.na(mask2$mask)) {
+    mask2$mask <- NULL
   }
   
   ## changing cutoff level to null when we don't want to draw the cutoff
@@ -308,7 +341,7 @@ plot.isorix <- function(x,
 .cutandcolor <- function(var,
                          step = NA,
                          range = NA,
-                         palette = viridisLite::viridis,
+                         palette = NULL,
                          cutoff = NA,
                          col.cutoff = "#909090",
                          n.labels = 99,
@@ -345,6 +378,9 @@ plot.isorix <- function(x,
     where.cut <- sort(unique(c(cutoff, where.cut)))
   }
   cats <- cut(var, where.cut, ordered_result = TRUE)
+  if (is.null(palette)) {
+    palette <- viridisLite::viridis
+  }
   all.cols <- do.call(palette, list(n = length(levels(cats))))
   if (!is.na(cutoff)) {
     all.cols[1:(which(where.cut == cutoff) - 1)] <- col.cutoff
@@ -362,4 +398,142 @@ plot.isorix <- function(x,
   }
   at.labels <-  formatC(round(at.keys, digits = digits), digits = digits, format = "f")
   return(list(cols = cols, at = where.cut, all.cols = all.cols, at.keys = at.keys, at.labels = at.labels))
+}
+
+#' @rdname plots
+#' @method plot isofit
+#' @export
+plot.isofit <- function(x, cex.scale = 0.2, ...) {
+  
+  ## Test if RStudio is in use
+  RStudio <- .Platform$GUI == "RStudio"
+  
+  if (!any(class(x) %in% "multiisofit")) {
+    ## Determine number of plots in panel
+    if (RStudio) {
+      nplot <- 1
+    } else {
+      nplot <- 2 + x$info.fit$disp.model.rand$spatial +
+        x$info.fit$mean.model.rand$spatial
+    }
+    
+    ## Define mfrow (number of rows and column in panel)
+    mfrow <- switch(as.character(nplot),
+                    "1" = c(1, 1),
+                    "2" = c(1, 2),
+                    "3" = c(1, 3),
+                    "4" = c(2, 2),
+                    stop("nplot value not anticipated")
+    )
+    
+    ## Setup the graphic device
+    graphics::par(mfrow = mfrow)
+    
+    ## Plots from spaMM
+    spaMM::plot.HLfit(x$mean.fit,
+                      "predict",
+                      cex = 0.1 + cex.scale*log(x$mean.fit$data$weights.mean),
+                      las = 1, ...
+    )
+    graphics::title(main = "Pred vs Obs in mean.fit")
+    .HitReturn()
+    
+    spaMM::plot.HLfit(x$disp.fit,
+                      "predict",
+                      cex = 0.1 + cex.scale*log(x$disp.fit$data$weights.disp),
+                      las = 1, ...
+    )
+    graphics::title(main = "Pred vs Obs in disp.fit")
+    
+    ## Plot Matern autocorrelation
+    if (x$info.fit$mean.model.rand$spatial) {
+      .HitReturn()
+      .PlotMatern(x$mean.fit, ...)
+      graphics::title(main = "Autocorrelation in mean.fit")
+    }
+    
+    if (x$info.fit$disp.model.rand$spatial) {
+      .HitReturn()
+      .PlotMatern(x$disp.fit, ...)
+      graphics::title(main = "Autocorrelation in disp.fit")
+    }
+    
+    ## Reset the graphic device
+    graphics::par(mfrow = c(1, 1))
+  } else {
+    for (fit in 1:length(x$multi.fits)) {
+      cat("\n")
+      cat(paste("##### Plots for pair of models", names(x$multi.fits)[fit]), "#####")
+      cat("\n")
+      graphics::plot(x$multi.fits[[fit]])
+    }
+  }
+  return(invisible(NULL))
+}
+
+
+.PlotMatern <- function(model, limit = 0.5, ...) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## It plots the Matern autocorrelation.
+  d.stop <- FALSE
+  d <- 0
+  
+  while ((d < 50000) & !d.stop) {
+    d <- d + 10
+    m <- spaMM::MaternCorr(d = d,
+                           rho = model$corrPars$rho,
+                           nu = model$corrPars$nu
+    )
+    if (m < limit) d.stop <- TRUE
+  }
+  
+  distances <- seq(0, d, 1)
+  
+  m <- spaMM::MaternCorr(d = distances,
+                         rho = model$corrPars$rho,
+                         nu = model$corrPars$nu
+  )
+  
+  graphics::plot(m ~ distances,
+                 type = "l",
+                 las = 1,
+                 xlab = "Distances (km)",
+                 ylab = "Correlation",
+                 ...
+  )
+}
+
+
+
+#' @rdname plots
+#' @method plot calibfit
+#' @export
+plot.calibfit <- function(x, ...) {
+  xs <- with(x$calib.data,
+             seq(min(mean.iso),
+                 max(mean.iso),
+                 length = 100
+             )
+  )
+  
+  X <- cbind(1, xs)
+  fitted <- X %*% x$param
+  fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
+  
+  with(x$calib.data,
+       graphics::plot(tissue.value ~ mean.iso,
+                      xlab = "Isotopic value in the environment",
+                      ylab = "Isotopic value in the organisms",
+                      las = 1
+       )
+  )
+  
+  graphics::points(fitted ~ xs, type = "l", col = "blue", lwd = 2)
+  graphics::points(fitted + stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
+  graphics::points(fitted - stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
+  
+  ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
+  rm(fitted, fixedVar)
+  
+  return(invisible(NULL))
 }

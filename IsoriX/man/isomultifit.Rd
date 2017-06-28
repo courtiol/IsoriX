@@ -4,11 +4,11 @@
 \alias{isomultifit}
 \title{Fit isoscape models per strata (typically time interval such as months)}
 \usage{
-isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev =
-  FALSE, lat.abs = FALSE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
+isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev = TRUE,
+  lat.abs = TRUE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
   disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long =
-  FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = FALSE, spatial =
-  TRUE), disp.model.rand = list(uncorr = FALSE, spatial = TRUE),
+  FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = TRUE, spatial =
+  TRUE), disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
   uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"),
   spaMM.method = list(mean.model = "fitme", disp.model = "fitme"),
   dist.method = "Earth", control.mean = list(), control.disp = list(),
@@ -70,34 +70,19 @@ This function is a wrapper around the function \code{\link{isofit}}.
 }
 \examples{
 
-## The following example takes some time and will therefore not
-## be run unless you type: example(isomultifit, run.dontrun = TRUE)
+## We prepare the GNIP monthly data between January and June for Germany
 
-\dontrun{
+GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
+                               month = 1:6,
+                               split.by = "month")
 
-## We prepare the GNIP monthly data between January and June for part of Europe
-
-data(GNIPdata)
-
-GNIPdataMonthly <- queryGNIP(
-    data = GNIPdata,
-    month.min = 1,
-    month.max = 6,
-    split.by = "month",
-    long.min = -20,
-    long.max = 20,
-    lat.min = 45, 
-    lat.max = 55)
-
-dim(GNIPdataMonthly)
+dim(GNIPDataDEmonthly)
 
 ## We fit the isoscapes
 
-isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly)
 
 isoscapemodels
-}
 }
 \seealso{
 \code{\link{isofit}} for information about the fitting procedure of 

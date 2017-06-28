@@ -1,5 +1,5 @@
 Package: IsoriX
-Version: 0.5.1.9007
+Version: 0.5.1.9008
 Date: 2017-06-08
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
@@ -43,7 +43,7 @@ Suggests:
     R.rsp,
     rgdal
 VignetteBuilder: R.rsp
-LazyData: false
+LazyData: true
 URL: https://github.com/courtiol/IsoriX_project/
 BugReports: https://github.com/courtiol/IsoriX_project/issues/
 RoxygenNote: 6.0.1

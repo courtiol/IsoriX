@@ -31,6 +31,9 @@ RElevate <- function(...) {
 #' @param elevation.raster The elevation raster (\var{RasterLayer})
 #' @param isofit The fitted isoscape model returned by the function
 #' \code{\link{isofit}}
+#' @param margin_pct The percentage representing by how much the space should 
+#' extend outside the range of the coordinates of the weather stations
+#' (default = 5). 
 #' @param aggregation.factor The number of neighbouring cells (\var{integer})
 #' to merge during aggregation
 #' @param aggregation.fun The \var{function} used to aggregate cells
@@ -45,35 +48,37 @@ RElevate <- function(...) {
 #' assignment, because the elevation of raster cells changes depending on the
 #' aggregation function (see example below), which in turn affects model
 #' predictions.
-#' @seealso \code{\link{elevraster}} for information on elevation rasters
+#' @seealso \code{\link{ElevRasterDE}} for information on elevation rasters
 #' 
 #' \code{\link{IsoriX}} for the complete workflow
 #' @keywords utilities
 #' @examples
 #' 
+#' ## We fit the models for Germany:
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' 
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
+#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' ### DIFFERENCES IN AGGREGATION
 #' 
-#' ## Loading objects
-#' data(elevraster)
-#' data(Europefit)
-#' data(countries)
-#' data(oceanmask)
-#' 
-#' ## We aggregate and crop using different settings
+#' ## We aggregate and crop using different settings:
 #' elevation.raster1 <- relevate(
-#'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     elevation.raster = ElevRasterDE,
+#'     isofit = GermanFit,
+#'     margin_pct = 0,
 #'     aggregation.factor = 0)
 #' 
 #' elevation.raster2 <- relevate(
-#'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     elevation.raster = ElevRasterDE,
+#'     isofit = GermanFit,
+#'     margin_pct = 5,
 #'     aggregation.factor = 5)
 #' 
 #' elevation.raster3 <- relevate(
-#'     elevation.raster = elevraster,
-#'     isofit = Europefit,
+#'     elevation.raster = ElevRasterDE,
+#'     isofit = GermanFit,
+#'     margin_pct = 10,
 #'     aggregation.factor = 5, aggregation.fun = max)
 #' 
 #' 
@@ -82,23 +87,22 @@ RElevate <- function(...) {
 #' ## example(relevate, run.dontrun = TRUE)
 #' 
 #' \dontrun{
-#'     ## We plot the outcome of the 3 different aggregation schemes
+#'     ## We build the plots of the outcome of the 3 different aggregation schemes:
 #' if(require(rasterVis)) {
-#'     data(countries)
-#'     data(oceanmask)
 #'     plot.aggregation1 <- levelplot(elevation.raster1,
 #'             margin = FALSE, main = "Original small raster") + 
-#'         layer(sp.polygons(countries)) +
-#'         layer(sp.polygons(oceanmask, fill = "blue"))
+#'         layer(sp.polygons(CountryBorders)) +
+#'         layer(sp.polygons(OceanMask, fill = "blue"))
 #'     plot.aggregation2 <- levelplot(elevation.raster2,
 #'             margin = FALSE, main = "Small raster aggregated (by mean)") + 
-#'         layer(sp.polygons(countries)) +
-#'         layer(sp.polygons(oceanmask, fill = "blue"))
+#'         layer(sp.polygons(CountryBorders)) +
+#'         layer(sp.polygons(OceanMask, fill = "blue"))
 #'     plot.aggregation3 <- levelplot(elevation.raster3,
 #'             margin = FALSE, main = "Small raster aggregated (by max)") + 
-#'         layer(sp.polygons(countries)) +
-#'         layer(sp.polygons(oceanmask, fill = "blue"))  
-#'     ## panel using lattice syntax:
+#'         layer(sp.polygons(CountryBorders)) +
+#'         layer(sp.polygons(OceanMask, fill = "blue"))  
+#'     
+#'     ## We plot as a panel using lattice syntax:
 #'     print(plot.aggregation1, split = c(1, 1, 1, 3), more = TRUE)
 #'     print(plot.aggregation2, split = c(1, 2, 1, 3), more = TRUE)
 #'     print(plot.aggregation3, split = c(1, 3, 1, 3))
@@ -108,6 +112,7 @@ RElevate <- function(...) {
 #' @export
 relevate <- function(elevation.raster,
                      isofit = NULL,
+                     margin_pct = 5,
                      aggregation.factor = 0L,
                      aggregation.fun = mean,
                      manual.crop = NULL,
@@ -127,19 +132,21 @@ relevate <- function(elevation.raster,
           raster::ymin(elevation.raster) > min(isofit$mean.fit$data$lat) |
           raster::ymax(elevation.raster) < max(isofit$mean.fit$data$lat)
           ) {
-        stop("cropping not possible (sources located outside elevation raster)")
+        warning("the cropping may not make sense (sources located outside elevation raster)")
       }
       if (verbose) {
         print(paste("cropping..."))
       }
+      
       ## crop is performed:
+      margin_long <- (max(isofit$mean.fit$data$long) - min(isofit$mean.fit$data$long)) * margin_pct/100
+      margin_lat <- (max(isofit$mean.fit$data$lat) - min(isofit$mean.fit$data$lat)) * margin_pct/100
+      
       elevation.raster <- raster::crop(elevation.raster,
-                               raster::extent(min(isofit$mean.fit$data$long),
-                                              max(isofit$mean.fit$data$long),
-                                              min(isofit$mean.fit$data$lat),
-                                              max(isofit$mean.fit$data$lat)
-                                              )
-                               )
+                               raster::extent(min(isofit$mean.fit$data$long) - margin_long,
+                                              max(isofit$mean.fit$data$long) + margin_long,
+                                              min(isofit$mean.fit$data$lat) - margin_lat,
+                                              max(isofit$mean.fit$data$lat) + margin_lat))
     } else {
       if (length(manual.crop) == 4) {
         elevation.raster <- raster::crop(elevation.raster, manual.crop)

@@ -32,18 +32,22 @@ extent as the elevation raster. This function is designed to be used with
 ## example(prepcipitate, run.dontrun = TRUE)
 
 \dontrun{
-data(elevraster)
-data(Europefit)
+
+## We fit the models for Germany:
+GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+
+GermanFit <- isofit(iso.data = GNIPDataDEagg,
+                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 elevation.raster <- relevate(
-    elevation.raster = elevraster,
-    isofit = Europefit,
+    elevation.raster = ElevRasterDE,
+    isofit = GermanFit,
     aggregation.factor = 0)
 
 getprecip(path = "~/Desktop/")
 
 precipitation.brick <- prepcipitate(path = "~/Desktop/",
-                                    elevation.raster = elevraster
+                                    elevation.raster = ElevRaster
                                     )
  
  if (require(rasterVis)) {

@@ -35,58 +35,35 @@ averages precipitation weighted isoscapes.
 \examples{
 
 
-## The following example will not be run unless you type:
+## The following example takes a few minutes so it will not be run unless you type:
 ## example(isoscape, run.dontrun = TRUE)
 
 \dontrun{
 
-data(GNIPdata)
-data(elevraster)
-data(countries)
-data(oceanmask)
+## We prepare the data and split them by month:
 
-## We prepare the data and split them by month
+GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
+                               split.by = "month")
 
-GNIPdataMonthly <- queryGNIP(
-    data = GNIPdata,
-    split.by = "month",
-    long.min = -20,
-    long.max = 20,
-    lat.min = 45, 
-    lat.max = 55)
+dim(GNIPDataDEmonthly)
 
-dim(GNIPdataMonthly)
+## We fit the isoscapes:#' 
+isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
+                              mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
-## We fit the isoscapes
+## We build the annual isoscapes by simple averaging (equal weighting):
+isoscapes <- isomultiscape(elevation.raster = ElevRasterDE,
+                           isofit = isoscapemodels)
 
-isoscapemodels <- isomultifit(iso.data = GNIPdataMonthly,
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+## We plot the mean isoscape of the averaging:
+plot(x = isoscapes, which = "mean")
 
-## We crop the elevation raster to the extent of isoscapemodels
-elevationraster <- relevate(
-    elevation.raster = elevraster,
-    isofit = isoscapemodels)
-
-## We build the annual isoscapes by simple averaging (equal weighting)
-
-isoscapes <- isomultiscape(
-    elevation.raster = elevationraster,
-    isofit = isoscapemodels)
-    
-plot(x = isoscapes,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
-
-## How to plot the isoscape for January?
-isoscape.jan <- isoscape(
-    elevation.raster = elevationraster,
-    isofit = isoscapemodels$multi.fits[["month_1"]])
-    
-plot(x = isoscape.jan,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask))
+## We build the isoscapes for a given month (here January):
+isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
+                         isofit = isoscapemodels$multi.fits[["month_1"]])
+                         
+## We plot the mean isoscape for January:
+plot(x = isoscape.jan, which = "mean")
 }
 }
 \seealso{

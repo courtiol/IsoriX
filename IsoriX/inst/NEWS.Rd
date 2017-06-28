@@ -15,19 +15,31 @@
 \section{version 0.6}{
   \subsection{New features}{
       \itemize{
+        \item due to new GNIP policies, we no longer provide the GNIP dataset for the entire World, but only a subset containing data for Germany (users should thus compile their precipitatin data themselves from the 'wiser' plateform provided by GNIP; see vignette Workflow)
         \item it is now possible to control the colours and labels for the levels of isotopes or p-values in plots
+        \item for plotting, it is no longer needed to load the ocean mask and country borders (it now happens automatically)
+        \item the function relevate now allows for a cropping larger than the extent of the weather stations by means of the argument margin_pct
         \item it is now possible to create the so-called annual averaged precipitation isoscapes!
         \item queryGNIP can now split the dataset per month or year at each location during the aggregation
         \item new function prepcipitate to prepare the precipitation brick
         \item new function getprecip to download monthly precipitation rasters from WorldClim
         \item new function isomultifit fitting isoscapes per strata (month, year, or any "split")
         \item new function isomultiscape building isoscapes averaged across strata
-        \item new vignette for coding conventions
+        \item new function create_aliens simulating of organism data
       }
   }
     \subsection{Minor changes}{
       \itemize{
+      \item the inputs for filtering data by month or year using queryGNIP have changed
+      \item the default fixed effect structure for the mean model is isofit has changed 
+      }
+    }
+    \subsection{Geeky changes}{
+      \itemize{
         \item the namespace is now generated with Roxygen2
+        \item the datasets are now 'lazy-loaded'
+        \item new vignette for coding conventions
+        \item changed some object names following our coding convention (more to come)
       }
     }
 }

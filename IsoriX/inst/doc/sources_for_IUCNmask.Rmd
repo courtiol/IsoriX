@@ -30,7 +30,9 @@ vignette: |
 library(knitr)
 library(IsoriX)
 # set global options for knitr (if changed, all cashed chunked will be rerun!)
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache_knitr/", fig.path = "./fig_knitr/")
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache_knitr/", fig.path = "./fig_knitr/",
+                      global.par = TRUE, width = "\\linewidth",
+                      fig.align = "center", dev = "CairoPNG", dpi = 500)
 do.eval <- TRUE ## to check that it does work, put TRUE
 ```
 
@@ -45,40 +47,12 @@ List of Threatened Species^TM^* (IUCN 2016). We downloaded the data from the IUC
 
 ## Performing the IsoriX workflow
 
-Because we want to illustrate the IUCN range of a species on top of an assignment map, we need to have proceeded thorough an entire IsoriX workflow including the assignment itself. To make this quick, we will simply replicate the minimal example given for the function `isofind()` to run an entire workflow:
+Because we want to illustrate the IUCN range of a species on top of an assignment map, we need to have proceeded thorough an entire IsoriX workflow including the assignment itself. To do that, we are going to recycle the object `assignment` that we created in the vignette `Workflow`:
 
-```{r data}
-## We load the necessary data:
-data(calibdata)
-data(assigndata)
-data(elevraster)
-data(countries)
-data(oceanmask)
-data(Europefit)
+
+```{r, load isoscape, echo=FALSE, message=FALSE, results='hide'}
+load("../vignette_workflow/assignment.rda")
 ```
-
-```{r elevation, results='hide'}
-## We prepare the elevation raster
-elevationraster <- relevate(elevation.raster = elevraster, isofit = Europefit)
-```
-
-```{r, warning=FALSE, results='hide'}
-## We build the isoscape:
-isoscape <- isoscape(elevation.raster = elevationraster, isofit = Europefit)
-```
-
-```{r, results='hide'}
-## We fit the calibration model:
-calib <- calibfit(calib.data = calibdata, isofit = Europefit)
-```
-
-```{r, results='hide'}
-## We perform the assignment:
-assignment <- isofind(assign.data = subset(assigndata, species == "Myotis_bechsteinii"),
-                      isoscape = isoscape,
-                      calibfit = calib)
-```
-
 
 ## Getting the files containing the IUCN range for your species ready
 
@@ -121,25 +95,33 @@ library(raster)
 myotis_bechsteinii <- spTransform(myotis_bechsteinii, crs(assignment$indiv$pv))
 ```
 
-Now we have created a polygon that shows the IUCN range of our species in the same projection as our assignemnt.
+Now we have created a polygon that shows the IUCN range of our species in the same projection as our assignment.
 This could be added to an assignment map to display the boundaries of the species range. In order to mask area outside the range of the species, we need to get the inverse polygon. This step requires the package __rgeos__.
 
 ```{r create mask}
 library(rgeos)
-limits <- as(extent(assignment$indiv$pv), "SpatialPolygons")
+limits <- as(extent(assignment$indiv$pv)+5, "SpatialPolygons")
 proj4string(limits) <- crs(assignment$indiv$pv)
 iucnmask <- gDifference(limits, myotis_bechsteinii)  
 ```
 
 We need to pass our ```SpatialPolygons``` in the first mask argument of the `plot()` function and use the second mask argument to display the oceans (so that the ocean masks the species range).
 The fill argument is specifying the displaying colour of your polygon.
-We can use the function `rgb()` to specify a color with an alpha transparency.
+We can use the function `rgb()` to specify a colour with an alpha transparency.
 
 ```{r refresh plot}
 plot(assignment, who = "group",
-     borders = list(borders = countries),
      mask = list(mask = iucnmask, fill = rgb(1, 1, 1, 0.6)),
-     mask2 = list(mask = oceanmask, fill = "navyblue", col = "navyblue"))
+     mask2 = list(mask = OceanMask, fill = "navyblue", col = "navyblue"))
+```
+
+
+## The End
+
+That is all for now! Here are the information of the R session we used:
+
+```{r R session}
+sessionInfo()
 ```
 
 # References
