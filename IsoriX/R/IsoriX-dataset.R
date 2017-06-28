@@ -380,12 +380,19 @@ NULL
 
 
 
-#' Weather station data for Germany
+#' Deuterium in precipitation water, Germany
 #' 
-#' This dataset contains the mean and variance of Deuterium delta precipitation
-#' values of weather stations sampled between 1960 and 2015. Data have been
-#' compiled by the International Atomic Energy Agency IAEA in Vienna (GNIP
-#' Project: Global Network of Isotopes in Precipitation).
+#' This dataset contains the mean and variance of Deuterium delta value from
+#' precipitation water sampled at weather stations between 1961 and 2013 in
+#' Germany. These data have been kindly provided by Christine Stumpp and
+#' processed by the International Atomic Energy Agency IAEA in Vienna (GNIP
+#' Project: Global Network of Isotopes in Precipitation). These data are free to
+#' reuse provided the relevent citations (see references). These data represent
+#' a small sample of the much larger dataset compiled by the GNIP. We no longer
+#' provide larger GNIP dataset in the package are those are not free to reuse.
+#' You can still download the complete GNIP dataset for free, but you will have
+#' to proceed to a registration process with GNIP and use their downloading
+#' interface WISER (\url{https://nucleus.iaea.org/wiser}).
 #' 
 #' The dataset contains non-aggregated data for 27 weather stations across Germany.
 #' 
@@ -411,10 +418,15 @@ NULL
 #' \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
 #' @seealso \code{\link{queryGNIP}} to prepare the dataset for the analyses and
 #' to filter by time and location.
-#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation:
+#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
 #' 
-#' \url{http://www.iaea.org}
-#' @source Data extracted from IAEA (see below for more details).
+#' Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
+#' 
+#' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in δ18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
+#' 
+#' 
+#' 
+#' @source Data provided by the IAEA.
 #' @keywords datasets
 #' @examples
 #' 
