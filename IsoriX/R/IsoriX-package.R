@@ -13,53 +13,63 @@
 #' We describe below, step-by-step, the general work-flow that aims at
 #' performing the construction of an isoscape and the assignment of organisms
 #' of unknown geographic origin(s) based on their isotopic signature. We advise
-#' to also read all dedicated help pages of functions mentioned hereafter.
+#' you to also read the vignettes provided with this package, which essentially
+#' cover the same material in a more practical and detailed manner. You should
+#' also read the dedicated help pages of the functions you are using.
 #' 
 #' The statistical methods will not be detailed in this document but should
-#' soon be available as a vignette, a publication, or both (we are currently
+#' soon be available as publications (we are currently
 #' working on it).
 #' 
 #' \enumerate{ \item Fitting the isoscape model with \code{\link{isofit}}:
 #' 
-#' The function \code{\link{isofit}} fits a geostatistical model, which
-#' approximates the relationship between the topographic features of a location
-#' and its isotopic signature (see \code{\link{isofit}} for details). The model
-#' fits observations of isotopic delta values at several geographic locations
-#' (hereafter, called \emph{sources}). One common type of sources used in
-#' ecology is the delta values for deuterium in precipitation water collected
-#' at weather stations, but one may also use measurements performed on
-#' sedentary organisms. In either case, the accuracy of the isoscape (and
-#' thereby the accuracy of assignments) increases with the number and spatial
-#' coverage of the sources.
+#' The function \code{\link{isofit}} fits a geostatistical model, which 
+#' approximates the relationship between the topographic features of a location 
+#' and its isotopic signature (see \code{\link{isofit}} for details). The model 
+#' fits observations of isotopic delta values at several geographic locations 
+#' (hereafter, called \emph{sources}). One common type of sources used in 
+#' ecology is the delta values for deuterium in precipitation water collected at
+#' weather stations, but one may also use measurements performed on sedentary
+#' organisms. In either case, the accuracy of the isoscape (and thereby the
+#' accuracy of assignments) increases with the number and spatial coverage of
+#' the sources. The function \code{\link{isofit}} is designed to fit the model
+#' on data aggregated per location across all measurements. If instead you want
+#' to fit the model on measurements split per time intervals (e.g. per month),
+#' within each location, you should use the alternative function
+#' \code{\link{isomultifit}}.
 #' 
 #' \item Preparing the elevation raster with \code{\link{relevate}}:
 #' 
-#' Building isoscapes and assigning organisms to their origin requires an
-#' adequate elevation raster, i.e. a matrix representing altitude data on a
-#' spatial grid. The function \code{\link{relevate}} allows restricting the
-#' extent of the raster to the area covered by isoscape data (in order to avoid
-#' extrapolation) and to reduce the resolution of the original elevation raster
-#' (in order to speed up computation in all following steps). Note that
-#' aggregating the raster may lead to different results for the assignment,
-#' because the elevation of raster cells changes depending on the aggregation
+#' Building isoscapes and assigning organisms to their origin requires an 
+#' adequate elevation raster, i.e. a matrix representing altitude data on a 
+#' spatial grid. The function \code{\link{relevate}} allows restricting the 
+#' extent of the raster to the area covered by isoscape data (in order to avoid 
+#' extrapolation) and to reduce the resolution of the original elevation raster 
+#' (in order to speed up computation in all following steps). Note that 
+#' aggregating the raster may lead to different results for the assignment, 
+#' because the elevation of raster cells changes depending on the aggregation 
 #' function, which in turn will affect model predictions.
 #' 
-#' We will soon provide a link to download an elevation raster for the entire
-#' world at a resolution of one altitude per square-km, and other rasters may
-#' be used. We have also stored a low resolution raster in our package (see
-#' \code{\link{ElevRasterDE}}) for users to try things out, but we do not
-#' encourage its use for real application.
+#' We provide the function \code{\link{getelev}} to download an elevation raster
+#' for the entire world at a resolution of one altitude per square-km, and other
+#' rasters may be used. We have also stored a low resolution raster for Germany
+#' in our package (see \code{\link{ElevRasterDE}}) for users to try things out,
+#' but we do not encourage its use for real application.
 #' 
 #' \item Predicting the isoscape across the area covered by the elevation
 #' raster with \code{\link{isoscape}}:
 #' 
-#' The function \code{\link{isoscape}} generates the isoscape: it uses the
-#' fitted geostatistical model to predict the isotopic values for each raster
-#' cell defined by the elevation raster. Our package allows the production of
-#' fine-tuned isoscape figures (using the function
-#' \code{\link{plot.isoscape}}). Alternatively, the isoscape rasters can be
-#' exported as ascii raster and edited in any Geographic Information System
-#' (GIS) software (see \code{\link{isoscape}} for details).
+#' The function \code{\link{isoscape}} generates the isoscape: it uses the 
+#' fitted geostatistical model to predict the isotopic values for each raster 
+#' cell defined by the elevation raster. If the model has been fitted with
+#' \code{\link{isomultifit}}, you should use the alternative function
+#' \code{\link{isomultiscape}} to generate the isoscape.
+#' 
+#' Our package allows the production of fine-tuned isoscape figures (using the 
+#' function \code{\link{plot.isoscape}}). Alternatively, the isoscape rasters 
+#' can be exported as ascii raster and edited in any Geographic Information 
+#' System (GIS) software (see \code{\link{isoscape}} and the vignette
+#' \code{exportGIS} for details).
 #' 
 #' \item Fitting the calibration model with \code{\link{calibfit}}:
 #' 
