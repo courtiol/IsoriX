@@ -24,7 +24,7 @@ Welcome to __IsoriX__, in this vignette we present the steps required for you to
 
 Please read the vignette ___Workflow___, if you haven't done so. You can access it by simply typing:
 
-```{r, workflow, eval=FALSE}
+```{r workflow, eval=FALSE}
 vignette("Workflow", package="IsoriX")
 ```
 
@@ -33,16 +33,16 @@ We assume that you are still in the same R session than the one created during t
 
 ## Saving IsoriX plots using Cairo
 
-```{r, load isoscape, echo=FALSE, message=FALSE}
+```{r load isoscape, echo=FALSE, message=FALSE}
 library(IsoriX)
 load("../vignette_workflow/isoscape.rda")
 ```
 
-There are many ways to save the plots we created during the workflow example. If you are not new to R you may already know some function to save plots (`pdf()`, `png()`...) that are readily available in R. Unfortunately, we encountered often some little annoying artifacts using these functions, such as white lines in the middle of the isoscape.
+There are many ways to save the plots we created during the workflow example. If you are not new to R you may already know some function to save plots (`pdf()`, `png()`...) that are readily available in R. Unfortunately, we encountered often some little annoying artefacts using these functions, such as white lines in the middle of the isoscape.
 
 Our favorite way to create plots is thus to use the package __Cairo__. So, start by loading this package (after installing the package if you don't have it):
 
-```{r, load Cairo}
+```{r load Cairo}
 library(Cairo)
 ```
 
@@ -51,31 +51,20 @@ Typing `?Cairo` will show you all possible file formats you can save your plots 
 ### Example: saving the isoscape
 
 During the workflow example you have created the following isoscape:
-```{r, show isoscape}
+```{r show isoscape}
 isoscape
 ```
 
 Our goal is to save the plot of this isoscape on the hard drive so we can include it in a paper, poster or presentation. To do so we first store the plot into an R object that we call here `plot.mean.isoscape`:
 
-```{r, make plot}
-## we load the objects that are used to decorate the maps
-data(countries)
-data(oceanmask)
-
-## we create the plot (but do not display it)
-plot.mean.isoscape <- plot(
-    x = isoscape,
-    which = "mean",
-    borders = list(borders = countries),
-    mask = list(mask = oceanmask),
-    palette = list(step = 1, range = c(-123, 1), n.labels = 21),
-    plot = FALSE)
+```{r make plot}
+plot.mean.isoscape <- plot(x = isoscape, plot = FALSE)
 ```
-Note that we used the argument `plot=FALSE` so that the plot does not show up, you can also keep the default setting that will once again display the plot on your screen. It does not make any difference by when you handle many plots, it may be good to know that you don't have to display them (display takes time).
+Note that we used the argument `plot = FALSE` so that the plot does not show up, you can also keep the default setting that will once again display the plot on your screen. It does not make any difference by when you handle many plots, it may be good to know that you don't have to display them (display takes time).
 
 Let us first save this plot as a png file:
 
-```{r, save plot, fig.show="hide", eval=do.eval}
+```{r save plot, fig.show="hide", eval=do.eval}
 CairoPNG(filename = "Myisoscape.png", height = 1080, width = 1920, res = 100)
 plot.mean.isoscape
 dev.off()
@@ -91,7 +80,7 @@ If, like us, you don't indicate the path in the filename. The file will be now i
 
 Let us now save this plot as a pdf file:
 
-```{r, save plot2, fig.show="hide", eval=do.eval}
+```{r save plot2, fig.show="hide", eval=do.eval}
 CairoPDF(file = "Myisoscape.pdf", height = 10, width = 15)
 plot.mean.isoscape
 dev.off()
@@ -116,6 +105,13 @@ Nothing else changes, the inputs should be the same and you still need to close 
 One noticeable source of trouble comes with the installation of the package __Cairo__. On MacOS the package __Cairo__ does not always install/load successfully. Problems happen when the program `xquartz` is not present on the system. This program used to be shipped by defaults on old version of MacOS but it is no longer the case. So if you are in trouble, please start by installing [xquartz](https://www.xquartz.org/) outside R.
 
 
+## The End
+
+That is all for now! Here are the information of the R session we used:
+
+```{r R session}
+sessionInfo()
+```
 
 
 
