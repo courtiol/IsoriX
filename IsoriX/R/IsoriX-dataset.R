@@ -107,10 +107,9 @@ NULL
 #' 
 #' @name AssignDataAlien
 #' @docType data
-#' @format A \var{dataframe} with x observations on 3 variables:
+#' @format A \var{dataframe} with 10 observations on 2 variables:
 #' \tabular{rlll}{ [, 1] \tab animalID \tab (\var{Factor}) \tab Identification
-#' of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
-#' name\cr [, 3] \tab tissue.value \tab (\var{numeric}) \tab Deuterium delta
+#' of the animal\cr [, 2] \tab tissue.value \tab (\var{numeric}) \tab Deuterium delta
 #' value of the tissue\cr }
 #' @seealso \code{\link{isofind}} to perform assignments
 #' @keywords datasets
@@ -118,6 +117,36 @@ NULL
 #' 
 #' head(AssignDataAlien)
 #' str(AssignDataAlien)
+#' 
+#' ## The following example takes some time 
+#' ## and will therefore not run unless you type:
+#' ## example(AssignDataAlien, run.dontrun=TRUE)
+#' ## It shows how we created the dataset AssignDataAlien
+#' 
+#' \dontrun{
+#' ## We prepare the precipitation data:
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' 
+#' ## We fit the models for Germany:
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg)
+#'
+#' ## We build the isoscape:
+#' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+#'
+#' ## We create a simulated dataset with 1 site and 10 observations:
+#' set.seed(1L)
+#' Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
+#'                         isoscape = isoscape,
+#'                         elevation_raster = ElevRasterDE,
+#'                         coordinates = data.frame(siteID = "Berlin",
+#'                                                  long   = 13.52134,
+#'                                                  lat    = 52.50598),
+#'                         n_sites = 1,
+#'                         min_n_samples = 10,
+#'                         max_n_samples = 10)
+#' AssignDataAlien <- Aliens[, c("animalID", "tissue.value")]
+#' save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
+#' }
 #' 
 NULL
 
@@ -158,25 +187,31 @@ NULL
 #' head(CalibDataAlien)
 #' str(CalibDataAlien)
 #' 
-#' ## The following example require to have downloaded
-#' ## a large elevation raster with the function getelev()
+#' ## The following example takes some time 
 #' ## and will therefore not run unless you type:
 #' ## example(CalibDataAlien, run.dontrun=TRUE)
+#' ## It shows how we created the dataset CalibDataAlien
 #' 
 #' \dontrun{
-#' if(require(raster)){
-#'     ### DELETE AND RECREATE ELEVATION DATA
-#'     CalibDataAlien$elev <- NULL  ## we delete them
+#' ## We prepare the precipitation data:
+#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#'     ## we reconstruct the elevation data using an elevation raster:
-#'     ## (see ?getelev for details on how to get the tif file)
-#'     elevationrasterbig <- raster("gmted2010_30mn.tif")
-#'     CalibDataAlien$elev <- extract(
-#'         elevationrasterbig,
-#'         cbind(CalibDataAlien$long, CalibDataAlien$lat))
-#'     head(CalibDataAlien)
-#' }
-#' 
+#' ## We fit the models for Germany:
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg)
+#'
+#' ## We build the isoscape:
+#' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+#'
+#' ## We create a simulated dataset with 50 site and 10 observations per site:
+#' set.seed(2L)
+#' CalibDataAlien <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
+#'                         isoscape = isoscape,
+#'                         elevation_raster = ElevRasterDE,
+#'                         n_sites = 50,
+#'                         min_n_samples = 10,
+#'                         max_n_samples = 10)
+#' CalibDataAlien$env.value <- NULL
+#' save(CalibDataAlien, file = "CalibDataAlien.rda", compress = "xz")
 #' }
 #' 
 #' 
