@@ -8,12 +8,18 @@
 #' The isostopic values for the organisms are assumed to be linearly related to
 #' the one from the environement. The linear function can be parameterized using
 #' the first argument of the function (\code{calib_fn}). With this function the
-#' user can simulate data for different sites. The number of sites is controled
-#' by means of the argument \code{n_sites}. The sites will be selected randomly
-#' among the locations present in the isoscape (argument \code{isoscape})
-#' provided to this function. At each site, a random number of observation will
-#' be drawn according to a uniform distribution bounded by the values of the 
-#' argument \code{min_n_samples} and \code{max_n_samples}.
+#' user can simulate data for different sites.
+#' 
+#' The number and locations of sites can be controled in two ways. A first
+#' possiblity is to use the argument \code{n_sites}. The sites will then be
+#' selected randomly among the locations present in the isoscape (argument
+#' \code{isoscape}) provided to this function. An alternative possiblity is to
+#' provide a data frame containing three columns (\code{siteID}, \code{long} and
+#' \code{lat}) to input the coordinate of the sampling site manually.
+#' 
+#' Irrespectivelly of how locations are choosen, a random number of observations
+#' will be drawn, at each site, according to a uniform distribution bounded by 
+#' the values of the argument \code{min_n_samples} and \code{max_n_samples}.
 #' 
 #' From the selected coordinates, the isotope values for the environement are
 #' directly extracted from the corresponding point predictions stored in the
@@ -29,6 +35,9 @@
 #'   intercept, the slope, and the residual variance.
 #'   
 #' @param isoscape The output of the function \code{\link{isoscape}}
+#' 
+#' @param coordinates An optional \var{data.frame} with columns \code{siteID}, 
+#' \code{long} and \code{lat}
 #'   
 #' @param elevation_raster A \var{RasterLayer} containing an elevation raster
 #'   
@@ -55,15 +64,14 @@
 #' ## We fit the models for Germany:
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
-#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 
 #' ## We build the isoscapes:
-#' isoscapes <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+#' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
 #' 
 #' ## We create a simulated dataset with 25 sites and 5 observations per site:
 #' Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
-#'                         isoscape = isoscapes,
+#'                         isoscape = isoscape,
 #'                         elevation_raster = ElevRasterDE,
 #'                         n_sites = 25,
 #'                         min_n_samples = 5,
@@ -77,10 +85,23 @@
 #' plot(tissue.value ~ env.value, data = Aliens, ylab = "Tissue", xlab = "Environment")
 #' abline(3, 0.5, col = "blue") ## the true relationship
 #' 
-#' 
+#' ## We create a simulated dataset with 2 sites imputing coordinates manually:
+#' Aliens2 <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
+#'                          isoscape = isoscape,
+#'                          coordinates = data.frame(siteID = c("Berlin", "Bielefeld"),
+#'                                                   long   = c(13.52134, 8.49914),
+#'                                                   lat    = c(52.50598, 52.03485)),
+#'                          elevation_raster = ElevRasterDE,
+#'                          n_sites = 25,
+#'                          min_n_samples = 5,
+#'                          max_n_samples = 5)
+#'
+#' head(Aliens2)
+#'
 #' @export
 create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
                           isoscape = NULL,
+                          coordinates = NA,
                           elevation_raster = NULL,
                           n_sites = 1,
                           min_n_samples = 1,
@@ -90,10 +111,22 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
   .CompleteArgs(create_aliens)  
   
   ## Choose location for the aliens
-  LocationData <- data.frame(siteID = sample(1:raster::ncell(isoscape$isoscape$mean), n_sites, replace = FALSE))
-  xy <- raster::xyFromCell(isoscape$isoscape$mean, LocationData$siteID)
-  LocationData$long <- xy[, "x"]
-  LocationData$lat  <- xy[, "y"]
+  if(length(coordinates) == 1 && is.na(coordinates)) {
+    LocationData <- data.frame(siteID = sample(1:raster::ncell(isoscape$isoscape$mean), n_sites, replace = FALSE))
+    xy <- raster::xyFromCell(isoscape$isoscape$mean, LocationData$siteID)
+    LocationData$long <- xy[, "x"]
+    LocationData$lat  <- xy[, "y"]
+  } else {
+    if(!all(c("siteID", "long", "lat") %in% colnames(coordinates))) {
+      stop("the argument coordinates must contain the columns 'siteID', 'long' and 'lat'")
+    }
+    if(n_sites != nrow(coordinates)) {
+      warnings("the argument coordinates has been used so the argument 'n_sites' has been ignored")
+    }
+    LocationData <- coordinates
+    xy <- coordinates[, c("long", "lat")]
+    n_sites <- nrow(coordinates)
+  }
   LocationData$elev = raster::extract(x = elevation_raster, y = xy)
   LocationData$n.samples <- round(stats::runif(n = n_sites, min = min_n_samples, max = max_n_samples))
   
@@ -102,7 +135,10 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
  
   ## Replicate the dataset per animal
   AlienData <- LocationData[rep(1:nrow(LocationData), times = LocationData$n.samples), ]
-  AlienData$animalID <- paste("Alien", 1:nrow(AlienData), sep = "_")
+  AlienData$animalID <- factor(paste("Alien", 1:nrow(AlienData), sep = "_"))
+  
+  ## Turning siteID into a factor
+  AlienData$siteID <- factor(AlienData$siteID)
   
   ## Predict the tissue value for each animal
   AlienData$tissue.value <- stats::rnorm(n = nrow(AlienData),
