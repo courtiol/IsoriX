@@ -392,7 +392,7 @@ NULL
 #' provide larger GNIP dataset in the package are those are not free to reuse.
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
-#' interface WISER (\url{https://nucleus.iaea.org/wiser}).
+#' interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
 #' 
 #' The dataset contains non-aggregated data for 27 weather stations across Germany.
 #' 
