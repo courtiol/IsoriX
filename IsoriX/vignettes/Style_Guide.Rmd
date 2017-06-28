@@ -29,11 +29,11 @@ Classes should have a name of the format `somethingVerb`.
 
 ### Functions
 
-The name of internal functions should be of the format `dosomething_somethingelse`, where the input is `something_somethingelse` and the output for the global environment sould be `my_something`.
+The name of internal functions should be of the format `dosomething_somethingelse`, where the input is `something_somethingelse` and the output for the global environment should be `my_something`.
 
 ## Curly braces
 
-The opening curly braces are seperated with one white space and the closing ones go on a new line and are aligned with the first command.
+The opening curly braces are separated with one white space and the closing ones go on a new line and are aligned with the first command.
 The else statement is surrounded by curly braces on the same line.
 
 ```{r message=FALSE, warning=FALSE, results="hide"}
@@ -45,7 +45,7 @@ if (y == 0) {
 }
 ```
 
-The same goes for a function except we do not put a space before the left parantheses. 
+The same goes for a function except we do not put a space before the left parentheses. 
 
 ```{r message=FALSE, warning=FALSE, results="hide"}
 ## Example for a function:
@@ -70,4 +70,4 @@ Spaces go around all operators (```+```, ```=```, ```<-```, ```!=```, ```==```, 
 
 ### Commenting guidelines
 
-For comments inside the code we use a douple hash ```##``` to seperate real comments from commented code chunks with only a single hash ```#```.
+For comments inside the code we use a double hash ```##``` to separate real comments from commented code chunks with only a single hash ```#```.
