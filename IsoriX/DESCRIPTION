@@ -21,7 +21,7 @@ Imports:
     raster,
     rasterVis (>= 0.30),
     sp,
-    spaMM (>= 2.0),
+    spaMM (>= 2.1.5),
     stats,
     tools,
     utils,
