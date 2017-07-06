@@ -70,12 +70,12 @@ Isoscape <- function(...) {
 #' @keywords models regression prediction predict
 #' @examples
 #' 
-#' ## Examples are only run if sufficient time is allowed
+#' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
 #' 
-#' if(IsoriX.getOption("example_maxtime") > 36) {
+#' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the data
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
@@ -302,12 +302,12 @@ isoscape <- function(elevation.raster, ## change as method?
 #' @keywords models regression prediction predict
 #' @examples
 #' 
-#' ## Examples are only run if sufficient time is allowed
+#' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
 #' 
-#' if(IsoriX.getOption("example_maxtime") > 200) {
+#' if(IsoriX.getOption("example_maxtime") > 180) {
 #' 
 #' ## We prepare the data and split them by month:
 #' 

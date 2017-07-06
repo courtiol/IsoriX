@@ -60,7 +60,7 @@ Calibfit <- function(...) {
 #' @keywords models regression
 #' @examples
 #' 
-#' ## Examples are only run if sufficient time is allowed
+#' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)

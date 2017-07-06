@@ -179,13 +179,6 @@ Isofit <- function(...) {
 #' @keywords models regression
 #' @examples
 #' 
-#' ## Examples are only run if sufficient time is allowed
-#' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
-#' ## if you want to allow for examples taking up to ca. XX seconds to run
-#' ## (so don't write XX but put a number instead!)
-#' 
-#' if(IsoriX.getOption("example_maxtime") > 4) {
-#' 
 #' ## Fitting the models for Germany
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
@@ -195,8 +188,6 @@ Isofit <- function(...) {
 #' 
 #' ## Diagnostics for the fits
 #' plot(GermanFit)
-#' 
-#' }
 #' 
 #' @export
 isofit <- function(iso.data,
@@ -380,12 +371,12 @@ isofit <- function(iso.data,
 #' 
 #' @examples
 #' 
-#' ## Examples are only run if sufficient time is allowed
+#' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
 #' 
-#' if(IsoriX.getOption("example_maxtime") > 24) {
+#' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the GNIP monthly data between January and June for Germany
 #' 
