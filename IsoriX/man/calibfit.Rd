@@ -44,7 +44,7 @@ This function considers that the isotopic values from the environment (e.g.
 from precipitation) at the locations at which organisms were sampled are not
 known. The function therefore predicts these isotopic values from the
 geostatistical model fitted by the function \code{\link{isofit}}, which is
-provided to \code{calibfit} using the argument \code{isofit}.
+provided to \code{\link{calibfit}} using the argument \code{isofit}.
 
 The LMM used to fit the calibration function has a simple fixed-effect
 structure: an intercept and a slope. The random effect is more complex: it is

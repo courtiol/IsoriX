@@ -15,12 +15,14 @@ GetElev <- function(...) {
 #' \url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted into a
 #' \var{tif} file by us. The function \code{getelev} uses the generic function
 #' \code{downloadfile} that can also be used to download directly other files.
+#' This raster needs further processing with the function \code{\link{relevate}}
+#' and can then be passed to \code{\link{isoscape}}.
 #' 
-#' In the argument "path" is not provided, the file will be stored in the
-#' current working directory. The functions can create new directories, so you
+#' If the argument "path" is not provided, the file will be stored in the
+#' current working directory. The function can create new directories, so you
 #' can also indicate a new path. If the package \pkg{\link[tools]{tools}} is
 #' installed, the integrity of the elevation raster is tested after a call to
-#' \code{getelev}. In case of corruption, try downloading the file again,
+#' \code{\link{getelev}}. In case of corruption, try downloading the file again,
 #' specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
 #' @aliases getelev downloadfile
@@ -76,8 +78,11 @@ getelev <- function(path = NULL,
 #' Version2" at a spatial resolution of 30 seconds (~1 km2). After download, the
 #' function also unzip the file. The function
 #' \code{getprecip} uses the generic function \code{downloadfile} that can also be
-#' used to download directly other files.
+#' used to download directly other files. This raster needs further processing 
+#' with the function \code{\link{prepcipitate}}. It can then be used to predict 
+#' annual averages precipitation weighted isoscapes with the function \code{\link{isomultiscape}}.
 #' 
+#' precipitation weighted isoscapes
 #' In the argument "path" is not provided, the file will be stored in the 
 #' current working directory. The functions can create new directories, so you 
 #' can also indicate a new path. The integrity of the elevation raster is tested

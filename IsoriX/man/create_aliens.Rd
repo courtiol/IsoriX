@@ -36,7 +36,7 @@ This functions returns a \var{data.frame} (see example for column
 }
 \description{
 This function allows to simulate data so to provide examples for the
-calibration and for the assignment procedure. We names the simulated
+calibration and for the assignment procedure. We name the simulated
 individuals 'Aliens' so to make it clear that the data we use to illustrate 
 our package are not real data.
 }
@@ -106,9 +106,9 @@ head(Aliens2)
 
 }
 \seealso{
-\pkg{\link{calibfit}} for a calibration based on simulated data
+\code{\link{calibfit}} for a calibration based on simulated data
   
-  \pkg{\link{isofind}} for an assignment based on simulated data
+  \code{\link{isofind}} for an assignment based on simulated data
   
   \code{\link{IsoriX}} for the complete work-flow of our package
 }

@@ -53,6 +53,7 @@ Isosim <- function(...) {
 #' \code{\link[RandomFields]{RMnugget}}, respectively. These two functions are
 #' part of the powerful package \pkg{\link[RandomFields]{RandomFields}}.
 #' @seealso \code{\link{isofit}} for the function fitting the isoscape model
+#' 
 #' \code{\link{IsoriX}} for the complete work-flow
 #' @keywords simulate simulation
 #' @examples

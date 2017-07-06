@@ -2,32 +2,32 @@
 #' 
 #' These functions plot objects created by \pkg{\link{IsoriX}}.
 #' 
-#' When called upon an object of class \code{isofit}, the plot function
+#' When called upon an object of class \var{isofit}, the plot function
 #' draws diagnostic information for the fits of the isoscape geostatistical
 #' model.
 #' 
-#' When called upon an object of class \code{calibfit}, the plot function draws 
+#' When called upon an object of class \var{calibfit}, the plot function draws 
 #' the fitted calibration function.
 #' 
-#' When called upon an object of class \code{isoscape}, the plot function draws 
+#' When called upon an object of class \var{isoscape}, the plot function draws 
 #' a fine-tuned plot of the isoscape.
 #' 
 #' When used on a fitted isoscape, the user can choose between plotting the 
-#' predictions (which = "mean"; default), the prediction variance (which =
-#' "mean.predVar"), the residual variance (which = "mean.residVar"), or the
-#' response variance (which = "mean.respVar") for the mean model; or the
+#' predictions (\code{which} = "mean"; default), the prediction variance (\code{which} =
+#' "mean.predVar"), the residual variance (\code{which} = "mean.residVar"), or the
+#' response variance (\code{which} = "mean.respVar") for the mean model; or the
 #' corresponding information for the residual dispersion variance model ("disp",
 #' "disp.predVar", "disp.residVar", or "disp.respVar").
 #' 
 #' When used on a simulated isoscape, the user can choose between plotting the
-#' mean isotopic value (which = "mean") or the dispersion (which = "disp").
+#' mean isotopic value (\code{which} = "mean") or the dispersion (\code{which} = "disp").
 #' 
-#' When called upon an object of class \code{isorix}, the plot function draws a
-#' fine-tuned plot of the assignment. You can use the argument "who" to choose
+#' When called upon an object of class \var{isorix}, the plot function draws a
+#' fine-tuned plot of the assignment. You can use the argument \code{who} to choose
 #' between plotting the assignment for the group or for some individuals (check
 #' the vignette "Workflow" for examples).
 #' 
-#' The arguments "cutoff", "sources", "calib", "borders", "mask", and "mask2"
+#' The arguments \code{cutoff}, \code{sources}, \code{calib}, \code{borders}, \code{mask}, and \code{mask2}
 #' are used to fine-tune additional layers that can be added to the main plot to
 #' embellish it. These arguments must be lists that provide details on how to
 #' draw, respectively, the area outside the prediction interval (for assignment
@@ -36,25 +36,25 @@
 #' borders (for both types of plots), and the mask (again, for both)). For 
 #' assignment maps, an extra mask can be used (mask2), as one may want to add a 
 #' mask covering the area outside the biological range of the species. Within 
-#' these lists, the element "lwd", "col", "cex", "pch" and "fill" influences 
+#' these lists, the elements \code{lwd}, \code{col}, \code{cex}, \code{pch} and \code{fill} influences 
 #' their respective objects as in traditional R plotting functions (see 
-#' \code{\link{par}} for details). The element "draw" should be a \var{logical} 
+#' \code{\link{par}} for details). The element \code{draw} should be a \var{logical} 
 #' that indicates whether the layer must be created or not. The argument 
-#' "borders" (within the list borders) expects an object of the class 
-#' \var{SpatialPolygons} such as the object "CountryBorders" provided with this 
-#' package. The argument "mask" (within the list maks) expects an object of the 
-#' class \var{SpatialPolygons} such as the object "OceanMask" provided with this 
+#' \code{borders} (within the list borders) expects an object of the class 
+#' \var{SpatialPolygons} such as the object \code{\link{CountryBorders}} provided with this 
+#' package. The argument \code{mask} (within the list maks) expects an object of the 
+#' class \var{SpatialPolygons} such as the object \code{\link{OceanMask}} provided with this 
 #' package (see examples).
 #' 
-#' The argument "palette" is used to define how to colour the isoscape and 
-#' assignment plot. Within this list, "step" defines the number of units on the 
-#' z-scale that shares a given colour; "range" can be used to constrain the 
+#' The argument \code{palette} is used to define how to colour the isoscape and 
+#' assignment plot. Within this list, \code{step} defines the number of units on the 
+#' z-scale that shares a given colour; \code{range} can be used to constrain the 
 #' minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
 #' argument is usefull if one wants to create several plots with the same 
-#' z-scale); "n.labels" allows for the user to approximatively define the 
-#' maximum number of numbers plotted on the z-scale; "digits" defines the number
-#' of digits displayed for the numbers used as labels; and "fn" is used to 
-#' specify the function that is used to sample the colours. If "fn" is NULL
+#' z-scale); \code{n.labels} allows for the user to approximatively define the 
+#' maximum number of numbers plotted on the z-scale; \code{digits} defines the number
+#' of digits displayed for the numbers used as labels; and \code{fn} is used to 
+#' specify the function that is used to sample the colours. If \code{fn} is NULL
 #' (default) the palette functions derived from \code{\link{isopalette1}} and
 #' \code{\link{isopalette2}} are used when ploting isoscape and assignments,
 #' respectivelly.

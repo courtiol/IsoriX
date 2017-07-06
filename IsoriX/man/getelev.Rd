@@ -31,13 +31,15 @@ Data 2010" from our server. The file was orifginally downloaded from: \cr
 \url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted into a
 \var{tif} file by us. The function \code{getelev} uses the generic function
 \code{downloadfile} that can also be used to download directly other files.
+This raster needs further processing with the function \code{\link{relevate}}
+and can then be passed to \code{\link{isoscape}}.
 }
 \details{
-In the argument "path" is not provided, the file will be stored in the
-current working directory. The functions can create new directories, so you
+If the argument "path" is not provided, the file will be stored in the
+current working directory. The function can create new directories, so you
 can also indicate a new path. If the package \pkg{\link[tools]{tools}} is
 installed, the integrity of the elevation raster is tested after a call to
-\code{getelev}. In case of corruption, try downloading the file again,
+\code{\link{getelev}}. In case of corruption, try downloading the file again,
 specifying overwrite = TRUE to overwrite the corrupted file.
 }
 \examples{
