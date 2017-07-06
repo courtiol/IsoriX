@@ -59,10 +59,14 @@ Calibfit <- function(...) {
 #' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @keywords models regression
 #' @examples
-#' ## The following example takes some time and will therefore not
-#' ## be run unless you type: example(calibfit, run.dontrun = TRUE)
 #' 
-#' \dontrun{
+#' ## Examples are only run if sufficient time is allowed
+#' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+#' ## if you want to allow for examples taking up to ca. XX seconds to run
+#' ## (so don't write XX but put a number instead!)
+#' 
+#' if(IsoriX.getOption("example_maxtime") > 30) {
+#' 
 #' ## We fit the models for Germany:
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
@@ -79,6 +83,7 @@ Calibfit <- function(...) {
 #' 
 #' ## We plot the calibration function:
 #' plot(calib)
+#' 
 #' }
 #' 
 #' @export
