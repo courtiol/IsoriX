@@ -1,7 +1,4 @@
-elevationraster <- raster("gmted2010_30mn.tif")
-
-load("Europefit.rda") # created in the workflow
-load("isoscape.rda") 
+load("isoscape.rda") # created in the workflow
 
 plot.isoscape <- plot(x = isoscape, palette = list(n.labels = 15, range = c(-130, 10), digits = 1))
 
