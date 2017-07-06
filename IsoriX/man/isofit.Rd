@@ -189,18 +189,15 @@ explaining how to do so.
 }
 \examples{
 
-
-## Fitting the models for Germany:
-
+## Fitting the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 GermanFit
 
-## Diagnostics for the fits:
+## Diagnostics for the fits
 plot(GermanFit)
-
 
 }
 \references{

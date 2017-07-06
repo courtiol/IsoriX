@@ -17,22 +17,23 @@ The data can be used as an example to perform assignments using the function \co
 head(AssignDataAlien)
 str(AssignDataAlien)
 
-## The following example takes some time 
-## and will therefore not run unless you type:
-## example(AssignDataAlien, run.dontrun=TRUE)
-## It shows how we created the dataset AssignDataAlien
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
 
-\dontrun{
-## We prepare the precipitation data:
+if(IsoriX.getOption("example_maxtime") > 30) {
+
+## We prepare the precipitation data
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-## We fit the models for Germany:
+## We fit the models for Germany
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
-## We build the isoscape:
+## We build the isoscape
 isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
 
-## We create a simulated dataset with 1 site and 10 observations:
+## We create a simulated dataset with 1 site and 10 observations
 set.seed(1L)
 Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
                         isoscape = isoscape,
@@ -44,7 +45,10 @@ Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 
                         min_n_samples = 10,
                         max_n_samples = 10)
 AssignDataAlien <- Aliens[, c("animalID", "tissue.value")]
-save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
+
+## Uncomment the following to store the file as we did
+#save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
+
 }
 
 }

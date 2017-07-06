@@ -66,47 +66,50 @@ perform the assignment and their names.
 }
 \examples{
 
-\dontrun{
-## The following example takes some time and will therefore not
-## be run unless you type: example(isofind, run.dontrun = TRUE)
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
 
-## We fit the models for Germany:
+if(IsoriX.getOption("example_maxtime") > 120) {
+
+## We fit the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 
-## We build the isoscape:
+## We build the isoscape
 isoscape <- isoscape(elevation.raster = ElevRasterDE,
                      isofit = GermanFit)
 
 
-## We fit the calibration model:
+## We fit the calibration model
 calib <- calibfit(calib.data = CalibDataAlien,
                   isofit = GermanFit)
 
-## We perform the assignment on land only:
+## We perform the assignment on land only
 assignment.dry <- isofind(assign.data = AssignDataAlien,
                           isoscape = isoscape,
                           calibfit = calib)
 
-## perform the assignment on land and water:
+## perform the assignment on land and water
 assignment <- isofind(assign.data = AssignDataAlien,
                       isoscape = isoscape,
                       calibfit = calib,
                       mask = NULL)
 
-## plot the group assignment
+## We plot the group assignment
 plot(assignment, who = "group", mask = list(mask = NULL))
 
 plot(assignment.dry, who = "group", mask = list(mask = NULL))
 
-## plot the assignment for the 8 first individuals
+## We plot the assignment for the 8 first individuals
 plot(assignment.dry, who = 1:8,
      sources = list(draw = FALSE),
      calib = list(draw = FALSE))
 
-## plot the assignment for the individual "Alien_10"
+## We plot the assignment for the individual "Alien_10"
 plot(assignment.dry, who = "Alien_10")
 
 }

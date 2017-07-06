@@ -45,10 +45,10 @@ str(CalibDataBat)
 
 \dontrun{
 if(require(raster)){
-    ### DELETE AND RECREATE ELEVATION DATA
-    CalibDataBat$elev <- NULL  ## we delete them
+    ## We delete the elevation data
+    CalibDataBat$elev <- NULL
 
-    ## we reconstruct the elevation data using an elevation raster:
+    ## We reconstruct the elevation data using an elevation raster
     ## (see ?getelev for details on how to get the tif file)
     elevationrasterbig <- raster("gmted2010_30mn.tif")
     CalibDataBat$elev <- extract(
