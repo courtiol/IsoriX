@@ -357,22 +357,23 @@ NULL
 #' # getelev()
 #' 
 #' ## Convert the tif into R raster format
-#' library(raster)
-#' elevationrasterbig <- raster("gmted2010_30mn.tif")
-#' 
-#' ## Create the highly agregated elevation raster
-#' ElevRasterDE <- relevate(elevationrasterbig,
-#'                          aggregation.factor = 10,
-#'                          manual.crop = c(5.5, 15.5, 47, 55.5))
-#'                          
-#' ## Plot the elevation
-#' if (require("sp") & require("rasterVis")) {
-#'   levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#'     layer(sp.polygons(CountryBorders, col = "white"))
+#' if(require(raster)) {
+#'   elevationrasterbig <- raster("gmted2010_30mn.tif")
+#'   
+#'   ## Create the highly agregated elevation raster
+#'   ElevRasterDE <- relevate(elevationrasterbig,
+#'                            aggregation.factor = 10,
+#'                            manual.crop = c(5.5, 15.5, 47, 55.5))
+#'                            
+#'   ## Plot the elevation
+#'   if (require("sp") & require("rasterVis")) {
+#'     levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
+#'       layer(sp.polygons(CountryBorders, col = "white"))
+#'   }
+#'   
+#'   ## Compute crudely the resolution:
+#'   median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
 #' }
-#' 
-#' ## Compute crudely the resolution:
-#' median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
 #' }
 #' 
 #' 
