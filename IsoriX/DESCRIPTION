@@ -39,9 +39,11 @@ Suggests:
     GISTools,
     lattice,
     maps,
+    maptools,
     RandomFields,
     R.rsp,
-    rgdal
+    rgdal,
+    rgeos
 VignetteBuilder: R.rsp
 LazyData: true
 URL: https://github.com/courtiol/IsoriX_project/
