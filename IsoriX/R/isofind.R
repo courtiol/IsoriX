@@ -187,7 +187,7 @@ isofind <- function(assign.data,
     for (animalID in names.layers) {
       name.layer <- paste("logpv.stack$", animalID, sep = "")
       expr.to.run <- paste(name.layer,
-                           "<- .AssignTest(values(stat.stack[[animalID]]), values(varstat.stack[[animalID]]))"
+                           "<- .AssignTest(raster::values(stat.stack[[animalID]]), raster::values(varstat.stack[[animalID]]))"
                            )
       eval(parse(text = expr.to.run))
     }
