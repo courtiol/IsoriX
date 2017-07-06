@@ -39,7 +39,7 @@ averages precipitation weighted isoscapes.
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 180) {
+#if(IsoriX.getOption("example_maxtime") > 180) {
 
 ## We prepare the data and split them by month:
 
@@ -66,7 +66,7 @@ isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
 ## We plot the mean isoscape for January:
 plot(x = isoscape.jan, which = "mean")
 
-}
+#}
 }
 \seealso{
 \code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
