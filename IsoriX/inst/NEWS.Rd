@@ -15,6 +15,7 @@
 \section{version 0.6}{
   \subsection{New features}{
       \itemize{
+        \item the maximum duration of running time for examples can now be controlled using IsoriX.options(example_maxtime = XX)
         \item due to new GNIP policies, we no longer provide the GNIP dataset for the entire World, but only a subset containing data for Germany (users should thus compile their precipitatin data themselves from the 'wiser' plateform provided by GNIP; see vignette Workflow)
         \item it is now possible to control the colours and labels for the levels of isotopes or p-values in plots
         \item for plotting, it is no longer needed to load the ocean mask and country borders (it now happens automatically)
