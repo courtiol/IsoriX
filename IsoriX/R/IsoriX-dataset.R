@@ -282,7 +282,7 @@ NULL
 #' @seealso \code{\link{OceanMask}} for another polygon shapefile used to
 #' embellish the plots
 #' @source This \var{SpatialPolygons} is derived from the
-#' \code{\link[maps]{world}} of the package \pkg{\link[maps]{maps}}. Please refer to this
+#' \code{\link[maps]{world}} of the package \pkg{maps}. Please refer to this
 #' other package for description and sources of this dataset. See example for
 #' details on how we created the dataset.
 #' @keywords datasets
