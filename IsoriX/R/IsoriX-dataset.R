@@ -43,7 +43,7 @@ NULL
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+#' raster using the function \code{\link[raster]{extract}}. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010. Note that the original study used a different source of elevation
 #' data.
@@ -166,7 +166,7 @@ NULL
 #' \var{dataframe} of similar structure than this one. The columns should possess 
 #' the same names as the ones described above. If the elevation is unknown at the 
 #' sampling sites, elevation information can be extracted from a high resolution elevation
-#' raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+#' raster using the function \code{\link[raster]{extract}}. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010.
 #' 
@@ -275,7 +275,7 @@ NULL
 #' @seealso \code{\link{OceanMask}} for another polygon shapefile used to
 #' embellish the plots
 #' @source This \var{SpatialPolygons} is derived from the
-#' \code{\link[maps]{world}} of the package \pkg{maps}. Please refer to this
+#' \code{\link[maps]{world}} of the package \pkg{\link[maps]{maps}}. Please refer to this
 #' other package for description and sources of this dataset. See example for
 #' details on how we created the dataset.
 #' @keywords datasets
@@ -389,7 +389,7 @@ NULL
 #' Project: Global Network of Isotopes in Precipitation). These data are free to
 #' reuse provided the relevent citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
-#' provide larger GNIP dataset in the package are those are not free to reuse.
+#' provide larger GNIP dataset in the package as those are not free to reuse.
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
 #' interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).

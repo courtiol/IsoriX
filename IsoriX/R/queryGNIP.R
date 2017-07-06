@@ -73,6 +73,7 @@ QueryGNIP <- function(...) {
 #' \code{prop.random}. For each weather station the mean and variance sample
 #' estimates are computed.
 #' @seealso \code{\link{IsoriX}} for the complete workflow
+#' 
 #' \code{\link{GNIPDataDE}} for the complete dataset
 #' @examples
 #' 

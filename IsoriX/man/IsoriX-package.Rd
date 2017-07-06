@@ -98,9 +98,9 @@ The function \code{\link{isofind}} tests for each location across the
 isoscape if it presents a similar isotopic signature than the unknown origin
 of a given individual(s). This assignment procedure considered the
 uncertainty stemming from the model fits (geostatistical model and
-calibration model). The function \code{\link{plot.isorix}} then draw such
+calibration model). The function \code{\link{plot.isorix}} then draws such
 assignment by plotting the most likely origin with the prediction region
-around it. When several organisms are being assigned, both individuals
+around it. When several organisms are being assigned, both individual
 assignments and a single assignment for the whole group can be performed. }
 }
 \note{

@@ -156,6 +156,7 @@ round(cbind(
 }
 \seealso{
 \code{\link{isofit}} for the function fitting the isoscape model
+
 \code{\link{IsoriX}} for the complete work-flow
 }
 \keyword{simulate}

@@ -47,16 +47,16 @@ values constitute the statistic of the assingment test. Under the null
 hypothesis (when the organism is at a location with the same isotopic value
 than its original location), the test statistics follows a normal
 distribution with mean zero and a certain variance that stems from both the
-isoscape model fits and the calibration fit. The function \code{isofind}
-computes the map of p-value for such assignment test (i.e. the p-values in
-all locations of the isoscape) for all individual in the dataframe
-\code{assign.data}. The function also perform a single assignment for the
+isoscape model fits and the calibration fit. The function \code{\link{isofind}}
+computes the map of p-value for such an assignment test (i.e. the p-values in
+all locations of the isoscape) for all individuals in the dataframe
+\code{assign.data}. The function also performs a single assignment for the
 entire group by combining the individual p-value maps using the Fisher's
 method (Fisher 1925).
 
 A mask can be used so to remove all values falling in the mask. This can be
-useful for performing for example assignments on lands only and discarded
-anything falling in large bodies of water (see example). By default, such our
+useful for performing for example assignments on lands only and discard
+anything falling in large bodies of water (see example). By default our
 \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows 
 to prevent this automatic behaviour.
 }

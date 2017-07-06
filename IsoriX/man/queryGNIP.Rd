@@ -140,5 +140,6 @@ lapply(GNIPDataDE50pctStationsMonthly, head)
 }
 \seealso{
 \code{\link{IsoriX}} for the complete workflow
+
 \code{\link{GNIPDataDE}} for the complete dataset
 }

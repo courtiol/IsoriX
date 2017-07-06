@@ -41,7 +41,7 @@ same information for the residual dispersion variance (\code{disp.pred},
 
 The predictions of isotopic values across the landscape are performed by
 calling the function \code{\link[spaMM]{predict}} from the package
-\pkg{spaMM} on the fitted isoscape produced by \code{\link{isofit}}.
+\pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by \code{\link{isofit}}.
 
 Let us detail the meaning of \code{mean}, \code{mean.predVar} and
 \code{mean.respVar}:
