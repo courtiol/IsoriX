@@ -189,6 +189,13 @@ explaining how to do so.
 }
 \examples{
 
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
+
+if(IsoriX.getOption("example_maxtime") > 10) {
+
 ## Fitting the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
@@ -198,6 +205,8 @@ GermanFit
 
 ## Diagnostics for the fits
 plot(GermanFit)
+
+}
 
 }
 \references{
