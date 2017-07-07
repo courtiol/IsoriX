@@ -137,12 +137,13 @@ __Important__:  before continuing to the next step, you must make sure that your
 
 We are now going to use the function `isofit()` to fit the geostatisical model required to build isoscapes. This function has several parameters that can be adjusted to fit different models, but we will here use its default settings.
 
-```{r isofit, eval = FALSE}
+```{r isofit, eval = TRUE}
 Europefit <- isofit(iso.data = GNIPDataEU)
 ```
 
 ```{r load isofit, echo = FALSE}
-load("Europefit.rda")
+save(Europefit, file = "Europefit.rda", compress = "xz")
+#load("Europefit.rda")
 ```
 
 You can check the output of the model fit by typing its name (not shown), and you can also use the function `plot()` from our package to check visually some properties of the model fit.
