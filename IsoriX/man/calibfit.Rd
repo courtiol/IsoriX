@@ -44,7 +44,7 @@ This function considers that the isotopic values from the environment (e.g.
 from precipitation) at the locations at which organisms were sampled are not
 known. The function therefore predicts these isotopic values from the
 geostatistical model fitted by the function \code{\link{isofit}}, which is
-provided to \code{calibfit} using the argument \code{isofit}.
+provided to \code{\link{calibfit}} using the argument \code{isofit}.
 
 The LMM used to fit the calibration function has a simple fixed-effect
 structure: an intercept and a slope. The random effect is more complex: it is
@@ -70,10 +70,14 @@ See \code{\link{CalibDataAlien}} to know which variables are needed to
 perform the calibration fit and their names.
 }
 \examples{
-## The following example takes some time and will therefore not
-## be run unless you type: example(calibfit, run.dontrun = TRUE)
 
-\dontrun{
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
+
+if(IsoriX.getOption("example_maxtime") > 30) {
+
 ## We fit the models for Germany:
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
@@ -90,6 +94,7 @@ summary(calib)
 
 ## We plot the calibration function:
 plot(calib)
+
 }
 
 }

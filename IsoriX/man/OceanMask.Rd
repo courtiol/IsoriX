@@ -16,22 +16,21 @@ bodies of water.
 }
 \examples{
 
-if(require(sp))
-    plot(OceanMask, col='blue')
+if(require(sp)) {
+  plot(OceanMask, col='blue')
+}
 
-## HOW DID WE CREATE THIS FILE?
-## (This example takes some time and will therefore not be run
-##  unless you type: example(OceanMask, run.dontrun=TRUE) )
-  
-\dontrun{
+## How did we create this file?
+
 if(require(raster) & require(rgeos)){
     worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
     proj4string(worldlimit) <- crs(CountryBorders)
     OceanMask <- gDifference(worldlimit, CountryBorders)  
     OceanMask
-    ## uncomment the following to store the file:
-    #save(OceanMask, file = "OceanMask.rda", compress = "xz")
-}
+    
+## Uncomment the following to store the file as we did
+#save(OceanMask, file = "OceanMask.rda", compress = "xz")
+
 }
 
 

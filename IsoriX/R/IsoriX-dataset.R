@@ -43,7 +43,7 @@ NULL
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+#' raster using the function \code{\link[raster]{extract}}. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010. Note that the original study used a different source of elevation
 #' data.
@@ -79,10 +79,10 @@ NULL
 #' 
 #' \dontrun{
 #' if(require(raster)){
-#'     ### DELETE AND RECREATE ELEVATION DATA
-#'     CalibDataBat$elev <- NULL  ## we delete them
+#'     ## We delete the elevation data
+#'     CalibDataBat$elev <- NULL
 #' 
-#'     ## we reconstruct the elevation data using an elevation raster:
+#'     ## We reconstruct the elevation data using an elevation raster
 #'     ## (see ?getelev for details on how to get the tif file)
 #'     elevationrasterbig <- raster("gmted2010_30mn.tif")
 #'     CalibDataBat$elev <- extract(
@@ -118,22 +118,23 @@ NULL
 #' head(AssignDataAlien)
 #' str(AssignDataAlien)
 #' 
-#' ## The following example takes some time 
-#' ## and will therefore not run unless you type:
-#' ## example(AssignDataAlien, run.dontrun=TRUE)
-#' ## It shows how we created the dataset AssignDataAlien
+#' ## The examples below will only be run if sufficient time is allowed
+#' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+#' ## if you want to allow for examples taking up to ca. XX seconds to run
+#' ## (so don't write XX but put a number instead!)
 #' 
-#' \dontrun{
-#' ## We prepare the precipitation data:
+#' if(IsoriX.getOption("example_maxtime") > 30) {
+#' 
+#' ## We prepare the precipitation data
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' ## We fit the models for Germany:
+#' ## We fit the models for Germany
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #'
-#' ## We build the isoscape:
+#' ## We build the isoscape
 #' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
 #'
-#' ## We create a simulated dataset with 1 site and 10 observations:
+#' ## We create a simulated dataset with 1 site and 10 observations
 #' set.seed(1L)
 #' Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
 #'                         isoscape = isoscape,
@@ -145,7 +146,10 @@ NULL
 #'                         min_n_samples = 10,
 #'                         max_n_samples = 10)
 #' AssignDataAlien <- Aliens[, c("animalID", "tissue.value")]
-#' save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
+#' 
+#' ## Uncomment the following to store the file as we did
+#' #save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
+#' 
 #' }
 #' 
 NULL
@@ -166,7 +170,7 @@ NULL
 #' \var{dataframe} of similar structure than this one. The columns should possess 
 #' the same names as the ones described above. If the elevation is unknown at the 
 #' sampling sites, elevation information can be extracted from a high resolution elevation
-#' raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+#' raster using the function \code{\link[raster]{extract}}. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010.
 #' 
@@ -187,22 +191,23 @@ NULL
 #' head(CalibDataAlien)
 #' str(CalibDataAlien)
 #' 
-#' ## The following example takes some time 
-#' ## and will therefore not run unless you type:
-#' ## example(CalibDataAlien, run.dontrun=TRUE)
-#' ## It shows how we created the dataset CalibDataAlien
+#' ## The examples below will only be run if sufficient time is allowed
+#' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+#' ## if you want to allow for examples taking up to ca. XX seconds to run
+#' ## (so don't write XX but put a number instead!)
 #' 
-#' \dontrun{
-#' ## We prepare the precipitation data:
+#' if(IsoriX.getOption("example_maxtime") > 30) {
+#' 
+#' ## We prepare the precipitation data
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 #' 
-#' ## We fit the models for Germany:
+#' ## We fit the models for Germany
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #'
-#' ## We build the isoscape:
+#' ## We build the isoscape
 #' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
 #'
-#' ## We create a simulated dataset with 50 site and 10 observations per site:
+#' ## We create a simulated dataset with 50 site and 10 observations per site
 #' set.seed(2L)
 #' CalibDataAlien <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
 #'                         isoscape = isoscape,
@@ -211,7 +216,10 @@ NULL
 #'                         min_n_samples = 10,
 #'                         max_n_samples = 10)
 #' CalibDataAlien$env.value <- NULL
-#' save(CalibDataAlien, file = "CalibDataAlien.rda", compress = "xz")
+#' 
+#' ## Uncomment the following to store the file as we did
+#' #save(CalibDataAlien, file = "CalibDataAlien.rda", compress = "xz")
+#' 
 #' }
 #' 
 #' 
@@ -238,22 +246,21 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' if(require(sp))
-#'     plot(OceanMask, col='blue')
+#' if(require(sp)) {
+#'   plot(OceanMask, col='blue')
+#' }
 #' 
-#' ## HOW DID WE CREATE THIS FILE?
-#' ## (This example takes some time and will therefore not be run
-#' ##  unless you type: example(OceanMask, run.dontrun=TRUE) )
-#'   
-#' \dontrun{
+#' ## How did we create this file?
+#' 
 #' if(require(raster) & require(rgeos)){
 #'     worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
 #'     proj4string(worldlimit) <- crs(CountryBorders)
 #'     OceanMask <- gDifference(worldlimit, CountryBorders)  
 #'     OceanMask
-#'     ## uncomment the following to store the file:
-#'     #save(OceanMask, file = "OceanMask.rda", compress = "xz")
-#' }
+#'     
+#' ## Uncomment the following to store the file as we did
+#' #save(OceanMask, file = "OceanMask.rda", compress = "xz")
+#' 
 #' }
 #' 
 #' 
@@ -284,21 +291,16 @@ NULL
 #' if(require(sp))
 #'   plot(CountryBorders, border="red", col="darkgrey")
 #' 
+#' ## How did we create this file?
 #' 
-#' ### HOW DID WE CREATE THIS FILE?
-#' ### (This example takes some time and will therefore not be run
-#' ###  unless you type: example(CountryBorders, run.dontrun = TRUE) )
-#' 
-#' \dontrun{
 #' if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
 #'     worldmap <- map("world", fill = TRUE, plot = FALSE)
 #'     CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
 #'     CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-#'     proj4string(CountryBorders) <- CRS("+ proj = longlat + datum = WGS84")
+#'     proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
 #'     CountryBorders
-#'     ## uncomment the following to store the file:
+#'     ## Uncomment the following to store the file as we did
 #'     #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
-#' }
 #' }
 #' 
 #' 
@@ -348,29 +350,30 @@ NULL
 #' ## example(ElevRasterDE, run.dontrun=TRUE)
 #' 
 #' \dontrun{
-#' ### CREATING THE OBJECT ElevRasterDE
+#' ### Creating the object ElevRasterDE
 #' 
-#' ## download the tif file (ca. 700 Mb):
+#' ## Download the tif file (ca. 700 Mb)
 #' ## (see ?getelev for details on how to get the tif file)
 #' # getelev()
 #' 
-#' ## convert the tif into R raster format:
-#' library(raster)
-#' elevationrasterbig <- raster("gmted2010_30mn.tif")
-#' 
-#' ## create the highly agregated elevation raster:
-#' ElevRasterDE <- relevate(elevationrasterbig,
-#'                          aggregation.factor = 10,
-#'                          manual.crop = c(5.5, 15.5, 47, 55.5))
-#'                          
-#' ## plot the elevation:
-#' if (require("sp") & require("rasterVis")) {
-#'   levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#'     layer(sp.polygons(CountryBorders, col = "white"))
+#' ## Convert the tif into R raster format
+#' if(require(raster)) {
+#'   elevationrasterbig <- raster("gmted2010_30mn.tif")
+#'   
+#'   ## Create the highly agregated elevation raster
+#'   ElevRasterDE <- relevate(elevationrasterbig,
+#'                            aggregation.factor = 10,
+#'                            manual.crop = c(5.5, 15.5, 47, 55.5))
+#'                            
+#'   ## Plot the elevation
+#'   if (require("sp") & require("rasterVis")) {
+#'     levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
+#'       layer(sp.polygons(CountryBorders, col = "white"))
+#'   }
+#'   
+#'   ## Compute crudely the resolution:
+#'   median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
 #' }
-#' 
-#' ## compute crudely the resolution:
-#' median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
 #' }
 #' 
 #' 
@@ -389,7 +392,7 @@ NULL
 #' Project: Global Network of Isotopes in Precipitation). These data are free to
 #' reuse provided the relevent citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
-#' provide larger GNIP dataset in the package are those are not free to reuse.
+#' provide larger GNIP dataset in the package as those are not free to reuse.
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
 #' interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
@@ -473,7 +476,7 @@ NULL
 #' @keywords color datasets
 #' @examples
 #' 
-#' ### A COMPARISON OF SOME COLOUR PALETTES
+#' ## A comparison of some colour palette
 #' 
 #' par(mfrow = c(2, 3))
 #' pie(rep(1, length(isopalette1)), col = isopalette1,
@@ -489,13 +492,13 @@ NULL
 #' pie(rep(1, 100), col = heat.colors(100), border = NA, labels = NA,
 #'     clockwise = TRUE, main = "heat.colors")
 #' 
-#' ### CREATING YOUR OWN COLOUR PALETTE
+#' ## Creating your own colour palette
 #' my.palette  <- colorRampPalette(c("blue", "green", "red"), bias = 0.7)
 #' par(mfrow = c(1, 1))
 #' pie(1:100, col = my.palette(100), border = NA, labels = NA,
 #'     clockwise = TRUE, main = "a home-made palette")
 #' 
-#' ### TURNING PALETTES INTO FUNCTIONS (FOR USE IN ISORIX)
+#' ## Turing palettes into functions for use in IsoriX
 #' Isopalette1Fn <- colorRampPalette(isopalette1, bias = 0.5)
 #' Isopalette2Fn <- colorRampPalette(isopalette2, bias = 0.5)
 #' par(mfrow = c(1, 2))

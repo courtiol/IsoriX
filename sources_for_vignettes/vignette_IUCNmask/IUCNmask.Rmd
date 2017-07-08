@@ -77,10 +77,12 @@ dir("./species_14123")
 First, we need to transform the shapefile into a ```SpatialPolygonsDataFrame```. This can be done with the package __rgdal__ which provides the function `readOGR()` to read in shapefiles in R.
 We must provide the path to the data as a first argument and the name of the layer as a second one.
 
-```{r shapefile, message = FALSE}
+```{r shapefile, message = TRUE, warnings = FALSE}
 library(rgdal)
 myotis_bechsteinii <- readOGR("./species_14123/", "species_14123")
 ```
+
+If you encounter problems while running `readOGR()`, try to update your gdal library (something that you need to do outside R... and which can be tricky under Windows but that is a story that has nothing to do with __IsoriX__).
 
 The `readOGR()` function will also read the .prj file.  If it exists, you can return the projection as follows:
 

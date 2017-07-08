@@ -43,29 +43,30 @@ provide the url link of the \var{tif} file in the example below.
 ## example(ElevRasterDE, run.dontrun=TRUE)
 
 \dontrun{
-### CREATING THE OBJECT ElevRasterDE
+### Creating the object ElevRasterDE
 
-## download the tif file (ca. 700 Mb):
+## Download the tif file (ca. 700 Mb)
 ## (see ?getelev for details on how to get the tif file)
 # getelev()
 
-## convert the tif into R raster format:
-library(raster)
-elevationrasterbig <- raster("gmted2010_30mn.tif")
-
-## create the highly agregated elevation raster:
-ElevRasterDE <- relevate(elevationrasterbig,
-                         aggregation.factor = 10,
-                         manual.crop = c(5.5, 15.5, 47, 55.5))
-                         
-## plot the elevation:
-if (require("sp") & require("rasterVis")) {
-  levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-    layer(sp.polygons(CountryBorders, col = "white"))
+## Convert the tif into R raster format
+if(require(raster)) {
+  elevationrasterbig <- raster("gmted2010_30mn.tif")
+  
+  ## Create the highly agregated elevation raster
+  ElevRasterDE <- relevate(elevationrasterbig,
+                           aggregation.factor = 10,
+                           manual.crop = c(5.5, 15.5, 47, 55.5))
+                           
+  ## Plot the elevation
+  if (require("sp") & require("rasterVis")) {
+    levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
+      layer(sp.polygons(CountryBorders, col = "white"))
+  }
+  
+  ## Compute crudely the resolution:
+  median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
 }
-
-## compute crudely the resolution:
-median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
 }
 
 

@@ -20,21 +20,16 @@ borders of CountryBorders.
 if(require(sp))
   plot(CountryBorders, border="red", col="darkgrey")
 
+## How did we create this file?
 
-### HOW DID WE CREATE THIS FILE?
-### (This example takes some time and will therefore not be run
-###  unless you type: example(CountryBorders, run.dontrun = TRUE) )
-
-\dontrun{
 if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
     worldmap <- map("world", fill = TRUE, plot = FALSE)
     CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
     CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-    proj4string(CountryBorders) <- CRS("+ proj = longlat + datum = WGS84")
+    proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
     CountryBorders
-    ## uncomment the following to store the file:
+    ## Uncomment the following to store the file as we did
     #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
-}
 }
 
 

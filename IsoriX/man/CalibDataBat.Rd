@@ -28,7 +28,7 @@ Users who wish to use their own dataset for calibration should create a
 'species' can be dropped). The columns should possess the same names as the
 ones described above. If the elevation is unknown at the sampling sites,
 elevation information can be extracted from a high resolution elevation
-raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+raster using the function \code{\link[raster]{extract}}. In this dataset, we
 retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 2010. Note that the original study used a different source of elevation
 data.
@@ -45,10 +45,10 @@ str(CalibDataBat)
 
 \dontrun{
 if(require(raster)){
-    ### DELETE AND RECREATE ELEVATION DATA
-    CalibDataBat$elev <- NULL  ## we delete them
+    ## We delete the elevation data
+    CalibDataBat$elev <- NULL
 
-    ## we reconstruct the elevation data using an elevation raster:
+    ## We reconstruct the elevation data using an elevation raster
     ## (see ?getelev for details on how to get the tif file)
     elevationrasterbig <- raster("gmted2010_30mn.tif")
     CalibDataBat$elev <- extract(

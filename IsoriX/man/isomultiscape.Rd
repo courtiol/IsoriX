@@ -34,11 +34,12 @@ averages precipitation weighted isoscapes.
 }
 \examples{
 
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
 
-## The following example takes a few minutes so it will not be run unless you type:
-## example(isoscape, run.dontrun = TRUE)
-
-\dontrun{
+if(IsoriX.getOption("example_maxtime") > 180) {
 
 ## We prepare the data and split them by month:
 
@@ -64,6 +65,7 @@ isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
                          
 ## We plot the mean isoscape for January:
 plot(x = isoscape.jan, which = "mean")
+
 }
 }
 \seealso{

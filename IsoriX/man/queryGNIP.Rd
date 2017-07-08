@@ -89,24 +89,24 @@ produced by this function can be used as input to fit the isoscape (see
 }
 \examples{
 
-### CREATE A PROCESSED DATASET FOR GERMANY
+## Create a processed dataset for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 head(GNIPDataDEagg)
 
-### CREATE A PROCESSED DATASET FOR GERMANY PER MONTH
+## Create a processed dataset for Germany per month
 GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
                                split.by = "month")
 
 head(GNIPDataDEmonthly)
 
-### CREATE A PROCESSED DATASET FOR GERMANY PER YEAR
+## Create a processed dataset for Germany per year
 GNIPDataDEyearly <- queryGNIP(data = GNIPDataDE,
                               split.by = "year")
 
 head(GNIPDataDEyearly)
 
-### CREATE ISOSCAPE-DATASET FOR WARM MONTHS IN GERMANY BETWEEN 1995 and 1996
+## Create isoscape-dataset for warm months in germany between 1995 and 1996
 GNIPDataDEwarm <- queryGNIP(data = GNIPDataDE,
                             month = 5:8,
                             year = 1995:1996)
@@ -114,14 +114,14 @@ GNIPDataDEwarm <- queryGNIP(data = GNIPDataDE,
 head(GNIPDataDEwarm)
 
 
-### CREATE A DATASET WITH 90\% OF OBS
+## Create a dataset with 90\% of obs
 GNIPDataDE90pct <- queryGNIP(data = GNIPDataDE,
                              prop.random = 0.9,
                              random.level = "obs")
 
 lapply(GNIPDataDE90pct, head) # show beginning of both datasets
 
-### CREATE A DATASET WITH HALF THE WEATHER STATIONS
+## Create a dataset with half the weather stations
 GNIPDataDE50pctStations <- queryGNIP(data = GNIPDataDE,
                                      prop.random = 0.5,
                                      random.level = "station")
@@ -129,7 +129,7 @@ GNIPDataDE50pctStations <- queryGNIP(data = GNIPDataDE,
 lapply(GNIPDataDE50pctStations, head)
 
 
-### CREATE A DATASET WITH HALF THE WEATHER STATIONS SPLIT PER MONTH
+## Create a dataset with half the weather stations split per month
 GNIPDataDE50pctStationsMonthly <- queryGNIP(data = GNIPDataDE,
                                             split.by = "month",
                                             prop.random = 0.5,
@@ -140,5 +140,6 @@ lapply(GNIPDataDE50pctStationsMonthly, head)
 }
 \seealso{
 \code{\link{IsoriX}} for the complete workflow
+
 \code{\link{GNIPDataDE}} for the complete dataset
 }

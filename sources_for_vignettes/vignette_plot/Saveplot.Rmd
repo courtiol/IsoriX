@@ -70,7 +70,7 @@ plot.mean.isoscape
 dev.off()
 ```
 
-So you see, simple isn't it! You first initialize the creation of the plot with the function `CairoPNG()`, then you call your plot, then you tell your computer that you are done with `dev.off()`.
+So you see, it is simple isn't it! You first initialize the creation of the plot with the function `CairoPNG()`, then you call your plot, then you tell your computer that you are done with `dev.off()`.
 
 You just need to specify a filename, and the resolution of the file. The height and width are here considered to be in pixels. Here we chose the so-called Full-HD or 1080p resolution (1080x1920) because we wanted to observe the isoscape carefully on a monitor of that resolution. If your screen is Full-HD, try it and display the plot in full screen to get better results (if the plot does not match the definition of your screen, things can get ugly), if your screen is not, try another resolution. If you don't know what resolution your screen has, you can visit (http://www.whatismyscreenresolution.com/).
 
@@ -87,6 +87,29 @@ dev.off()
 ```
 
 The arguments slightly differ with the function creating pngs. The argument setting the name of the file is now called `file` and not `filename`, the resolution has now to be provided in inches and the argument `res` does not exist for pdfs, but default results are usually fine.
+
+
+### Changing font size? the example of the IsoriX welcome picture
+
+You can influence the font size while exporting your plots. Here is for example how we created the welcome picture of the __IsoriX__ page on GitHub (\url{www.github.com/courtiol/isorix_project}):
+
+```{r welcome picture, fig.show="hide", eval=do.eval}
+plot.welcome.isoscape <- plot(x = isoscape,
+                              palette = list(n.labels = 15,
+                                             range = c(-130, 10),
+                                             digits = 1))
+
+CairoPNG(file = "isoscape.png",
+         units = "in",
+         width = 10,
+         height = 8,
+         pointsize = 24*92/72,
+         dpi = 96)
+
+plot.welcome.isoscape 
+
+dev.off()
+```
 
 
 ## Saving IsoriX plots without Cairo

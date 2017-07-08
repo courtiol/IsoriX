@@ -36,7 +36,7 @@ lattice graphic environment (see source for details).
 }
 \examples{
 
-### A COMPARISON OF SOME COLOUR PALETTES
+## A comparison of some colour palette
 
 par(mfrow = c(2, 3))
 pie(rep(1, length(isopalette1)), col = isopalette1,
@@ -52,13 +52,13 @@ pie(rep(1, 100), col = topo.colors(100), border = NA, labels = NA,
 pie(rep(1, 100), col = heat.colors(100), border = NA, labels = NA,
     clockwise = TRUE, main = "heat.colors")
 
-### CREATING YOUR OWN COLOUR PALETTE
+## Creating your own colour palette
 my.palette  <- colorRampPalette(c("blue", "green", "red"), bias = 0.7)
 par(mfrow = c(1, 1))
 pie(1:100, col = my.palette(100), border = NA, labels = NA,
     clockwise = TRUE, main = "a home-made palette")
 
-### TURNING PALETTES INTO FUNCTIONS (FOR USE IN ISORIX)
+## Turing palettes into functions for use in IsoriX
 Isopalette1Fn <- colorRampPalette(isopalette1, bias = 0.5)
 Isopalette2Fn <- colorRampPalette(isopalette2, bias = 0.5)
 par(mfrow = c(1, 2))

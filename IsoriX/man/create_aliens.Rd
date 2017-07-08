@@ -36,7 +36,7 @@ This functions returns a \var{data.frame} (see example for column
 }
 \description{
 This function allows to simulate data so to provide examples for the
-calibration and for the assignment procedure. We names the simulated
+calibration and for the assignment procedure. We name the simulated
 individuals 'Aliens' so to make it clear that the data we use to illustrate 
 our package are not real data.
 }
@@ -67,15 +67,22 @@ centered around such mean and a variance defined by the residual variance
 }
 \examples{
 
-## We fit the models for Germany:
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
+
+if(IsoriX.getOption("example_maxtime") > 30) {
+
+## We fit the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
-## We build the isoscapes:
+## We build the isoscapes
 isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
 
-## We create a simulated dataset with 25 sites and 5 observations per site:
+## We create a simulated dataset with 25 sites and 5 observations per site
 Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
                         isoscape = isoscape,
                         elevation_raster = ElevRasterDE,
@@ -83,15 +90,15 @@ Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 
                         min_n_samples = 5,
                         max_n_samples = 5)
 
-## We display the simulated dataset:
+## We display the simulated dataset
 Aliens
 
 ## We plot the relationship between the environmental isotope values
-## and those from the simulated organisms:
+## and those from the simulated organisms
 plot(tissue.value ~ env.value, data = Aliens, ylab = "Tissue", xlab = "Environment")
 abline(3, 0.5, col = "blue") ## the true relationship
 
-## We create a simulated dataset with 2 sites imputing coordinates manually:
+## We create a simulated dataset with 2 sites imputing coordinates manually
 Aliens2 <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
                          isoscape = isoscape,
                          coordinates = data.frame(siteID = c("Berlin", "Bielefeld"),
@@ -105,10 +112,12 @@ Aliens2 <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var =
 head(Aliens2)
 
 }
+
+}
 \seealso{
-\pkg{\link{calibfit}} for a calibration based on simulated data
+\code{\link{calibfit}} for a calibration based on simulated data
   
-  \pkg{\link{isofind}} for an assignment based on simulated data
+  \code{\link{isofind}} for an assignment based on simulated data
   
   \code{\link{IsoriX}} for the complete work-flow of our package
 }

@@ -64,15 +64,22 @@ predictions.
 }
 \examples{
 
-## We fit the models for Germany:
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
+
+if(IsoriX.getOption("example_maxtime") > 30) {
+
+## We fit the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg,
                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
-### DIFFERENCES IN AGGREGATION
+### Let's explore the difference between aggregation schemes
 
-## We aggregate and crop using different settings:
+## We aggregate and crop using different settings
 elevation.raster1 <- relevate(
     elevation.raster = ElevRasterDE,
     isofit = GermanFit,
@@ -91,13 +98,7 @@ elevation.raster3 <- relevate(
     margin_pct = 10,
     aggregation.factor = 5, aggregation.fun = max)
 
-
-## The following plot takes a few second too many and will 
-## therefore not be run unless you type: 
-## example(relevate, run.dontrun = TRUE)
-
-\dontrun{
-    ## We build the plots of the outcome of the 3 different aggregation schemes:
+## We build the plots of the outcome of the 3 different aggregation schemes
 if(require(rasterVis)) {
     plot.aggregation1 <- levelplot(elevation.raster1,
             margin = FALSE, main = "Original small raster") + 
@@ -117,6 +118,8 @@ if(require(rasterVis)) {
     print(plot.aggregation2, split = c(1, 2, 1, 3), more = TRUE)
     print(plot.aggregation3, split = c(1, 3, 1, 3))
 }
+
+
 }
 
 }

@@ -24,7 +24,7 @@ Users who wish to use their own dataset for calibration should create a
 \var{dataframe} of similar structure than this one. The columns should possess 
 the same names as the ones described above. If the elevation is unknown at the 
 sampling sites, elevation information can be extracted from a high resolution elevation
-raster using the function \pkg{\link[raster]{extract}}. In this dataset, we
+raster using the function \code{\link[raster]{extract}}. In this dataset, we
 retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 2010.
 }
@@ -33,22 +33,23 @@ retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 head(CalibDataAlien)
 str(CalibDataAlien)
 
-## The following example takes some time 
-## and will therefore not run unless you type:
-## example(CalibDataAlien, run.dontrun=TRUE)
-## It shows how we created the dataset CalibDataAlien
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
 
-\dontrun{
-## We prepare the precipitation data:
+if(IsoriX.getOption("example_maxtime") > 30) {
+
+## We prepare the precipitation data
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-## We fit the models for Germany:
+## We fit the models for Germany
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
-## We build the isoscape:
+## We build the isoscape
 isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
 
-## We create a simulated dataset with 50 site and 10 observations per site:
+## We create a simulated dataset with 50 site and 10 observations per site
 set.seed(2L)
 CalibDataAlien <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
                         isoscape = isoscape,
@@ -57,7 +58,10 @@ CalibDataAlien <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resi
                         min_n_samples = 10,
                         max_n_samples = 10)
 CalibDataAlien$env.value <- NULL
-save(CalibDataAlien, file = "CalibDataAlien.rda", compress = "xz")
+
+## Uncomment the following to store the file as we did
+#save(CalibDataAlien, file = "CalibDataAlien.rda", compress = "xz")
+
 }
 
 

@@ -47,16 +47,16 @@ values constitute the statistic of the assingment test. Under the null
 hypothesis (when the organism is at a location with the same isotopic value
 than its original location), the test statistics follows a normal
 distribution with mean zero and a certain variance that stems from both the
-isoscape model fits and the calibration fit. The function \code{isofind}
-computes the map of p-value for such assignment test (i.e. the p-values in
-all locations of the isoscape) for all individual in the dataframe
-\code{assign.data}. The function also perform a single assignment for the
+isoscape model fits and the calibration fit. The function \code{\link{isofind}}
+computes the map of p-value for such an assignment test (i.e. the p-values in
+all locations of the isoscape) for all individuals in the dataframe
+\code{assign.data}. The function also performs a single assignment for the
 entire group by combining the individual p-value maps using the Fisher's
 method (Fisher 1925).
 
 A mask can be used so to remove all values falling in the mask. This can be
-useful for performing for example assignments on lands only and discarded
-anything falling in large bodies of water (see example). By default, such our
+useful for performing for example assignments on lands only and discard
+anything falling in large bodies of water (see example). By default our
 \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows 
 to prevent this automatic behaviour.
 }
@@ -66,47 +66,50 @@ perform the assignment and their names.
 }
 \examples{
 
-\dontrun{
-## The following example takes some time and will therefore not
-## be run unless you type: example(isofind, run.dontrun = TRUE)
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
 
-## We fit the models for Germany:
+if(IsoriX.getOption("example_maxtime") > 120) {
+
+## We fit the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 
-## We build the isoscape:
+## We build the isoscape
 isoscape <- isoscape(elevation.raster = ElevRasterDE,
                      isofit = GermanFit)
 
 
-## We fit the calibration model:
+## We fit the calibration model
 calib <- calibfit(calib.data = CalibDataAlien,
                   isofit = GermanFit)
 
-## We perform the assignment on land only:
+## We perform the assignment on land only
 assignment.dry <- isofind(assign.data = AssignDataAlien,
                           isoscape = isoscape,
                           calibfit = calib)
 
-## perform the assignment on land and water:
+## perform the assignment on land and water
 assignment <- isofind(assign.data = AssignDataAlien,
                       isoscape = isoscape,
                       calibfit = calib,
                       mask = NULL)
 
-## plot the group assignment
+## We plot the group assignment
 plot(assignment, who = "group", mask = list(mask = NULL))
 
 plot(assignment.dry, who = "group", mask = list(mask = NULL))
 
-## plot the assignment for the 8 first individuals
+## We plot the assignment for the 8 first individuals
 plot(assignment.dry, who = 1:8,
      sources = list(draw = FALSE),
      calib = list(draw = FALSE))
 
-## plot the assignment for the individual "Alien_10"
+## We plot the assignment for the individual "Alien_10"
 plot(assignment.dry, who = "Alien_10")
 
 }

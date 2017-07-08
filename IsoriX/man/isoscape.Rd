@@ -41,7 +41,7 @@ same information for the residual dispersion variance (\code{disp.pred},
 
 The predictions of isotopic values across the landscape are performed by
 calling the function \code{\link[spaMM]{predict}} from the package
-\pkg{spaMM} on the fitted isoscape produced by \code{\link{isofit}}.
+\pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by \code{\link{isofit}}.
 
 Let us detail the meaning of \code{mean}, \code{mean.predVar} and
 \code{mean.respVar}:
@@ -70,21 +70,27 @@ The isoscape can be plotted using the function \code{\link{plot.isoscape}}
 }
 \examples{
 
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
 
-## We prepare the data:
+if(IsoriX.getOption("example_maxtime") > 30) {
+
+## We prepare the data
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
 
-## We fit the models:
+## We fit the models
 GermanFit <- isofit(iso.data = GNIPDataDEagg,
                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
-## We build the isoscapes:
+## We build the isoscapes
 isoscape <- isoscape(elevation.raster = ElevRasterDE,
                      isofit = GermanFit)
 
 isoscape
 
-## We build the plots:
+## We build the plots
 plot.mean <- plot(x = isoscape, which = "mean", plot = FALSE)
 
 plot.mean.predVar <- plot(x = isoscape, which = "mean.predVar", plot = FALSE)
@@ -93,12 +99,14 @@ plot.mean.residVar <- plot(x = isoscape, which = "mean.residVar", plot = FALSE)
 
 plot.mean.respVar <- plot(x = isoscape, which = "mean.respVar", plot = FALSE)
 
-## We display the plots:
+## We display the plots
 if(require(lattice)) {
  print(plot.mean, split = c(1, 1, 2, 2), more = TRUE)
  print(plot.mean.predVar,   split = c(2, 1, 2, 2), more = TRUE)
  print(plot.mean.residVar,  split = c(1, 2, 2, 2), more = TRUE)
  print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+}
+
 }
 
 }
