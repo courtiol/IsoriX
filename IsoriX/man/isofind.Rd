@@ -6,7 +6,8 @@
 \alias{summary.isorix}
 \title{Infer spatial origins}
 \usage{
-isofind(assign.data, isoscape, calibfit, mask = NA, verbose = interactive())
+isofind(assign.data, isoscape, calibfit = NULL, mask = NA,
+  verbose = interactive())
 }
 \arguments{
 \item{assign.data}{A \var{dataframe} containing the assignment data (see
@@ -14,7 +15,9 @@ note below)}
 
 \item{isoscape}{The output of the function \code{\link{isoscape}}}
 
-\item{calibfit}{The output of the function \code{\link{calibfit}}}
+\item{calibfit}{The output of the function \code{\link{calibfit}} (This 
+argument is not needed if the isoscape had been fitted using isotopic 
+ratios from sedentary animals.)}
 
 \item{mask}{A \var{SpatialPolygons} of a mask to replace values on all
 rasters by NA inside polygons (see details)}
@@ -111,6 +114,29 @@ plot(assignment.dry, who = 1:8,
 
 ## We plot the assignment for the individual "Alien_10"
 plot(assignment.dry, who = "Alien_10")
+
+
+### Other example without calibration:
+### We will try to assign a weather station 
+### in the water isoscape
+
+## We create the assignment data taking 
+## GARMISCH-PARTENKIRCHEN as the station to assign
+GPIso <- GNIPDataDEagg[GNIPDataDEagg$stationID == "GARMISCH-PARTENKIRCHEN", "isoscape.value"]
+AssignDataGP <- data.frame(tissue.value = GPIso,
+                             animalID = "GARMISCH-PARTENKIRCHEN")
+
+## We perform the assignment
+assignment.GP <- isofind(assign.data = AssignDataGP,
+                                 isoscape = isoscape,
+                                 calibfit = NULL)
+## We plot the assignment and 
+## show where the station really is (using lattice)
+plot(assignment.GP) +
+  lattice::xyplot(47.48~11.06,
+                  panel = lattice::panel.points,
+                  cex = 5, pch = 13, lwd = 2, col = "black") 
+
 
 }
 
