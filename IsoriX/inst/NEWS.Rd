@@ -21,6 +21,7 @@
   \subsection{Geeky changes}{
     \itemize{
       \item an additional options as been added to prevent prompting during examples
+      \item new internal function .converts_months_to_numbers
     }
   }
 }

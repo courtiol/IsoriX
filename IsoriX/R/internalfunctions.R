@@ -210,3 +210,29 @@
 
   return(out)
 }
+
+
+.converts_months_to_numbers <- function(x) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## It converts an english month names (abbrieviated or not) into numbers
+  ## If the months are already as numbers, it works too
+  ## Example: .month_as_numbers(c("January", "Feb", 3, "April", "Toto"))
+  end <- sapply(x, function(x) {
+    res <- match(tolower(x), tolower(month.abb))  ## deals with abbreviation
+    if (is.na(res)) {
+      res <- match(tolower(x), tolower(month.name))  ## deals with full names
+    }
+    if (is.na(res)) {  ## deal with other cases
+      res <- x
+    }
+    if (res %in% paste(1:12)) { ## check if other cases are numbers (quoted or not)
+      res <- as.numeric(res)
+    }
+    if (is.numeric(res)) {
+      return(res)
+    } else {
+      return(NA)  ## if final output is not a number, it returns NA
+    }
+  })
+  return(end)
+}
