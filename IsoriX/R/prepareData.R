@@ -82,71 +82,71 @@
 #' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @examples
 #' ## Create a processed dataset for Germany
-#' GNIPDataDEagg <- prepareData(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' head(GNIPDataDEagg)
 #' 
 #' ## Create a processed dataset for Germany per month
-#' GNIPDataDEmonthly <-prepareData(data = GNIPDataDE,
-#'                                 split.by = "month")
+#' GNIPDataDEmonthly <-prepdata(data = GNIPDataDE,
+#'                              split.by = "month")
 #' 
 #' head(GNIPDataDEmonthly)
 #' 
 #' ## Create a processed dataset for Germany per year
-#' GNIPDataDEyearly <- prepareData(data = GNIPDataDE,
-#'                                 split.by = "year")
+#' GNIPDataDEyearly <- prepdata(data = GNIPDataDE,
+#'                              split.by = "year")
 #' 
 #' head(GNIPDataDEyearly)
 #' 
 #' ## Create isoscape-dataset for warm months in germany between 1995 and 1996
-#' GNIPDataDEwarm <- prepareData(data = GNIPDataDE,
-#'                               month = 5:8,
-#'                               year = 1995:1996)
+#' GNIPDataDEwarm <- prepdata(data = GNIPDataDE,
+#'                            month = 5:8,
+#'                            year = 1995:1996)
 #' 
 #' head(GNIPDataDEwarm)
 #' 
 #' 
 #' ## Create a dataset with 90% of obs
-#' GNIPDataDE90pct <- prepareData(data = GNIPDataDE,
-#'                                prop.random = 0.9,
-#'                                random.level = "obs")
+#' GNIPDataDE90pct <- prepdata(data = GNIPDataDE,
+#'                             prop.random = 0.9,
+#'                             random.level = "obs")
 #' 
 #' lapply(GNIPDataDE90pct, head) # show beginning of both datasets
 #' 
 #' ## Create a dataset with half the weather stations
-#' GNIPDataDE50pctStations <- prepareData(data = GNIPDataDE,
-#'                                        prop.random = 0.5,
-#'                                        random.level = "station")
+#' GNIPDataDE50pctStations <- prepdata(data = GNIPDataDE,
+#'                                     prop.random = 0.5,
+#'                                     random.level = "station")
 #' 
 #' lapply(GNIPDataDE50pctStations, head)
 #'
 #'
 #' ## Create a dataset with half the weather stations split per month
-#' GNIPDataDE50pctStationsMonthly <- prepareData(data = GNIPDataDE,
-#'                                               split.by = "month",
-#'                                               prop.random = 0.5,
-#'                                               random.level = "station")
+#' GNIPDataDE50pctStationsMonthly <- prepdata(data = GNIPDataDE,
+#'                                            split.by = "month",
+#'                                            prop.random = 0.5,
+#'                                            random.level = "station")
 #' 
 #' lapply(GNIPDataDE50pctStationsMonthly, head)
 #' 
 #' @export
-prepareData <- function(data, 
-                        month = 1:12,
-                        year,
-                        long.min ,
-                        long.max,
-                        lat.min,
-                        lat.max,
-                        split.by = NULL,
-                        prop.random = 0,
-                        random.level = "station",
-                        col.isoscape.value = "isoscape.value",
-                        col.stationID = "stationID",
-                        col.lat = "lat",
-                        col.long = "long",
-                        col.elev = "elev",
-                        col.month = "month",
-                        col.year = "year"
+prepdata <- function(data, 
+                     month = 1:12,
+                     year,
+                     long.min ,
+                     long.max,
+                     lat.min,
+                     lat.max,
+                     split.by = NULL,
+                     prop.random = 0,
+                     random.level = "station",
+                     col.isoscape.value = "isoscape.value",
+                     col.stationID = "stationID",
+                     col.lat = "lat",
+                     col.long = "long",
+                     col.elev = "elev",
+                     col.month = "month",
+                     col.year = "year"
 ) {
   
   ## Some checks

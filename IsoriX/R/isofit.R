@@ -187,7 +187,7 @@ Isofit <- function(...) {
 #' if(IsoriX.getOption("example_maxtime") > 10) {
 #' 
 #' ## Fitting the models for Germany
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 
@@ -389,9 +389,9 @@ isofit <- function(iso.data,
 #' 
 #' ## We prepare the GNIP monthly data between January and June for Germany
 #' 
-#' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
-#'                                month = 1:6,
-#'                                split.by = "month")
+#' GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
+#'                               month = 1:6,
+#'                               split.by = "month")
 #' 
 #' dim(GNIPDataDEmonthly)
 #' 

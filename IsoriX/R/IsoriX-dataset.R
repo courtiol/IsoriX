@@ -126,7 +126,7 @@ NULL
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the precipitation data
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' ## We fit the models for Germany
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
@@ -199,7 +199,7 @@ NULL
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the precipitation data
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' ## We fit the models for Germany
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
@@ -402,11 +402,11 @@ NULL
 #' This dataset is the raw data source and should not be directly used for
 #' fitting isoscapes.
 #' 
-#' Please use \code{\link{queryGNIP}} to filter the dataset by time and
+#' Please use \code{\link{prepdata}} to filter the dataset by time and
 #' location.
 #' 
 #' If you want to use your own dataset, you must format your data as those
-#' produced by the function \code{\link{queryGNIP}}.
+#' produced by the function \code{\link{prepdata}}.
 #' 
 #' @name GNIPDataDE
 #' @docType data
@@ -419,7 +419,7 @@ NULL
 #' [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr [, 6] \tab
 #' month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab stationID
 #' \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
-#' @seealso \code{\link{queryGNIP}} to prepare the dataset for the analyses and
+#' @seealso \code{\link{prepdata}} to prepare the dataset for the analyses and
 #' to filter by time and location.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
 #' 

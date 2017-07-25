@@ -69,7 +69,7 @@
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We fit the models for Germany
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 

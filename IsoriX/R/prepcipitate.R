@@ -30,7 +30,7 @@
 #' \dontrun{
 #' 
 #' ## We fit the models for Germany:
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
 #'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
