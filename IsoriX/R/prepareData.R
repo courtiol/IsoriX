@@ -150,10 +150,6 @@ prepareData <- function(data,
 ) {
   
   ## Some checks
-  if (!is.numeric(data[, col.month])) {
-    stop("The months in your dataframe must be provided as integers and should be between 1 and 12.")
-  }
-  
   if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
     stop("Months must be provided as a vector of integers and should be between 1 and 12.")
   }
@@ -168,6 +164,9 @@ prepareData <- function(data,
   if (missing("long.max")) long.max <- 180
   if (missing("lat.min")) lat.min <- -90
   if (missing("lat.max")) lat.max <- 90 
+  
+  ## Handle the month column and convert all months to numbers
+  data[, col.month] <- .converts_months_to_numbers(data[, col.month])
   
   ## Prepare selection
   month.select <- data[, col.month] %in% month 
