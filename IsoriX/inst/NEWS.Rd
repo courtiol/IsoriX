@@ -18,6 +18,11 @@
       \item the calibration step is now optional, allowing for users to use an isoscape directly fitted on tissues instead of precipitation water
     }
   }
+  \subsection{Geeky changes}{
+    \itemize{
+      \item an additional options as been added to prevent prompting during examples
+    }
+  }
 }
 
 \section{version 0.6}{
