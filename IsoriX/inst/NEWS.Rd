@@ -15,7 +15,7 @@
 \section{version 0.7}{
   \subsection{New features}{
     \itemize{
-      \item the calibration step is now optional, allowing for users to use isoscape directly fitted on tissues instead of precipitation water
+      \item the calibration step is now optional, allowing for users to use an isoscape directly fitted on tissues instead of precipitation water
     }
   }
 }
