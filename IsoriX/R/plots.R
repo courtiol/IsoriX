@@ -198,7 +198,7 @@ plot.isoscape <- function(x,
     if (plot) {
       ## check if prompt must appear in examples
       if (.IsoriX.data$options$dont_ask) {
-        options(example.ask = "FALSE")
+        options(example.ask = "FALSE") ## only effective for the next example run, not the current one...
       }
       ## send plot to graphic device
       print(complete.map)
@@ -340,7 +340,7 @@ plot.isorix <- function(x,
   if (plot) {
     ## check if prompt must appear in examples
     if (.IsoriX.data$options$dont_ask) {
-      options(example.ask = "FALSE")
+      options(example.ask = "FALSE") ## only effective for the next example run, not the current one...
     }
     ## send plot to graphic device
     print(complete.map)
