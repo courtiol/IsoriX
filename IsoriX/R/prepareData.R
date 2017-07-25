@@ -1,13 +1,6 @@
-#' @rdname IsoriX-defunct
-#' @export
-QueryGNIP <- function(...) {
-  .Defunct("queryGNIP")
-}
-
-
 #' Filter the dataset to create an isoscape
 #' 
-#' This function prepares the available GNIP data (e.g. \var{GNIPDataDE}) to be used
+#' This function prepares the dataset to be used
 #' for creating the isoscape. This function allows the trimming of data by
 #' months, years and location, and for the aggregation of selected data per
 #' location, location:month combination or location:year combination.
@@ -15,18 +8,19 @@ QueryGNIP <- function(...) {
 #' 
 #' This function aggregates the data as required for the IsoriX workflow. Three 
 #' aggregation schemes are possible. The most simple one, used as default, 
-#' aggregates the data so to obtained a single row per weather station. Datasets
-#' prepared in this way can be readily fitted with the function 
+#' aggregates the data so to obtained a single row per sampling location.
+#' Datasets prepared in this way can be readily fitted with the function 
 #' \code{\link{isofit}} to build an isoscape. It is also possible to aggregate 
 #' data in a different way in order to build sub-isoscapes representing temporal
-#' variation in isotope composition, or in order to produce isoscapes weighted
-#' by the amount of precipitation. The two possible options are to either split
-#' the data from each weather station by month or to split them by year. This is
-#' set with the \code{split.by} argument of the function. Datasets prepared in
-#' this way should be fitted with the function \code{\link{isomultifit}}.
+#' variation in isotope composition, or in order to produce isoscapes weighted 
+#' by the amount of precipitation (for isoscapes on precipitation data only). 
+#' The two possible options are to either split the data from each location by
+#' month or to split them by year. This is set with the \code{split.by} argument
+#' of the function. Datasets prepared in this way should be fitted with the
+#' function \code{\link{isomultifit}}.
 #' 
-#' The function also allows the user to filter the weather
-#' station data (\var{GNIPDataDE}) based on time (years and/ or months) and space
+#' The function also allows the user to filter the sampling locations 
+#' based on time (years and/ or months) and space
 #' (locations given in geographic coordinates, i.e. longitude and latitude) to
 #' calculate tailored isoscapes matching e.g. the time of sampling and speeding
 #' up the model fit by cropping/clipping a certain area. The dataframe
@@ -34,7 +28,6 @@ QueryGNIP <- function(...) {
 #' \code{\link{isofit}} and  \code{\link{isomultifit}}).
 #' 
 #' @param data A \var{dataframe} containing original isotopic measurements
-#' similar in structure to \code{\link{GNIPDataDE}}
 #' @param month A \var{numeric vector} indicating the months to select
 #' from. Should be a vector of round numbers between 1 and 12. The default is 
 #' 1:12 selecting all months.
@@ -54,76 +47,40 @@ QueryGNIP <- function(...) {
 #' from. Should be a number between -90 and 90. If not provided, 90 will be
 #' considered.
 #' @param split.by A \var{string} indicating whether data should be aggregated 
-#' per location (\code{split.by = NULL}, the default), per location:month
-#' combination (\code{split.by = "month"}), or per location:year combination
-#' (\code{split.by = "year"}).
-#' @param prop.random A \var{numeric} indicating the proportion of observations
-#' or weather stations (depending on the argument for \code{random.level}) that
-#' will be kept. If \code{prop.random} is greater than 0, then the function
-#' will return a list containing two dataframes: one containing the selected
-#' data, called \code{selected.data}, and one containing the remaining data,
-#' called \code{remaining.data}.
-#' @param random.level A \var{string} indicating the level at which random
-#' draws can be performed. The two possibilities are \code{"obs"}, which
-#' indicates that observations are randomly drawn taken independently of their
-#' location, or "station" (default), which indicates that observations are
-#' randomly drawn at the level of weather stations.
-#' @return This function returns a \var{dataframe} containing the filtered data
-#' aggregated by weather station, or a \var{list}, see above argument
-#' \code{prop.random}. For each weather station the mean and variance sample
-#' estimates are computed.
+#'   per location (\code{split.by = NULL}, the default), per location:month 
+#'   combination (\code{split.by = "month"}), or per location:year combination 
+#'   (\code{split.by = "year"}).
+#' @param prop.random A \var{numeric} indicating the proportion of observations 
+#'   or sampling locations (depending on the argument for \code{random.level})
+#'   that will be kept. If \code{prop.random} is greater than 0, then the
+#'   function will return a list containing two dataframes: one containing the
+#'   selected data, called \code{selected.data}, and one containing the
+#'   remaining data, called \code{remaining.data}.
+#' @param random.level A \var{string} indicating the level at which random draws
+#'   can be performed. The two possibilities are \code{"obs"}, which indicates
+#'   that observations are randomly drawn taken independently of their location,
+#'   or "station" (default), which indicates that observations are randomly
+#'   drawn at the level of sampling locations.
+#' @param col.isoscape.value A \var{string} indicating the column containing the
+#'   isotopic measurements
+#' @param col.stationID A \var{string} indicating the column containing the ID
+#'   of each sampling location
+#' @param col.lat A \var{string} indicating the column containing the latitude
+#'   of each sampling location
+#' @param col.long A \var{string} indicating the column containing the longitude
+#'   of each sampling location
+#' @param col.elev A \var{string} indicating the column containing the elevation
+#'   of each sampling location
+#' @param col.month A \var{string} indicating the column containing the month of
+#'   sampling
+#' @param col.year A \var{string} indicating the column containing the year of
+#'   sampling
+#' @return This function returns a \var{dataframe} containing the filtered data 
+#'   aggregated by sampling location, or a \var{list}, see above argument 
+#'   \code{prop.random}. For each sampling location the mean and variance sample
+#'   estimates are computed.
 #' @seealso \code{\link{IsoriX}} for the complete workflow
-#' 
-#' \code{\link{GNIPDataDE}} for the complete dataset
 #' @examples
-#' 
-#' ## Create a processed dataset for Germany
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
-#' 
-#' head(GNIPDataDEagg)
-#' 
-#' ## Create a processed dataset for Germany per month
-#' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
-#'                                split.by = "month")
-#' 
-#' head(GNIPDataDEmonthly)
-#' 
-#' ## Create a processed dataset for Germany per year
-#' GNIPDataDEyearly <- queryGNIP(data = GNIPDataDE,
-#'                               split.by = "year")
-#' 
-#' head(GNIPDataDEyearly)
-#' 
-#' ## Create isoscape-dataset for warm months in germany between 1995 and 1996
-#' GNIPDataDEwarm <- queryGNIP(data = GNIPDataDE,
-#'                             month = 5:8,
-#'                             year = 1995:1996)
-#' 
-#' head(GNIPDataDEwarm)
-#' 
-#' 
-#' ## Create a dataset with 90% of obs
-#' GNIPDataDE90pct <- queryGNIP(data = GNIPDataDE,
-#'                              prop.random = 0.9,
-#'                              random.level = "obs")
-#' 
-#' lapply(GNIPDataDE90pct, head) # show beginning of both datasets
-#' 
-#' ## Create a dataset with half the weather stations
-#' GNIPDataDE50pctStations <- queryGNIP(data = GNIPDataDE,
-#'                                      prop.random = 0.5,
-#'                                      random.level = "station")
-#' 
-#' lapply(GNIPDataDE50pctStations, head)
-#'
-#'
-#' ## Create a dataset with half the weather stations split per month
-#' GNIPDataDE50pctStationsMonthly <- queryGNIP(data = GNIPDataDE,
-#'                                             split.by = "month",
-#'                                             prop.random = 0.5,
-#'                                             random.level = "station")
-#' 
-#' lapply(GNIPDataDE50pctStationsMonthly, head)
 #' 
 #' @export
 prepareData <- function(data, 
@@ -136,13 +93,13 @@ prepareData <- function(data,
                         split.by = NULL,
                         prop.random = 0,
                         random.level = "station",
+                        col.isoscape.value = "isoscape.value",
                         col.stationID = "stationID",
                         col.lat = "lat",
                         col.long = "long",
                         col.elev = "elev",
                         col.month = "month",
-                        col.year = "year",
-                        col.isoscape.value = "isoscape.value"
+                        col.year = "year"
 ) {
   
   ## Some checks
