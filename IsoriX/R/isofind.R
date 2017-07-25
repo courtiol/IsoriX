@@ -134,7 +134,10 @@ isofind <- function(assign.data,
   
   ### check for calibration data
   if (is.null(calibfit)) {
-    warning("The assignment is computed directly on the isoscape without a calibration!")
+    warning("The assignment is computed directly on the isoscape without using a calibration!
+            This means that IsoriX considers that you directly fitted the isoscape on the same material
+            than the material you are trying to assign. If this is not the case, rerun isofind() by providing
+            a calibration object to the argument calibfit!")
   }
 
   ## importing ocean if missing
@@ -156,7 +159,7 @@ isofind <- function(assign.data,
                                  function(i) {
                                    assign.data$mean.origin[i] - isoscape$isoscape$mean
                                  }
-      )
+                                 )
     } else {
       ## we create individual rasters containing the test statistics
       list.stat.layers <- sapply(1:nrow(assign.data),
@@ -192,8 +195,7 @@ isofind <- function(assign.data,
       ## we create individual rasters containing the variance of the test statistics
       list.varstat.layers <- sapply(1:nrow(assign.data),
                                     function(i) {
-                                      isoscape$isoscape$mean.respVar +
-                                      0 ## ToDo compute fourth variance term
+                                      isoscape$isoscape$mean.respVar
                                     }
                                     )
     }
@@ -261,6 +263,11 @@ isofind <- function(assign.data,
 
 
   ### RETURNS
+  
+  calibs <- NULL
+  if (!is.null(calibfit)) {
+    calibs <- calibfit$sp.points$calibs
+  }
 
   out <- list(indiv = list("stat" = stat.stack,
                            "stat.var" = varstat.stack,
@@ -268,30 +275,11 @@ isofind <- function(assign.data,
                            ),
               group = list("pv" = group.pv),
               sp.points = list("sources" = isoscape$sp.points$sources,
-                               if (!is.null(calibfit)) {
-                                 "calibs" = calibfit$sp.points$calibs
-                               }
+                               "calibs" = calibs
                                )
               )
 
   class(out) <- c("isorix", "list")
-
-  # if (save.spatial.files) {
-  #   ## export individual p-values surfaces
-  #   writeRaster(out$indiv$pv,
-  #               filename = paste(file.prefix.spatial.files, ".asc", sep = ""),
-  #               bylayer = TRUE,
-  #               suffix = "names",
-  #               overwrite = overwrite.spatial.files
-  #               )
-
-  #   ## export the group p-values surface
-  #   writeRaster(out$group$pv,
-  #               filename = paste(file.prefix.spatial.files, "_group", ".asc", sep = ""),
-  #               overwrite = overwrite.spatial.files
-  #               )
-  # }
-
   return(out)
 }
 
