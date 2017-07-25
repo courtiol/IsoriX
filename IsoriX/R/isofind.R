@@ -76,7 +76,7 @@ Isorix <- function(...) {
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
 #' 
-#' if(IsoriX.getOption("example_maxtime") > 120) {
+#' if(IsoriX.getOption("example_maxtime") > 200) {
 #' 
 #' ## We fit the models for Germany
 #' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
@@ -117,6 +117,29 @@ Isorix <- function(...) {
 #' ## We plot the assignment for the individual "Alien_10"
 #' plot(assignment.dry, who = "Alien_10")
 #' 
+#' 
+#' ### Other example without calibration:
+#' ### We will try to assign a weather station 
+#' ### in the water isoscape
+#' 
+#' ## We create the assignment data taking 
+#' ## GARMISCH-PARTENKIRCHEN as the station to assign
+#' GPIso <- GNIPDataDEagg[GNIPDataDEagg$stationID == "GARMISCH-PARTENKIRCHEN", "isoscape.value"]
+#' AssignDataGP <- data.frame(tissue.value = GPIso,
+#'                              animalID = "GARMISCH-PARTENKIRCHEN")
+#' 
+#' ## We perform the assignment
+#' assignment.GP <- isofind(assign.data = AssignDataGP,
+#'                                  isoscape = isoscape,
+#'                                  calibfit = NULL)
+#' ## We plot the assignment and 
+#' ## show where the station really is (using lattice)
+#' plot(assignment.GP) +
+#'   lattice::xyplot(47.48~11.06,
+#'                   panel = lattice::panel.points,
+#'                   cex = 5, pch = 13, lwd = 2, col = "black") 
+#' 
+#' 
 #' }
 #' 
 #' @export
@@ -134,10 +157,14 @@ isofind <- function(assign.data,
   
   ### check for calibration data
   if (is.null(calibfit)) {
-    warning("The assignment is computed directly on the isoscape without using a calibration!
-            This means that IsoriX considers that you directly fitted the isoscape on the same material
-            than the material you are trying to assign. If this is not the case, rerun isofind() by providing
-            a calibration object to the argument calibfit!")
+    warning(
+"The assignment is computed directly on the isoscape
+without using a calibration! This means that IsoriX 
+considers that you directly fitted the isoscape on 
+the same material than the material you are trying
+to assign. If this is not the case, rerun isofind()
+by providing a calibration object to the argument
+calibfit!")
   }
 
   ## importing ocean if missing
