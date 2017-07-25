@@ -79,9 +79,9 @@ if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We prepare the GNIP monthly data between January and June for Germany
 
-GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
-                               month = 1:6,
-                               split.by = "month")
+GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
+                              month = 1:6,
+                              split.by = "month")
 
 dim(GNIPDataDEmonthly)
 

@@ -43,8 +43,8 @@ if(IsoriX.getOption("example_maxtime") > 180) {
 
 ## We prepare the data and split them by month:
 
-GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
-                               split.by = "month")
+GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
+                              split.by = "month")
 
 dim(GNIPDataDEmonthly)
 

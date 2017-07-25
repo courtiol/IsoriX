@@ -197,7 +197,7 @@ explaining how to do so.
 if(IsoriX.getOption("example_maxtime") > 10) {
 
 ## Fitting the models for Germany
-GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 

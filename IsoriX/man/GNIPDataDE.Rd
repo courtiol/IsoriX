@@ -35,11 +35,11 @@ The dataset contains non-aggregated data for 27 weather stations across Germany.
 This dataset is the raw data source and should not be directly used for
 fitting isoscapes.
 
-Please use \code{\link{queryGNIP}} to filter the dataset by time and
+Please use \code{\link{prepdata}} to filter the dataset by time and
 location.
 
 If you want to use your own dataset, you must format your data as those
-produced by the function \code{\link{queryGNIP}}.
+produced by the function \code{\link{prepdata}}.
 }
 \examples{
 
@@ -54,7 +54,7 @@ Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isoto
 Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 }
 \seealso{
-\code{\link{queryGNIP}} to prepare the dataset for the analyses and
+\code{\link{prepdata}} to prepare the dataset for the analyses and
 to filter by time and location.
 }
 \keyword{datasets}
