@@ -37,10 +37,10 @@ library(IsoriX)
 
 ## Step 1 - Select the isoscape data
 
-Start by selecting the precipitation data needed for you to build an isoscape. In this example, we will consider all the data available in `GNIPDataDE`. The difference with what we did in the vignette ___Workflow___ is that here the function `queryGNIP` is called with the argument `split.by = "month"`, which lead to data aggregated across years (as before), but not across months.
+Start by selecting the precipitation data needed for you to build an isoscape. In this example, we will consider all the data available in `GNIPDataDE`. The difference with what we did in the vignette ___Workflow___ is that here the function `prepdata` is called with the argument `split.by = "month"`, which lead to data aggregated across years (as before), but not across months.
 
 ```{r GNIP}
-GNIPDataDE12 <- queryGNIP(data = GNIPDataDE, split.by = "month")
+GNIPDataDE12 <- prepdata(data = GNIPDataDE, split.by = "month")
 ```
 
 The dataset we created contains up to twelve different rows per location (i.e. one per month if records are available for all twelve months) instead of the single one:
@@ -130,7 +130,7 @@ Above two differences were introduced compared to the simple approach we followe
 We will here compare the isoscape for point predictions produced between the two different workflow. To do so, we need to produce a simple isoscape for Germany using the simple workflow introduced in the vignette ___Workflow___:
 
 ```{r isoscape 2}
-GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 GermanyFit    <- isofit(iso.data = GNIPDataDEagg)
 isoscape      <- isoscape(elevation.raster = elev, isofit = GermanyFit)
 ```

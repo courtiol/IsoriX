@@ -4,7 +4,7 @@
 #' exists). A new function with a different name is surely doing the old job.
 #' 
 #' @param ... The call of the deprecated function
-#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP RElevate
+#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP queryGNIP RElevate
 #' @name IsoriX-defunct
 NULL
 

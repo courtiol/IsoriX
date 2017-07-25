@@ -1,3 +1,15 @@
+#' @rdname IsoriX-defunct
+#' @export
+queryGNIP <- function(...) {
+  .Defunct("prepdata")
+}
+
+#' @rdname IsoriX-defunct
+#' @export
+QueryGNIP <- function(...) {
+  .Defunct("prepdata")
+}
+
 #' Filter the dataset to create an isoscape
 #' 
 #' This function prepares the available dataset to be used for creating the
