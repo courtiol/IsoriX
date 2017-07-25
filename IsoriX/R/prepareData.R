@@ -103,12 +103,12 @@ prepareData <- function(data,
 ) {
   
   ## Some checks
-  if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
-    stop("Months must be provided as a vector of round numeric values or integers and should be between 1 and 12.")
-  }
-  
   if (!is.numeric(data[, col.month])) {
     stop("The months in your dataframe must be provided as integers and should be between 1 and 12.")
+  }
+  
+  if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
+    stop("Months must be provided as a vector of integers and should be between 1 and 12.")
   }
   
   if (prop.random > 1) {
