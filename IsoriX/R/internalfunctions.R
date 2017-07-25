@@ -231,6 +231,9 @@
     if (is.numeric(res)) {
       return(res)
     } else {
+      warning("
+some months are NA after the conversion in integers
+check your data!")
       return(NA)  ## if final output is not a number, it returns NA
     }
   })
