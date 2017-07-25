@@ -74,7 +74,7 @@ perform the assignment and their names.
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 120) {
+if(IsoriX.getOption("example_maxtime") > 200) {
 
 ## We fit the models for Germany
 GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
