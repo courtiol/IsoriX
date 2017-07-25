@@ -16,6 +16,7 @@
   \subsection{New features}{
     \itemize{
       \item the calibration step is now optional, allowing for users to use an isoscape directly fitted on tissues instead of precipitation water
+      \item the function queryGNIP has been renamed and is now called prepareData, this function can handle also other datasets than GNIP
     }
   }
   \subsection{Geeky changes}{
