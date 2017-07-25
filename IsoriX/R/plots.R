@@ -194,8 +194,13 @@ plot.isoscape <- function(x,
     
     complete.map <- map + decor$borders.layer + decor$mask.layer + decor$sources.layer
     
-    ## send plot to graphic device
+    ## plotting
     if (plot) {
+      ## check if prompt must appear in examples
+      if (.IsoriX.data$options$dont_ask) {
+        options(example.ask = "FALSE")
+      }
+      ## send plot to graphic device
       print(complete.map)
     }
     
@@ -331,7 +336,15 @@ plot.isorix <- function(x,
   complete.map <- map + decor$borders.layer + decor$mask.layer + decor$mask2.layer + 
     decor$sources.layer + decor$calib.layer
 
-  if (plot) print(complete.map)
+  ## plotting
+  if (plot) {
+    ## check if prompt must appear in examples
+    if (.IsoriX.data$options$dont_ask) {
+      options(example.ask = "FALSE")
+    }
+    ## send plot to graphic device
+    print(complete.map)
+  }
   
   return(invisible(complete.map))
 

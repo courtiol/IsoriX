@@ -19,21 +19,22 @@
   }
 
 
-.IsoriX_options <- new.env(parent = emptyenv())
-
+.IsoriX.data <- new.env(parent = emptyenv())
 
 .onLoad <- function(libname, pkgname) {
   ## This function should not be called by the user.
   ## It changes the default beahviour of sp concerning lat/long boundaries
-  .IsoriX_options$sp_ll_warn <- sp::get_ll_warn()
+  .IsoriX.data$sp_ll_warn <- sp::get_ll_warn()
   sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
+  .IsoriX.data$R_options <- .Options ## backup R options
 }
 
 
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
   ## It restores the original behaviour of sp
-  sp::set_ll_warn(.IsoriX_options$sp_ll_warn)
+  sp::set_ll_warn(.IsoriX.data$sp_ll_warn)
+  options(.IsoriX.data$R_options)  ## reset R options to their backed up values
 }
 
 
@@ -83,8 +84,8 @@
 
 .HitReturn <- function() {
   ## This function should not be called by the user but is itself called by other functions.
-  ## It ask the user to press return in RStudio (for plotting).
-  if (interactive() & .Platform$GUI == "RStudio") {
+  ## It asks the user to press return in RStudio (for plotting).
+  if (interactive() & .Platform$GUI == "RStudio" & IsoriX.getOption("dont_ask") == FALSE) {
     cat("Hit <Return> for next plot")
     readline()
   }
