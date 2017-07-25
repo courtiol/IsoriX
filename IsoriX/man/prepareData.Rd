@@ -83,22 +83,22 @@ This function returns a \var{dataframe} containing the filtered data
   estimates are computed.
 }
 \description{
-This function prepares the dataset to be used
-for creating the isoscape. This function allows the trimming of data by
-months, years and location, and for the aggregation of selected data per
-location, location:month combination or location:year combination.
-The function can also be used to randomly exclude some observations.
+This function prepares the available dataset to be used for creating the
+isoscape (e.g. \var{GNIPDataDE}) . This function allows the trimming of data
+by months, years and location, and for the aggregation of selected data per 
+location, location:month combination or location:year combination. The
+function can also be used to randomly exclude some observations.
 }
 \details{
 This function aggregates the data as required for the IsoriX workflow. Three 
 aggregation schemes are possible. The most simple one, used as default, 
-aggregates the data so to obtained a single row per sampling location.
+aggregates the data so to obtained a single row per sampling location. 
 Datasets prepared in this way can be readily fitted with the function 
 \code{\link{isofit}} to build an isoscape. It is also possible to aggregate 
 data in a different way in order to build sub-isoscapes representing temporal
 variation in isotope composition, or in order to produce isoscapes weighted 
 by the amount of precipitation (for isoscapes on precipitation data only). 
-The two possible options are to either split the data from each location by
+The two possible options are to either split the data from each location by 
 month or to split them by year. This is set with the \code{split.by} argument
 of the function. Datasets prepared in this way should be fitted with the
 function \code{\link{isomultifit}}.
