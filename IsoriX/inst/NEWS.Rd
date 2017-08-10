@@ -16,7 +16,8 @@
   \subsection{New features}{
     \itemize{
       \item the calibration step is now optional, allowing for users to use an isoscape directly fitted on tissues instead of precipitation water
-      \item the function queryGNIP has been renamed and is now called prepdata, this function can handle also other datasets than GNIP
+      \item the function queryGNIP has been renamed and is now called prepdata, this function can also handle other datasets than GNIP
+      \item the function relevate has been modified to make crop possible around the pacific meridian -180/180 (but several issues remain to handle extra plot layers automatically)
     }
   }
   \subsection{Geeky changes}{
