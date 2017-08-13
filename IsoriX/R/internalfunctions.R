@@ -6,9 +6,9 @@
   packageStartupMessage(## display message
                         "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is loaded!",
                         "\n",
-                        "\n Many functions and objects have changed names since the version 0.4.",
-                        "\n This is to make IsoriX more intuitive for you to use.",
-                        "\n We will do our best to limit changes in names in the future!!",
+                        "\n The names of the functions and objects are not yet stable.",
+                        "\n We keep revising them to make IsoriX more intuitive for you to use.",
+                        "\n We will do our best to limit changes in names from version 1.0 onward!!",
                         "\n",
                         "\n Type:",
                         "\n    * ?IsoriX for a short description.",
@@ -231,9 +231,7 @@
     if (is.numeric(res)) {
       return(res)
     } else {
-      warning("
-some months are NA after the conversion in integers
-check your data!")
+      warning("some months are NA after the conversion in integers check your data!")
       return(NA)  ## if final output is not a number, it returns NA
     }
   })
