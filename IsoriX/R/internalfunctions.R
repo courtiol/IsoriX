@@ -6,9 +6,9 @@
   packageStartupMessage(## display message
                         "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is loaded!",
                         "\n",
-                        "\n Many functions and objects have changed names since the version 0.4.",
-                        "\n This is to make IsoriX more intuitive for you to use.",
-                        "\n We will do our best to limit changes in names in the future!!",
+                        "\n The names of the functions and objects are not yet stable.",
+                        "\n We keep revising them to make IsoriX more intuitive for you to use.",
+                        "\n We will do our best to limit changes in names from version 1.0 onward!!",
                         "\n",
                         "\n Type:",
                         "\n    * ?IsoriX for a short description.",
@@ -19,21 +19,22 @@
   }
 
 
-.IsoriX_options <- new.env(parent = emptyenv())
-
+.IsoriX.data <- new.env(parent = emptyenv())
 
 .onLoad <- function(libname, pkgname) {
   ## This function should not be called by the user.
   ## It changes the default beahviour of sp concerning lat/long boundaries
-  .IsoriX_options$sp_ll_warn <- sp::get_ll_warn()
+  .IsoriX.data$sp_ll_warn <- sp::get_ll_warn()
   sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
+  .IsoriX.data$R_options <- .Options ## backup R options
 }
 
 
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
   ## It restores the original behaviour of sp
-  sp::set_ll_warn(.IsoriX_options$sp_ll_warn)
+  sp::set_ll_warn(.IsoriX.data$sp_ll_warn)
+  options(.IsoriX.data$R_options)  ## reset R options to their backed up values
 }
 
 
@@ -83,8 +84,8 @@
 
 .HitReturn <- function() {
   ## This function should not be called by the user but is itself called by other functions.
-  ## It ask the user to press return in RStudio (for plotting).
-  if (interactive() & .Platform$GUI == "RStudio") {
+  ## It asks the user to press return in RStudio (for plotting).
+  if (interactive() & .Platform$GUI == "RStudio" & IsoriX.getOption("dont_ask") == FALSE) {
     cat("Hit <Return> for next plot")
     readline()
   }
@@ -208,4 +209,31 @@
   b <- m <- pt <- NULL
 
   return(out)
+}
+
+
+.converts_months_to_numbers <- function(x) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## It converts an english month names (abbrieviated or not) into numbers
+  ## If the months are already as numbers, it works too
+  ## Example: .month_as_numbers(c("January", "Feb", 3, "April", "Toto"))
+  end <- sapply(x, function(x) {
+    res <- match(tolower(x), tolower(month.abb))  ## deals with abbreviation
+    if (is.na(res)) {
+      res <- match(tolower(x), tolower(month.name))  ## deals with full names
+    }
+    if (is.na(res)) {  ## deal with other cases
+      res <- x
+    }
+    if (res %in% paste(1:12)) { ## check if other cases are numbers (quoted or not)
+      res <- as.numeric(res)
+    }
+    if (is.numeric(res)) {
+      return(res)
+    } else {
+      warning("some months are NA after the conversion in integers check your data!")
+      return(NA)  ## if final output is not a number, it returns NA
+    }
+  })
+  return(end)
 }

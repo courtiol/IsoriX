@@ -78,7 +78,7 @@ Isoscape <- function(...) {
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the data
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' ## We fit the models
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
@@ -311,8 +311,8 @@ isoscape <- function(elevation.raster, ## change as method?
 #' 
 #' ## We prepare the data and split them by month:
 #' 
-#' GNIPDataDEmonthly <- queryGNIP(data = GNIPDataDE,
-#'                                split.by = "month")
+#' GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
+#'                               split.by = "month")
 #' 
 #' dim(GNIPDataDEmonthly)
 #' 

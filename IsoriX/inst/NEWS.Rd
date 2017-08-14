@@ -12,6 +12,22 @@
   }
 }
 
+\section{version 0.7}{
+  \subsection{New features}{
+    \itemize{
+      \item the calibration step is now optional, allowing for users to use an isoscape directly fitted on tissues instead of precipitation water
+      \item the function queryGNIP has been renamed and is now called prepdata, this function can also handle other datasets than GNIP
+      \item the function relevate has been modified to make crop possible around the pacific meridian -180/180 (but several issues remain to handle extra plot layers automatically)
+    }
+  }
+  \subsection{Geeky changes}{
+    \itemize{
+      \item an additional options as been added to prevent prompting during examples
+      \item new internal function .converts_months_to_numbers
+    }
+  }
+}
+
 \section{version 0.6}{
   \subsection{New features}{
       \itemize{

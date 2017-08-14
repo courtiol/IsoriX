@@ -55,6 +55,18 @@ Aggregation changes the spatial resolution of the raster, making computation
 faster and using less memory (this can affect the assignment; see note
 below). An aggregation factor of zero (or one) keeps the resolution constant
 (default).
+
+This function relies on calls to the functions
+\code{\link[raster]{aggregate}} and \code{\link[raster]{crop}} from the
+package  \pkg{\link[raster]{raster}}. It thus share the limitations of these
+functions. In particular, \code{\link[raster]{crop}} expects extents with
+increasing longitudes and latitudes. We have tried to partially relax this
+constrains for longitude and you can use the argument \code{manual.crop} to
+provide longitudes in decreasing order, which is useful to center a isoscape
+around the pacific for instance. But this fix does not solve all the
+limitations as plotting polygons or points on top of that remains problematic
+(see example bellow). We will work on this on the future but we have other 
+priorities for now (let us know if you really need this feature).
 }
 \note{
 Aggregating the raster may lead to different results for the
@@ -72,7 +84,7 @@ predictions.
 if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We fit the models for Germany
-GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg,
                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
@@ -118,7 +130,32 @@ if(require(rasterVis)) {
     print(plot.aggregation2, split = c(1, 2, 1, 3), more = TRUE)
     print(plot.aggregation3, split = c(1, 3, 1, 3))
 }
+}
 
+#' ## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
+
+if(IsoriX.getOption("example_maxtime") > 10) {
+
+### Let's create a raster centered around the pacific
+
+## We first create an empty raster
+empty.raster <- raster(matrix(0, ncol = 360, nrow = 180))
+extent(empty.raster) <- c(-180, 180, -90, 90)
+projection(empty.raster) <- CRS("+proj=longlat +datum=WGS84")
+
+## We crop it around the pacific
+pacificA <- relevate(empty.raster, manual.crop = c(110, -70, -90, 90))
+extent(pacificA) # note that the extent has changed!
+
+## We plot (note the use of the function shift()!)
+if(require(rasterVis)) {
+  levelplot(pacificA, margin = FALSE, colorkey = FALSE, col = "blue")+
+    layer(sp.polygons(CountryBorders, fill = "black"))+
+    layer(sp.polygons(shift(CountryBorders, x = 360), fill = "black"))
+  }
 
 }
 

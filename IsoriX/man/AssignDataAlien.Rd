@@ -25,7 +25,7 @@ str(AssignDataAlien)
 if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We prepare the precipitation data
-GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 
 ## We fit the models for Germany
 GermanFit <- isofit(iso.data = GNIPDataDEagg)

@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
     pdf_document
 vignette: >
-  %\VignetteIndexEntry{A simple workflow for IsoriX}
+  %\VignetteIndexEntry{1_A_simple_workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -110,18 +110,18 @@ head(GNIPDataDE)
 
 ## Step 3 - Filter and aggregate the dataset required to build the isoscape
 
-In order to build your isoscape with __IsoriX__, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, and potentially over a fixed period of time. You can choose to aggregate your dataset on your own, or to use our function `queryGNIP()`. This function allows you to aggregate the data over different time intervals. It also allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
+In order to build your isoscape with __IsoriX__, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, and potentially over a fixed period of time. You can choose to aggregate your dataset on your own, or to use our function `prepdata()`. This function allows you to aggregate the data over different time intervals. It also allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
 
-Here we will use the function `queryGNIP()` to select from the dataset `GNIPData` the observations available within an extent of latitude and longitude that covers roughly Europe. We will use the default aggregation scheme, which simply produces an overall average per location.
+Here we will use the function `prepdata()` to select from the dataset `GNIPData` the observations available within an extent of latitude and longitude that covers roughly Europe. We will use the default aggregation scheme, which simply produces an overall average per location.
 
 ```{r GNIP EU build}
-GNIPDataEU <- queryGNIP(data = GNIPData,
+GNIPDataEU <- prepdata(data = GNIPData,
                         long.min = -30, long.max = 60,
                         lat.min = 30, lat.max = 70)
 ```
 
 ```{r TEMPORARY TRICK TO SAVE TIME, eval = FALSE, echo = FALSE}
-GNIPDataEU <- queryGNIP(data = GNIPDataDE)
+GNIPDataEU <- prepdata(data = GNIPDataDE)
 ```
 
 Let us now visualise the first 6 rows of the dataset:

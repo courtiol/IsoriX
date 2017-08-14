@@ -5,7 +5,7 @@ date: '`r Sys.Date()`'
 output:
   pdf_document
 vignette: >
-  %\VignetteIndexEntry{Export to GIS}
+  %\VignetteIndexEntry{4_Export_to_GIS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

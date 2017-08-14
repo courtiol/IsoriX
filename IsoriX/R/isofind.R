@@ -4,7 +4,7 @@
 #' exists). A new function with a different name is surely doing the old job.
 #' 
 #' @param ... The call of the deprecated function
-#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP RElevate
+#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP queryGNIP RElevate
 #' @name IsoriX-defunct
 NULL
 
@@ -44,7 +44,9 @@ Isorix <- function(...) {
 #' @param assign.data A \var{dataframe} containing the assignment data (see
 #' note below)
 #' @param isoscape The output of the function \code{\link{isoscape}}
-#' @param calibfit The output of the function \code{\link{calibfit}}
+#' @param calibfit The output of the function \code{\link{calibfit}} (This 
+#' argument is not needed if the isoscape had been fitted using isotopic 
+#' ratios from sedentary animals.)
 #' @param mask A \var{SpatialPolygons} of a mask to replace values on all
 #' rasters by NA inside polygons (see details)
 #' @param verbose A \var{logical} indicating whether information about the
@@ -74,10 +76,10 @@ Isorix <- function(...) {
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
 #' 
-#' if(IsoriX.getOption("example_maxtime") > 120) {
+#' if(IsoriX.getOption("example_maxtime") > 200) {
 #' 
 #' ## We fit the models for Germany
-#' GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 
@@ -115,12 +117,35 @@ Isorix <- function(...) {
 #' ## We plot the assignment for the individual "Alien_10"
 #' plot(assignment.dry, who = "Alien_10")
 #' 
+#' 
+#' ### Other example without calibration:
+#' ### We will try to assign a weather station 
+#' ### in the water isoscape
+#' 
+#' ## We create the assignment data taking 
+#' ## GARMISCH-PARTENKIRCHEN as the station to assign
+#' GPIso <- GNIPDataDEagg[GNIPDataDEagg$stationID == "GARMISCH-PARTENKIRCHEN", "isoscape.value"]
+#' AssignDataGP <- data.frame(tissue.value = GPIso,
+#'                              animalID = "GARMISCH-PARTENKIRCHEN")
+#' 
+#' ## We perform the assignment
+#' assignment.GP <- isofind(assign.data = AssignDataGP,
+#'                                  isoscape = isoscape,
+#'                                  calibfit = NULL)
+#' ## We plot the assignment and 
+#' ## show where the station really is (using lattice)
+#' plot(assignment.GP) +
+#'   lattice::xyplot(47.48~11.06,
+#'                   panel = lattice::panel.points,
+#'                   cex = 5, pch = 13, lwd = 2, col = "black") 
+#' 
+#' 
 #' }
 #' 
 #' @export
 isofind <- function(assign.data,
                     isoscape,
-                    calibfit,
+                    calibfit = NULL,
                     mask = NA,
                     verbose = interactive()
                     ) {
@@ -128,6 +153,18 @@ isofind <- function(assign.data,
   ### WE COMPUTE THE TEST STATISTIC
   if (verbose) {
     print("computing the test statistic and its variance...")
+  }
+  
+  ### check for calibration data
+  if (is.null(calibfit)) {
+    warning(
+"The assignment is computed directly on the isoscape
+without using a calibration! This means that IsoriX 
+considers that you directly fitted the isoscape on 
+the same material than the material you are trying
+to assign. If this is not the case, rerun isofind()
+by providing a calibration object to the argument
+calibfit!")
   }
 
   ## importing ocean if missing
@@ -140,15 +177,25 @@ isofind <- function(assign.data,
   names.layers <- gsub(" ", "_", as.character(assign.data$animalID))
   
   time <- system.time({
-    ## we predict the isotopic value at origin location  
-    assign.data$mean.origin <-
-      (assign.data$tissue.value - calibfit$param["intercept"])/calibfit$param["slope"]
-    ## we create individual rasters containing the test statistics
-    list.stat.layers <- sapply(1:nrow(assign.data),
-                               function(i) {
-                                 assign.data$mean.origin[i] - isoscape$isoscape$mean
-                               }
-                               )
+    if (!is.null(calibfit)) {
+      ## we predict the isotopic value at origin location  
+      assign.data$mean.origin <-
+        (assign.data$tissue.value - calibfit$param["intercept"])/calibfit$param["slope"]
+      ## we create individual rasters containing the test statistics
+      list.stat.layers <- sapply(1:nrow(assign.data),
+                                 function(i) {
+                                   assign.data$mean.origin[i] - isoscape$isoscape$mean
+                                 }
+                                 )
+    } else {
+      ## we create individual rasters containing the test statistics
+      list.stat.layers <- sapply(1:nrow(assign.data),
+                                 function(i) {
+                                   assign.data$tissue.value[i] - isoscape$isoscape$mean
+                                 }
+                                 )
+    }
+    
     names(list.stat.layers) <- names.layers
     stat.stack <- raster::stack(list.stat.layers)
     if (any(names.layers != names(stat.stack))) {
@@ -158,19 +205,27 @@ isofind <- function(assign.data,
     
     ### WE COMPUTE THE VARIANCE OF THE TEST
 
-    ## we compute fixedVar
-    X <- cbind(1, assign.data$mean.origin)
-    fixedVar <- rowSums(X * (X %*% calibfit$fixefCov)) ## = diag(X %*% calibfit$fixefCov %*% t(X))
-
-    ## we create individual rasters containing the variance of the test statistics
-    list.varstat.layers <- sapply(1:nrow(assign.data),
-                                  function(i) {
-                                    isoscape$isoscape$mean.predVar +
-                                    calibfit$calib.fit$phi/calibfit$param["slope"]^2 +
-                                    fixedVar[i]/calibfit$param["slope"]^2 +
-                                    0 ## ToDo compute fourth variance term
-                                  }
-                                  )
+    if (!is.null(calibfit)) {
+      ## we compute fixedVar
+      X <- cbind(1, assign.data$mean.origin)
+      fixedVar <- rowSums(X * (X %*% calibfit$fixefCov)) ## = diag(X %*% calibfit$fixefCov %*% t(X))
+      ## we create individual rasters containing the variance of the test statistics
+      list.varstat.layers <- sapply(1:nrow(assign.data),
+                                    function(i) {
+                                      isoscape$isoscape$mean.predVar + 
+                                      calibfit$calib.fit$phi/calibfit$param["slope"]^2 +
+                                      fixedVar[i]/calibfit$param["slope"]^2 +
+                                      0 ## ToDo compute fourth variance term
+                                    }
+                                    )
+    } else {
+      ## we create individual rasters containing the variance of the test statistics
+      list.varstat.layers <- sapply(1:nrow(assign.data),
+                                    function(i) {
+                                      isoscape$isoscape$mean.respVar
+                                    }
+                                    )
+    }
 
     names(list.varstat.layers) <- names.layers
     varstat.stack <- raster::stack(list.varstat.layers)
@@ -203,7 +258,7 @@ isofind <- function(assign.data,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("assignements for all", nrow(assign.data), "organisms have been computed in", time, "sec."))
+    print(paste("assignments for all", nrow(assign.data), "organisms have been computed in", time, "sec."))
   }
 
   ## remove log scale
@@ -235,6 +290,11 @@ isofind <- function(assign.data,
 
 
   ### RETURNS
+  
+  calibs <- NULL
+  if (!is.null(calibfit)) {
+    calibs <- calibfit$sp.points$calibs
+  }
 
   out <- list(indiv = list("stat" = stat.stack,
                            "stat.var" = varstat.stack,
@@ -242,28 +302,11 @@ isofind <- function(assign.data,
                            ),
               group = list("pv" = group.pv),
               sp.points = list("sources" = isoscape$sp.points$sources,
-                               "calibs" = calibfit$sp.points$calibs
+                               "calibs" = calibs
                                )
               )
 
   class(out) <- c("isorix", "list")
-
-  # if (save.spatial.files) {
-  #   ## export individual p-values surfaces
-  #   writeRaster(out$indiv$pv,
-  #               filename = paste(file.prefix.spatial.files, ".asc", sep = ""),
-  #               bylayer = TRUE,
-  #               suffix = "names",
-  #               overwrite = overwrite.spatial.files
-  #               )
-
-  #   ## export the group p-values surface
-  #   writeRaster(out$group$pv,
-  #               filename = paste(file.prefix.spatial.files, "_group", ".asc", sep = ""),
-  #               overwrite = overwrite.spatial.files
-  #               )
-  # }
-
   return(out)
 }
 

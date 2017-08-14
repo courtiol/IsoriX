@@ -78,7 +78,7 @@ The isoscape can be plotted using the function \code{\link{plot.isoscape}}
 if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We prepare the data
-GNIPDataDEagg <- queryGNIP(data = GNIPDataDE)
+GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 
 ## We fit the models
 GermanFit <- isofit(iso.data = GNIPDataDEagg,
