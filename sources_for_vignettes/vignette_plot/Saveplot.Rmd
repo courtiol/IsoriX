@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
     pdf_document
 vignette: >
-  %\VignetteIndexEntry{Saving plot in IsoriX}
+  %\VignetteIndexEntry{3_Saving_plots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -21,7 +21,7 @@ references:
 csl: cite_style2.csl
 urlcolor: blue
 vignette: |
-  %\VignetteIndexEntry{Distribution mask}
+  %\VignetteIndexEntry{5_Add_IUCN_mask}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

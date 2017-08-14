@@ -4,10 +4,14 @@ author: "The IsoriX core team"
 date: "`r Sys.Date()`"
 output: pdf_document
 vignette: >
-  %\VignetteIndexEntry{Coding style guide for IsoriX}
+  %\VignetteIndexEntry{6_Coding_style_guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+This small vignette is only intended to those who would like to contribute to the development of __IsoriX__.
+It describes the conventions one should follow while coding source code.
+Note that we have not always followed such conventions but we will progressivelly reformat the code in such way.
 
 ## Assignment
 

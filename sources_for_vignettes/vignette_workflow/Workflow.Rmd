@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
     pdf_document
 vignette: >
-  %\VignetteIndexEntry{A simple workflow for IsoriX}
+  %\VignetteIndexEntry{1_A_simple_workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

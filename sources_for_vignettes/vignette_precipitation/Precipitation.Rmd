@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
     pdf_document
 vignette: >
-  %\VignetteIndexEntry{Precipitation-weighted annual average isoscapes}
+  %\VignetteIndexEntry{2_Weighting_using_precipitation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
