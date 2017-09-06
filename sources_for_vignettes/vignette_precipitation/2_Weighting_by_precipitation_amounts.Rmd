@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
     pdf_document
 vignette: >
-  %\VignetteIndexEntry{2_Weighting_using_precipitation}
+  %\VignetteIndexEntry{2_Weighting_by_precipitation_amounts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

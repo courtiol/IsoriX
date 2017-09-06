@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
     pdf_document
 vignette: >
-  %\VignetteIndexEntry{1_A_simple_workflow}
+  %\VignetteIndexEntry{1_Simple_workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
