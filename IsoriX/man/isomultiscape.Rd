@@ -14,15 +14,17 @@ isomultiscape(elevation.raster, isofit, weighting = NULL,
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
-\item{weighting}{An optional RasterBrick containing the weights
-#' @return This function returns a \var{list} of class \var{isoscape}
-containing a stack of all 8 raster layers mentioned above (all being of
-class \var{RasterLayer}), and the location of the sources as spatial points.}
+\item{weighting}{An optional RasterBrick containing the weights}
 
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
+}
+\value{
+This function returns a \var{list} of class \var{isoscape}
+containing a stack of all 8 raster layers mentioned above (all being of
+class \var{RasterLayer}), and the location of the sources as spatial points.
 }
 \description{
 This function is the counterpart of \code{\link{isoscape}} for the objects
