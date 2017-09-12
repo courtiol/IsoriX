@@ -1,64 +1,64 @@
 #' Plotting functions for IsoriX
-#' 
+#'
 #' These functions plot objects created by \pkg{\link{IsoriX}}.
-#' 
+#'
 #' When called upon an object of class \var{isofit}, the plot function
 #' draws diagnostic information for the fits of the isoscape geostatistical
 #' model.
-#' 
-#' When called upon an object of class \var{calibfit}, the plot function draws 
+#'
+#' When called upon an object of class \var{calibfit}, the plot function draws
 #' the fitted calibration function.
-#' 
-#' When called upon an object of class \var{isoscape}, the plot function draws 
+#'
+#' When called upon an object of class \var{isoscape}, the plot function draws
 #' a fine-tuned plot of the isoscape.
-#' 
-#' When used on a fitted isoscape, the user can choose between plotting the 
+#'
+#' When used on a fitted isoscape, the user can choose between plotting the
 #' predictions (\code{which} = "mean"; default), the prediction variance (\code{which} =
 #' "mean.predVar"), the residual variance (\code{which} = "mean.residVar"), or the
 #' response variance (\code{which} = "mean.respVar") for the mean model; or the
 #' corresponding information for the residual dispersion variance model ("disp",
 #' "disp.predVar", "disp.residVar", or "disp.respVar").
-#' 
+#'
 #' When used on a simulated isoscape, the user can choose between plotting the
 #' mean isotopic value (\code{which} = "mean") or the dispersion (\code{which} = "disp").
-#' 
+#'
 #' When called upon an object of class \var{isorix}, the plot function draws a
 #' fine-tuned plot of the assignment. You can use the argument \code{who} to choose
 #' between plotting the assignment for the group or for some individuals (check
 #' the vignette "Workflow" for examples).
-#' 
+#'
 #' The arguments \code{cutoff}, \code{sources}, \code{calib}, \code{borders}, \code{mask}, and \code{mask2}
 #' are used to fine-tune additional layers that can be added to the main plot to
 #' embellish it. These arguments must be lists that provide details on how to
 #' draw, respectively, the area outside the prediction interval (for assignment
 #' plots), the locations of sources (for both isoscape and assignment plots),
 #' the locations of the calibration sampling area (for assignment plots, the
-#' borders (for both types of plots), and the mask (again, for both)). For 
-#' assignment maps, an extra mask can be used (mask2), as one may want to add a 
-#' mask covering the area outside the biological range of the species. Within 
-#' these lists, the elements \code{lwd}, \code{col}, \code{cex}, \code{pch} and \code{fill} influences 
-#' their respective objects as in traditional R plotting functions (see 
-#' \code{\link{par}} for details). The element \code{draw} should be a \var{logical} 
-#' that indicates whether the layer must be created or not. The argument 
-#' \code{borders} (within the list borders) expects an object of the class 
-#' \var{SpatialPolygons} such as the object \code{\link{CountryBorders}} provided with this 
-#' package. The argument \code{mask} (within the list maks) expects an object of the 
-#' class \var{SpatialPolygons} such as the object \code{\link{OceanMask}} provided with this 
+#' borders (for both types of plots), and the mask (again, for both)). For
+#' assignment maps, an extra mask can be used (mask2), as one may want to add a
+#' mask covering the area outside the biological range of the species. Within
+#' these lists, the elements \code{lwd}, \code{col}, \code{cex}, \code{pch} and \code{fill} influences
+#' their respective objects as in traditional R plotting functions (see
+#' \code{\link{par}} for details). The element \code{draw} should be a \var{logical}
+#' that indicates whether the layer must be created or not. The argument
+#' \code{borders} (within the list borders) expects an object of the class
+#' \var{SpatialPolygons} such as the object \code{\link{CountryBorders}} provided with this
+#' package. The argument \code{mask} (within the list maks) expects an object of the
+#' class \var{SpatialPolygons} such as the object \code{\link{OceanMask}} provided with this
 #' package (see examples).
-#' 
-#' The argument \code{palette} is used to define how to colour the isoscape and 
-#' assignment plot. Within this list, \code{step} defines the number of units on the 
-#' z-scale that shares a given colour; \code{range} can be used to constrain the 
+#'
+#' The argument \code{palette} is used to define how to colour the isoscape and
+#' assignment plot. Within this list, \code{step} defines the number of units on the
+#' z-scale that shares a given colour; \code{range} can be used to constrain the
 #' minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
-#' argument is usefull if one wants to create several plots with the same 
-#' z-scale); \code{n.labels} allows for the user to approximatively define the 
+#' argument is usefull if one wants to create several plots with the same
+#' z-scale); \code{n.labels} allows for the user to approximatively define the
 #' maximum number of numbers plotted on the z-scale; \code{digits} defines the number
-#' of digits displayed for the numbers used as labels; and \code{fn} is used to 
+#' of digits displayed for the numbers used as labels; and \code{fn} is used to
 #' specify the function that is used to sample the colours. If \code{fn} is NULL
 #' (default) the palette functions derived from \code{\link{isopalette1}} and
 #' \code{\link{isopalette2}} are used when ploting isoscape and assignments,
 #' respectivelly.
-#' 
+#'
 #' @name plots
 #' @aliases plot.isofit plot.isoscape plot.calibfit plot.isorix plot
 #' @param x The return object of an \code{\link{isofit}},
@@ -70,7 +70,7 @@
 #'   (see details)
 #' @param who Either "group", or a vector of indices (e.g. 1:3) or names of the
 #'   individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots
-#' @param what A \var{string} indicating the name of the raster to be plotted 
+#' @param what A \var{string} indicating the name of the raster to be plotted
 #'   (should remain "pv" if who = "group", otherwise could be "stat", "stat.var",
 #'   or "pv")
 #' @param cutoff A \var{list} containing information for the display of the
@@ -85,24 +85,28 @@
 #'   (e.g. an ocean mask) (see details)
 #' @param mask2 A \var{list} containing information for the display of a mask
 #'   (e.g. a distribution mask) (see details)
-#' @param palette A \var{list} containing information for the display of the 
+#' @param palette A \var{list} containing information for the display of the
 #'   colours for the isoscape (see details)
 #' @param plot A \var{logical} indicating whether the plot shall be plotted or
 #'   just returned
+#' @param build.sphere A \var{logical} indicating if the raster should be 
+#'   returned as a rotating sphere additionally to the plot. The default is FALSE 
+#'   otherwise a .gif-file will be saved in your current working diroctory.
+#'   
 #' @param ... Additional arguments (not in use)
-#' 
+#'
 #' @seealso \code{\link{isofit}} for the function fitting the isoscape
-#' 
+#'
 #'   \code{\link{isoscape}} for the function building the isoscape
-#'   
+#'
 #'   \code{\link{calibfit}} for the function fitting the calibration function
-#'   
+#'
 #'   \code{\link{isofind}} for the function performing the assignment
-#'   
+#'
 #'   \code{\link{IsoriX}} for the complete work-flow
 #' @keywords plot
 #' @examples ## See ?isoscape or ?isofind for examples
-#'   
+#'
 NULL
 
 #' @rdname plots
@@ -115,35 +119,36 @@ plot.isoscape <- function(x,
                           mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
                           palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NA),
                           plot    = TRUE,
+                          build.sphere = FALSE,
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
 
     simu <- "isosim" %in% class(x)
-    
+
     ## complete input with default setting
     .CompleteArgs(plot.isoscape)
-    
+
     ## importing palette if missing
     if (!is.null(palette$fn) && !is.function(palette$fn) && is.na(palette$fn)) {
       isopalette1 <- NULL ## to please R CMD check
       utils::data("isopalette1", envir = environment(), package = "IsoriX")
       palette$fn <- grDevices::colorRampPalette(isopalette1, bias = 1)
     }
-    
+
     ## importing country borders if missing
     if (!is.null(borders$borders) && is.na(borders$borders)) {
       CountryBorders <- NULL
       utils::data("CountryBorders", envir = environment(), package = "IsoriX")
       borders$borders <- CountryBorders
     }
-    
+
     ## importing ocean if missing
     if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
       OceanMask <- NULL
       utils::data("OceanMask", envir = environment(), package = "IsoriX")
       mask$mask <- OceanMask
     }
-    
+
     if (("isosim" %in% class(x))) {
       if (sources$draw) {
         sources$draw <- FALSE
@@ -153,13 +158,13 @@ plot.isoscape <- function(x,
         stop("for simulated data, the argument 'which' must be 'mean' or 'disp'")
       }
     }
-    
-    if (("isofit" %in% class(x)) & 
+
+    if (("isofit" %in% class(x)) &
         !(which %in% c("mean", "mean.predVar", "mean.residVar", "mean.respVar",
                        "disp", "disp.predVar", "disp.residVar", "disp.respVar"))) {
       stop("argument 'which' unknown")
     }
-    
+
     ## compute the colors
     colours <- .cutandcolor(var     = x$isoscape[[which]]@data@values,
                            step     = palette$step,
@@ -167,11 +172,11 @@ plot.isoscape <- function(x,
                            palette  = palette$fn,
                            n.labels = palette$n.labels,
                            digits   = palette$digits)
-    
+
     ## define y.title
     simu.title <- ""
     if (simu) simu.title <- "simulated"
-    
+
     ## create the levelplot
     ##  note the use of bquote() which contrary to expression(paste())
     ##  allows for the evaluation of arguments.
@@ -183,17 +188,17 @@ plot.isoscape <- function(x,
                                 at = colours$at,
                                 colorkey = list(labels = list(at = colours$at.keys, labels = colours$at.labels)),
                                 main = bquote(.(simu.title)~.(sub(".", " ", which, fixed = TRUE))~delta*D[p]))
-    
+
     ## create the additional plot(s)
     decor <- .BuildAdditionalLayers(x = x,
                                     sources = sources,
                                     calib = NULL,
                                     borders = borders,
                                     mask = mask)
-    
-    
+
+
     complete.map <- map + decor$borders.layer + decor$mask.layer + decor$sources.layer
-    
+
     ## plotting
     if (plot) {
       ## check if prompt must appear in examples
@@ -203,13 +208,67 @@ plot.isoscape <- function(x,
       ## send plot to graphic device
       print(complete.map)
     }
-    
+
     ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
     rm(simu.title)
-    
+
+    ## build the 3D-Sphere
+    if (build.sphere) {
+      .build_sphere(x$isoscape[[which]], colours = colours, decor = decor)
+    }
+
     return(invisible(complete.map))
-    
+
+}
+
+.build_sphere <- function(x, colours, decor) {
+  
+  ### check extent of the raster and extend to world if necessary
+  world.raster <- raster::raster()
+  raster::extent(world.raster) <- c(-180, 180, -90, 90)
+  if (raster::extent(x) < raster::extent(world.raster)) {
+    x <- raster::extend(x, raster::extent(world.raster))
   }
+
+  p <- rasterVis::levelplot(x, col.regions = colours$all.cols,
+                            at = colours$at,
+                            colorkey = FALSE) + decor$borders.layer
+  png(filename = "temp_image.png", width = 3000, height = 2000)
+  print(p)
+  pargs <- lattice::trellis.panelArgs(p, 1)
+  lims <- do.call(lattice::prepanel.default.levelplot, pargs)
+  
+  grid::grid.newpage()
+  grid::pushViewport(grid::viewport(xscale = extendrange(lims$xlim, f = 0.07),
+                                    yscale = extendrange(lims$ylim, f = 0.07)))
+  do.call(p$panel, pargs) #do.call(lattice::panel.levelplot, pargs)
+  dev.off()
+  
+  if (length(rgl.dev.list()) > 0) rgl.close() ## close all open devices
+  rgl.sphere <- function (x, y=NULL, z=NULL, ng=50, radius = 1, color="white", add=F, ...) {
+    lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
+    long <- matrix(seq(-180, 180, len = ng)*pi/180, ng, ng)
+    
+    vertex  <- rgl:::rgl.vertex(x, y, z)
+    nvertex <- rgl:::rgl.nvertex(vertex)
+    radius  <- rbind(vertex, rgl:::rgl.attr(radius, nvertex))[4,]
+    color  <- rbind(vertex, rgl:::rgl.attr(color, nvertex))[4,]
+    
+    for(i in 1:nvertex) {
+      add2 <- if(!add) i>1 else T
+      x <- vertex[1,i] + radius[i]*cos(lat)*cos(long)
+      y <- vertex[2,i] + radius[i]*cos(lat)*sin(long)
+      z <- vertex[3,i] + radius[i]*sin(lat)
+      rgl::persp3d(x, y, z, add=add2, color=color[i], axes = FALSE, xlab="", ylab="", zlab="", ...)
+    }
+  }
+  rgl::bg3d(sphere = TRUE, color = "black", lit = FALSE)
+  rgl.sphere(0, texture = "temp_image.png", lit = FALSE, color="lightgrey") ## or rgl::rgl.spheres()
+  
+  # for gif movie
+  #rgl::movie3d(rgl::spin3d(axis = c(0, 1, 0), rpm=2), duration = 30, dir = getwd())
+  # file.remove("temp_image.png")
+}
 
 #' @rdname plots
 #' @method plot isorix
@@ -237,31 +296,31 @@ plot.isorix <- function(x,
     utils::data("isopalette2", envir = environment(), package = "IsoriX")
     palette$fn <- grDevices::colorRampPalette(isopalette2, bias = 0.75)
   }
-  
+
   ## importing country borders if missing
   if (!is.null(borders$borders) && is.na(borders$borders)) {
     CountryBorders <- NULL
     utils::data("CountryBorders", envir = environment(), package = "IsoriX")
     borders$borders <- CountryBorders
   }
-  
+
   ## importing ocean if missing
   if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask$mask <- OceanMask
   }
-  
+
   ## changing missing setting for mask2
   if (!is.null(mask2$mask) && class(mask2$mask) != "SpatialPolygons" && is.na(mask2$mask)) {
     mask2$mask <- NULL
   }
-  
+
   ## changing cutoff level to null when we don't want to draw the cutoff
   if (what != "pv" | !cutoff$draw) {
     cutoff$level <- 0
   }
-  
+
   ## create the main plot(s)
   if ("group" %in% who) {
     colours <- .cutandcolor(var        = x$group$pv@data@values,
@@ -272,7 +331,7 @@ plot.isorix <- function(x,
                             col.cutoff = cutoff$col,
                             n.labels   = palette$n.labels,
                             digits     = palette$digits)
-    
+
     map <- rasterVis::levelplot(x$group$pv, # x$group$pv * (x$group$pv > cutoff$level)
                                 maxpixels = 4e6,
                                 margin = FALSE,
@@ -283,11 +342,11 @@ plot.isorix <- function(x,
                                 )
   } else {
     main.title <- if (length(who) == 1) {
-      names(x$indiv[[what]][[who]]) 
+      names(x$indiv[[what]][[who]])
     } else {
       NULL
     }
-    
+
     colours <- .cutandcolor(var        = x$indiv[[what]][[who]]@data@values,
                             step       = palette$step,
                             range      = palette$range,
@@ -296,7 +355,7 @@ plot.isorix <- function(x,
                             col.cutoff = cutoff$col,
                             n.labels   = palette$n.labels,
                             digits     = palette$digits)
-    
+
     map <- rasterVis::levelplot(x$indiv[[what]][[who]], #x$indiv[[what]][[who]] * (x$indiv$pv[[who]] > cutoff$level)
                                 maxpixels = 4e6,
                                 margin = FALSE,
@@ -305,7 +364,7 @@ plot.isorix <- function(x,
                                 colorkey = list(labels = list(at = colours$at.keys, labels = colours$at.labels)),
                                 main = main.title)
   }
-    
+
   ## create the additional plot(s)
   decor <- .BuildAdditionalLayers(x = x,
                                   sources = sources,
@@ -333,7 +392,7 @@ plot.isorix <- function(x,
                            )
 
   ## pilling all layers together
-  complete.map <- map + decor$borders.layer + decor$mask.layer + decor$mask2.layer + 
+  complete.map <- map + decor$borders.layer + decor$mask.layer + decor$mask2.layer +
     decor$sources.layer + decor$calib.layer
 
   ## plotting
@@ -345,7 +404,7 @@ plot.isorix <- function(x,
     ## send plot to graphic device
     print(complete.map)
   }
-  
+
   return(invisible(complete.map))
 
 }
@@ -417,10 +476,10 @@ plot.isorix <- function(x,
 #' @method plot isofit
 #' @export
 plot.isofit <- function(x, cex.scale = 0.2, ...) {
-  
+
   ## Test if RStudio is in use
   RStudio <- .Platform$GUI == "RStudio"
-  
+
   if (!any(class(x) %in% "multiisofit")) {
     ## Determine number of plots in panel
     if (RStudio) {
@@ -429,7 +488,7 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
       nplot <- 2 + x$info.fit$disp.model.rand$spatial +
         x$info.fit$mean.model.rand$spatial
     }
-    
+
     ## Define mfrow (number of rows and column in panel)
     mfrow <- switch(as.character(nplot),
                     "1" = c(1, 1),
@@ -438,10 +497,10 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
                     "4" = c(2, 2),
                     stop("nplot value not anticipated")
     )
-    
+
     ## Setup the graphic device
     graphics::par(mfrow = mfrow)
-    
+
     ## Plots from spaMM
     spaMM::plot.HLfit(x$mean.fit,
                       "predict",
@@ -450,27 +509,27 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
     )
     graphics::title(main = "Pred vs Obs in mean.fit")
     .HitReturn()
-    
+
     spaMM::plot.HLfit(x$disp.fit,
                       "predict",
                       cex = 0.1 + cex.scale*log(x$disp.fit$data$weights.disp),
                       las = 1, ...
     )
     graphics::title(main = "Pred vs Obs in disp.fit")
-    
+
     ## Plot Matern autocorrelation
     if (x$info.fit$mean.model.rand$spatial) {
       .HitReturn()
       .PlotMatern(x$mean.fit, ...)
       graphics::title(main = "Autocorrelation in mean.fit")
     }
-    
+
     if (x$info.fit$disp.model.rand$spatial) {
       .HitReturn()
       .PlotMatern(x$disp.fit, ...)
       graphics::title(main = "Autocorrelation in disp.fit")
     }
-    
+
     ## Reset the graphic device
     graphics::par(mfrow = c(1, 1))
   } else {
@@ -490,7 +549,7 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
   ## It plots the Matern autocorrelation.
   d.stop <- FALSE
   d <- 0
-  
+
   while ((d < 50000) & !d.stop) {
     d <- d + 10
     m <- spaMM::MaternCorr(d = d,
@@ -499,14 +558,14 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
     )
     if (m < limit) d.stop <- TRUE
   }
-  
+
   distances <- seq(0, d, 1)
-  
+
   m <- spaMM::MaternCorr(d = distances,
                          rho = model$corrPars$rho,
                          nu = model$corrPars$nu
   )
-  
+
   graphics::plot(m ~ distances,
                  type = "l",
                  las = 1,
@@ -528,11 +587,11 @@ plot.calibfit <- function(x, ...) {
                  length = 100
              )
   )
-  
+
   X <- cbind(1, xs)
   fitted <- X %*% x$param
   fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
-  
+
   with(x$calib.data,
        graphics::plot(tissue.value ~ mean.iso,
                       xlab = "Isotopic value in the environment",
@@ -540,13 +599,13 @@ plot.calibfit <- function(x, ...) {
                       las = 1
        )
   )
-  
+
   graphics::points(fitted ~ xs, type = "l", col = "blue", lwd = 2)
   graphics::points(fitted + stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
   graphics::points(fitted - stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
-  
+
   ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
   rm(fitted, fixedVar)
-  
+
   return(invisible(NULL))
 }
