@@ -11,8 +11,8 @@
                         "\n We will do our best to limit changes in names from version 1.0 onward!!",
                         "\n",
                         "\n Type:",
+                        "\n    * browseURL('https://bookdown.org/content/782/') for the documentation.",
                         "\n    * ?IsoriX for a short description.",
-                        "\n    * browseVignettes(package = 'IsoriX') for tutorials.",
                         "\n    * news(package = 'IsoriX') for news.",
                         "\n"
                         )
