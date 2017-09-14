@@ -1,0 +1,10 @@
+```{r, initialization, echo=FALSE}
+library(knitr)
+# set global options for knitr (if changed, all cashed chunked will be rerun!)
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE) # use dpi=100 for small pdfs
+docache <- TRUE
+```
+
+# Building Isoscapes {#isoscape}
+
+## Preparing the data
