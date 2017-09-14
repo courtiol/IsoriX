@@ -16,6 +16,7 @@
   \subsection{New features}{
     \itemize{
       \item new option in plot that allows to map the isoscape onto a sphere
+      \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
     }
   }
   \subsection{Major changes}{

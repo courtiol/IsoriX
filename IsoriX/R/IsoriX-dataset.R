@@ -311,7 +311,7 @@ NULL
 #' The raster of elevation for Germany
 #' 
 #' This raster contains the elevation of the surface of Germany [meters above sea
-#' level] with a resolution of approximately 50 square-km.
+#' level] with a resolution of approximately 30 square-km.
 #' 
 #' This raster contains elevation data of Germany in a highly aggregated form
 #' corresponding to a resolution of approximately one elevation value per 50
@@ -343,8 +343,7 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' 
-#' ## The following example require to have downloaded
+#' ## The following example require to download
 #' ## a large elevation raster with the function getelev()
 #' ## and will therefore not run unless you type:
 #' ## example(ElevRasterDE, run.dontrun=TRUE)
@@ -380,6 +379,38 @@ NULL
 NULL
 
 
+
+
+
+#' The precipitation monthly amounts for Germany
+#'
+#' This brick of rasters contains the monthly precipitation amounts [in mm] for
+#' Germany with a resolution of approximately 30 square-km..
+#'
+#' The data are derived from "precipitation (mm) WorldClim Version2" which can
+#' be downloaded using the function \code{\link{getprecip}}.
+#' 
+#' @name PrecipBrickDE
+#' @docType data
+#' @format A \var{RasterBrick}
+#' @seealso \code{\link{prepcipitate}} to prepare this raster
+#' @source \url{http://worldclim.org/version2}
+#' @keywords datasets
+#' @examples
+#' 
+#' ## The following example require to download
+#' ## a large precipitation rasters with the function getprecip()
+#' ## and will therefore not run unless you type:
+#' ## example(PrecipBrickDE, run.dontrun=TRUE)
+#' 
+#' \dontrun{
+#' ### Creating the object PrecipBrickDE
+#' getprecip() ## Download the tif files (~ 1 Gb compressed)
+#' PrecipBrickDE <- prepcipitate(elevation.raster = ElevRasterDE)
+#' save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
+#' }
+#' 
+NULL
 
 
 
