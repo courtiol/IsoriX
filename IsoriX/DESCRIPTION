@@ -41,7 +41,6 @@ Suggests:
     maps,
     maptools,
     RandomFields,
-    R.rsp,
     rgdal,
     rgeos,
     rgl
