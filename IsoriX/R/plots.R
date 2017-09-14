@@ -175,7 +175,6 @@ plot.isoscape <- function(x,
     ## define y.title
     simu.title <- ""
     if (simu) simu.title <- "simulated"
-
     ## create the levelplot
     ##  note the use of bquote() which contrary to expression(paste())
     ##  allows for the evaluation of arguments.
@@ -199,7 +198,7 @@ plot.isoscape <- function(x,
     complete.map <- map + decor$borders.layer + decor$mask.layer + decor$sources.layer
 
     ## plotting
-    if (plot) {
+    if (plot & !sphere$build) {
       ## check if prompt must appear in examples
       if (.IsoriX.data$options$dont_ask) {
         options(example.ask = "FALSE") ## only effective for the next example run, not the current one...
@@ -258,7 +257,7 @@ plot.isoscape <- function(x,
   grDevices::dev.off()
   
   if (length(rgl::rgl.dev.list()) > 0) rgl::rgl.close() ## close all open devices
-  rgl.sphere <- function (x, y=NULL, z=NULL, ng=50, radius = 1, color="white", add=F, ...) {
+  rgl.sphere <- function(x, y = NULL, z = NULL, ng = 50, radius = 1, color = "white", add = F, ...) {
     ## code inspired from https://stackoverflow.com/questions/30627647/how-to-plot-a-perfectly-round-sphere-in-r-rgl-spheres
     lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
     long <- matrix(seq(-180, 180, len = ng)*pi/180, ng, ng)
@@ -268,18 +267,19 @@ plot.isoscape <- function(x,
     radius  <- rbind(vertex, rep(radius, length.out = nvertex))[4,]
     color  <- rbind(vertex, rep(color, length.out = nvertex))[4,]
     
-    for(i in 1:nvertex) {
-      add2 <- if(!add) i>1 else T
+    for (i in 1:nvertex) {
+      add2 <- if (!add) i > 1 else T
       x <- vertex[1,i] + radius[i]*cos(lat)*cos(long)
       y <- vertex[2,i] + radius[i]*cos(lat)*sin(long)
       z <- vertex[3,i] + radius[i]*sin(lat)
-      rgl::persp3d(x, y, z, add=add2, color=color[i], axes = FALSE, xlab="", ylab="", zlab="", ...)
+      rgl::persp3d(x, y, z, add = add2, color = color[i], axes = FALSE,
+                   xlab = "", ylab = "", zlab = "", ...)
     }
   }
   
   rgl::par3d("windowRect" = c(0, 0, 500, 500))
   rgl::bg3d(sphere = TRUE, color = "darkgrey", lit = FALSE)
-  rgl.sphere(0, texture = "world_image.png", lit = FALSE, color="white") ## or rgl::rgl.spheres()
+  rgl.sphere(0, texture = "world_image.png", lit = FALSE, color = "white") ## or rgl::rgl.spheres()
 }
 
 #' @rdname plots
@@ -409,7 +409,7 @@ plot.isorix <- function(x,
     decor$sources.layer + decor$calib.layer
 
   ## plotting
-  if (plot) {
+  if (plot & !sphere$build) {
     ## check if prompt must appear in examples
     if (.IsoriX.data$options$dont_ask) {
       options(example.ask = "FALSE") ## only effective for the next example run, not the current one...
@@ -470,7 +470,13 @@ plot.isorix <- function(x,
   if (!is.na(cutoff)) {
     where.cut <- sort(unique(c(cutoff, where.cut)))
   }
-  cats <- cut(var, where.cut, ordered_result = TRUE)
+  if (length(unique(var)) > 1) { 
+    cats <- cut(var, where.cut, ordered_result = TRUE)
+  } else { ## case if no variation
+    cats <- as.factor(where.cut)
+    where.cut <- c(where.cut, where.cut + 1e-10)
+    warning("There is no variation in the map!")
+  }
   if (is.null(palette)) {
     palette <- viridisLite::viridis
   }
