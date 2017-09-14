@@ -6,14 +6,16 @@
 \alias{summary.calibfit}
 \title{Fit the calibration model}
 \usage{
-calibfit(calib.data, isofit, verbose = interactive(),
+calibfit(calib.data, isofit, weighting = NULL, verbose = interactive(),
   control.optim = list())
 }
 \arguments{
 \item{calib.data}{A \var{dataframe} containing the calibration data (see
 note below)}
 
-\item{isofit}{The fitted isoscape model created by \code{\link{isofit}}}
+\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
+
+\item{weighting}{An optional RasterBrick containing the weights}
 
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
