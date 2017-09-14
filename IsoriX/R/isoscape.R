@@ -103,6 +103,13 @@ Isoscape <- function(...) {
 #'  print(plot.mean.predVar,   split = c(2, 1, 2, 2), more = TRUE)
 #'  print(plot.mean.residVar,  split = c(1, 2, 2, 2), more = TRUE)
 #'  print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+#'  
+#' ## We build a sphere with our isoscape
+#' plot(x = isoscape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
+#'  
+#' ## We can save a rotating sphere with the isoscape as a .gif-file
+#' ## Make sure your current rgl device (from before) is still open
+#' rgl::movie3d(rgl::spin3d(axis = c(0, 0, 1), rpm=2), duration = 30, dir = getwd())
 #' }
 #' 
 #' }
