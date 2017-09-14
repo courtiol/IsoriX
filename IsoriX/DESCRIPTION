@@ -34,7 +34,6 @@ Description:
   plotting the maps using lattice.
 License: GPL (>= 2)
 Suggests:
-    Cairo,
     lattice,
     magick,
     maps,
