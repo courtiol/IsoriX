@@ -284,16 +284,15 @@ isoscape <- function(elevation.raster, ## change as method?
 }
 
 
-#' Predicts the spatial distribution of isotopic values
-#' 
-#' This function is an alternative implementation of isoscape().
-#' It is not exported but may be put in use in a future version of IsoriX.
-#' It does not compute the predictions into chunks.
-
 .futureisoscape <- function(elevation.raster, ## change as method?
                            isofit,
                            verbose = interactive()) {
-  
+  #' Predicts the spatial distribution of isotopic values
+  #' 
+  #' This function is an alternative implementation of isoscape().
+  #' It is not exported but may be put in use in a future version of IsoriX.
+  #' It does not compute the predictions into chunks.
+    
   if (any(class(isofit) %in% "multiisofit")) {
     stop("object 'isofit' of class multiisofit; use isomultiscape instead.")
   }
