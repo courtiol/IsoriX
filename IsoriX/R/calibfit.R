@@ -40,9 +40,9 @@ Calibfit <- function(...) {
 #' function of source isotopic values.
 #' 
 #' @aliases calibfit print.calibfit summary.calibfit
+#' @inheritParams isomultiscape
 #' @param calib.data A \var{dataframe} containing the calibration data (see
 #' note below)
-#' @param isofit The fitted isoscape model created by \code{\link{isofit}}
 #' @param verbose A \var{logical} indicating whether information about the
 #' progress of the procedure should be displayed or not while the function is
 #' running. By default verbose is \var{TRUE} if users use an interactive R
@@ -89,6 +89,7 @@ Calibfit <- function(...) {
 #' @export
 calibfit <- function(calib.data,
                      isofit,
+                     weighting = NULL,
                      verbose = interactive(),
                      control.optim = list()
                      ) {
@@ -195,9 +196,19 @@ calibfit <- function(calib.data,
 }
 
 
-.PrepareDataCalib <- function(data) {
+.PrepareDataCalib <- function(data, weighting) {
   ## This function should not be called by the user but is itself called by other functions.
   ## It prepares data for the calibration procedure.
+  
+  ## Checking the inputs
+  if (!is.null(weighting)) {
+    if (!any(class(weighting) %in% c("RasterStack", "RasterBrick"))) {
+      stop("the argument 'weighting' should be a RasterStack or a RasterBrick")
+    }
+    if (!all(names(isofit$multi.fits) %in% names(weighting))) {
+      stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
+    }
+  }
   if (!all(c("lat", "long") %in% colnames(data))) {
   stop("the dataset does not seem to contain the required variable(s) lat and/or long")
   }
@@ -207,6 +218,7 @@ calibfit <- function(calib.data,
   if (is.null(data$siteID)) {
     stop("the dataset does not seem to contain the required variable siteID")
   }
+  
   data$siteID <- factor(data$siteID)
   data$lat.abs <- abs(data$lat)
   data$lat.2 <- data$lat^2
