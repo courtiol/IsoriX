@@ -224,7 +224,7 @@ plot.isoscape <- function(x,
 }
 
 .build_sphere <- function(x, colours, decor) {
-  ## we are indebted to XX for helping use with the following lattice code
+  ## we are indebted to Deepayan Sarkar for helping use with the following lattice code
   if (!requireNamespace("rgl", quietly = TRUE)) {
     stop("the package 'rgl' is needed for this function,
     you can install it by typing install.packages('rgl')")
@@ -259,7 +259,7 @@ plot.isoscape <- function(x,
   
   if (length(rgl::rgl.dev.list()) > 0) rgl::rgl.close() ## close all open devices
   rgl.sphere <- function (x, y=NULL, z=NULL, ng=50, radius = 1, color="white", add=F, ...) {
-    ## code inspired from XXX
+    ## code inspired from https://stackoverflow.com/questions/30627647/how-to-plot-a-perfectly-round-sphere-in-r-rgl-spheres
     lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
     long <- matrix(seq(-180, 180, len = ng)*pi/180, ng, ng)
     xyz <- grDevices::xyz.coords(x, y, z, recycle = TRUE)
