@@ -89,10 +89,9 @@
 #'   colours for the isoscape (see details)
 #' @param plot A \var{logical} indicating whether the plot shall be plotted or
 #'   just returned
-#' @param build.sphere A \var{logical} indicating if the raster should be 
-#'   returned as a rotating sphere additionally to the plot. The default is FALSE 
-#'   otherwise a .gif-file will be saved in your current working diroctory.
-#'   
+#' @param sphere A \var{list} containing information wether the raster should be 
+#'   returned as a rotating sphere and if the image created during the process 
+#'   should be saved in your current working directory. The default settings are FALSE.
 #' @param ... Additional arguments (not in use)
 #'
 #' @seealso \code{\link{isofit}} for the function fitting the isoscape
@@ -119,7 +118,7 @@ plot.isoscape <- function(x,
                           mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
                           palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits = 2, fn = NA),
                           plot    = TRUE,
-                          build.sphere = FALSE,
+                          sphere  = list(build = FALSE, keep.image = FALSE),
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
 
@@ -213,10 +212,13 @@ plot.isoscape <- function(x,
     rm(simu.title)
 
     ## build the 3D-Sphere
-    if (build.sphere) {
+    if (sphere$build) {
       .build_sphere(x$isoscape[[which]], colours = colours, decor = decor)
+      if (!sphere$keep.image) {
+        file.remove("world_image.png")
+      }
     }
-
+    
     return(invisible(complete.map))
 
 }
@@ -232,8 +234,9 @@ plot.isoscape <- function(x,
 
   p <- rasterVis::levelplot(x, col.regions = colours$all.cols,
                             at = colours$at,
-                            colorkey = FALSE) + decor$borders.layer
-  png(filename = "temp_image.png", width = 3000, height = 2000)
+                            colorkey = FALSE) + decor$borders.layer + 
+    decor$mask.layer + decor$mask2.layer + decor$sources.layer + decor$calib.layer
+  png(filename = "world_image.png", width = 3000, height = 2000)
   print(p)
   pargs <- lattice::trellis.panelArgs(p, 1)
   lims <- do.call(lattice::prepanel.default.levelplot, pargs)
@@ -244,7 +247,7 @@ plot.isoscape <- function(x,
   do.call(p$panel, pargs) #do.call(lattice::panel.levelplot, pargs)
   dev.off()
   
-  if (length(rgl.dev.list()) > 0) rgl.close() ## close all open devices
+  if (length(rgl::rgl.dev.list()) > 0) rgl::rgl.close() ## close all open devices
   rgl.sphere <- function (x, y=NULL, z=NULL, ng=50, radius = 1, color="white", add=F, ...) {
     lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
     long <- matrix(seq(-180, 180, len = ng)*pi/180, ng, ng)
@@ -262,12 +265,10 @@ plot.isoscape <- function(x,
       rgl::persp3d(x, y, z, add=add2, color=color[i], axes = FALSE, xlab="", ylab="", zlab="", ...)
     }
   }
-  rgl::bg3d(sphere = TRUE, color = "black", lit = FALSE)
-  rgl.sphere(0, texture = "temp_image.png", lit = FALSE, color="lightgrey") ## or rgl::rgl.spheres()
   
-  # for gif movie
-  #rgl::movie3d(rgl::spin3d(axis = c(0, 1, 0), rpm=2), duration = 30, dir = getwd())
-  # file.remove("temp_image.png")
+  rgl::par3d("windowRect" = c(0, 0, 500, 500))
+  rgl::bg3d(sphere = TRUE, color = "darkgrey", lit = FALSE)
+  rgl.sphere(0, texture = "world_image.png", lit = FALSE, color="white") ## or rgl::rgl.spheres()
 }
 
 #' @rdname plots
@@ -284,6 +285,7 @@ plot.isorix <- function(x,
                         mask2   = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
                         palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn = NA),
                         plot    = TRUE,
+                        sphere  = list(build = FALSE, keep.image = FALSE),
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
 
@@ -403,6 +405,14 @@ plot.isorix <- function(x,
     }
     ## send plot to graphic device
     print(complete.map)
+  }
+  
+  ## build the 3D-Sphere
+  if (sphere$build) {
+    .build_sphere(x[[who]][[what]], colours = colours, decor = decor)
+    if (!sphere$keep.image) {
+      file.remove("world_image.png")
+    }
   }
 
   return(invisible(complete.map))
