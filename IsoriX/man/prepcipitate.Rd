@@ -27,7 +27,7 @@ extent as the elevation raster. This function is designed to be used with
 }
 \examples{
 
-## The following example takes some time and download heavy data.
+## The following example takes some time and download a large amount of data (~ 1 Gb).
 ## It will therefore not be run unless you type: 
 ## example(prepcipitate, run.dontrun = TRUE)
 

@@ -58,8 +58,16 @@ isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
 isoscapes <- isomultiscape(elevation.raster = ElevRasterDE,
                            isofit = isoscapemodels)
 
-## We plot the mean isoscape of the averaging:
+## We build the annual isoscapes with a weighing based on precipitation amount:
+isoscapes.weighted <- isomultiscape(elevation.raster = ElevRasterDE,
+                           isofit = isoscapemodels,
+                           weighting = PrecipBrickDE)
+
+## We plot the mean isoscape of the averaging with equal weighting:
 plot(x = isoscapes, which = "mean")
+
+## We plot the mean isoscape of the averaging with precipitation weighting:
+plot(x = isoscapes.weighted, which = "mean")
 
 ## We build the isoscapes for a given month (here January):
 isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
@@ -72,7 +80,7 @@ plot(x = isoscape.jan, which = "mean")
 }
 \seealso{
 \code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
-\code{\link{isofit}} for the function fitting the isoscape
+\code{\link{isomultifit}} for the function fitting the isoscape
 
 \code{\link{plot.isoscape}} for the function plotting the isoscape model
 
