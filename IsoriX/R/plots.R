@@ -224,6 +224,16 @@ plot.isoscape <- function(x,
 }
 
 .build_sphere <- function(x, colours, decor) {
+  ## we are indebted to XX for helping use with the following lattice code
+  if (!requireNamespace("rgl", quietly = TRUE)) {
+    stop("the package 'rgl' is needed for this function,
+    you can install it by typing install.packages('rgl')")
+  }
+  
+  if (interactive()) {
+    print("Building the sphere...", quote = FALSE)
+    print("(this may take a few seconds)", quote = FALSE)
+  }
   
   ### check extent of the raster and extend to world if necessary
   world.raster <- raster::raster()
@@ -236,26 +246,27 @@ plot.isoscape <- function(x,
                             at = colours$at,
                             colorkey = FALSE) + decor$borders.layer + 
     decor$mask.layer + decor$mask2.layer + decor$sources.layer + decor$calib.layer
-  png(filename = "world_image.png", width = 3000, height = 2000)
+  grDevices::png(filename = "world_image.png", width = 3000, height = 2000)
   print(p)
   pargs <- lattice::trellis.panelArgs(p, 1)
   lims <- do.call(lattice::prepanel.default.levelplot, pargs)
   
   grid::grid.newpage()
-  grid::pushViewport(grid::viewport(xscale = extendrange(lims$xlim, f = 0.07),
-                                    yscale = extendrange(lims$ylim, f = 0.07)))
+  grid::pushViewport(grid::viewport(xscale = grDevices::extendrange(lims$xlim, f = 0.07),
+                                    yscale = grDevices::extendrange(lims$ylim, f = 0.07)))
   do.call(p$panel, pargs) #do.call(lattice::panel.levelplot, pargs)
-  dev.off()
+  grDevices::dev.off()
   
   if (length(rgl::rgl.dev.list()) > 0) rgl::rgl.close() ## close all open devices
   rgl.sphere <- function (x, y=NULL, z=NULL, ng=50, radius = 1, color="white", add=F, ...) {
+    ## code inspired from XXX
     lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
     long <- matrix(seq(-180, 180, len = ng)*pi/180, ng, ng)
-    
-    vertex  <- rgl:::rgl.vertex(x, y, z)
-    nvertex <- rgl:::rgl.nvertex(vertex)
-    radius  <- rbind(vertex, rgl:::rgl.attr(radius, nvertex))[4,]
-    color  <- rbind(vertex, rgl:::rgl.attr(color, nvertex))[4,]
+    xyz <- grDevices::xyz.coords(x, y, z, recycle = TRUE)
+    vertex <- matrix(rbind(xyz$x, xyz$y, xyz$z), nrow = 3, dimnames = list(c("x", "y", "z"), NULL))
+    nvertex <- ncol(vertex)
+    radius  <- rbind(vertex, rep(radius, length.out = nvertex))[4,]
+    color  <- rbind(vertex, rep(color, length.out = nvertex))[4,]
     
     for(i in 1:nvertex) {
       add2 <- if(!add) i>1 else T
