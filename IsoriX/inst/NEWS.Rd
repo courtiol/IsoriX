@@ -20,7 +20,7 @@
   }
   \subsection{Major changes}{
     \itemize{
-      \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{xxx}
+      \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
     }
   }
 }
