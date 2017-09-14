@@ -15,7 +15,12 @@
 \section{version 0.8}{
   \subsection{New features}{
     \itemize{
-      \item new option in plot that allows to build the isoscape on a sphere
+      \item new option in plot that allows to map the isoscape onto a sphere
+    }
+  }
+  \subsection{Major changes}{
+    \itemize{
+      \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{xxx}
     }
   }
 }
