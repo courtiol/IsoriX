@@ -37,13 +37,14 @@ Suggests:
     Cairo,
     GISTools,
     lattice,
+    magick,
     maps,
     maptools,
     RandomFields,
     R.rsp,
     rgdal,
-    rgeos
-VignetteBuilder: R.rsp
+    rgeos,
+    rgl
 LazyData: true
 URL: https://github.com/courtiol/IsoriX_project/
 BugReports: https://github.com/courtiol/IsoriX_project/issues/
