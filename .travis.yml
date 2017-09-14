@@ -15,20 +15,12 @@ r_check_args:
 
 r_packages:
   - covr
-  - Cairo
-  - GISTools
-  - lattice
-  - magick
-  - maps
-  - maptools
-  - RandomFields
-  - rgeos
-  - rgl
 
 addons:
   apt:
     packages:
       - ghostscript
+      - libgdal-dev
   
 after_success:
   - Rscript -e 'library(covr); codecov(type = "examples")'
