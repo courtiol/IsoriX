@@ -97,7 +97,7 @@ calibfit <- function(calib.data,
   time <- system.time({
     
     ## prepare the dataset
-    calib.data <- .PrepareDataCalib(calib.data)
+    calib.data <- .PrepareDataCalib(calib.data, weighting)
   
     ## predict isoscape and associated prediction
     ##   covariance matrix at animal locations
@@ -196,7 +196,7 @@ calibfit <- function(calib.data,
 }
 
 
-.PrepareDataCalib <- function(data, weighting) {
+.PrepareDataCalib <- function(data, weighting = NULL) {
   ## This function should not be called by the user but is itself called by other functions.
   ## It prepares data for the calibration procedure.
   
