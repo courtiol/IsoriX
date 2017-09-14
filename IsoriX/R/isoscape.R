@@ -425,7 +425,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #' 
 #' \code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
 
-#' \code{\link{isofit}} for the function fitting the isoscape
+#' \code{\link{isomultifit}} for the function fitting the isoscape
 #' 
 #' \code{\link{plot.isoscape}} for the function plotting the isoscape model
 #' 
