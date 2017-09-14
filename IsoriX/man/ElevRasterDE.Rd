@@ -10,7 +10,7 @@
 }
 \description{
 This raster contains the elevation of the surface of Germany [meters above sea
-level] with a resolution of approximately 50 square-km.
+level] with a resolution of approximately 30 square-km.
 }
 \details{
 This raster contains elevation data of Germany in a highly aggregated form
@@ -36,8 +36,7 @@ provide the url link of the \var{tif} file in the example below.
 }
 \examples{
 
-
-## The following example require to have downloaded
+## The following example require to download
 ## a large elevation raster with the function getelev()
 ## and will therefore not run unless you type:
 ## example(ElevRasterDE, run.dontrun=TRUE)
