@@ -107,12 +107,17 @@ if(require(lattice)) {
  print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
  
 ## We build a sphere with our isoscape
-print(getwd())
-plot(x = isoscape, which = "mean", plot = FALSE, sphere = list(build = TRUE, keep.image = TRUE))
+plot(x = isoscape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
  
-## We can save a rotating sphere with the isoscape as a .gif-file
+## We can save a rotating sphere with the isoscape as a .gif-file.
+## This file will be located inside your working directory.
 ## Make sure your current rgl device (from before) is still open
-rgl::movie3d(rgl::spin3d(axis = c(0, 0, 1), rpm=2), duration = 30, dir = getwd())
+## and that you have both the packages 'rgl' and 'magick' installed.
+## The building of the .gif implies to create temporarily many .png
+## but those will be removed automatically once the .gif is done.
+if(require("rgl") & require("magick")) {
+  movie3d(spin3d(axis = c(0, 0, 1), rpm=2), duration = 30, dir = getwd())
+}
 }
 
 }
