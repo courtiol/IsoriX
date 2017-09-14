@@ -12,6 +12,14 @@
   }
 }
 
+\section{version 0.8}{
+  \subsection{New features}{
+    \itemize{
+      \item new option in plot that allows to build the isoscape on a sphere
+    }
+  }
+}
+
 \section{version 0.7}{
   \subsection{New features}{
     \itemize{
