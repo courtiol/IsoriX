@@ -17,7 +17,8 @@
   0.5, pch = 2, lwd = 1, col = "red"), borders = list(borders = NA, lwd = 0.5,
   col = "black"), mask = list(mask = NA, lwd = 0, col = "black", fill =
   "black"), palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits
-  = 2, fn = NA), plot = TRUE, build.sphere = FALSE, ...)
+  = 2, fn = NA), plot = TRUE, sphere = list(build = FALSE, keep.image =
+  FALSE), ...)
 
 \method{plot}{isorix}(x, who = "group", what = "pv", cutoff = list(draw =
   TRUE, level = 0.05, col = "#909090"), sources = list(draw = TRUE, cex = 0.5,
@@ -26,7 +27,7 @@
   "black"), mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
   mask2 = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
   palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn =
-  NA), plot = TRUE, ...)
+  NA), plot = TRUE, sphere = list(build = FALSE, keep.image = FALSE), ...)
 
 \method{plot}{isofit}(x, cex.scale = 0.2, ...)
 
@@ -54,6 +55,10 @@ colours for the isoscape (see details)}
 
 \item{plot}{A \var{logical} indicating whether the plot shall be plotted or
 just returned}
+
+\item{sphere}{A \var{list} containing information wether the raster should be 
+returned as a rotating sphere and if the image created during the process 
+should be saved in your current working directory. The default settings are FALSE.}
 
 \item{...}{Additional arguments (not in use)}
 
