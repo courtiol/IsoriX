@@ -19,6 +19,8 @@
 #' 
 #' \code{\link{getprecip}} to download the relevant precipitation data
 #' 
+#' \code{\link{PrecipBrickDE}} for the stored precipitation data for Germany
+#' 
 #' \code{\link{relevate}} to prepare the elevation raster
 #' 
 #' @examples
