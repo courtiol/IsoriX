@@ -20,7 +20,6 @@ addons:
   apt:
     packages:
       - ghostscript
-      - libgdal-dev
-  
+
 after_success:
   - Rscript -e 'library(covr); codecov(type = "examples")'
