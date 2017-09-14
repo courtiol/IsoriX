@@ -35,13 +35,11 @@ Description:
 License: GPL (>= 2)
 Suggests:
     Cairo,
-    GISTools,
     lattice,
     magick,
     maps,
     maptools,
     RandomFields,
-    rgdal,
     rgeos,
     rgl
 LazyData: true
