@@ -15,7 +15,7 @@
 \section{version 0.8}{
   \subsection{New features}{
     \itemize{
-      \item new function calibmultifit to perform calibration after isomultifit
+      \item new function calibmultifit to perform calibration after isomultifit (experimental)
       \item new option in plot that allows to map the isoscape onto a sphere
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
     }
