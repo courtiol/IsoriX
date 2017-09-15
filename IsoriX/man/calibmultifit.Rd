@@ -52,7 +52,7 @@ if(IsoriX.getOption("example_maxtime") > 60) {
 
 ## We prepare the data:
 GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
-                              month = 1:6,
+                              month = 1:12,
                               split.by = "month")
  
 ## We fit the models for Germany:
