@@ -6,31 +6,30 @@
 \alias{summary.calibfit}
 \title{Fit the calibration model}
 \usage{
-calibfit(calib.data, isofit, weighting = NULL, verbose = interactive(),
+calibfit(calib.data, isofit, verbose = interactive(),
   control.optim = list())
 }
 \arguments{
-\item{calib.data}{A \var{dataframe} containing the calibration data (see
-note below)}
+\item{calib.data}{A \var{dataframe} containing the calibration data (see note
+below)}
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
-
-\item{weighting}{An optional RasterBrick containing the weights}
 
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
 
-\item{control.optim}{A \var{list} to pass information to the argument
-control of the optim call (for advanced users only).}
+\item{control.optim}{A \var{list} to pass information to the argument control
+of the optim call (for advanced users only).}
 }
 \value{
-This function returns a \var{list} of class \var{calibfit}
-containing the fixed-effect estimates of the calibration function, the
-covariance of the fixed effects, the fitted calibration model, the original
-calibration data set with additional information added during the fit, and
-the location of the calibration points as spatial points.
+This function returns a \var{list} of class \var{calibfit} containing
+  the fixed-effect estimates of the calibration function, the covariance of
+  the fixed effects, the residual variance of the calibration fit, the fitted
+  calibration model, the original calibration data set with additional
+  information added during the fit, and the location of the calibration
+  points as spatial points.
 }
 \description{
 This function fits a model that establishes the relationship between the 
@@ -69,7 +68,7 @@ function of source isotopic values.
 }
 \note{
 See \code{\link{CalibDataAlien}} to know which variables are needed to
-perform the calibration fit and their names.
+  perform the calibration fit and their names.
 }
 \examples{
 
@@ -80,9 +79,10 @@ perform the calibration fit and their names.
 
 if(IsoriX.getOption("example_maxtime") > 30) {
 
-## We fit the models for Germany:
+## We prepare the data:
 GNIPDataDEagg <- prepdata(data = GNIPDataDE)
 
+## We fit the models for Germany:
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 ## We fit the calibration model:
@@ -96,7 +96,6 @@ summary(calib)
 
 ## We plot the calibration function:
 plot(calib)
-
 }
 
 }
