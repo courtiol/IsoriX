@@ -33,9 +33,7 @@ This function returns a \var{list} of class \var{calibmultifit}
 }
 \description{
 This function is the counterpart of \code{\link{calibfit}} for the objects
-created with \code{\link{isomultifit}}. It fits the calibration function for
-each strata (e.g. month) defined by \code{split.by} during the call to
-\code{\link{isomultifit}} and then average the fits. The function can handle
+created with \code{\link{isomultifit}}. The function can handle
 weighting for the aggregation process and can thus be used to perform
 assignment onto annual averages precipitation weighted isoscapes.
 }

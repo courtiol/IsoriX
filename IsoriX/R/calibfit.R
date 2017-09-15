@@ -206,9 +206,7 @@ calibfit <- function(calib.data,
 #' Fit the calibration model when the isoscape has been fitted using isomultifit
 #'
 #' This function is the counterpart of \code{\link{calibfit}} for the objects
-#' created with \code{\link{isomultifit}}. It fits the calibration function for
-#' each strata (e.g. month) defined by \code{split.by} during the call to
-#' \code{\link{isomultifit}} and then average the fits. The function can handle
+#' created with \code{\link{isomultifit}}. The function can handle
 #' weighting for the aggregation process and can thus be used to perform
 #' assignment onto annual averages precipitation weighted isoscapes.
 #' 
@@ -236,21 +234,21 @@ calibfit <- function(calib.data,
 #' 
 #' ## We prepare the data:
 #' GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
-#'                               month = 1:6,
+#'                               month = 1:12,
 #'                               split.by = "month")
 #'  
 #' ## We fit the models for Germany:
 #' GermanMultiFit <- isomultifit(iso.data = GNIPDataDEmonthly)
 #' 
 #' ## We fit the calibration model:
-#' calibMulti <- calibmultifit(calib.data = CalibDataAlien[1:99, ],
+#' calibMulti <- calibmultifit(calib.data = CalibDataAlien,
 #'                        isofit = GermanMultiFit,
 #'                        weighting = PrecipBrickDE)
 #' 
 #' plot(calibMulti)
 #' 
 #' ## We fit the calibration model (equal weights):
-#' calibMulti2 <- calibmultifit(calib.data = CalibDataAlien[1:99, ],
+#' calibMulti2 <- calibmultifit(calib.data = CalibDataAlien,
 #'                        isofit = GermanMultiFit)
 #' 
 #' plot(calibMulti2)
@@ -284,28 +282,99 @@ calibmultifit <- function(calib.data,
     calib.data <- .PrepareDataCalib(calib.data, weighting)
     
     if (verbose) {
-      print("fitting the calibration function for all mean isofits...")
+      print("predicting the environmental values...")
+    }
+    ## run calibfit on each model
+    calib.means <- lapply(names(isofit$multi.fits),
+                        function(fit) {
+                          calib.mean <- spaMM::predict.HLfit(
+                            isofit$multi.fits[[fit]]$mean.fit,
+                            newdata = calib.data,
+                            variances = list(predVar = TRUE, cov = TRUE)
+                          )
+                          return(calib.mean)
+                        }
+    )
+    
+    names(calib.means) <- names(isofit$multi.fits)
+    
+    ## compute the matrix of weights
+    if (!is.null(weighting)) {
+      weights.abs <- calib.data[, names(calib.means)]
+    } else {
+      weights.abs <- matrix(1, nrow = nrow(calib.data), ncol = length(names(calib.means)))
+      colnames(weights.abs) <- names(calib.means)
     }
     
-    ## run calibfit on each model
-    calibfits <- lapply(names(isofit$multi.fits),
-                          function(fit) {
-                            if (verbose) {
-                              print(paste("#### fitting procedure for", fit, "in progress ####"), quote = FALSE)
-                            }
-                            calibfit <- calibfit(
-                                          calib.data,
-                                          isofit$multi.fits[[fit]],
-                                          verbose = FALSE,
-                                          control.optim
-                                        )
-                            return(calibfit)
-                          }
-    )
+    weights <- weights.abs[, names(calib.means)] / apply(weights.abs[, names(calib.means)], 1, sum)
+    
+    ## compute the averaged mean.iso
+    means.iso <- do.call("cbind", lapply(calib.means, function(calib.mean) calib.mean[, 1]))
+    calib.data$mean.iso <- apply(means.iso * weights, 1, sum)
+    
+    ## extract the prediction covariance matrices and average them
+    list.predVars <- lapply(calib.means, function(calib.mean) attr(calib.mean, "predVar"))
+    predcov.isofit.full <- matrix(0, ncol = nrow(calib.data), nrow = nrow(calib.data))
+    for (i in 1:nrow(calib.data)) {
+      for (j in 1:nrow(calib.data)) {
+        for(m in names(calib.means)) {
+          predcov.isofit.full[i, j] <- predcov.isofit.full[i, j] + list.predVars[[m]][i, j] * weights[i, m] * weights[j, m]
+        }
+      }
+    }
 
+    ## extract the prediction variances
+    calib.data$mean.predVar.iso <- diag(predcov.isofit.full)
+    
+    ## reshape the prediction covariance matrix to number of unique sites
+    firstoccurences <- match(levels(calib.data$siteID), calib.data$siteID)
+    predcov.isofit <- predcov.isofit.full[firstoccurences, firstoccurences]
+    rownames(predcov.isofit) <- levels(calib.data$siteID)
+    colnames(predcov.isofit) <- levels(calib.data$siteID)
+    
+    ### fitting the calibration function
+    if (verbose) {
+      print("fitting the calibration function...")
+    }
+    
+    ## estimation of intercept and slope of the calibration function
+    opt.res <- stats::optim(par = c(0, 1),
+                            fn = .ObjectiveFnCalib,
+                            control = c(list(fnscale = -1), control.optim),
+                            data = calib.data,
+                            predcov = predcov.isofit,
+                            lik.method = "REML"
+    )
+    
+    param.calibfit <- opt.res$par
+    names(param.calibfit) <- c("intercept", "slope")
+    
+    ## fit of the calibration function
+    calib.fit <- .ObjectiveFnCalib(param = param.calibfit,
+                                   data = calib.data,
+                                   predcov = predcov.isofit, 
+                                   lik.method = "REML",
+                                   return.fit = TRUE
+    )
+    
+    ## computing the covariance matrix of fixed effects
+    if (verbose) {
+      print("computing the covariance matrix of fixed effects...")
+    }
+    
+    fixefCov.calibfit <- solve(-numDeriv::hessian(.ObjectiveFnCalib,
+                                                  param.calibfit,
+                                                  data = calib.data,
+                                                  predcov = predcov.isofit, 
+                                                  lik.method = "ML"
+    )
+    )
+    
+    rownames(fixefCov.calibfit) <- names(param.calibfit)
+    colnames(fixefCov.calibfit) <- names(param.calibfit)
+    
   }) ## end of system.time
   
-  names(calibfits) <- names(isofit$multi.fits)
   
   ## display time
   time <- round(as.numeric((time)[3]))
@@ -313,43 +382,19 @@ calibmultifit <- function(calib.data,
     print(paste("the calibration procedure based on", nrow(calib.data), "calibration samples have been computed in", time, "sec."))
   }
   
-  if (!is.null(weighting)) {
-    weights.abs <- calib.data[, names(calibfits)]
-  } else {
-    weights.abs <- matrix(1, nrow = nrow(calib.data), ncol = length(names(calibfits)))
-    colnames(weights.abs) <- names(calibfits)
-  }
-
-  weights <- weights.abs[, names(calibfits)] / apply(weights.abs[, names(calibfits)], 1, sum)
-  
-  means.iso <- do.call("rbind", lapply(calibfits, function(calibfit) calibfit$calib.data$mean.iso))
-  calib.data$mean.iso <- apply(t(as.matrix(means.iso)) * weights, 1, sum)
-  
-  params <- do.call("rbind", lapply(calibfits, function(calibfit) calibfit$param))
-  mean.intercept <- sum(params[, 1] * apply(weights, 2, mean))
-  mean.slope <- sum(params[, 2] * apply(weights, 2, mean))
-  param <- c(intercept = mean.intercept, slope = mean.slope)
-  
-  fixefCovs <- do.call("rbind", lapply(calibfits, function(calibfit) as.numeric(calibfit$fixefCov)))
-  mean.var.intercept <- sum(fixefCovs[, 1] * apply(weights, 2, mean)^2)
-  mean.cov <- sum(fixefCovs[, 2] * apply(weights, 2, mean)^2)
-  mean.var.slope <- sum(fixefCovs[, 4] * apply(weights, 2, mean)^2)
-  fixefCov <- matrix(c(mean.var.intercept, rep(mean.cov, 2), mean.var.slope), byrow = TRUE, ncol = 2)
-  rownames(fixefCov) <- rownames(calibfits[[1]]$fixefCov)
-  colnames(fixefCov) <- colnames(calibfits[[1]]$fixefCov)
-  
-  phis <- do.call("rbind", lapply(calibfits, function(calibfit) as.numeric(calibfit$calib.fit$phi)))
-  phi <- sum(phis * apply(weights, 2, mean))
-  
-  calib.fits <- lapply(calibfits, function(calibfit) calibfit$calib.fit)
+  ## we create the spatial points for calibration points
+  calib.points  <- .CreateSpatialPoints(long = calib.data$long,
+                                        lat = calib.data$lat,
+                                        proj = "+proj=longlat +datum=WGS84"
+  )
   
   ## return
-  out <- list("param" = param,
-              "fixefCov" = fixefCov,
-              "phi" = phi,
-              "calib.fit" = calib.fits,
+  out <- list("param" = param.calibfit,
+              "fixefCov" = fixefCov.calibfit,
+              "phi" = calib.fit$phi,
+              "calib.fit" = calib.fit,
               "calib.data" = calib.data,
-              "sp.points" = list(calibs = calibfits[[1]]$sp.points)
+              "sp.points" = list(calibs = calib.points)
   )
   
   class(out) <- c("multicalibfit", "calibfit", "list")
@@ -383,7 +428,7 @@ calibmultifit <- function(calib.data,
   data <- droplevels(data)
   if (!is.null(weighting)) {
     precipitations <- raster::extract(weighting, cbind(data$long, data$lat))
-    precipitations[is.na(precipitations)] <- 0.0001 ## remove NA --> dangerous?
+    precipitations[is.na(precipitations)] <- 0.0001 ## remove NA to prevent crashes --> dangerous?
     data <- cbind(data, precipitations)
   }
   return(data)
@@ -402,6 +447,9 @@ calibmultifit <- function(calib.data,
                             data = data,
                             method = lik.method
                             )
+  #plot(tissue.value ~ mean.iso, data = data)
+  #abline(param[1], param[2], col = 2)
+  #title(paste(round(calib.fit$APHLs$p_v, 2)))
   if (return.fit) return(calib.fit)
   return(calib.fit$APHLs$p_v)
 }
@@ -426,30 +474,21 @@ print.calibfit <- function(x, ...) {
 #' @export
 #' @method summary calibfit
 summary.calibfit <- function(object, ...) {
-  if (!any(class(object) %in% "multicalibfit")) {
-    cat("\n")
-    cat("Fixed effect estimates of the calibration fit", "\n")
-    print(.NiceRound(object$param, 3), quote = FALSE)
-    cat("\n")
-    cat("Covariance matrix of fixed effect estimates:", "\n")
-    print(.NiceRound(object$fixefCov, 3), quote = FALSE)
-    cat("\n")
-    cat("#########################################################", "\n")
-    cat("### spaMM summary of the fit of the calibration model ###", "\n")
-    cat("#########################################################", "\n")
-    cat("\n")
-    print(spaMM::summary.HLfit(object$calib.fit))
-    cat("\n")
-    cat(paste("[model fitted with spaMM version ", object$calib.fit$spaMM.version, "]", sep = ""), "\n")
-    cat("\n")
-  } else {
-    for (calibfit in 1:length(object$calib.fit)) {
-      cat("\n")
-      cat(paste("##### Calibfit", names(object$calib.fit)[calibfit]), "#####")
-      cat("\n")
-      summary(object$calib.fit[[calibfit]])
-    }
-  }
+  cat("\n")
+  cat("Fixed effect estimates of the calibration fit", "\n")
+  print(.NiceRound(object$param, 3), quote = FALSE)
+  cat("\n")
+  cat("Covariance matrix of fixed effect estimates:", "\n")
+  print(.NiceRound(object$fixefCov, 3), quote = FALSE)
+  cat("\n")
+  cat("#########################################################", "\n")
+  cat("### spaMM summary of the fit of the calibration model ###", "\n")
+  cat("#########################################################", "\n")
+  cat("\n")
+  print(spaMM::summary.HLfit(object$calib.fit))
+  cat("\n")
+  cat(paste("[model fitted with spaMM version ", object$calib.fit$spaMM.version, "]", sep = ""), "\n")
+  cat("\n")
   return(invisible(NULL))
 }
 
