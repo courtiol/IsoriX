@@ -15,13 +15,34 @@
 \section{version 0.8}{
   \subsection{New features}{
     \itemize{
+      \item new function calibmultifit to perform calibration after isomultifit
       \item new option in plot that allows to map the isoscape onto a sphere
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
     }
   }
+  
   \subsection{Major changes}{
     \itemize{
       \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
+    }
+  }
+  
+  \subsection{Minor changes}{
+    \itemize{
+      \item the plotting function for calibfit gains an argument "..." for more control
+    }
+  }
+  
+  \subsection{Geeky changes}{
+    \itemize{
+      \item the list of suggested packages has been revised and rgdal removed as it caused (again) problems with Travis
+      \item following a change in spaMM predict.HLfit, the prediction are now being made by chunck of 1000 points instead of 150. This should lead to a tiny gain in performance under spaMM version higher than 2.2.
+    }
+  }
+  
+  \subsection{Solved BUGS}{
+    \itemize{
+      \item the plotting function were crashing in case of no variation in the landscape
     }
   }
 }
