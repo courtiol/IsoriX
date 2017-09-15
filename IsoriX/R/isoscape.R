@@ -513,7 +513,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
   isoscapes <- lapply(names(isofit$multi.fits),
                       function(fit) {
                          if (verbose) {
-                           print(paste("#### Isoscapes for", fit, "####"), quote = FALSE)
+                           print(paste("#### building isoscapes for", fit, " in progress ####"), quote = FALSE)
                          }
                          iso <- isoscape(elevation.raster = elevation.raster,
                                          isofit = isofit$multi.fits[[fit]],
