@@ -623,13 +623,14 @@ plot.calibfit <- function(x, ...) {
        graphics::plot(tissue.value ~ mean.iso,
                       xlab = "Isotopic value in the environment",
                       ylab = "Isotopic value in the organisms",
-                      las = 1
+                      las = 1,
+                      ...
        )
   )
 
   graphics::points(fitted ~ xs, type = "l", col = "blue", lwd = 2)
+  graphics::points(fitted + stats::qnorm(0.025)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
   graphics::points(fitted + stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
-  graphics::points(fitted - stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
 
   ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
   rm(fitted, fixedVar)
