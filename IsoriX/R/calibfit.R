@@ -241,14 +241,14 @@ calibfit <- function(calib.data,
 #' GermanMultiFit <- isomultifit(iso.data = GNIPDataDEmonthly)
 #' 
 #' ## We fit the calibration model:
-#' calibMulti <- calibmultifit(calib.data = CalibDataAlien,
+#' calibMulti <- calibmultifit(calib.data = CalibDataAlien[1:99, ],
 #'                        isofit = GermanMultiFit,
 #'                        weighting = PrecipBrickDE)
 #' 
 #' plot(calibMulti)
 #' 
 #' ## We fit the calibration model (equal weights):
-#' calibMulti2 <- calibmultifit(calib.data = CalibDataAlien,
+#' calibMulti2 <- calibmultifit(calib.data = CalibDataAlien[1:99, ],
 #'                        isofit = GermanMultiFit)
 #' 
 #' plot(calibMulti2)
@@ -312,6 +312,8 @@ calibmultifit <- function(calib.data,
     means.iso <- do.call("cbind", lapply(calib.means, function(calib.mean) calib.mean[, 1]))
     calib.data$mean.iso <- apply(means.iso * weights, 1, sum)
     
+    ## we should somehow rescale the weights as the data are the same for each predVar computation (not rescalling leads to shrinkage)
+
     ## extract the prediction covariance matrices and average them
     list.predVars <- lapply(calib.means, function(calib.mean) attr(calib.mean, "predVar"))
     predcov.isofit.full <- matrix(0, ncol = nrow(calib.data), nrow = nrow(calib.data))
