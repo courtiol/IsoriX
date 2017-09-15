@@ -213,7 +213,7 @@ calibfit!")
       list.varstat.layers <- sapply(1:nrow(assign.data),
                                     function(i) {
                                       isoscape$isoscape$mean.predVar + 
-                                      calibfit$calib.fit$phi/calibfit$param["slope"]^2 +
+                                      calibfit$phi/calibfit$param["slope"]^2 +
                                       fixedVar[i]/calibfit$param["slope"]^2 +
                                       0 ## ToDo compute fourth variance term
                                     }
