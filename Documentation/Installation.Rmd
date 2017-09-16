@@ -1,0 +1,32 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Setting up IsoriX
+
+## Installation
+
+Before installing a new package it is good practice to have the latest version of R installed.
+The current documentation has been created with ```r R.Version()$version.string```. So make sure you have at least an R version as recent as that one.
+
+Please also make sure that all your R packages are up to date. You can update them all by simply typing in the R consol ```update.packages()```; and if you don't want to be bothered by confirmation messages asking you to type Y of yes, just add the option ```ask = FALSE```.
+
+Once your R and all installed R packages are up to date, you can install IsoriX:
+
+```{r, eval = FALSE}
+install.packages("IsoriX", dependencies = TRUE)
+```
+
+This will install IsoriX as well as all packages IsoriX depends on. If you don't specify ```dependencies = TRUE``` the suggested packages -- that is those we use in some examples but that are not essential to IsoriX -- will not be installed.
+
+## Dependency problem?
+
+In the unlikely event you encounter a difficulty installing IsoriX, that may come from another package on which IsoriX depends, or from another package on which these other packages depends on, and so on. Indeed, many work performed by a given package in R is acutally outsourced to other packages. For example, IsoriX uses spaMM to fit the models and rasterVis to make the plots. So if a single package that is needed by IsoriX or by the packages used by IsoriX cannot install, IsoriX will not install. In case of problem, you should thus read carefully the error message and make sure that the problem is not caused by some other package. If that is the case, read the documentation of that other package. The only thing we can do on our side is to try not to use packages people have often problems with. That is why we have already stopped relying on rgdal and Cairo which are not so easy to install on some system. The current IsoriX version indirectly uses ```r length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))``` packages (on top of some R base packages) and ```r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE)) - length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))``` more packages can optionally be used to increase functionalities. We can show all that more precisely using the package miniCRAN:
+
+```{r, mini_CRAN}
+library(miniCRAN)
+set.seed(1L) ## the seed controls the rotation
+plot(makeDepGraph("IsoriX"), cex = 0.7, main = "")
+```
+

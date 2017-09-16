@@ -8,3 +8,18 @@ docache <- TRUE
 # Building Isoscapes {#isoscape}
 
 ## Preparing the data
+
+
+## The GNIP database
+
+You can download precipitation isotope data for hydrogen and oxygen from the Global Networks of Isotopes in Precipitation (GNIP).
+
+To get to know what the GNIP is, its history, and more importantly its terms of use and information about the data, go there: http://www-naweb.iaea.org/napc/ih/IHS_resources_gnip.html
+
+The GNIP data are free to download after the registration process is completed. The following link will bring you to the right place to create an account:
+https://websso.iaea.org/IM/UserRegistrationPage.aspx?returnpage=http://nucleus.iaea.org/wiser
+
+Once your acount has been activated, download the data you need from here:
+https://nucleus.iaea.org/wiser/gnip.php
+
+For the time being, downloads are limited to 10,000 records per batch, which makes the compilation of huge databases fastidious. GNIP promised to come up, in the future, with datasets directly prepared for IsoriX to save you the trouble. We are eagerly waiting for this to happen.
