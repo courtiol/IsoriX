@@ -1,16 +1,18 @@
-```{r, initialization, echo=FALSE}
-library(knitr)
-# set global options for knitr (if changed, all cashed chunked will be rerun!)
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE) # use dpi=100 for small pdfs
-docache <- TRUE
+```{r initialization, echo = FALSE}
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE)
+library(IsoriX)
 ```
 
 # Building Isoscapes {#isoscape}
 
 ## Preparing the data
 
+To get an isoscape, you need data of the isotope composition in space. In this documentation,
+we will use data provided by the Global Networks of Isotopes in Precipitation (GNIP) but you can
+use whatever source of data you prefer, or have access to. In any case, just make sure that you
+format your data the same way we do it so that IsoriX interpret your dataset as it should.
 
-## The GNIP database
+### The GNIP database
 
 You can download precipitation isotope data for hydrogen and oxygen from the Global Networks of Isotopes in Precipitation (GNIP).
 
@@ -23,3 +25,20 @@ Once your acount has been activated, download the data you need from here:
 https://nucleus.iaea.org/wiser/gnip.php
 
 For the time being, downloads are limited to 10,000 records per batch, which makes the compilation of huge databases fastidious. GNIP promised to come up, in the future, with datasets directly prepared for IsoriX to save you the trouble. We are eagerly waiting for this to happen.
+
+### GNIPdataDE
+
+Within IsoriX we have already included a small extract from GNIP for you to try out the functions of the package without having to worry about the data. This small dataset corresponds to $\delta^2H$ data values for Germany. The dataset has kindly been provided by GNIP with the authorization from Christine Stumpp. Here is what the beginning of the dataset looks like:
+
+```{r GNIPDataDE, eval = FALSE}
+head(GNIPDataDE)
+```
+
+```{r GNIPDataDE_bis, echo = FALSE}
+knitr::kable(head(GNIPDataDE))
+```
+
+
+### GNIPdataEU
+
+building a dataset containing the data needed for the construction of the isoscape. In this example, we are going to build a large dataset called `GNIPData`. This dataset derives from data kindly provided to us by GNIP. It contains data most of the data GNIP possesses for deuterium.

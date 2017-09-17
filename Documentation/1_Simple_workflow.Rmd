@@ -18,20 +18,6 @@ knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/chapter1/"
 docache <- TRUE
 ```
 
-# A very simple workflow for IsoriX {#workflow}
-
-Welcome to __IsoriX__, in this chapter we present the steps required for you to build an isoscape and infer the geographic origin of your favourite animals or plants. This document is a simple introduction, we will thus not explore all the functionalities of the package. Such exploration is the subject of additional existing and future vignettes. Please let us know if you would like us to create vignettes on specific topics. You can also discover advanced functionalities by reading the documentation of the package.
-
-Note that this vignette takes a lot of time to run. It has thus not been compiled by CRAN but by us. We have included the sources of this vignette as a text file which you can find in the folder `IsoriX/doc` within the folder where you usually install your packages (the latter being usually the one that shows up when you type `.libPaths()[1]` in R).
-
-In addition, due to constraints on how big this document could be, we had to reduce a lot the resolution of the figures. If you run it on your computer you will see that figures produced by __IsoriX__ are great!
-
-A final remark before we begin is that we are no longer allowed to distribute freely the data used to produce this vignette. Every user must, from now on, compile its own dataset. You can download precipitation isotope data from the Global Networks of Isotopes in Precipitation (GNIP; \url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}). The data are free to download after the registration process is completed. For the time being, downloads are limited to 10,000 records per batch, which makes the compilation of huge databases (such as the one used here) fastidious.  GNIP promised to come up, in the future, with datasets directly prepared for __IsoriX__ to save you such trouble.
-
-## Step 1 - Loading IsoriX
-
-Before using the package, you need to start R and define your working directory using the function `setwd()`. You also need to have installed __IsoriX__ on your system. We assume that you already know R a little bit and that you thus know how to perform such basic operations. If it is not the case, you should read [_An Introduction to R_](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) or any other introduction to R before continuing. Once your R session is ready, you should load the package as follows:
-
 ```{r, load package}
 library(IsoriX)
 IsoriX.options(dont_ask = TRUE)
@@ -41,7 +27,6 @@ IsoriX.options(dont_ask = TRUE)
 
 ## Step 2 - Prepare the full dataset containing the data required to build an isoscape
 
-You must start by building a dataset containing the data needed for the construction of the isoscape. In this example, we are going to build a large dataset called `GNIPData`. This dataset derives from data kindly provided to us by GNIP. It contains data most of the data GNIP possesses for deuterium.
 
 This is what the raw dataset provided by GNIP looks like:
 
