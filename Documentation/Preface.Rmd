@@ -1,0 +1,37 @@
+```{r initialization, echo = FALSE}
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/preface/", fig.path = "./cache/fig_knitr/preface/", global.par = TRUE, fig.align = "center", error = TRUE)
+```
+
+# Introduction
+
+This document is the official documentation for the [_R package IsoriX_](https://github.com/courtiol/IsoriX_project). It explains how to use IsoriX and provide information about the underlying methods. This document will keep evolving so to become progressively more complete and accurate. In early versions of IsoriX, the documentation was included as vignettes attached to the package, but we have decided to move the content here. That way we can put more things, better pictures and update the documentation independently from the package.
+
+## What is IsoriX?
+
+IsoriX is an R package that can be used for building isoscapes and inferring the geographic origin of organisms based on their isotopic signature. This package employs a new statistical framework for doing all of this which is based on mixed models (GLMM). As most other packages dedicated to specific applications, IsoriX is essentially a simple interface to several other packages more general in scope. Specifically, it uses the package [_spaMM_](http://kimura.univ-montp2.fr/~rousset/spaMM.htm) for fitting and predicting isoscapes, and for performing the assignment. IsoriX also heavily relies on the package [_rasterVis_](https://oscarperpinan.github.io/rastervis/) for plotting the maps using the powerful [_lattice_](http://lattice.r-forge.r-project.org) visualization system. Knowing these packages is not necessary to handle IsoriX but it certainly helps for advance applications.
+
+## Who are we?
+
+The IsoriX core Team is so far consistuted by:
+
+  * Alexandre Courtiol
+  * François Rousset
+  * Marie-Sophie Rohwaeder
+  * Stephanie Kramer-Schadt
+
+Alex does the programming for IsoriX. François does the programming for spaMM so to make IsoriX working always better. Alex and François have also cooked up together the statistical framework behind IsoriX. Marie is a skilled master student who helped with Alex's programming during an internship. Stephi is the person who initiated this project and who is spending the greatest amount of time guiding IsoriX users. Alex, Marie and Stephi are all based in the Leibniz Institute for Zoo and Wildlife Research in Berlin (Germany). François is based at the Institut des Sciences de l'Evolution in Montpellier (France). We all contributed to this documentation!
+
+## Who are you?
+
+We don't know all IsoriX users but we would love to! For us it is important to know who uses IsoriX in order to allocate best our efforts to make IsoriX better for those who use it. So please let us know about you by sending us a short email to alexandre.courtiol@gmail.com. If the population of users grow, we will create a special email address for IsoriX.
+
+In this documentation we will try to please from the very newbie to the experienced users. We will however assume that you already know R a little bit. If it is not the case, you should read [_An Introduction to R_](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) or any other introduction to R before continuing. We will also assume that you all know a little bit about stable isotopes and isoscapes. For the stat bits, we will also assume that you now Generalized Linear Models and hopefully a little bit about mixed models too.
+
+## Wanna help?
+
+If you want to help us to make IsoriX great, there are plenty things you could do! You could help us completing this documentation and you can also help us producing R code or revising existing code for IsoriX. You can also tell us what new features you would like, what you hate, what you think is buggy and so forth. To do all this, please use the GitHub interfaces for this documentation https://github.com/courtiol/IsoriX_docs and for the package https://github.com/courtiol/IsoriX_project. On these GitHub pages you will be able to access all the code and to leave feedbacks in the page called "Issues". According to GitHub, new features are also considered as "issues" (for programmers it really makes sense actually).
+
+
+## Acknowledgements
+
+Three mature and wise men have been instrumental in the conception of this project: Christian Voigt, Keith Hobson and Leonar Wassenaar. We thank them very much for their moral support and for never having given up on us.
