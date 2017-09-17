@@ -12,7 +12,6 @@ link-citations: yes
 colorlinks: yes
 lot: yes
 lof: yes
-fontsize: 12pt
 description: "This book is the official documentation for the R package IsoriX."
 ---
 
