@@ -325,7 +325,8 @@ isoscape <- function(elevation.raster, ## change as method?
   
     pred.disp.fit <- spaMM::predict.HLfit(object = isofit$disp.fit,
                                           newdata = xs,
-                                          variances = list(respVar = TRUE)
+                                          variances = list(respVar = TRUE),
+                                          blockSize = 1000L
     )
     
     ## transmission of phi to mean.fit
@@ -334,7 +335,8 @@ isoscape <- function(elevation.raster, ## change as method?
     ## predictions from mean.fit
     pred.mean.fit <- spaMM::predict.HLfit(object = isofit$mean.fit,
                                           newdata = xs,
-                                          variances = list(respVar = TRUE)
+                                          variances = list(respVar = TRUE),
+                                          blockSize = 1000L
     )
     
     mean.pred <- pred.mean.fit[, 1]
