@@ -283,8 +283,7 @@ isoscape <- function(elevation.raster, ## change as method?
 }
 
 #' @rdname isoscape
-#' @export
-futureisoscape <- function(elevation.raster, ## change as method?
+.futureisoscape <- function(elevation.raster, ## change as method?
                            isofit,
                            verbose = interactive()) {
   # Predicts the spatial distribution of isotopic values
