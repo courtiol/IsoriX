@@ -150,8 +150,9 @@ isoscape <- function(elevation.raster, ## change as method?
     ## size of chunks to split the job into smaller ones
     chunk.size.for.predict <- 1000L
     
-    ## indexes of beginning of each chunk and of last position are being computed
-    steps <- c(seq(1, length(long.to.do), by = chunk.size.for.predict), length(long.to.do))
+    ## indexes of beginning of each chunk (- 1) and of last position are being computed
+    steps <- unique(c(seq(from = 0L, to = length(long.to.do), by = chunk.size.for.predict),
+                      length(long.to.do)))
     
     ## a logical indicating if a progression bar must be used
     draw.pb <- interactive() & (length(steps) - 1) > 2
@@ -163,20 +164,14 @@ isoscape <- function(elevation.raster, ## change as method?
     
     ## initiate the progress bar
     if (draw.pb) {
-      pb <- utils::txtProgressBar(min = 1,
-                                  max = (length(steps) - 1),
-                                  style = 3)
+      pb <- utils::txtProgressBar(style = 3)
     }
     
-    ## we loop on each chunk of 150 locations
+    ## we loop on each chunk
     for (i in 1:(length(steps) - 1)) {
-      
-      if (draw.pb) {
-        utils::setTxtProgressBar(pb, i) ## update progress bar
-      }
-      
+
       ## compute indexes for covariate values matching the current chunk
-      within.steps <- steps[i]:steps[i + 1]
+      within.steps <-  (steps[i] + 1L):steps[i + 1L] 
       
       ## select coordinates for prediction within chunk
       long <- long.to.do[within.steps]
@@ -219,6 +214,10 @@ isoscape <- function(elevation.raster, ## change as method?
       disp.predVar[within.steps]  <- attr(pred.disp.fit, "predVar")  ## same as mean.residVar (as it should be)
       disp.residVar[within.steps] <- attr(pred.disp.fit, "residVar")  
       disp.respVar[within.steps]  <- attr(pred.disp.fit, "respVar")
+      
+      if (draw.pb) {
+        utils::setTxtProgressBar(pb, steps[i + 1L]/length(lat.to.do)) ## update progress bar
+      }
       
     }  ## we leave the loop on chunks
     
@@ -283,8 +282,9 @@ isoscape <- function(elevation.raster, ## change as method?
   return(out)
 }
 
-
-.futureisoscape <- function(elevation.raster, ## change as method?
+#' @rdname isoscape
+#' @export
+futureisoscape <- function(elevation.raster, ## change as method?
                            isofit,
                            verbose = interactive()) {
   # Predicts the spatial distribution of isotopic values
@@ -326,7 +326,7 @@ isoscape <- function(elevation.raster, ## change as method?
     pred.disp.fit <- spaMM::predict.HLfit(object = isofit$disp.fit,
                                           newdata = xs,
                                           variances = list(respVar = TRUE),
-                                          blockSize = 1000L
+                                          blockSize = 16000L
     )
     
     ## transmission of phi to mean.fit
@@ -336,7 +336,7 @@ isoscape <- function(elevation.raster, ## change as method?
     pred.mean.fit <- spaMM::predict.HLfit(object = isofit$mean.fit,
                                           newdata = xs,
                                           variances = list(respVar = TRUE),
-                                          blockSize = 1000L
+                                          blockSize = 16000L
     )
     
     mean.pred <- pred.mean.fit[, 1]
