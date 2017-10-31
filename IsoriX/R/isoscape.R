@@ -282,7 +282,6 @@ isoscape <- function(elevation.raster, ## change as method?
   return(out)
 }
 
-#' @rdname isoscape
 .futureisoscape <- function(elevation.raster, ## change as method?
                            isofit,
                            verbose = interactive()) {
