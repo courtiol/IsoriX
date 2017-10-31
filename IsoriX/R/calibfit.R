@@ -203,7 +203,7 @@ calibfit <- function(calib.data,
 
 
 
-#' Fit the calibration model when the isoscape has been fitted using isomultifit
+#' Fit the calibration model when the isoscape has been fitted using isomultifit (do not use!)
 #'
 #' This function is the counterpart of \code{\link{calibfit}} for the objects
 #' created with \code{\link{isomultifit}}. The function can handle
@@ -254,8 +254,7 @@ calibfit <- function(calib.data,
 #' plot(calibMulti2)
 #' }
 #' 
-#' @export
-calibmultifit <- function(calib.data,
+.calibmultifit <- function(calib.data,
                      isofit,
                      weighting = NULL,
                      verbose = interactive(),
