@@ -15,7 +15,6 @@
 \section{version 0.8}{
   \subsection{New features}{
     \itemize{
-      \item new function calibmultifit to perform calibration after isomultifit (experimental)
       \item new option in plot that allows to map the isoscape onto a sphere
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
     }
@@ -37,6 +36,7 @@
     \itemize{
       \item the list of suggested packages has been revised and rgdal removed as it caused (again) problems with Travis
       \item following a change in spaMM predict.HLfit, the prediction are now being made by chunck of 1000 points instead of 150. This should lead to a tiny gain in performance under spaMM version higher than 2.2.
+      \item the function isoscape was performing predictions twice every 1000 locations, this was not influencing the isoscapes produced, but this has now been corrected 
     }
   }
   
