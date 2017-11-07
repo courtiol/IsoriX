@@ -219,6 +219,13 @@ relevate <- function(elevation.raster,
     }
   })
 
+  ## store the raster in memory if possible
+  if (raster::canProcessInMemory(elevation.raster)) {
+    elevation.raster.HD <- elevation.raster
+    elevation.raster <- raster::raster(elevation.raster.HD)
+    raster::values(elevation.raster) <- raster::values(elevation.raster.HD)
+  }
+  
   if (verbose) {
     print(paste("done!"))
     print(time)
