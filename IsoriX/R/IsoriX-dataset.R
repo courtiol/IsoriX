@@ -252,6 +252,7 @@ NULL
 #' 
 #' ## How did we create this file?
 #' 
+#' \donttest{
 #' if(require(raster) & require(rgeos)){
 #'     worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
 #'     proj4string(worldlimit) <- crs(CountryBorders)
@@ -261,6 +262,7 @@ NULL
 #' ## Uncomment the following to store the file as we did
 #' #save(OceanMask, file = "OceanMask.rda", compress = "xz")
 #' 
+#' }
 #' }
 #' 
 #' 
@@ -293,6 +295,7 @@ NULL
 #' 
 #' ## How did we create this file?
 #' 
+#' \donttest{
 #' if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
 #'     worldmap <- map("world", fill = TRUE, plot = FALSE)
 #'     CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
@@ -301,6 +304,7 @@ NULL
 #'     CountryBorders
 #'     ## Uncomment the following to store the file as we did
 #'     #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
+#' }
 #' }
 #' 
 #' 
