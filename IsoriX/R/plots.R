@@ -121,7 +121,10 @@ plot.isoscape <- function(x,
                           sphere  = list(build = FALSE, keep.image = FALSE),
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
-
+    if (!(any(class(x) %in% "isoscape"))) {
+      stop("This function must be called on an object of class isoscape.")
+    }
+  
     simu <- "isosim" %in% class(x)
 
     ## complete input with default setting
@@ -148,7 +151,7 @@ plot.isoscape <- function(x,
       mask$mask <- OceanMask
     }
 
-    if (("isosim" %in% class(x))) {
+    if (simu) {
       if (sources$draw) {
         sources$draw <- FALSE
         message("you asked to plot sources, but it does not make sense for simulations as each raster cell is a source. The argument 'plot.sources' was thus considered to be FALSE")
@@ -156,12 +159,11 @@ plot.isoscape <- function(x,
       if (!(which %in% c("mean", "disp"))) {
         stop("for simulated data, the argument 'which' must be 'mean' or 'disp'")
       }
-    }
-
-    if (("isofit" %in% class(x)) &
-        !(which %in% c("mean", "mean.predVar", "mean.residVar", "mean.respVar",
+    } else {
+      if (!(which %in% c("mean", "mean.predVar", "mean.residVar", "mean.respVar",
                        "disp", "disp.predVar", "disp.residVar", "disp.respVar"))) {
       stop("argument 'which' unknown")
+      }
     }
 
     ## compute the colors
@@ -299,7 +301,11 @@ plot.isorix <- function(x,
                         sphere  = list(build = FALSE, keep.image = FALSE),
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
-
+  
+  if (!(any(class(x) %in% "isorix"))) {
+    stop("This function must be called on an object of class isorix.")
+  }
+  
   ## complete input with default setting
   .CompleteArgs(plot.isorix)
 
@@ -504,6 +510,10 @@ plot.isorix <- function(x,
 #' @export
 plot.isofit <- function(x, cex.scale = 0.2, ...) {
 
+  if (!(any(class(x) %in% "isofit"))) {
+    stop("This function must be called on an object of class isofit.")
+  }
+  
   ## Test if RStudio is in use
   RStudio <- .Platform$GUI == "RStudio"
 
@@ -614,6 +624,11 @@ plot.calibfit <- function(x, ...) {
                  length = 100
              )
   )
+  
+  if (!(any(class(x) %in% "calibfit"))) {
+    stop("This function must be called on an object of class calibfit.")
+  }
+  
 
   X <- cbind(1, xs)
   fitted <- X %*% x$param
