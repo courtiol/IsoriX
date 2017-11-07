@@ -277,7 +277,7 @@ isoscape <- function(elevation.raster, ## change as method?
   )
   
   ## we define a new class
-  class(out) <- c("isoscape", "isofit", "list")
+  class(out) <- c("isoscape", "list")
   
   return(out)
 }
@@ -400,7 +400,7 @@ isoscape <- function(elevation.raster, ## change as method?
   )
   
   ## we define a new class
-  class(out) <- c("isoscape", "isofit", "list")
+  class(out) <- c("isoscape", "list")
   return(out)
 }
 
@@ -568,7 +568,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
               )
   
   ## we define a new class
-  class(out) <- c("isoscape", "isofit", "list")
+  class(out) <- c("isoscape", "list")
   
   return(out)
   }
