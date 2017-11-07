@@ -22,6 +22,7 @@ if(require(sp))
 
 ## How did we create this file?
 
+\donttest{
 if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
     worldmap <- map("world", fill = TRUE, plot = FALSE)
     CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
@@ -30,6 +31,7 @@ if(require(maps) & require(maptools) & require(raster) & require(rgeos)){
     CountryBorders
     ## Uncomment the following to store the file as we did
     #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
+}
 }
 
 
