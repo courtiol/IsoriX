@@ -202,64 +202,14 @@ calibfit <- function(calib.data,
 }
 
 
-
-#' Fit the calibration model when the isoscape has been fitted using isomultifit (do not use!)
-#'
-#' This function is the counterpart of \code{\link{calibfit}} for the objects
-#' created with \code{\link{isomultifit}}. The function can handle
-#' weighting for the aggregation process and can thus be used to perform
-#' assignment onto annual averages precipitation weighted isoscapes.
-#' 
-#' @aliases calibmultifit
-#' @inheritParams isomultiscape
-#' @inheritParams calibfit
-#' @return This function returns a \var{list} of class \var{calibmultifit}
-#'   containing the averaged fixed-effect estimates of the calibration function,
-#'   the averaged covariance of the fixed effects, the averaged residual
-#'   variance of the calibration fit, the fitted calibration models, the
-#'   original calibration data set with additional information added during the
-#'   fit, and the location of the calibration points as spatial points.
-#' @note See \code{\link{CalibDataAlien}} to know which variables are needed to
-#'   perform the calibration fit and their names.
-#' @seealso \code{\link{IsoriX}} for the complete workflow
-#' @keywords models regression
-#' @examples
-#' 
-#' ## The examples below will only be run if sufficient time is allowed
-#' ## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
-#' ## if you want to allow for examples taking up to ca. XX seconds to run
-#' ## (so don't write XX but put a number instead!)
-#' 
-#' if(IsoriX.getOption("example_maxtime") > 60) {
-#' 
-#' ## We prepare the data:
-#' GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
-#'                               month = 1:12,
-#'                               split.by = "month")
-#'  
-#' ## We fit the models for Germany:
-#' GermanMultiFit <- isomultifit(iso.data = GNIPDataDEmonthly)
-#' 
-#' ## We fit the calibration model:
-#' calibMulti <- calibmultifit(calib.data = CalibDataAlien[1:99, ],
-#'                        isofit = GermanMultiFit,
-#'                        weighting = PrecipBrickDE)
-#' 
-#' plot(calibMulti)
-#' 
-#' ## We fit the calibration model (equal weights):
-#' calibMulti2 <- calibmultifit(calib.data = CalibDataAlien[1:99, ],
-#'                        isofit = GermanMultiFit)
-#' 
-#' plot(calibMulti2)
-#' }
-#' 
 .calibmultifit <- function(calib.data,
                      isofit,
                      weighting = NULL,
                      verbose = interactive(),
                      control.optim = list()
 ) {
+  
+  stop("work in progress, do not use!")
   
   time <- system.time({
     
