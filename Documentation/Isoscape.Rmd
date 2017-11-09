@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r initialization, echo = FALSE}
 knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE)
 library(IsoriX)
@@ -25,7 +30,7 @@ For the time being, downloads are limited to 10,000 records per batch, which mak
 
 ### A toy example: GNIPDataDE {#GNIPDataDE}
 
-Within IsoriX we have already included a small extract from GNIP for you to try out the functions of the package without having to worry about the data. This small dataset corresponds to $\delta^2H$ values for Germany. The dataset has kindly been provided by GNIP with the authorization from Christine Stumpp. Here is what the beginning of the dataset looks like:
+Within IsoriX we have already included a small extract from GNIP for you to try out the functions of the package without having to worry about the data. This small dataset corresponds to $\delta^2H$ values for Germany. The dataset has kindly been provided by Christine Stumpp. Here is what the beginning of the dataset looks like:
 
 ```{r GNIPDataDE, eval = FALSE}
 head(GNIPDataDE)
@@ -107,7 +112,7 @@ knitr::kable(head(GNIPData))
 As you can see, the format is the same as the one for `GNIPDataDE`, which is what we want.
 
 
-## Processing the raw data
+## Processing the raw data {#processing}
 
 In order to build your isoscape with IsoriX, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, and potentially over fixed periods of time.
 
@@ -122,23 +127,104 @@ Here we will use the function `prepdata()` to select from the dataset `GNIPData`
 We will start by using the default aggregation scheme, which simply produces an overall average per location.
 
 ```{r GNIP_EU_build}
-GNIPDataEU <- prepdata(data = GNIPData,
-                       long.min = -30, long.max = 60,
-                       lat.min = 30, lat.max = 70)
+GNIPDataEUagg <- prepdata(data = GNIPData,
+                         long.min = -30, long.max = 60,
+                         lat.min = 30, lat.max = 70)
 ```
 
 
 Let us now visualise the beginning of the dataset:
 
 ```{r GNIPDataEU_view, eval = FALSE}
-head(GNIPDataEU)
+head(GNIPDataEUagg)
 ```
 
 ```{r GNIPDataEU_view_bis, echo = FALSE}
-knitr::kable(head(GNIPDataEU))
+knitr::kable(head(GNIPDataEUagg))
 ```
 
-### Aggregation for 12 set of isoscapes
+
+### Aggregation for multiple sets of isoscapes {#multiplesets}
+
+Depending on what you want to do, you may need to prepare the data for multiple sets of isoscapes.
+This is for example the case if you want to ultimately build a yearly isoscape for which the weight of the data from each month is being controlled, as it is the case for the widely use annual precipitation-weighted isoscape. We will choose this example and thus prepare the data in view of building 12 sets of isoscapes (one for each month).
+
+This can be done again with the use of the function  `prepdata()` using the argument `split.by = "month"`:
+
+```{r GNIP_EU_12_build}
+GNIPDataEU12agg <- prepdata(data = GNIPData,
+                           long.min = -30, long.max = 60,
+                           lat.min = 30, lat.max = 70,
+                           split.by = "month")
+```
+
+Let us visualise the first 15 lines of the dataset:
+
+```{r GNIPDataEU12_view, eval = FALSE}
+head(GNIPDataEU12agg, n = 15)
+```
+
+```{r GNIPDataEU12_view_bis, echo = FALSE}
+knitr::kable(head(GNIPDataEU12agg, n = 15))
+```
+
+As you can see, you now have observation for each month.
+The column `isoscape.value` gives the average for each month accross the years.
+The column `var.isoscape.value` gives the between-year variance in monthly measurements.
+
+
+## Fitting the geostatistical models
+
+Isoscapes are predictions stemming from statistical models.
+In this section we will show you how to fit such models based on the dataset we prepared in section \@ref(processing).
+We refer to *set of isoscapes* because IsoriX does not create a single isoscape predicting the spatial distribution of isotopes but it also creates other isoscapes related to this main isoscapes. For example, it also creates an isoscape indicating how reliable the predictions are in any particular locations.
+If a single dataset is being used, then a single set of isoscapes need to be built. Instead, if several datasets have been prepared (see section \@ref(multiplesets)), then you will have to accordingly build multiple sets of isoscapes.
+
+### Fitting the models for a single set of isoscapes
+
+To fit the geostatisical model required to build a single set of isoscapes, you need to use the function `isofit()`.
+This function has several parameters that can be adjusted to fit different models, but we will here use its default settings.
+
+```{r isofit}
+fitGNIPDataEUagg <- isofit(iso.data = GNIPDataEUagg)
+```
+
+### Fitting the models for a multiple set of isoscapes
+
+If you have created multiple sets of data, you need to use the function `isomultifit()` for fitting one set of isoscapes per set of data. As for `isofit()`, several parameters can be adjusted to fit different models, but we will again use here the default settings of the function.
+
+```{r isomultifit}
+fitGNIPDataEU12agg <- isomultifit(iso.data = GNIPDataEU12agg)
+```
+
+For the time being this function will fit sequentialy the sets of isoscapes. So for the example used here, it means that 12 sets of isoscapes are fitted sequentially which thus takes more cmputing time than building a single set of isoscape. In the near future we will however revise the internal structure of this funtion for it to be able to use several CPUs simultaneously and thus make profit of IsoriX option used to define the number of CPUs allowed for IsoriX to work with (see section \@ref(globaloptions)).
+
+## Saving the fitted models
+
+Fitting models can take substantial computing time, depending on the amount of data you have and on the complexity of the models to be fit.
+Therefore, you may want to save the fitted models in order to be allowed to reuse them later on even after having closed your R session, or in order to send them to your colleagues and so forth.
+This can be done as follow:
+
+```{r saving models}
+save(fitGNIPDataEUagg, file = "fitGNIPDataEUagg.rda", compress = "xz")
+save(fitGNIPDataEU12agg, file = "fitGNIPDataEU12agg.rda", compress = "xz")
+```
+
+The function `save()` will (by default) store your R object in a file that can be found in your working directory.
+To use `save()`, provide the object you want to save as a first argument.
+Then, `file =` defines the name of the file that will store the R object in your hard drive.
+This name can be different from the name object but naming the file as the object allows you to remember what the name of the stored object is. The last argument `compress =` is optional but it allows to create smaller files without loosing any content, so we always use it.
+
+For loading a saved object (in a new session of R for example), just use the function `load()` as follows (but make sure your working directory is set properly):
+
+```{r loading models}
+load(file = "fitGNIPDataEUagg.rda")
+load(file = "fitGNIPDataEU12agg.rda")
+```
+
+*Be carefull*, we do not recommend you to reused saved object after updating either IsoriX, or spaMM, or both. If you update, the best practice to make sure that every thing is working properly is to refit all your models. By doing this you may also benefit from potentially new optimisations we would have done. 
+
+## Examining the fitted models
 
 
 

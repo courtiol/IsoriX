@@ -55,7 +55,7 @@ One way to do that is to use the R command ```setwd()```. Double check by lookin
 the working directory by typing ```dir()```.
 
 
-## Global options
+## Global options {#globaloptions}
 
 There are a few general options you can set up for IsoriX (see ```?IsoriX.options``` for details).
 Like the loading of the package, the general options must be redefined each time you restart R.

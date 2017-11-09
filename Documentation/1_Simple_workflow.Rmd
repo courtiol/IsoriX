@@ -18,44 +18,6 @@ knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/chapter1/"
 docache <- TRUE
 ```
 
-## Step 3 - Filter and aggregate the dataset required to build the isoscape
-
-In order to build your isoscape with __IsoriX__, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, and potentially over a fixed period of time. You can choose to aggregate your dataset on your own, or to use our function `prepdata()`. This function allows you to aggregate the data over different time intervals. It also allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
-
-Here we will use the function `prepdata()` to select from the dataset `GNIPData` the observations available within an extent of latitude and longitude that covers roughly Europe. We will use the default aggregation scheme, which simply produces an overall average per location.
-
-```{r GNIP EU build, eval = TRUE}
-GNIPDataEU <- prepdata(data = GNIPData,
-                        long.min = -30, long.max = 60,
-                        lat.min = 30, lat.max = 70)
-```
-
-```{r TEMPORARY TRICK TO SAVE TIME, eval = TRUE, echo = FALSE}
-GNIPDataEU <- prepdata(data = GNIPDataDE)
-```
-
-Let us now visualise the first 6 rows of the dataset:
-
-```{r GNIPDataEU view}
-head(GNIPDataEU)
-```
-
-__Important__:  before continuing to the next step, you must make sure that your final dataset contains the same type of information and column names than the dataset we have just created!
-
-
-## Step 4 - Fit the geostatistical model
-
-We are now going to use the function `isofit()` to fit the geostatisical model required to build isoscapes. This function has several parameters that can be adjusted to fit different models, but we will here use its default settings.
-
-```{r isofit, eval = TRUE}
-Europefit <- isofit(iso.data = GNIPDataEU)
-```
-
-```{r load isofit, echo = FALSE}
-save(Europefit, file = "./output/Europefit.rda", compress = "xz")
-#load("Europefit.rda")
-```
-
 You can check the output of the model fit by typing its name (not shown), and you can also use the function `plot()` from our package to check visually some properties of the model fit.
 
 \newpage
