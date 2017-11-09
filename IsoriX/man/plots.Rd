@@ -11,6 +11,7 @@
 \alias{plot.isorix}
 \alias{plot.isofit}
 \alias{plot.calibfit}
+\alias{plot.RasterLayer}
 \title{Plotting functions for IsoriX}
 \usage{
 \method{plot}{isoscape}(x, which = "mean", sources = list(draw = TRUE, cex =
@@ -32,10 +33,12 @@
 \method{plot}{isofit}(x, cex.scale = 0.2, ...)
 
 \method{plot}{calibfit}(x, ...)
+
+\method{plot}{RasterLayer}(x, ...)
 }
 \arguments{
 \item{x}{The return object of an \code{\link{isofit}},
-\code{\link{isoscape}}, \code{\link{calibfit}}, or \code{\link{isofind}}
+\code{\link{isoscape}}, \code{\link{calibfit}}, \code{\link{isofind}}, or \code{\link[raster:raster]{raster}}
 call}
 
 \item{which}{A \var{string} indicating the name of the raster to be plotted
@@ -82,7 +85,8 @@ location of the calibration sampling area (see details)}
 the plots}
 }
 \description{
-These functions plot objects created by \pkg{\link{IsoriX}}.
+These functions plot objects created by \pkg{\link{IsoriX}}
+(with the exception of plot method for RasterLayer created using \pkg{\link{raster}}).
 }
 \details{
 When called upon an object of class \var{isofit}, the plot function
@@ -141,6 +145,9 @@ specify the function that is used to sample the colours. If \code{fn} is NULL
 (default) the palette functions derived from \code{\link{isopalette1}} and
 \code{\link{isopalette2}} are used when ploting isoscape and assignments,
 respectivelly.
+
+When called upon an object of class \var{RasterLayer}, the plot function is 
+a simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 }
 \examples{
 ## See ?isoscape or ?isofind for examples
