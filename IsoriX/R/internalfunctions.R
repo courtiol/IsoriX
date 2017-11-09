@@ -237,3 +237,34 @@
   })
   return(end)
 }
+
+.summarizevalues <- function(var, nb.quantiles = 1e4) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## It extracts and summarizes the raster values using quantiles if needed
+  if (!class(var) %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
+    return(var)
+  } else if (raster::inMemory(var)) {
+    return(as.numeric(raster::values(var)))
+  }
+  
+  if (interactive()) {
+    print("extracting values from rasters...")
+  }
+  
+  if (class(var) %in% c("RasterLayer")) {
+    max_var <- raster::maxValue(var)
+    min_var <- raster::minValue(var)
+    var <- unique(c(min_var,
+                    raster::quantile(var, seq(min_var, max_var, length = nb.quantiles)),
+                    max_var))
+    return(var)
+  } else if (class(var) %in% c("RasterStack", "RasterBrick")) {
+    max_var <- max(raster::maxValue(var))
+    min_var <- min(raster::minValue(var))
+    var <- unique(c(min_var,
+                    apply(raster::quantile(var, seq(min_var, max_var, length = nb.quantiles)), 2, median),
+                    max_var))
+    return(var)
+  }
+  stop("'var' has an unknown class")
+}
