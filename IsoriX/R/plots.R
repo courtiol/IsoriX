@@ -1,6 +1,7 @@
 #' Plotting functions for IsoriX
 #'
-#' These functions plot objects created by \pkg{\link{IsoriX}}.
+#' These functions plot objects created by \pkg{\link{IsoriX}}
+#' (with the exception of plot method for RasterLayer created using \pkg{\link{raster}}).
 #'
 #' When called upon an object of class \var{isofit}, the plot function
 #' draws diagnostic information for the fits of the isoscape geostatistical
@@ -58,11 +59,14 @@
 #' (default) the palette functions derived from \code{\link{isopalette1}} and
 #' \code{\link{isopalette2}} are used when ploting isoscape and assignments,
 #' respectivelly.
+#' 
+#' When called upon an object of class \var{RasterLayer}, the plot function is 
+#' a simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 #'
 #' @name plots
 #' @aliases plot.isofit plot.isoscape plot.calibfit plot.isorix plot
 #' @param x The return object of an \code{\link{isofit}},
-#'   \code{\link{isoscape}}, \code{\link{calibfit}}, or \code{\link{isofind}}
+#'   \code{\link{isoscape}}, \code{\link{calibfit}}, \code{\link{isofind}}, or \code{\link[raster:raster]{raster}}
 #'   call
 #' @param cex.scale A \var{numeric} giving a scalling factor for the points in
 #'   the plots
@@ -342,7 +346,7 @@ plot.isorix <- function(x,
 
   ## create the main plot(s)
   if ("group" %in% who) {
-    colours <- .cutandcolor(var        = x$group$pv@data@values,
+    colours <- .cutandcolor(var        = x$group$pv, #@data@values, removed
                             step       = palette$step,
                             range      = palette$range,
                             palette    = palette$fn,
@@ -366,7 +370,7 @@ plot.isorix <- function(x,
       NULL
     }
 
-    colours <- .cutandcolor(var        = x$indiv[[what]][[who]]@data@values,
+    colours <- .cutandcolor(var        = x$indiv[[what]][[who]], #@data@values removed: does not work if raster on hard drive...
                             step       = palette$step,
                             range      = palette$range,
                             palette    = palette$fn,
@@ -445,6 +449,11 @@ plot.isorix <- function(x,
                          col.cutoff = "#909090",
                          n.labels = 99,
                          digits = 2) {
+  
+  var <- .summarizevalues(var) ## converting rasters info into numerics if needed
+  max_var <- max(var, na.rm = TRUE)
+  min_var <- min(var, na.rm = TRUE)
+
   if (is.na(n.labels)) {
     warning("The argument n.labels of the palette was changed to 10 because it was not defined!")
     n.labels <- 10
@@ -453,11 +462,11 @@ plot.isorix <- function(x,
     range <- c(NA, NA)
   }
   if (is.na(range)[1]) {
-    range[1] <- min(var, na.rm = TRUE)
+    range[1] <- min_var
   }
   if (is.na(range)[2]) {
     hard.top <- FALSE
-    range[2] <- max(var, na.rm = TRUE)
+    range[2] <- max_var
   } else {
     hard.top <- TRUE
   }
@@ -465,19 +474,19 @@ plot.isorix <- function(x,
     step <- (max(range, na.rm = TRUE) - min(range, na.rm = TRUE)) / (n.labels - 1)
   }
   where.cut <- seq(min(range, na.rm = TRUE), (max(range, na.rm = TRUE)), step)
-  if ((max(where.cut) < max(var, na.rm = TRUE)) & !hard.top) {
+  if ((max(where.cut) < max_var) & !hard.top) {
     where.cut <- c(where.cut, max(where.cut) + step)
     n.labels <- n.labels + 1
   }
-  if ((min(var, na.rm = TRUE) < min(where.cut)) || (max(var, na.rm = TRUE) > max(where.cut))) {
+  if ((min_var < min(where.cut)) || (max_var > max(where.cut))) {
     warning(paste0("Range for palette too small! It should be at least: [",
-                   min(var, na.rm = TRUE), "-", max(var, na.rm = TRUE), "]"))
+                   min_var, "-", max_var, "]"))
   }
   if (!is.na(cutoff)) {
     where.cut <- sort(unique(c(cutoff, where.cut)))
   }
   if (length(unique(var)) > 1) { 
-    cats <- cut(var, where.cut, ordered_result = TRUE)
+    cats <- cut(var, where.cut, ordered_result = TRUE)  ## also works on non raster
   } else { ## case if no variation
     cats <- as.factor(where.cut)
     where.cut <- c(where.cut, where.cut + 1e-10)
@@ -650,5 +659,13 @@ plot.calibfit <- function(x, ...) {
   ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
   rm(fitted, fixedVar)
 
+  return(invisible(NULL))
+}
+
+#' @rdname plots
+#' @method plot RasterLayer
+#' @export
+plot.RasterLayer <- function(x, ...) {
+  print(rasterVis::levelplot(x, margin = FALSE, ...))
   return(invisible(NULL))
 }
