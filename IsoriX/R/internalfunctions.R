@@ -248,7 +248,7 @@
   }
   
   if (interactive()) {
-    print("extracting values from rasters...")
+    print("extracting values from stored rasters...")
   }
   
   if (class(var) %in% c("RasterLayer")) {
