@@ -262,6 +262,9 @@ calibfit!")
   }
 
   ## remove log scale
+  if (verbose) {
+    print("converting log p-values into p-values...")
+  }
   pv.stack <- exp(logpv.stack)
   names(pv.stack) <- names.layers  ## we restore the names as they are not kept when computing
   rm(logpv.stack)
@@ -321,6 +324,9 @@ calibfit!")
 
 
 .FisherMethod <- function(logpv) {
+  if (length(logpv) == 1) {
+    return(exp(logpv))
+  }
   fisher.stat <- -2*sum(logpv)
   df <- 2*length(logpv)
   pv <- stats::pchisq(q = fisher.stat, df = df, lower.tail = FALSE)
