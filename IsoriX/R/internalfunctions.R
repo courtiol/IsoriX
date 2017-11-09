@@ -262,7 +262,7 @@
     max_var <- max(raster::maxValue(var))
     min_var <- min(raster::minValue(var))
     var <- unique(c(min_var,
-                    apply(raster::quantile(var, seq(min_var, max_var, length = nb.quantiles)), 2, median),
+                    apply(raster::quantile(var, seq(min_var, max_var, length = nb.quantiles)), 2, stats::median),
                     max_var))
     return(var)
   }
