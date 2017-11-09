@@ -234,3 +234,4 @@ relevate <- function(elevation.raster,
   print(elevation.raster)
   return(elevation.raster)
 }
+
