@@ -29,6 +29,7 @@
   \subsection{Minor changes}{
     \itemize{
       \item the plotting function for calibfit gains an argument "..." for more control
+      \item a ploting method for rasterLayer has been included for conveniance. 
     }
   }
   
@@ -39,12 +40,16 @@
       \item the function isoscape was performing predictions twice every 150 (or now 1000) locations, this was not influencing the isoscapes produced, but this has now been corrected
       \item the class isoscape not longer contains the class name isofit  ## ToDO, clean the simulation part...
       \item the function relevate now produces an elevation raster stored in memory if it is possible. This should prevent bugs that appears when using loaded rasters that were previously saved (the temporary link to the hard drive location is no longer correct in this case).
+      \item the function .ObjectiveFnCalib has been moved within the function calibfit as it is not used elsewhere
+      \item the function calibfit as been prepared for a possible activation of a random effect for species ID in the future. But whether it would make sense or not remains to be determined.
+      \item the function .FisherMethod now directly computes the exponential of the log pv if only one value is provided. This leads to much faster assignment in the case of a single observation.
     }
   }
   
   \subsection{Solved BUGS}{
     \itemize{
-      \item the plotting function were crashing in case of no variation in the landscape
+      \item the plotting functions were crashing in case of no variation in the landscape
+      \item the plotting functions were crashing when called on multiple-raster objects not stored 'inMemory'
     }
   }
 }
