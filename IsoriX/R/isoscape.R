@@ -245,7 +245,7 @@ isoscape <- function(elevation.raster, ## change as method?
   mean.predVar.raster <- SaveRaster(mean.predVar)
   mean.residVar.raster <- SaveRaster(mean.residVar)
   mean.respVar.raster <- SaveRaster(mean.respVar)
-  
+
   disp.raster <- SaveRaster(disp.pred)
   disp.predVar.raster <- SaveRaster(disp.predVar)
   disp.residVar.raster <- SaveRaster(disp.residVar)
