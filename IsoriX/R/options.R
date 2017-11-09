@@ -67,6 +67,6 @@ IsoriX.getOption <- function(x) {
 }
 
 ## Setting default package options
-.IsoriX.data$options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE)  ## put example_maxtime = 500 to check all examples
+.IsoriX.data$options <- list(example_maxtime = 500, Ncpu = 2L, dont_ask = FALSE)  ## put example_maxtime = 500 to check all examples
                                                                                 ## otherwise put 5
 
