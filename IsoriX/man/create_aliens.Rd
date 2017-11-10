@@ -75,12 +75,12 @@ centered around such mean and a variance defined by the residual variance
 if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We fit the models for Germany
-GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 ## We build the isoscapes
-isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+isoscape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
 ## We create a simulated dataset with 25 sites and 5 observations per site
 Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),

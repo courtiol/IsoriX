@@ -26,7 +26,7 @@ be downloaded using the function \code{\link{getprecip}}.
 \dontrun{
 ### Creating the object PrecipBrickDE
 getprecip() ## Download the tif files (~ 1 Gb compressed)
-PrecipBrickDE <- prepcipitate(elevation.raster = ElevRasterDE)
+PrecipBrickDE <- prepcipitate(raster = ElevRasterDE)
 save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
 }
 

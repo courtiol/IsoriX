@@ -69,7 +69,7 @@ Calibfit <- function(...) {
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the data:
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' ## We fit the models for Germany:
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)

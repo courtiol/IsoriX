@@ -1,8 +1,14 @@
 #' @rdname IsoriX-defunct
 #' @export
 RElevate <- function(...) {
-    .Defunct("relevate")
+    .Defunct("prepelev")
   }
+
+#' @rdname IsoriX-defunct
+#' @export
+relevate <- function(...) {
+  .Defunct("prepelev")
+}
 
 
 
@@ -74,7 +80,7 @@ RElevate <- function(...) {
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We fit the models for Germany
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
 #'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
@@ -82,19 +88,19 @@ RElevate <- function(...) {
 #' ### Let's explore the difference between aggregation schemes
 #' 
 #' ## We aggregate and crop using different settings
-#' elevation.raster1 <- relevate(
+#' elevation.raster1 <- prepelev(
 #'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     margin_pct = 0,
 #'     aggregation.factor = 0)
 #' 
-#' elevation.raster2 <- relevate(
+#' elevation.raster2 <- prepelev(
 #'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     margin_pct = 5,
 #'     aggregation.factor = 5)
 #' 
-#' elevation.raster3 <- relevate(
+#' elevation.raster3 <- prepelev(
 #'     elevation.raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     margin_pct = 10,
@@ -137,7 +143,7 @@ RElevate <- function(...) {
 #' projection(empty.raster) <- CRS("+proj=longlat +datum=WGS84")
 #' 
 #' ## We crop it around the pacific
-#' pacificA <- relevate(empty.raster, manual.crop = c(110, -70, -90, 90))
+#' pacificA <- prepelev(empty.raster, manual.crop = c(110, -70, -90, 90))
 #' extent(pacificA) # note that the extent has changed!
 #' 
 #' ## We plot (note the use of the function shift()!)
@@ -150,7 +156,7 @@ RElevate <- function(...) {
 #' }
 #' 
 #' @export
-relevate <- function(elevation.raster,
+prepelev <- function(elevation.raster,
                      isofit = NULL,
                      margin_pct = 5,
                      aggregation.factor = 0L,
@@ -205,7 +211,7 @@ relevate <- function(elevation.raster,
                                                           raster::shift(crop2,
                                                                         x = -360)),
                                             x = 360)
-          warning("The first longitude is greater than the second one. You may want this to study something around the pacific. This feature is not fully supported... but... the function relevate() tried to cope with this. That implies a change in the coordinate system (0:360 instead of -180:180). This should create problems for ploting isoscapes but this can create troubles to add polygons or points on the maps. If that is the case, you need to add 360 degree to the longitudes... If all that sounds complicated, just stick to a first longitude SMALLER than the second one.")
+          warning("The first longitude is greater than the second one. You may want this to study something around the pacific. This feature is not fully supported... but... the function prepelev() tried to cope with this. That implies a change in the coordinate system (0:360 instead of -180:180). This should create problems for ploting isoscapes but this can create troubles to add polygons or points on the maps. If that is the case, you need to add 360 degree to the longitudes... If all that sounds complicated, just stick to a first longitude SMALLER than the second one.")
         } else {
           elevation.raster <- raster::crop(elevation.raster, manual.crop)
         }

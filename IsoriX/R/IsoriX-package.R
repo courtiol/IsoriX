@@ -38,21 +38,23 @@
 #' within each location, you should use the alternative function
 #' \code{\link{isomultifit}}.
 #' 
-#' \item Preparing the elevation raster with \code{\link{relevate}}:
+#' \item Preparing the structural raster with \code{\link{prepelev}}:
 #' 
 #' Building isoscapes and assigning organisms to their origin requires an 
-#' adequate elevation raster, i.e. a matrix representing altitude data on a 
-#' spatial grid. The function \code{\link{relevate}} allows restricting the 
+#' adequate structural raster, i.e. a matrix representing a 
+#' spatial grid. The function \code{\link{prepelev}} allows restricting the 
 #' extent of the raster to the area covered by isoscape data (in order to avoid 
-#' extrapolation) and to reduce the resolution of the original elevation raster 
+#' extrapolation) and to reduce the resolution of the original structural raster 
 #' (in order to speed up computation in all following steps). Note that 
-#' aggregating the raster may lead to different results for the assignment, 
-#' because the elevation of raster cells changes depending on the aggregation 
+#' aggregating the raster may lead to different results for the assignment, if
+#' the structural raster is used to define a covariate. This is 
+#' because the values of raster cells changes depending on the aggregation 
 #' function, which in turn will affect model predictions.
 #' 
 #' We provide the function \code{\link{getelev}} to download an elevation raster
 #' for the entire world at a resolution of one altitude per square-km, and other
-#' rasters may be used. We have also stored a low resolution raster for Germany
+#' rasters may be used. Such an elevation raster can be used as a structural
+#' raster. We have also stored a low resolution raster for Germany
 #' in our package (see \code{\link{ElevRasterDE}}) for users to try things out,
 #' but we do not encourage its use for real application.
 #' 
@@ -61,7 +63,7 @@
 #' 
 #' The function \code{\link{isoscape}} generates the isoscape: it uses the 
 #' fitted geostatistical model to predict the isotopic values for each raster 
-#' cell defined by the elevation raster. If the model has been fitted with
+#' cell defined by the structural raster. If the model has been fitted with
 #' \code{\link{isomultifit}}, you should use the alternative function
 #' \code{\link{isomultiscape}} to generate the isoscape.
 #' 

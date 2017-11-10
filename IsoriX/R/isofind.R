@@ -4,7 +4,7 @@
 #' exists). A new function with a different name is surely doing the old job.
 #' 
 #' @param ... The call of the deprecated function
-#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP queryGNIP RElevate
+#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP queryGNIP RElevate relevate
 #' @name IsoriX-defunct
 NULL
 
@@ -79,13 +79,13 @@ Isorix <- function(...) {
 #' if(IsoriX.getOption("example_maxtime") > 200) {
 #' 
 #' ## We fit the models for Germany
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #' 
 #' 
 #' ## We build the isoscape
-#' isoscape <- isoscape(elevation.raster = ElevRasterDE,
+#' isoscape <- isoscape(raster = ElevRasterDE,
 #'                      isofit = GermanFit)
 #' 
 #' 

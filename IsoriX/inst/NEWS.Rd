@@ -23,13 +23,17 @@
   \subsection{Major changes}{
     \itemize{
       \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
+      \item several objects have been renamed (see Minor changes)
     }
   }
   
   \subsection{Minor changes}{
     \itemize{
       \item the plotting function for calibfit gains an argument "..." for more control
-      \item a ploting method for rasterLayer has been included for conveniance. 
+      \item a ploting method for rasterLayer has been included for conveniance
+      \item the function relevate is now called prepelev
+      \item the function prepdata is now called prepiso
+      \item in several functions the argument elevation.raster has been renamed as raster
     }
   }
   

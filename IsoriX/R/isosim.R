@@ -10,7 +10,7 @@ Isosim <- function(...) {
 #' complete (i.e. maps) isoscapes can be simulated.
 #' 
 #' This function takes as inputs the values for all covariates matching a
-#' series of locations (which can be provided as an elevation raster or as a
+#' series of locations (which can be provided as an structural raster or as a
 #' \var{data.frame}), as well as the parameters of the isoscape model. The
 #' function is not required to fit an isoscape, nor to perform assignments. It
 #' is an additional function that can be useful to test the method, and to
@@ -23,7 +23,7 @@ Isosim <- function(...) {
 #' won't be considered during computations either.
 #' 
 #' @param simu.data A \var{data.frame} containing the covariates needed for the
-#' simulation, or alternatively an elevation raster of class \var{RasterLayer}
+#' simulation, or alternatively a structural raster of class \var{RasterLayer}
 #' @param mean.model.fix.coef A \var{vector} of coefficients for fixed-effects
 #' @param disp.model.fix.coef A \var{vector} of coefficients for fixed-effects
 #' @param mean.model.matern.coef A \var{vector} of coefficients for the spatial
@@ -154,14 +154,14 @@ isosim <- function(simu.data,
   
   ## if simu.data is a raster, we convert it as data.frame
   if (class(simu.data) == "RasterLayer") {
-    elevation.raster <- simu.data
-    coord <- sp::coordinates(elevation.raster)
+    raster <- simu.data
+    coord <- sp::coordinates(raster)
     simu.data <- data.frame(long = coord[, 1],
                             long.2 = coord[, 1]^2,
                             lat = coord[, 2],
                             lat.2 = coord[, 2]^2,
                             lat.abs = abs(coord[, 2]),
-                            elev = raster::extract(elevation.raster, coord),
+                            elev = raster::extract(raster, coord),
                             n.isoscape.value = rep(1e6, nrow(coord)),
                             stationID = as.factor(paste("simu", 1:nrow(coord), sep = "_")))
     rm(coord); gc() ## remove coord as it can be a large object

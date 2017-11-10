@@ -1,13 +1,19 @@
 #' @rdname IsoriX-defunct
 #' @export
 queryGNIP <- function(...) {
-  .Defunct("prepdata")
+  .Defunct("prepiso")
 }
 
 #' @rdname IsoriX-defunct
 #' @export
 QueryGNIP <- function(...) {
-  .Defunct("prepdata")
+  .Defunct("prepiso")
+}
+
+#' @rdname IsoriX-defunct
+#' @export
+prepdata <- function(...) {
+  .Defunct("prepiso")
 }
 
 #' Filter the dataset to create an isoscape
@@ -94,24 +100,24 @@ QueryGNIP <- function(...) {
 #' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @examples
 #' ## Create a processed dataset for Germany
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' head(GNIPDataDEagg)
 #' 
 #' ## Create a processed dataset for Germany per month
-#' GNIPDataDEmonthly <-prepdata(data = GNIPDataDE,
+#' GNIPDataDEmonthly <-prepiso(data = GNIPDataDE,
 #'                              split.by = "month")
 #' 
 #' head(GNIPDataDEmonthly)
 #' 
 #' ## Create a processed dataset for Germany per year
-#' GNIPDataDEyearly <- prepdata(data = GNIPDataDE,
+#' GNIPDataDEyearly <- prepiso(data = GNIPDataDE,
 #'                              split.by = "year")
 #' 
 #' head(GNIPDataDEyearly)
 #' 
 #' ## Create isoscape-dataset for warm months in germany between 1995 and 1996
-#' GNIPDataDEwarm <- prepdata(data = GNIPDataDE,
+#' GNIPDataDEwarm <- prepiso(data = GNIPDataDE,
 #'                            month = 5:8,
 #'                            year = 1995:1996)
 #' 
@@ -119,14 +125,14 @@ QueryGNIP <- function(...) {
 #' 
 #' 
 #' ## Create a dataset with 90% of obs
-#' GNIPDataDE90pct <- prepdata(data = GNIPDataDE,
+#' GNIPDataDE90pct <- prepiso(data = GNIPDataDE,
 #'                             prop.random = 0.9,
 #'                             random.level = "obs")
 #' 
 #' lapply(GNIPDataDE90pct, head) # show beginning of both datasets
 #' 
 #' ## Create a dataset with half the weather stations
-#' GNIPDataDE50pctStations <- prepdata(data = GNIPDataDE,
+#' GNIPDataDE50pctStations <- prepiso(data = GNIPDataDE,
 #'                                     prop.random = 0.5,
 #'                                     random.level = "station")
 #' 
@@ -134,7 +140,7 @@ QueryGNIP <- function(...) {
 #'
 #'
 #' ## Create a dataset with half the weather stations split per month
-#' GNIPDataDE50pctStationsMonthly <- prepdata(data = GNIPDataDE,
+#' GNIPDataDE50pctStationsMonthly <- prepiso(data = GNIPDataDE,
 #'                                            split.by = "month",
 #'                                            prop.random = 0.5,
 #'                                            random.level = "station")
@@ -142,7 +148,7 @@ QueryGNIP <- function(...) {
 #' lapply(GNIPDataDE50pctStationsMonthly, head)
 #' 
 #' @export
-prepdata <- function(data, 
+prepiso <- function(data, 
                      month = 1:12,
                      year,
                      long.min ,

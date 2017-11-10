@@ -15,7 +15,7 @@ GetElev <- function(...) {
 #' \url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted into a
 #' \var{tif} file by us. The function \code{getelev} uses the generic function
 #' \code{downloadfile} that can also be used to download directly other files.
-#' This raster needs further processing with the function \code{\link{relevate}}
+#' This raster needs further processing with the function \code{\link{prepelev}}
 #' and can then be passed to \code{\link{isoscape}}.
 #' 
 #' If the argument "path" is not provided, the file will be stored in the

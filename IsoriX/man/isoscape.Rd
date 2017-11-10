@@ -6,11 +6,11 @@
 \alias{summary.isoscape}
 \title{Predicts the spatial distribution of isotopic values}
 \usage{
-isoscape(elevation.raster, isofit, verbose = interactive())
+isoscape(raster, isofit, verbose = interactive())
 }
 \arguments{
-\item{elevation.raster}{The elevation raster (\var{RasterLayer}) created by
-\code{\link{relevate}}}
+\item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
+raster created by \code{\link{prepelev}}}
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
@@ -27,7 +27,7 @@ class \var{RasterLayer}), and the location of the sources as spatial points.
 \description{
 This function produces the isoscape, i.e. a spatial prediction (i.e. map) of
 the distribution of isotopic delta values. Predictions are computed using
-the fitted isoscape for each raster cell of the elevation raster. All shape
+the fitted isoscape for each raster cell of the structural raster. All shape
 files can be exported and loaded into any Geographic Information System
 (GIS) if needed.
 }
@@ -35,7 +35,7 @@ files can be exported and loaded into any Geographic Information System
 This function computes the predictions (\code{mean}), prediction variances
 (\code{mean.predVar}), residual variances (\code{mean.residVar}) and
 response variances (\code{mean.respVar}) for the isotopic values at a
-resolution equal to the one of the elevation raster. It also computes the
+resolution equal to the one of the structural raster. It also computes the
 same information for the residual dispersion variance (\code{disp.pred},
 \code{disp.predVar}, \code{disp.residVar}, or \code{disp.respVar}).
 
@@ -78,14 +78,14 @@ The isoscape can be plotted using the function \code{\link{plot.isoscape}}
 if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We prepare the data
-GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 
 ## We fit the models
 GermanFit <- isofit(iso.data = GNIPDataDEagg,
                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 ## We build the isoscapes
-isoscape <- isoscape(elevation.raster = ElevRasterDE,
+isoscape <- isoscape(raster = ElevRasterDE,
                      isofit = GermanFit)
 
 isoscape

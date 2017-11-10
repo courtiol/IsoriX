@@ -2,14 +2,14 @@
 #' 
 #' This functions turns the WorldClim data downloaded using the function
 #' \code{\link{getprecip}} into a \var{RasterBrick} of same resolution and
-#' extent as the elevation raster. This function is designed to be used with
+#' extent as the structural raster. This function is designed to be used with
 #' \code{\link{isomultiscape}}.
 #' 
 #' @param path A \var{string} indicating the path where the WorldClim data have
 #'   been downloaded. If the path is null (the default) the function will assume
 #'   that the folder containing the precipitation data is in the current 
 #'   directory
-#' @param elevation.raster A \var{raster} containing the elevation raster
+#' @param raster A \var{raster} containing the structural raster
 #' @param verbose A \var{logical} indicating whether information about the 
 #'   progress of the procedure should be displayed or not while the function is 
 #'   running. By default verbose is \var{TRUE} if users use an interactive R 
@@ -21,7 +21,7 @@
 #' 
 #' \code{\link{PrecipBrickDE}} for the stored precipitation data for Germany
 #' 
-#' \code{\link{relevate}} to prepare the elevation raster
+#' \code{\link{prepelev}} to prepare an elevation raster
 #' 
 #' @examples
 #' 
@@ -32,20 +32,20 @@
 #' \dontrun{
 #' 
 #' ## We fit the models for Germany:
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
 #'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
-#' elevation.raster <- relevate(
-#'     elevation.raster = ElevRasterDE,
+#' StrRaster <- prepelev(
+#'     raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     aggregation.factor = 0)
 #' 
 #' getprecip(path = "~/Desktop/")
 #' 
 #' precipitation.brick <- prepcipitate(path = "~/Desktop/",
-#'                                     elevation.raster = ElevRaster
+#'                                     raster = StrRaster
 #'                                     )
 #'  
 #'  if (require(rasterVis)) {
@@ -55,7 +55,7 @@
 #' }
 #' @export
 prepcipitate <- function(path = NULL,
-                         elevation.raster,
+                         raster,
                          verbose = interactive()
                         ) {
   
@@ -90,7 +90,7 @@ prepcipitate <- function(path = NULL,
       print(paste("Preparing precipitation raster for month", month, "..."), quote = FALSE)
     }
     tmp.raster <- raster::raster(getfilename(month))
-    assign(paste0("month_", month), raster::resample(x = tmp.raster, y = elevation.raster))
+    assign(paste0("month_", month), raster::resample(x = tmp.raster, y = raster))
     rm(tmp.raster)
   }
   

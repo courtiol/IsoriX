@@ -25,13 +25,13 @@ str(AssignDataAlien)
 if(IsoriX.getOption("example_maxtime") > 30) {
 
 ## We prepare the precipitation data
-GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 
 ## We fit the models for Germany
 GermanFit <- isofit(iso.data = GNIPDataDEagg)
 
 ## We build the isoscape
-isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+isoscape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
 ## We create a simulated dataset with 1 site and 10 observations
 set.seed(1L)

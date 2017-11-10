@@ -126,13 +126,13 @@ NULL
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the precipitation data
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' ## We fit the models for Germany
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #'
 #' ## We build the isoscape
-#' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+#' isoscape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 #'
 #' ## We create a simulated dataset with 1 site and 10 observations
 #' set.seed(1L)
@@ -199,13 +199,13 @@ NULL
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the precipitation data
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' ## We fit the models for Germany
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg)
 #'
 #' ## We build the isoscape
-#' isoscape <- isoscape(elevation.raster = ElevRasterDE, isofit = GermanFit)
+#' isoscape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 #'
 #' ## We create a simulated dataset with 50 site and 10 observations per site
 #' set.seed(2L)
@@ -341,7 +341,7 @@ NULL
 #' @name ElevRasterDE
 #' @docType data
 #' @format A \var{RasterLayer}
-#' @seealso \code{\link{relevate}} to crop and/or aggregate the elevation
+#' @seealso \code{\link{prepelev}} to crop and/or aggregate the elevation
 #' raster
 #' @source \url{http://topotools.cr.usgs.gov/gmted_viewer/}
 #' @keywords datasets
@@ -364,7 +364,7 @@ NULL
 #'   elevationrasterbig <- raster("gmted2010_30mn.tif")
 #'   
 #'   ## Create the highly agregated elevation raster
-#'   ElevRasterDE <- relevate(elevationrasterbig,
+#'   ElevRasterDE <- prepelev(elevationrasterbig,
 #'                            aggregation.factor = 10,
 #'                            manual.crop = c(5.5, 15.5, 47, 55.5))
 #'                            
@@ -410,7 +410,7 @@ NULL
 #' \dontrun{
 #' ### Creating the object PrecipBrickDE
 #' getprecip() ## Download the tif files (~ 1 Gb compressed)
-#' PrecipBrickDE <- prepcipitate(elevation.raster = ElevRasterDE)
+#' PrecipBrickDE <- prepcipitate(raster = ElevRasterDE)
 #' save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
 #' }
 #' 
@@ -437,11 +437,11 @@ NULL
 #' This dataset is the raw data source and should not be directly used for
 #' fitting isoscapes.
 #' 
-#' Please use \code{\link{prepdata}} to filter the dataset by time and
+#' Please use \code{\link{prepiso}} to filter the dataset by time and
 #' location.
 #' 
 #' If you want to use your own dataset, you must format your data as those
-#' produced by the function \code{\link{prepdata}}.
+#' produced by the function \code{\link{prepiso}}.
 #' 
 #' @name GNIPDataDE
 #' @docType data
@@ -454,7 +454,7 @@ NULL
 #' [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr [, 6] \tab
 #' month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab stationID
 #' \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
-#' @seealso \code{\link{prepdata}} to prepare the dataset for the analyses and
+#' @seealso \code{\link{prepiso}} to prepare the dataset for the analyses and
 #' to filter by time and location.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
 #' 

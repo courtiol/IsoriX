@@ -9,14 +9,14 @@ Isoscape <- function(...) {
 #' 
 #' This function produces the isoscape, i.e. a spatial prediction (i.e. map) of
 #' the distribution of isotopic delta values. Predictions are computed using
-#' the fitted isoscape for each raster cell of the elevation raster. All shape
+#' the fitted isoscape for each raster cell of the structural raster. All shape
 #' files can be exported and loaded into any Geographic Information System
 #' (GIS) if needed.
 #' 
 #' This function computes the predictions (\code{mean}), prediction variances
 #' (\code{mean.predVar}), residual variances (\code{mean.residVar}) and
 #' response variances (\code{mean.respVar}) for the isotopic values at a
-#' resolution equal to the one of the elevation raster. It also computes the
+#' resolution equal to the one of the structural raster. It also computes the
 #' same information for the residual dispersion variance (\code{disp.pred},
 #' \code{disp.predVar}, \code{disp.residVar}, or \code{disp.respVar}).
 #' 
@@ -50,8 +50,8 @@ Isoscape <- function(...) {
 #' (see examples).
 #' 
 #' @aliases isoscape print.isoscape summary.isoscape
-#' @param elevation.raster The elevation raster (\var{RasterLayer}) created by
-#' \code{\link{relevate}}
+#' @param raster The structural raster (\var{RasterLayer}) such as an elevation
+#' raster created by \code{\link{prepelev}}
 #' @param isofit The fitted isoscape created by \code{\link{isofit}}
 #' @param verbose A \var{logical} indicating whether information about the
 #' progress of the procedure should be displayed or not while the function is
@@ -76,14 +76,14 @@ Isoscape <- function(...) {
 #' if(IsoriX.getOption("example_maxtime") > 30) {
 #' 
 #' ## We prepare the data
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
 #' 
 #' ## We fit the models
 #' GermanFit <- isofit(iso.data = GNIPDataDEagg,
 #'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' ## We build the isoscapes
-#' isoscape <- isoscape(elevation.raster = ElevRasterDE,
+#' isoscape <- isoscape(raster = ElevRasterDE,
 #'                      isofit = GermanFit)
 #' 
 #' isoscape
@@ -122,7 +122,7 @@ Isoscape <- function(...) {
 #' 
 #' @export
 
-isoscape <- function(elevation.raster, ## change as method?
+isoscape <- function(raster, ## change as method?
                      isofit,
                      verbose = interactive()) {
   
@@ -141,8 +141,8 @@ isoscape <- function(elevation.raster, ## change as method?
   
   time <- system.time({
     
-    ## we extract lat/long from all cells of the elevation raster
-    coord <- sp::coordinates(elevation.raster)
+    ## we extract lat/long from all cells of the raster
+    coord <- sp::coordinates(raster)
     long.to.do <- coord[, 1]  # extract the longitude
     lat.to.do <-  coord[, 2]  # extract the lattitude
     rm(coord); gc()  ## remove coord as it can be a large object
@@ -185,7 +185,7 @@ isoscape <- function(elevation.raster, ## change as method?
                        lat = lat,
                        lat.abs = abs(lat),
                        lat.2 = lat^2,
-                       elev = raster::extract(elevation.raster, cbind(long, lat)),
+                       elev = raster::extract(raster, cbind(long, lat)),  ## ToDo: check that it is elev and not something else
                        stationID = as.factor(paste("new", within.steps, sep = "_"))
       )
       
@@ -282,7 +282,7 @@ isoscape <- function(elevation.raster, ## change as method?
   return(out)
 }
 
-.futureisoscape <- function(elevation.raster, ## change as method?
+.futureisoscape <- function(raster, ## change as method?
                            isofit,
                            verbose = interactive()) {
   # Predicts the spatial distribution of isotopic values
@@ -306,8 +306,8 @@ isoscape <- function(elevation.raster, ## change as method?
   
   time <- system.time({
     
-    ## we extract lat/long from all cells of the elevation raster
-    coord <- sp::coordinates(elevation.raster)
+    ## we extract lat/long from all cells of the raster
+    coord <- sp::coordinates(raster)
     
     ## we create the object for newdata
     xs <- data.frame(long = coord[, 1],
@@ -315,7 +315,7 @@ isoscape <- function(elevation.raster, ## change as method?
                      lat = coord[, 2],
                      lat.abs = abs(coord[, 2]),
                      lat.2 = coord[, 2]^2,
-                     elev = raster::extract(elevation.raster, coord),
+                     elev = raster::extract(raster, coord), ## ToDo: check that it is elev
                      stationID = as.factor(paste("new", 1:nrow(coord), sep = "_"))
     )
 
@@ -445,7 +445,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #' 
 #' ## We prepare the data and split them by month:
 #' 
-#' GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
+#' GNIPDataDEmonthly <- prepiso(data = GNIPDataDE,
 #'                               split.by = "month")
 #' 
 #' dim(GNIPDataDEmonthly)
@@ -455,11 +455,11 @@ isoscape <- function(elevation.raster, ## change as method?
 #'                               mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
 #' ## We build the annual isoscapes by simple averaging (equal weighting):
-#' isoscapes <- isomultiscape(elevation.raster = ElevRasterDE,
+#' isoscapes <- isomultiscape(raster = ElevRasterDE,
 #'                            isofit = isoscapemodels)
 #' 
 #' ## We build the annual isoscapes with a weighing based on precipitation amount:
-#' isoscapes.weighted <- isomultiscape(elevation.raster = ElevRasterDE,
+#' isoscapes.weighted <- isomultiscape(raster = ElevRasterDE,
 #'                            isofit = isoscapemodels,
 #'                            weighting = PrecipBrickDE)
 #' 
@@ -470,7 +470,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #' plot(x = isoscapes.weighted, which = "mean")
 #' 
 #' ## We build the isoscapes for a given month (here January):
-#' isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
+#' isoscape.jan <- isoscape(raster = ElevRasterDE,
 #'                          isofit = isoscapemodels$multi.fits[["month_1"]])
 #'                          
 #' ## We plot the mean isoscape for January:
@@ -479,7 +479,7 @@ isoscape <- function(elevation.raster, ## change as method?
 #' }
 #' @export
 
-isomultiscape <- function(elevation.raster, ## change as method?
+isomultiscape <- function(raster, ## change as method?
                           isofit,
                           weighting = NULL,
                           verbose = interactive()
@@ -487,7 +487,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
   
   ## In case the function is called on the output of isofit by mistake
   if (!any(class(isofit) %in% "multiisofit")) {
-    return(isoscape(elevation.raster = elevation.raster,
+    return(isoscape(raster = raster,
                     isofit = isofit,
                     verbose = verbose
                     )
@@ -502,11 +502,11 @@ isomultiscape <- function(elevation.raster, ## change as method?
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
-    if (raster::extent(weighting) != raster::extent(elevation.raster)) {
-      stop("the extent of the object 'weighting' and 'elevation.raster' differ")
+    if (raster::extent(weighting) != raster::extent(raster)) {
+      stop("the extent of the object 'weighting' and 'raster' differ")
     }
-    if (raster::ncell(weighting) != raster::ncell(elevation.raster)) {
-      stop("the resolution of the object 'weighting' and 'elevation.raster' differ")
+    if (raster::ncell(weighting) != raster::ncell(raster)) {
+      stop("the resolution of the object 'weighting' and 'raster' differ")
     }
   }
   
@@ -515,7 +515,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
                          if (verbose) {
                            print(paste("#### building isoscapes for", fit, " in progress ####"), quote = FALSE)
                          }
-                         iso <- isoscape(elevation.raster = elevation.raster,
+                         iso <- isoscape(raster = raster,
                                          isofit = isofit$multi.fits[[fit]],
                                          verbose = verbose
                                          )
@@ -540,7 +540,7 @@ isomultiscape <- function(elevation.raster, ## change as method?
   
   ## Compute the weights
   if (is.null(weighting)) {
-    weights <- raster::raster(elevation.raster)
+    weights <- raster::raster(raster)
     weights <- raster::setValues(weights, 1/length(isoscapes))
   } else {
     weights <- weighting / sum(weighting)

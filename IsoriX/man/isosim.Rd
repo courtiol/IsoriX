@@ -15,7 +15,7 @@ isosim(simu.data, mean.model.fix.coef = c(intercept = 64, elev = -0.01,
 }
 \arguments{
 \item{simu.data}{A \var{data.frame} containing the covariates needed for the
-simulation, or alternatively an elevation raster of class \var{RasterLayer}}
+simulation, or alternatively a structural raster of class \var{RasterLayer}}
 
 \item{mean.model.fix.coef}{A \var{vector} of coefficients for fixed-effects}
 
@@ -59,7 +59,7 @@ complete (i.e. maps) isoscapes can be simulated.
 }
 \details{
 This function takes as inputs the values for all covariates matching a
-series of locations (which can be provided as an elevation raster or as a
+series of locations (which can be provided as an structural raster or as a
 \var{data.frame}), as well as the parameters of the isoscape model. The
 function is not required to fit an isoscape, nor to perform assignments. It
 is an additional function that can be useful to test the method, and to

@@ -5,12 +5,11 @@
 \title{Predicts the average spatial distribution of isotopic values over months,
 years...}
 \usage{
-isomultiscape(elevation.raster, isofit, weighting = NULL,
-  verbose = interactive())
+isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
 }
 \arguments{
-\item{elevation.raster}{The elevation raster (\var{RasterLayer}) created by
-\code{\link{relevate}}}
+\item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
+raster created by \code{\link{prepelev}}}
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
@@ -45,7 +44,7 @@ if(IsoriX.getOption("example_maxtime") > 180) {
 
 ## We prepare the data and split them by month:
 
-GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
+GNIPDataDEmonthly <- prepiso(data = GNIPDataDE,
                               split.by = "month")
 
 dim(GNIPDataDEmonthly)
@@ -55,11 +54,11 @@ isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
                               mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
 
 ## We build the annual isoscapes by simple averaging (equal weighting):
-isoscapes <- isomultiscape(elevation.raster = ElevRasterDE,
+isoscapes <- isomultiscape(raster = ElevRasterDE,
                            isofit = isoscapemodels)
 
 ## We build the annual isoscapes with a weighing based on precipitation amount:
-isoscapes.weighted <- isomultiscape(elevation.raster = ElevRasterDE,
+isoscapes.weighted <- isomultiscape(raster = ElevRasterDE,
                            isofit = isoscapemodels,
                            weighting = PrecipBrickDE)
 
@@ -70,7 +69,7 @@ plot(x = isoscapes, which = "mean")
 plot(x = isoscapes.weighted, which = "mean")
 
 ## We build the isoscapes for a given month (here January):
-isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
+isoscape.jan <- isoscape(raster = ElevRasterDE,
                          isofit = isoscapemodels$multi.fits[["month_1"]])
                          
 ## We plot the mean isoscape for January:

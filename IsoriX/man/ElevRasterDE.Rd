@@ -53,7 +53,7 @@ if(require(raster)) {
   elevationrasterbig <- raster("gmted2010_30mn.tif")
   
   ## Create the highly agregated elevation raster
-  ElevRasterDE <- relevate(elevationrasterbig,
+  ElevRasterDE <- prepelev(elevationrasterbig,
                            aggregation.factor = 10,
                            manual.crop = c(5.5, 15.5, 47, 55.5))
                            
@@ -71,7 +71,7 @@ if(require(raster)) {
 
 }
 \seealso{
-\code{\link{relevate}} to crop and/or aggregate the elevation
+\code{\link{prepelev}} to crop and/or aggregate the elevation
 raster
 }
 \keyword{datasets}
