@@ -32,24 +32,23 @@
 #' \dontrun{
 #' 
 #' ## We fit the models for Germany:
-#' GNIPDataDEagg <- prepiso(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #' 
-#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
-#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' GermanFit <- isofit(data = GNIPDataDEagg,
+#'                     mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
-#' StrRaster <- prepelev(
-#'     raster = ElevRasterDE,
-#'     isofit = GermanFit,
-#'     aggregation.factor = 0)
+#' StrRaster <- prepraster(raster = ElevRasterDE,
+#'                         isofit = GermanFit,
+#'                         aggregation_factor = 0)
 #' 
 #' getprecip(path = "~/Desktop/")
 #' 
-#' precipitation.brick <- prepcipitate(path = "~/Desktop/",
-#'                                     raster = StrRaster
-#'                                     )
+#' PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
+#'                                    raster = StrRaster
+#'                                    )
 #'  
 #'  if (require(rasterVis)) {
-#'    levelplot(precipitation.brick)
+#'    levelplot(PrecipitationBrick)
 #'  }
 #' 
 #' }
@@ -62,21 +61,23 @@ prepcipitate <- function(path = NULL,
   ## Prepare path
   if (is.null(path)) {
     path <- paste0(getwd(), "/wc2.0_30s_prec")
+  } else {
+    path <- paste0(path, "/wc2.0_30s_prec")
   }
   
   path <- normalizePath(path, mustWork = FALSE)
   
   ## List the tif files
-  list.tif <- list.files(path = path, pattern = "\\.tif$")
+  list_tif <- list.files(path = path, pattern = "\\.tif$")
   
   ## Checks if the tif files are there
-  if (length(list.tif) == 0) {
-    stop("no *.tif file in path... you may have the path wrong or you may not have downloaded the file using 'getprecip()'")
+  if (length(list_tif) == 0) {
+    stop("There is no *.tif file in path... you may have the path wrong or you may not have downloaded the file using 'getprecip()'.")
   }
   
   ## Checks if the tif files are the good ones
-  if (!all(paste0("wc2.0_30s_prec_", formatC(1:12, digits = 0, width = 2, format = "f", flag = 0), ".tif") %in% list.tif)) {
-    stop("the '.tif' files do not have expected names: 'wc2.0_30s_prec_01.tif', 'wc2.0_30s_prec_02.tif', ...")
+  if (!all(paste0("wc2.0_30s_prec_", formatC(1:12, digits = 0, width = 2, format = "f", flag = 0), ".tif") %in% list_tif)) {
+    stop("The '.tif' files do not have expected names: 'wc2.0_30s_prec_01.tif', 'wc2.0_30s_prec_02.tif', ...")
   }
   
   ## Small function to get the name of a given file
