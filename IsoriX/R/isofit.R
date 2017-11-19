@@ -1,10 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-Isofit <- function(...) {
-  .Defunct("isofit")
-}
-
-
 #' Fit the isoscape models
 #'
 #' This function fits the aggregated source data using mixed models. The fitting

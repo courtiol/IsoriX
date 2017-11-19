@@ -1,10 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-GetElev <- function(...) {
-  .Defunct("getelev")
-}
-
-
 #' Download an elevation raster from internet
 #' 
 #' The function \code{getelev} allows for the download of an elevation raster

@@ -1,9 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-Calibfit <- function(...) {
-  .Defunct("calibfit")
-}
-
 #' Fit the calibration model
 #' 
 #' This function fits a model that establishes the relationship between the 

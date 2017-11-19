@@ -1,21 +1,3 @@
-#' Deprecated functions
-#' 
-#' The function you asked help for has been deprecated (i.e. it does not longer
-#' exists). A new function with a different name is surely doing the old job.
-#' 
-#' @param ... The call of the deprecated function
-#' @aliases Calibfit GetElev Isofit Isorix Isoscape Isosim QueryGNIP queryGNIP prepiso prepelev RElevate relevate
-#' @name IsoriX-defunct
-NULL
-
-#' @rdname IsoriX-defunct
-#' @export
-Isorix <- function(...) {
-  .Defunct("isofind")
-}
-
-
-
 #' Infer spatial origins
 #' 
 #' This function performs the assignment of samples of unknown origins.

@@ -1,9 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-Isosim <- function(...) {
-  .Defunct("isosim")
-}
-
 #' Simulate isotopic values
 #' 
 #' This function allows for the simulation of isoscapes. Both partial or

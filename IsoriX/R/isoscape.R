@@ -1,10 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-Isoscape <- function(...) {
-  .Defunct("isoscape")
-}
-
-
 #' Predicts the spatial distribution of source isotopic values
 #'
 #' This function produces the set of isoscapes, i.e. the spatial prediction

@@ -1,16 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-RElevate <- function(...) {
-    .Defunct("prepraster")
-  }
-
-#' @rdname IsoriX-defunct
-#' @export
-relevate <- function(...) {
-  .Defunct("prepraster")
-}
-
-
 #' Prepare the structural raster
 #' 
 #' This function prepares the structural raster for the follow-up analyses. The

@@ -1,21 +1,3 @@
-#' @rdname IsoriX-defunct
-#' @export
-queryGNIP <- function(...) {
-  .Defunct("prepsources")
-}
-
-#' @rdname IsoriX-defunct
-#' @export
-QueryGNIP <- function(...) {
-  .Defunct("prepsources")
-}
-
-#' @rdname IsoriX-defunct
-#' @export
-prepdata <- function(...) {
-  .Defunct("prepsources")
-}
-
 #' Filter and aggregate the raw source dataset
 #'
 #' This function prepares the available dataset to be used for creating the
