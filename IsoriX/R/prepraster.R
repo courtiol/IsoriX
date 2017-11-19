@@ -185,13 +185,13 @@ prepraster <- function(raster,
         
         if ((manual_crop[1] > manual_crop[2]) && (manual_crop[3] < manual_crop[4])) {
           crop1 <- raster::crop(raster,
-                                raster::extent(raster@extent@xmin,  ## ToDo: check that this works when raster not inMemory
+                                raster::extent(raster::xmin(raster::extent(raster)),
                                                manual_crop[2],
                                                manual_crop[3],
                                                manual_crop[4]))
           crop2 <- raster::crop(raster,
                                 raster::extent(manual_crop[1],
-                                               raster@extent@xmax,
+                                               raster::xmax(raster::extent(raster)),
                                                manual_crop[3],
                                                manual_crop[4]))
           raster <- raster::shift(raster::merge(crop1, raster::shift(crop2,
