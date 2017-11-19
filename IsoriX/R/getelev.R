@@ -5,8 +5,6 @@ GetElev <- function(...) {
 }
 
 
-
-
 #' Download an elevation raster from internet
 #' 
 #' The function \code{getelev} allows for the download of an elevation raster
@@ -51,19 +49,19 @@ getelev <- function(path = NULL,
                     ) {
 
   ## Define web address and file name
-  address.elev <- "http://62.141.164.7/download/gmted2010_30mn.tif"
-  filename.elev <- "gmted2010_30mn.tif"
+  address_elev <- "http://62.141.164.7/download/gmted2010_30mn.tif"
+  filename_elev <- "gmted2010_30mn.tif"
   
   ## Define md5sum
   ## (created with tools::md5sum("gmted2010_30mn.tif"))
-  md5sum.elev <- "9fbbb014e2f27299137bae21be31ac7c" 
+  md5sum_elev <- "9fbbb014e2f27299137bae21be31ac7c" 
   
   ## Download and check file
-  downloadfile(address = address.elev,
-               filename = filename.elev,
+  downloadfile(address = address_elev,
+               filename = filename_elev,
                path = path,
                overwrite = overwrite,
-               md5sum = md5sum.elev,
+               md5sum = md5sum_elev,
                verbose = verbose
                )
 
@@ -105,19 +103,19 @@ getprecip <- function(path = NULL,
                       ) {
   
   ## Define web address and file name
-  address.precip <- "http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_30s_prec.zip"
-  filename.precip <- "wc2.0_30s_prec.zip"
+  address_precip <- "http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_30s_prec.zip"
+  filename_precip <- "wc2.0_30s_prec.zip"
   
   ## Define md5sum
   ## (created with tools::md5sum("wc2.0_30s_prec.zip"))
-  md5sum.elev <- "afd435222a328efb4ab9487a3fe0b6d4"
+  md5sum_precip <- "afd435222a328efb4ab9487a3fe0b6d4"
   
   ## Download and check file
-  path.to.zip <- downloadfile(address = address.precip,
-                              filename = filename.precip,
+  path_to_zip <- downloadfile(address = address_precip,
+                              filename = filename_precip,
                               path = path,
                               overwrite = overwrite,
-                              md5sum = md5sum.elev,
+                              md5sum = md5sum_precip,
                               verbose = verbose
                               )
   
@@ -125,10 +123,12 @@ getprecip <- function(path = NULL,
   if (verbose > 0) {
     print("unzipping in progress...", quote = FALSE)
   }
-  utils::unzip(path.to.zip, exdir = "wc2.0_30s_prec")
+  outpath <- paste0(path, "wc2.0_30s_prec")
+  utils::unzip(path_to_zip, exdir = outpath)
   
   if (verbose > 0) {
     print("unzipping done!", quote = FALSE)
+    print(paste("The files can be found in the folder", outpath), quote = FALSE)
   }
   
   return(invisible(NULL))
@@ -147,7 +147,7 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   }
   
   ## Change internet options to display more information
-  opt.ori <- options()$internet.info
+  opt_ori <- options()$internet.info
   if (verbose > 1) options(internet.info = 1)
   
   ## Use current directory if path is missing
@@ -168,19 +168,19 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   }
   
   ## Conditional file download
-  complete.path <- paste(path, filename, sep = "/")
-  if (file.exists(complete.path) & !overwrite) {
+  complete_path <- paste(path, filename, sep = "/")
+  if (file.exists(complete_path) & !overwrite) {
     message(paste("the file", filename, "is already present in", path,
                   "so it won't be downloaded again unless you set the argument overwrite to TRUE"
                   )
             )
   } else {
-    utils::download.file(address, destfile = complete.path, mode = "wb")
+    utils::download.file(address, destfile = complete_path, mode = "wb")
   }
   
   ## Checking MD5sum
   if (!is.null(md5sum)) {
-    if (tools::md5sum(complete.path) == md5sum) {
+    if (tools::md5sum(complete_path) == md5sum) {
       print("the file seems OK (md5sums do match)", quote = FALSE)
     } else {
       warning("the file seems to be corructed (md5sums do not match). Try to download it again setting the argument overwrite to TRUE.", quote = FALSE)
@@ -193,8 +193,8 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   }
   
   ## Restore original internet options
-  options(internet.info = opt.ori)
+  options(internet.info = opt_ori)
   
-  return(invisible(complete.path))
+  return(invisible(complete_path))
 }
 
