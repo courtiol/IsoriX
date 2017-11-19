@@ -52,7 +52,7 @@
 #'   running. By default verbose is \var{TRUE} if users use an interactive R
 #'   session and \var{FALSE} otherwise.
 #' @return This function returns a \var{list} of class \var{ISOSCAPE} containing
-#'   a stack of all 8 raster layers mentioned above (all being of class
+#'   a set of all 8 raster layers mentioned above (all being of class
 #'   \var{RasterLayer}), and the location of the sources as spatial points.
 #' @seealso \code{\link{isofit}} for the function fitting the isoscape
 #'
@@ -256,8 +256,8 @@ isoscape <- function(raster, ## change as method?
                                            proj = "+proj=longlat +datum=WGS84"
   )
   
-  ## we put all rasters in a stack
-  isoscapes <- raster::stack(list("mean" = mean_raster,
+  ## we put all rasters in a brick
+  isoscapes <- raster::brick(list("mean" = mean_raster,
                                  "mean_predVar" = mean_predVar_raster,
                                  "mean_residVar" = mean_residVar_raster,
                                  "mean_respVar" = mean_respVar_raster,
@@ -268,7 +268,7 @@ isoscape <- function(raster, ## change as method?
   )
   )
   
-  ## we put the stack in a list that also contains
+  ## we put the brick in a list that also contains
   ## the spatial points for the sources
   out <- list(isoscapes = isoscapes,
               sp_points = list(sources = source_points)
@@ -379,8 +379,8 @@ isoscape <- function(raster, ## change as method?
                                            proj = "+proj=longlat +datum=WGS84"
   )
   
-  ## we put all rasters in a stack
-  isoscapes <- raster::stack(list("mean" = mean_raster,
+  ## we put all rasters in a brick
+  isoscapes <- raster::brick(list("mean" = mean_raster,
                                  "mean_predVar" = mean_predVar_raster,
                                  "mean_residVar" = mean_residVar_raster,
                                  "mean_respVar" = mean_respVar_raster,
@@ -391,7 +391,7 @@ isoscape <- function(raster, ## change as method?
   )
   )
   
-  ## we put the stack in a list that also contains
+  ## we put the brick in a list that also contains
   ## the spatial points for the sources
   out <- list(isoscapes = isoscapes,
               sp_points = list(sources = source_points)
@@ -417,7 +417,7 @@ isoscape <- function(raster, ## change as method?
 #' @inheritParams isoscape
 #' @param weighting An optional RasterBrick containing the weights
 #' @return This function returns a \var{list} of class \var{isoscape}
-#' containing a stack of all 8 raster layers mentioned above (all being of
+#' containing a set of all 8 raster layers mentioned above (all being of
 #' class \var{RasterLayer}), and the location of the sources as spatial points.
 #' @seealso
 #' 
@@ -557,7 +557,7 @@ isomultiscape <- function(raster, ## change as method?
   ## Agglomerate the sources spatial points
   source_points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp_points$sources))
   
-  ## we put the stack in a list that also contains
+  ## we put the brick in a list that also contains
   ## the spatial points for the sources
   out <- list(isoscapes = multiscape,
               sp_points = list(sources = source_points)
@@ -582,7 +582,7 @@ summary.ISOSCAPE <- function(object, ...) {
     cat("### Note: this isoscape has been simulated ###", "\n")
     cat("\n")
   }
-  cat("### stack containing the isoscape")
+  cat("### raster brick containing the isoscapes")
   print(object[[1]])
   cat("\n")
   if (length(object) > 1) {

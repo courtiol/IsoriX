@@ -47,7 +47,7 @@ session and \var{FALSE} otherwise.}
 }
 \value{
 This function returns a \var{list} of class \var{ISOSCAPE}
-containing a stack of raster and an optional \var{data.frame}. The stack
+containing a set of raster and an optional \var{data.frame}. The set
 contains the raster \code{mean_raster} storing the mean isotopic value, and
 the raster \cr \code{disp_raster} storing the residual dispersion variance.
 The optional \var{data.frame} contains the simulated data and details of the

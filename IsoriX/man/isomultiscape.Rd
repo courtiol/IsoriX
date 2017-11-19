@@ -22,7 +22,7 @@ session and \var{FALSE} otherwise.}
 }
 \value{
 This function returns a \var{list} of class \var{isoscape}
-containing a stack of all 8 raster layers mentioned above (all being of
+containing a set of all 8 raster layers mentioned above (all being of
 class \var{RasterLayer}), and the location of the sources as spatial points.
 }
 \description{

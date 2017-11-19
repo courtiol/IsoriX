@@ -37,7 +37,7 @@
 #' running. By default verbose is \var{TRUE} if users use an interactive R
 #' session and \var{FALSE} otherwise.
 #' @return This function returns a \var{list} of class \var{ISOSCAPE}
-#' containing a stack of raster and an optional \var{data.frame}. The stack
+#' containing a set of raster and an optional \var{data.frame}. The set
 #' contains the raster \code{mean_raster} storing the mean isotopic value, and
 #' the raster \cr \code{disp_raster} storing the residual dispersion variance.
 #' The optional \var{data.frame} contains the simulated data and details of the
@@ -260,8 +260,8 @@ isosim <- function(data,
   ### Buidling return object
   out <- list()
 
-  out$isoscapes <- raster::stack(list("mean" = mean_raster,
-                                     "disp" = disp_raster))
+  out$isoscapes <- raster::brick(list("mean" = mean_raster,
+                                      "disp" = disp_raster))
 
   if (!save_dataframe & interactive()) {
     message(paste("Note: simulated data not saved as data.frame (save_dataframe is set to FALSE). Saving the simulated data as data.frame would require", format(utils::object.size(data), units = "MB")))
