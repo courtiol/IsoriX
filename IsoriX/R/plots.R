@@ -320,7 +320,7 @@ plot.ISOFIND <- function(x,
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
   
-  what <- "pv" ## ToDO: implement other possibilities
+  what <- "pv" ## ToDo: implement other possibilities
   
   if (!(any(class(x) %in% "ISOFIND"))) {
     stop("This function must be called on an object of class ISOFIND")
