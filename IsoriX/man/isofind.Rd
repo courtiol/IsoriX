@@ -2,15 +2,15 @@
 % Please edit documentation in R/isofind.R
 \name{isofind}
 \alias{isofind}
-\alias{print.isorix}
-\alias{summary.isorix}
+\alias{print.ISOFIND}
+\alias{summary.ISOFIND}
 \title{Infer spatial origins}
 \usage{
-isofind(assign.data, isoscape, calibfit = NULL, mask = NA,
+isofind(data, isoscape, calibfit = NULL, mask = NA,
   verbose = interactive())
 }
 \arguments{
-\item{assign.data}{A \var{dataframe} containing the assignment data (see
+\item{data}{A \var{dataframe} containing the assignment data (see
 note below)}
 
 \item{isoscape}{The output of the function \code{\link{isoscape}}}
@@ -28,34 +28,35 @@ running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \var{isorix} containing
-itself three lists (\code{indiv}, \code{group}, and \code{sp.points})
+This function returns a \var{list} of class \var{ISOFIND} containing
+itself three lists (\code{sample}, \code{group}, and \code{sp_points})
 storing all rasters built during assignment and the spatial points for
-sources and calibration. The \var{list} \code{indiv} contains three stack of
+sources and calibration. The \var{list} \code{sample} contains three set of
 raster layers: one storing the value of the test statistic ("stat"), one
 storing the value of the variance of the test statistic ("var") and one
 storing the p-value of the test ("pv"). The \var{list} \code{group} contains
 one raster storing the p-values of the assignment for the group. The
-\var{list} \code{sp.points} contains two spatial point objects:
-\code{source.points} and \code{calib.points}.
+\var{list} \code{sp_points} contains two spatial point objects:
+\code{sources} and \code{calibs}.
 }
 \description{
-This function performs the assignment of organims of unknown origins.
+This function performs the assignment of samples of unknown origins.
 }
 \details{
 An assignment is a comparison, for a given organism, of the predicted
-isotopic value at its location of origin and the predicted isotopic value at
-each location of the \code{isoscape}. The difference between these two
-values constitute the statistic of the assingment test. Under the null
-hypothesis (when the organism is at a location with the same isotopic value
+isotopic source value at its location of origin and the predicted isotopic
+source value at each location of the \code{isoscape}. The difference between
+these two values constitute the statistic of the assingment test. Under the
+null hypothesis (the organism is at a location with the same isotopic value
 than its original location), the test statistics follows a normal
 distribution with mean zero and a certain variance that stems from both the
-isoscape model fits and the calibration fit. The function \code{\link{isofind}}
-computes the map of p-value for such an assignment test (i.e. the p-values in
-all locations of the isoscape) for all individuals in the dataframe
-\code{assign.data}. The function also performs a single assignment for the
-entire group by combining the individual p-value maps using the Fisher's
-method (Fisher 1925).
+isoscape model fits and the calibration fit. The function
+\code{\link{isofind}} computes the map of p-value for such an assignment test
+(i.e. the p-values in all locations of the isoscape) for all samples in the
+dataframe \code{data}. The function also performs a single assignment for the
+entire group by combining the p-value maps of all samples using the Fisher's
+method (Fisher 1925). Significant p-values are strong evidence that the
+sample do NOT come from the candidate location (and not the opposite!).
 
 A mask can be used so to remove all values falling in the mask. This can be
 useful for performing for example assignments on lands only and discard
@@ -70,50 +71,51 @@ perform the assignment and their names.
 \examples{
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 200) {
+if(getOption_IsoriX("example_maxtime") > 200) {
 
 ## We fit the models for Germany
-GNIPDataDEagg <- prepiso(data = GNIPDataDE)
+GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-GermanFit <- isofit(iso.data = GNIPDataDEagg)
+GermanFit <- isofit(data = GNIPDataDEagg,
+                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 
 
 ## We build the isoscape
-isoscape <- isoscape(raster = ElevRasterDE,
-                     isofit = GermanFit)
+GermanScape <- isoscape(raster = ElevRasterDE,
+                        isofit = GermanFit)
 
 
 ## We fit the calibration model
-calib <- calibfit(calib.data = CalibDataAlien,
-                  isofit = GermanFit)
+CalibAlien <- calibfit(data = CalibDataAlien,
+                       isofit = GermanFit)
 
 ## We perform the assignment on land only
-assignment.dry <- isofind(assign.data = AssignDataAlien,
-                          isoscape = isoscape,
-                          calibfit = calib)
+AssignmentDry <- isofind(data = AssignDataAlien,
+                         isoscape = GermanScape,
+                         calibfit = CalibAlien)
 
 ## perform the assignment on land and water
-assignment <- isofind(assign.data = AssignDataAlien,
-                      isoscape = isoscape,
-                      calibfit = calib,
+Assignment <- isofind(data = AssignDataAlien,
+                      isoscape = GermanScape,
+                      calibfit = CalibAlien,
                       mask = NULL)
 
 ## We plot the group assignment
-plot(assignment, who = "group", mask = list(mask = NULL))
+plot(Assignment, who = "group", mask = list(mask = NULL))
 
-plot(assignment.dry, who = "group", mask = list(mask = NULL))
+plot(AssignmentDry, who = "group", mask = list(mask = NULL))
 
-## We plot the assignment for the 8 first individuals
-plot(assignment.dry, who = 1:8,
+## We plot the assignment for the 8 first samples
+plot(AssignmentDry, who = 1:8,
      sources = list(draw = FALSE),
-     calib = list(draw = FALSE))
+     calibs = list(draw = FALSE))
 
-## We plot the assignment for the individual "Alien_10"
-plot(assignment.dry, who = "Alien_10")
+## We plot the assignment for the sample "Alien_10"
+plot(AssignmentDry, who = "Alien_10")
 
 
 ### Other example without calibration:
@@ -122,17 +124,17 @@ plot(assignment.dry, who = "Alien_10")
 
 ## We create the assignment data taking 
 ## GARMISCH-PARTENKIRCHEN as the station to assign
-GPIso <- GNIPDataDEagg[GNIPDataDEagg$stationID == "GARMISCH-PARTENKIRCHEN", "isoscape.value"]
-AssignDataGP <- data.frame(tissue.value = GPIso,
-                             animalID = "GARMISCH-PARTENKIRCHEN")
+GPIso <- GNIPDataDEagg[GNIPDataDEagg$source_ID == "GARMISCH-PARTENKIRCHEN", "mean_source_value"]
+AssignDataGP <- data.frame(sample_value = GPIso,
+                           sample_ID = "GARMISCH-PARTENKIRCHEN")
 
 ## We perform the assignment
-assignment.GP <- isofind(assign.data = AssignDataGP,
-                                 isoscape = isoscape,
-                                 calibfit = NULL)
+AssignedGP <- isofind(data = AssignDataGP,
+                      isoscape = GermanScape,
+                      calibfit = NULL)
 ## We plot the assignment and 
 ## show where the station really is (using lattice)
-plot(assignment.GP) +
+plot(AssignedGP) +
   lattice::xyplot(47.48~11.06,
                   panel = lattice::panel.points,
                   cex = 5, pch = 13, lwd = 2, col = "black") 

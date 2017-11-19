@@ -6,43 +6,47 @@
 \alias{plot.isoscape}
 \alias{plot.calibfit}
 \alias{plot.isorix}
+\alias{plot.RasterLayer}
 \alias{plot}
-\alias{plot.isoscape}
-\alias{plot.isorix}
-\alias{plot.isofit}
-\alias{plot.calibfit}
+\alias{plot.ISOSCAPE}
+\alias{plot.ISOFIND}
+\alias{plot.ISOFIT}
+\alias{plot.CALIBFIT}
 \alias{plot.RasterLayer}
 \title{Plotting functions for IsoriX}
 \usage{
-\method{plot}{isoscape}(x, which = "mean", sources = list(draw = TRUE, cex =
-  0.5, pch = 2, lwd = 1, col = "red"), borders = list(borders = NA, lwd = 0.5,
-  col = "black"), mask = list(mask = NA, lwd = 0, col = "black", fill =
-  "black"), palette = list(step = NA, range = c(NA, NA), n.labels = 11, digits
-  = 2, fn = NA), plot = TRUE, sphere = list(build = FALSE, keep.image =
-  FALSE), ...)
-
-\method{plot}{isorix}(x, who = "group", what = "pv", cutoff = list(draw =
-  TRUE, level = 0.05, col = "#909090"), sources = list(draw = TRUE, cex = 0.5,
-  pch = 2, lwd = 1, col = "red"), calib = list(draw = TRUE, cex = 0.5, pch =
-  4, lwd = 1, col = "blue"), borders = list(borders = NA, lwd = 0.5, col =
+\method{plot}{ISOSCAPE}(x, which = "mean", y_title = list(which = TRUE,
+  title = bquote(delta^2 * H[p])), sources = list(draw = TRUE, cex = 0.5, pch
+  = 2, lwd = 1, col = "red"), borders = list(borders = NA, lwd = 0.5, col =
   "black"), mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+  palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn =
+  NA), plot = TRUE, sphere = list(build = FALSE, keep_image = FALSE), ...)
+
+\method{plot}{ISOFIND}(x, who = "group", cutoff = list(draw = TRUE, level =
+  0.05, col = "#909090"), sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd
+  = 1, col = "red"), calibs = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1,
+  col = "blue"), borders = list(borders = NA, lwd = 0.5, col = "black"),
+  mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
   mask2 = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
-  palette = list(step = NA, range = c(0, 1), n.labels = 11, digits = 2, fn =
-  NA), plot = TRUE, sphere = list(build = FALSE, keep.image = FALSE), ...)
+  palette = list(step = NA, range = c(0, 1), n_labels = 11, digits = 2, fn =
+  NA), plot = TRUE, sphere = list(build = FALSE, keep_image = FALSE), ...)
 
-\method{plot}{isofit}(x, cex.scale = 0.2, ...)
+\method{plot}{ISOFIT}(x, cex_scale = 0.2, ...)
 
-\method{plot}{calibfit}(x, ...)
+\method{plot}{CALIBFIT}(x, ...)
 
 \method{plot}{RasterLayer}(x, ...)
 }
 \arguments{
 \item{x}{The return object of an \code{\link{isofit}},
-\code{\link{isoscape}}, \code{\link{calibfit}}, \code{\link{isofind}}, or \code{\link[raster:raster]{raster}}
+\code{\link{isoscape}}, \code{\link{calibfit}}, \code{\link{isofind}}, or \code{\link[raster]{raster}}
 call}
 
 \item{which}{A \var{string} indicating the name of the raster to be plotted
 (see details)}
+
+\item{y_title}{A \var{list} containing information for the display of the
+title (see details)}
 
 \item{sources}{A \var{list} containing information for the display of the
 location of the sources (see details)}
@@ -61,93 +65,100 @@ just returned}
 
 \item{sphere}{A \var{list} containing information wether the raster should be 
 returned as a rotating sphere and if the image created during the process 
-should be saved in your current working directory. The default settings are FALSE.}
+should be saved in your current working directory. The default settings are
+ FALSE.}
 
 \item{...}{Additional arguments (not in use)}
 
 \item{who}{Either "group", or a vector of indices (e.g. 1:3) or names of the
 individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots}
 
-\item{what}{A \var{string} indicating the name of the raster to be plotted
-(should remain "pv" if who = "group", otherwise could be "stat", "stat.var",
-or "pv")}
-
 \item{cutoff}{A \var{list} containing information for the display of the
 region outside the prediction interval (see details)}
 
-\item{calib}{A \var{list} containing information for the display of the
+\item{calibs}{A \var{list} containing information for the display of the
 location of the calibration sampling area (see details)}
 
 \item{mask2}{A \var{list} containing information for the display of a mask
 (e.g. a distribution mask) (see details)}
 
-\item{cex.scale}{A \var{numeric} giving a scalling factor for the points in
+\item{cex_scale}{A \var{numeric} giving a scalling factor for the points in
 the plots}
 }
 \description{
-These functions plot objects created by \pkg{\link{IsoriX}}
-(with the exception of plot method for RasterLayer created using \pkg{\link{raster}}).
+These functions plot objects created by \pkg{\link{IsoriX}} (with the
+exception of plot method for RasterLayer created using \pkg{\link{raster}}).
 }
 \details{
-When called upon an object of class \var{isofit}, the plot function
-draws diagnostic information for the fits of the isoscape geostatistical
-model.
+When called upon an object of class \var{ISOFIT}, the plot function draws
+diagnostic information for the fits of the isoscape geostatistical model.
 
-When called upon an object of class \var{calibfit}, the plot function draws
+When called upon an object of class \var{CALIBFIT}, the plot function draws
 the fitted calibration function.
 
-When called upon an object of class \var{isoscape}, the plot function draws
-a fine-tuned plot of the isoscape.
+When called upon an object of class \var{ISOSCAPE}, the plot function draws a
+fine-tuned plot of the isoscape.
 
 When used on a fitted isoscape, the user can choose between plotting the
-predictions (\code{which} = "mean"; default), the prediction variance (\code{which} =
-"mean.predVar"), the residual variance (\code{which} = "mean.residVar"), or the
-response variance (\code{which} = "mean.respVar") for the mean model; or the
-corresponding information for the residual dispersion variance model ("disp",
-"disp.predVar", "disp.residVar", or "disp.respVar").
+predictions (\code{which} = "mean"; default), the prediction variance
+(\code{which} = "mean_predVar"), the residual variance (\code{which} =
+"mean_residVar"), or the response variance (\code{which} = "mean_respVar")
+for the mean model; or the corresponding information for the residual
+dispersion variance model ("disp", "disp_predVar", "disp_residVar", or
+"disp_respVar").
 
-When used on a simulated isoscape, the user can choose between plotting the
-mean isotopic value (\code{which} = "mean") or the dispersion (\code{which} = "disp").
+When used on a simulated isoscape produced with the function
+\code{\link{isosim}}, the user can choose between plotting the mean isotopic
+value (\code{which} = "mean") or the residual dispersion (\code{which} =
+"disp").
 
-When called upon an object of class \var{isorix}, the plot function draws a
-fine-tuned plot of the assignment. You can use the argument \code{who} to choose
-between plotting the assignment for the group or for some individuals (check
-the vignette "Workflow" for examples).
+When called upon an object of class \var{ISOFIND}, the plot function draws a
+fine-tuned plot of the assignment. You can use the argument \code{who} to
+choose between plotting the assignment for the group or for some individuals
+(check the online tutorial for examples).
 
-The arguments \code{cutoff}, \code{sources}, \code{calib}, \code{borders}, \code{mask}, and \code{mask2}
-are used to fine-tune additional layers that can be added to the main plot to
-embellish it. These arguments must be lists that provide details on how to
-draw, respectively, the area outside the prediction interval (for assignment
-plots), the locations of sources (for both isoscape and assignment plots),
-the locations of the calibration sampling area (for assignment plots, the
-borders (for both types of plots), and the mask (again, for both)). For
-assignment maps, an extra mask can be used (mask2), as one may want to add a
-mask covering the area outside the biological range of the species. Within
-these lists, the elements \code{lwd}, \code{col}, \code{cex}, \code{pch} and \code{fill} influences
-their respective objects as in traditional R plotting functions (see
-\code{\link{par}} for details). The element \code{draw} should be a \var{logical}
-that indicates whether the layer must be created or not. The argument
-\code{borders} (within the list borders) expects an object of the class
-\var{SpatialPolygons} such as the object \code{\link{CountryBorders}} provided with this
-package. The argument \code{mask} (within the list maks) expects an object of the
-class \var{SpatialPolygons} such as the object \code{\link{OceanMask}} provided with this
-package (see examples).
+The argument y_title can be used to customise the title of isoscapes. The
+element \code{which} is a logical indicating if the name of the layer should
+be displayed or not. The element \code{title} is a string or a call used to
+define the rest of the title. By default it draws the delta value for
+hydrogen. Check the syntax of this default before trying to modify it.
+
+The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{borders},
+\code{mask}, and \code{mask2} are used to fine-tune additional layers that
+can be added to the main plot to embellish it. These arguments must be lists
+that provide details on how to draw, respectively, the area outside the
+prediction interval (for assignment plots), the locations of sources (for
+both isoscape and assignment plots), the locations of the calibration
+sampling area (for assignment plots, the borders (for both types of plots),
+and the mask (again, for both)). For assignment maps, an extra mask can be
+used (mask2), as one may want to add a mask covering the area outside the
+biological range of the species. Within these lists, the elements \code{lwd},
+\code{col}, \code{cex}, \code{pch} and \code{fill} influences their
+respective objects as in traditional R plotting functions (see
+\code{\link{par}} for details). The element \code{draw} should be a
+\var{logical} that indicates whether the layer must be created or not. The
+argument \code{borders} (within the list borders) expects an object of the
+class \var{SpatialPolygons} such as the object \code{\link{CountryBorders}}
+provided with this package. The argument \code{mask} (within the list maks)
+expects an object of the class \var{SpatialPolygons} such as the object
+\code{\link{OceanMask}} provided with this package (see examples).
 
 The argument \code{palette} is used to define how to colour the isoscape and
-assignment plot. Within this list, \code{step} defines the number of units on the
-z-scale that shares a given colour; \code{range} can be used to constrain the
-minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
-argument is usefull if one wants to create several plots with the same
-z-scale); \code{n.labels} allows for the user to approximatively define the
-maximum number of numbers plotted on the z-scale; \code{digits} defines the number
-of digits displayed for the numbers used as labels; and \code{fn} is used to
-specify the function that is used to sample the colours. If \code{fn} is NULL
-(default) the palette functions derived from \code{\link{isopalette1}} and
-\code{\link{isopalette2}} are used when ploting isoscape and assignments,
-respectivelly.
+assignment plot. Within this list, \code{step} defines the number of units on
+the z-scale that shares a given colour; \code{range} can be used to constrain
+the minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this
+latter argument is usefull if one wants to create several plots with the same
+z-scale); \code{n_labels} allows for the user to approximatively define the
+maximum number of numbers plotted on the z-scale; \code{digits} defines the
+number of digits displayed for the numbers used as labels; and \code{fn} is
+used to specify the function that is used to sample the colours. If \code{fn}
+is NULL (default) the palette functions derived from
+\code{\link{isopalette1}} and \code{\link{isopalette2}} are used when ploting
+isoscape and assignments, respectivelly. If \code{fn} is NA the function used
+is the palette \code{\link[viridisLite]{viridis}}.
 
-When called upon an object of class \var{RasterLayer}, the plot function is 
-a simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
+When called upon an object of class \var{RasterLayer}, the plot function is a
+simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 }
 \examples{
 ## See ?isoscape or ?isofind for examples
@@ -162,6 +173,6 @@ a simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 
   \code{\link{isofind}} for the function performing the assignment
 
-  \code{\link{IsoriX}} for the complete work-flow
+  \code{\link{IsoriX}} for the complete workflow
 }
 \keyword{plot}

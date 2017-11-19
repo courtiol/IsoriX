@@ -34,24 +34,23 @@ extent as the structural raster. This function is designed to be used with
 \dontrun{
 
 ## We fit the models for Germany:
-GNIPDataDEagg <- prepiso(data = GNIPDataDE)
+GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-GermanFit <- isofit(iso.data = GNIPDataDEagg,
-                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+GermanFit <- isofit(data = GNIPDataDEagg,
+                    mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
 
-StrRaster <- prepelev(
-    raster = ElevRasterDE,
-    isofit = GermanFit,
-    aggregation.factor = 0)
+StrRaster <- prepraster(raster = ElevRasterDE,
+                        isofit = GermanFit,
+                        aggregation_factor = 0)
 
 getprecip(path = "~/Desktop/")
 
-precipitation.brick <- prepcipitate(path = "~/Desktop/",
-                                    raster = StrRaster
-                                    )
+PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
+                                   raster = StrRaster
+                                   )
  
  if (require(rasterVis)) {
-   levelplot(precipitation.brick)
+   levelplot(PrecipitationBrick)
  }
 
 }

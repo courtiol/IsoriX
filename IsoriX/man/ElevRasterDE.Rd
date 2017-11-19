@@ -50,12 +50,12 @@ provide the url link of the \var{tif} file in the example below.
 
 ## Convert the tif into R raster format
 if(require(raster)) {
-  elevationrasterbig <- raster("gmted2010_30mn.tif")
+  ElevationRasterBig <- raster("gmted2010_30mn.tif")
   
   ## Create the highly agregated elevation raster
-  ElevRasterDE <- prepelev(elevationrasterbig,
-                           aggregation.factor = 10,
-                           manual.crop = c(5.5, 15.5, 47, 55.5))
+  ElevRasterDE <- prepraster(ElevationRasterBig,
+                             aggregation_factor = 10,
+                             manual_crop = c(5.5, 15.5, 47, 55.5))
                            
   ## Plot the elevation
   if (require("sp") & require("rasterVis")) {
@@ -71,7 +71,6 @@ if(require(raster)) {
 
 }
 \seealso{
-\code{\link{prepelev}} to crop and/or aggregate the elevation
-raster
+\code{\link{prepraster}} to crop and/or aggregate this raster
 }
 \keyword{datasets}

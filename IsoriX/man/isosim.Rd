@@ -4,40 +4,40 @@
 \alias{isosim}
 \title{Simulate isotopic values}
 \usage{
-isosim(simu.data, mean.model.fix.coef = c(intercept = 64, elev = -0.01,
-  lat.abs = -2.3, lat.2 = 0, long = 0, long.2 = 0),
-  disp.model.fix.coef = c(intercept = 5.8, elev = 0, lat.abs = 0, lat.2 = 0,
-  long = 0, long.2 = 0), mean.model.matern.coef = c(nu = 0.35, rho = 5e-05,
-  lambda = 899), disp.model.matern.coef = c(nu = 0.32, rho = 1.5e-05, lambda =
-  5), mean.model.uncorr.coef = c(nugget = 0, lambda = 0),
-  disp.model.uncorr.coef = c(nugget = 0, lambda = 0), dist.method = "Earth",
-  seed = NULL, save.dataframe = FALSE, verbose = interactive())
+isosim(data, mean_model_fix_coef = c(intercept = 64, elev = -0.01, lat_abs =
+  -2.3, lat_2 = 0, long = 0, long_2 = 0), disp_model_fix_coef = c(intercept =
+  5.8, elev = 0, lat_abs = 0, lat_2 = 0, long = 0, long_2 = 0),
+  mean_model_matern_coef = c(nu = 0.35, rho = 5e-05, lambda = 899),
+  disp_model_matern_coef = c(nu = 0.32, rho = 1.5e-05, lambda = 5),
+  mean_model_uncorr_coef = c(nugget = 0, lambda = 0),
+  disp_model_uncorr_coef = c(nugget = 0, lambda = 0), dist_method = "Earth",
+  seed = NULL, save_dataframe = FALSE, verbose = interactive())
 }
 \arguments{
-\item{simu.data}{A \var{data.frame} containing the covariates needed for the
+\item{data}{A \var{data.frame} containing the covariates needed for the
 simulation, or alternatively a structural raster of class \var{RasterLayer}}
 
-\item{mean.model.fix.coef}{A \var{vector} of coefficients for fixed-effects}
+\item{mean_model_fix_coef}{A \var{vector} of coefficients for fixed-effects}
 
-\item{disp.model.fix.coef}{A \var{vector} of coefficients for fixed-effects}
+\item{disp_model_fix_coef}{A \var{vector} of coefficients for fixed-effects}
 
-\item{mean.model.matern.coef}{A \var{vector} of coefficients for the spatial
+\item{mean_model_matern_coef}{A \var{vector} of coefficients for the spatial
 random effect}
 
-\item{disp.model.matern.coef}{A \var{vector} of coefficients for the spatial
+\item{disp_model_matern_coef}{A \var{vector} of coefficients for the spatial
 random effect}
 
-\item{mean.model.uncorr.coef}{A \var{vector} of coefficients for the
+\item{mean_model_uncorr_coef}{A \var{vector} of coefficients for the
 uncorrelated random effect}
 
-\item{disp.model.uncorr.coef}{A \var{vector} of coefficients for the
+\item{disp_model_uncorr_coef}{A \var{vector} of coefficients for the
 uncorrelated random effect}
 
-\item{dist.method}{A \var{string} indicating the distance method}
+\item{dist_method}{A \var{string} indicating the distance method}
 
 \item{seed}{An \var{integer} used to set the seed of the random generator}
 
-\item{save.dataframe}{A \var{logical} indicating whether the detailed
+\item{save_dataframe}{A \var{logical} indicating whether the detailed
 \var{data.frame} containing the simulated data should be saved}
 
 \item{verbose}{A \var{logical} indicating whether information about the
@@ -46,10 +46,10 @@ running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \var{isoscape}
+This function returns a \var{list} of class \var{ISOSCAPE}
 containing a stack of raster and an optional \var{data.frame}. The stack
-contains the raster \code{mean.raster} storing the mean isotopic value, and
-the raster \cr \code{disp.raster} storing the residual dispersion variance.
+contains the raster \code{mean_raster} storing the mean isotopic value, and
+the raster \cr \code{disp_raster} storing the residual dispersion variance.
 The optional \var{data.frame} contains the simulated data and details of the
 computation in an object called \code{data}.
 }
@@ -66,7 +66,7 @@ is an additional function that can be useful to test the method, and to
 study the effect of different parameters on isoscapes. We chose default
 values for parameters inspired to model fits in order to simulate a
 relatively realistic isoscape. We precised 'relatively' because, in the
-simulations, the Matern realizations for the mean and the dispersion are
+simulations, the Matérn realizations for the mean and the dispersion are
 drawn independently, which is not the case in nature. Note that extra
 parameters present in the input lists will not make the function crash but
 won't be considered during computations either.
@@ -81,44 +81,45 @@ part of the powerful package \pkg{\link[RandomFields]{RandomFields}}.
 
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 60) {
+if(getOption_IsoriX("example_maxtime") > 60) {
 
 ## We simulate data under default settings
-simu <- isosim(simu.data = ElevRasterDE,
-    save.dataframe = TRUE, seed = 1)
+Simu <- isosim(data = ElevRasterDE,
+               save_dataframe = TRUE,
+               seed = 1)
 
-simu
+Simu
 
 ## We build the plots of the outcome using IsoriX
-plot.mean.simu <- plot(x = simu, which = "mean")
+PlotMeanSimu <- plot(x = Simu, which = "mean")
 
-plot.disp.simu <- plot(x = simu, which = "disp")
+PlotDispSimu <- plot(x = Simu, which = "disp")
 
 
 ## We fit the simulated data by sampling 50 locations
 
 set.seed(123)
-newdat <- simu$data[sample(1:nrow(simu$data), 50), ]
+Newdat <- Simu$data[sample(1:nrow(Simu$data), 50), ]
 
-isoscapemodel <- isofit(iso.data = newdat,
-    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+NewdatFit <- isofit(data = Newdat,
+                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 
-isoscape <- isoscape(ElevRasterDE, isoscapemodel)
+Isoscape <- isoscape(ElevRasterDE, NewdatFit)
 
-plot.mean.fitted <- plot(x = isoscape, which = "mean", sources = list(draw = FALSE))
+PlotMeanFitted <- plot(x = Isoscape, which = "mean", sources = list(draw = FALSE))
 
-plot.disp.fitted <- plot(x = isoscape, which = "disp", sources = list(draw = FALSE))
+PlotDispFitted <- plot(x = Isoscape, which = "disp", sources = list(draw = FALSE))
 
 ## We compare simulated and fitted data visually
 if(require(lattice)){
-    print(plot.mean.simu, split = c(1, 1, 2, 2), more = TRUE)
-    print(plot.disp.simu, split = c(2, 1, 2, 2), more = TRUE)
-    print(plot.mean.fitted, split = c(1, 2, 2, 2), more = TRUE)
-    print(plot.disp.fitted, split = c(2, 2, 2, 2), more = FALSE)
+    print(PlotMeanSimu, split = c(1, 1, 2, 2), more = TRUE)
+    print(PlotDispSimu, split = c(2, 1, 2, 2), more = TRUE)
+    print(PlotMeanFitted, split = c(1, 2, 2, 2), more = TRUE)
+    print(PlotDispFitted, split = c(2, 2, 2, 2), more = FALSE)
 }
 
 ## We compare simulated and fitted data numerically
@@ -128,30 +129,30 @@ if(require(lattice)){
 round(cbind(
     simulated = c(
         intercept = 64,
-        lat.abs = -2.3, 
+        lat_abs = -2.3, 
         elev = -0.01,
         nu = 0.35,
         rho = 5e-5,
         rho_div_nu  =  5e-5/0.35,
-        lambda.ID = 0,
-        lambda.matern = 899,
-        intercept.disp = 5.8,
-        nu.disp = 3.2e-01,
-        rho.disp = 1.5e-05,
-        lambda.matern.stationID = 0,
-        lambda.matern.disp = 5),
+        lambda_ID = 0,
+        lambda_matern = 899,
+        intercept_disp = 5.8,
+        nu_disp = 3.2e-01,
+        rho_disp = 1.5e-05,
+        lambda_matern_source_ID = 0,
+        lambda_matern_disp = 5),
     fitted = c(
-        intercept = isoscapemodel$mean.fit$fixef[1],
-        lat.abs = isoscapemodel$mean.fit$fixef[2], 
-        elev = isoscapemodel$mean.fit$fixef[3],
-        nu = isoscapemodel$mean.fit$ranFix$nu,
-        rho = isoscapemodel$mean.fit$ranFix$rho,
-        rho_div_nu = with(isoscapemodel$mean.fit$ranFix,rho/nu),
-        lambda.matern = isoscapemodel$mean.fit$lambda,
-        intercept.disp = isoscapemodel$disp.fit$fixef[1],
-        nu.disp = isoscapemodel$disp.fit$ranFix$nu,
-        rho.disp = isoscapemodel$disp.fit$ranFix$rho,
-        lambda.matern.disp = isoscapemodel$disp.fit$lambda)), 4)
+        intercept = NewdatFit$mean_fit$fixef[1],
+        lat_abs = NewdatFit$mean_fit$fixef[2], 
+        elev = NewdatFit$mean_fit$fixef[3],
+        nu = NewdatFit$mean_fit$ranFix$nu,
+        rho = NewdatFit$mean_fit$ranFix$rho,
+        rho_div_nu = with(NewdatFit$mean_fit$ranFix,rho/nu),
+        lambda_matern = NewdatFit$mean_fit$lambda,
+        intercept_disp = NewdatFit$disp_fit$fixef[1],
+        nu_disp = NewdatFit$disp_fit$ranFix$nu,
+        rho_disp = NewdatFit$disp_fit$ranFix$rho,
+        lambda_matern_disp = NewdatFit$disp_fit$lambda)), 4)
 
 }
 

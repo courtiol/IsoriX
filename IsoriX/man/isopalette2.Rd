@@ -14,8 +14,8 @@ For information on how to use themes, check:
 \description{
 These datasets contain colour vectors that can be used for plotting. In our
 examples, we use the \code{isopalette1} for plotting the isoscape using
-\code{\link{plot.isoscape}} and \code{isopalette2} for plotting the
-assignment outcoume using \code{\link{plot.isorix}}.
+\code{\link{plot.ISOSCAPE}} and \code{isopalette2} for plotting the
+assignment outcoume using \code{\link{plot.ISOFIND}}.
 }
 \details{
 Colour palettes can be created by using the function \code{\link{colorRamp}}
@@ -40,9 +40,9 @@ lattice graphic environment (see source for details).
 
 par(mfrow = c(2, 3))
 pie(rep(1, length(isopalette1)), col = isopalette1,
-	border = NA, labels = NA, clockwise = TRUE, main = "isopalette1")
+    border = NA, labels = NA, clockwise = TRUE, main = "isopalette1")
 pie(rep(1, length(isopalette2)), col = isopalette2,
-	border = NA, labels = NA, clockwise = TRUE, main = "isopalette2")
+    border = NA, labels = NA, clockwise = TRUE, main = "isopalette2")
 pie(rep(1, 100), col = terrain.colors(100), border = NA, labels = NA,
     clockwise = TRUE, main = "terrain.colors")
 pie(rep(1, 100), col = rainbow(100), border = NA, labels = NA,
@@ -53,9 +53,9 @@ pie(rep(1, 100), col = heat.colors(100), border = NA, labels = NA,
     clockwise = TRUE, main = "heat.colors")
 
 ## Creating your own colour palette
-my.palette  <- colorRampPalette(c("blue", "green", "red"), bias = 0.7)
+MyPalette <- colorRampPalette(c("blue", "green", "red"), bias = 0.7)
 par(mfrow = c(1, 1))
-pie(1:100, col = my.palette(100), border = NA, labels = NA,
+pie(1:100, col = MyPalette(100), border = NA, labels = NA,
     clockwise = TRUE, main = "a home-made palette")
 
 ## Turing palettes into functions for use in IsoriX

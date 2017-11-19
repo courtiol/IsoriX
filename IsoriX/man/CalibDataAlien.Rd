@@ -5,17 +5,17 @@
 \alias{CalibDataAlien}
 \title{Simulated calibration dataset}
 \format{A \var{dataframe} with x observations on 6 variables:
-\tabular{rlll}{ [, 1] \tab siteID \tab (\var{Factor}) \tab Identification of
+\tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
 the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
 coordinate [decimal degrees]\cr [, 3] \tab lat \tab (\var{numeric}) \tab
 Latitude coordinate [decimal degrees]\cr [, 4] \tab elev \tab
-(\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab animalID \tab
+(\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab sample_ID \tab
 (\var{Factor}) \tab Identification of the sampled animal\cr [, 6] \tab tissue.value
-\tab (\var{numeric}) \tab Deuterium delta value of the tissue\cr }}
+\tab (\var{numeric}) \tab hydrogen delta value of the tissue\cr }}
 \description{
-This dataset contains simulated deuterium delta values for corresponding locations
+This dataset contains simulated hydrogen delta values for corresponding locations
 based on an assumed linear relationship between the animal tissue value and the 
-deuterium delta values in the environment.
+hydrogen delta values in the environment.
 The data can be used as an example to fit a calibration model using the
 function \code{\link{calibfit}}.
 }
@@ -34,30 +34,33 @@ head(CalibDataAlien)
 str(CalibDataAlien)
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 30) {
+if(getOption_IsoriX("example_maxtime") > 30) {
 
 ## We prepare the precipitation data
-GNIPDataDEagg <- prepiso(data = GNIPDataDE)
+GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
 ## We fit the models for Germany
-GermanFit <- isofit(iso.data = GNIPDataDEagg)
+GermanFit <- isofit(data = GNIPDataDEagg)
 
 ## We build the isoscape
-isoscape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
 ## We create a simulated dataset with 50 site and 10 observations per site
 set.seed(2L)
 CalibDataAlien <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
-                        isoscape = isoscape,
-                        elevation_raster = ElevRasterDE,
-                        n_sites = 50,
-                        min_n_samples = 10,
-                        max_n_samples = 10)
-CalibDataAlien$env.value <- NULL
+                                isoscape = GermanScape,
+                                raster = ElevRasterDE,
+                                n_sites = 50,
+                                min_n_samples = 10,
+                                max_n_samples = 10)
+plot(sample_value ~ source_value, data = CalibDataAlien)
+abline(3, 0.5)
+
+CalibDataAlien$source_value <- NULL
 
 ## Uncomment the following to store the file as we did
 #save(CalibDataAlien, file = "CalibDataAlien.rda", compress = "xz")

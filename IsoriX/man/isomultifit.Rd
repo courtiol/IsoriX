@@ -4,50 +4,51 @@
 \alias{isomultifit}
 \title{Fit isoscape models per strata (typically time interval such as months)}
 \usage{
-isomultifit(iso.data, split.by = "month", mean.model.fix = list(elev = TRUE,
-  lat.abs = TRUE, lat.2 = FALSE, long = FALSE, long.2 = FALSE),
-  disp.model.fix = list(elev = FALSE, lat.abs = FALSE, lat.2 = FALSE, long =
-  FALSE, long.2 = FALSE), mean.model.rand = list(uncorr = TRUE, spatial =
-  TRUE), disp.model.rand = list(uncorr = TRUE, spatial = TRUE),
-  uncorr.terms = list(mean.model = "lambda", disp.model = "lambda"),
-  spaMM.method = list(mean.model = "fitme", disp.model = "fitme"),
-  dist.method = "Earth", control.mean = list(), control.disp = list(),
+isomultifit(data, split_by = "month", mean_model_fix = list(elev = FALSE,
+  lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE),
+  disp_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long =
+  FALSE, long_2 = FALSE), mean_model_rand = list(uncorr = TRUE, spatial =
+  TRUE), disp_model_rand = list(uncorr = TRUE, spatial = TRUE),
+  uncorr_terms = list(mean_model = "lambda", disp_model = "lambda"),
+  spaMM_method = list(mean_model = "fitme", disp_model = "fitme"),
+  dist_method = "Earth", control_mean = list(), control_disp = list(),
   verbose = interactive())
 }
 \arguments{
-\item{iso.data}{The \var{dataframe} containing the data used for fitting the
+\item{data}{The \var{dataframe} containing the data used for fitting the
 isoscape model}
 
-\item{split.by}{A \var{string} indicating the name of the column of
-\code{iso.data} used to split the dataset. The function
+\item{split_by}{A \var{string} indicating the name of the column of
+\code{data} used to split the dataset. The function
 \code{\link{isofit}} will then be called on each of these sub-datasets. The
-default split the dataset per months (\code{split.by = "month"}).}
+default behaviour is to consider that the dataset should be split per
+months (\code{split_by = "month"}).}
 
-\item{mean.model.fix}{A \var{list} of \var{logical} indicating which fixed
-effects to consider in mean.fit}
+\item{mean_model_fix}{A \var{list} of \var{logical} indicating which fixed
+effects to consider in mean_fit}
 
-\item{disp.model.fix}{A \var{list} of \var{logical} indicating which fixed
-effects to consider in disp.fit}
+\item{disp_model_fix}{A \var{list} of \var{logical} indicating which fixed
+effects to consider in disp_fit}
 
-\item{mean.model.rand}{A \var{list} of \var{logical} indicating which random
-effects to consider in mean.fit}
+\item{mean_model_rand}{A \var{list} of \var{logical} indicating which random
+effects to consider in mean_fit}
 
-\item{disp.model.rand}{A \var{list} of \var{logical} indicating which random
-effects to consider in disp.fit}
+\item{disp_model_rand}{A \var{list} of \var{logical} indicating which random
+effects to consider in disp_fit}
 
-\item{uncorr.terms}{A \var{list} of two strings defining the parametrization
-used to model the uncorrelated random effects for mean.fit and disp.fit}
+\item{uncorr_terms}{A \var{list} of two strings defining the parametrization
+used to model the uncorrelated random effects for mean_fit and disp_fit}
 
-\item{spaMM.method}{A \var{list} of two strings defining the spaMM functions
-used for mean.fit and disp.fit}
+\item{spaMM_method}{A \var{list} of two strings defining the spaMM functions
+used for mean_fit and disp_fit}
 
-\item{dist.method}{A \var{string} indicating the distance method}
+\item{dist_method}{A \var{string} indicating the distance method}
 
-\item{control.mean}{A \var{list} of additional arguments to be passed to the
-call of mean.fit}
+\item{control_mean}{A \var{list} of additional arguments to be passed to the
+call of mean_fit}
 
-\item{control.disp}{A \var{list} of additional arguments to be passed to the
-call of disp.fit}
+\item{control_disp}{A \var{list} of additional arguments to be passed to the
+call of disp_fit}
 
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
@@ -55,15 +56,14 @@ running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \code{multiisofit} containing
-all pairs of inter-related fits: \code{multi.fits}. The returned
-\var{list} also contains the object \code{info.fit} that contains all the
-call arguments.
+This function returns a \var{list} of class \code{MULTIISOFIT}
+  containing all pairs of inter-related fits (stored under
+  \code{multi_fits}). The returned \var{list} also contains the object
+  \code{info_fit} that contains all the call arguments.
 }
 \description{
-This function fits several bunch of isocapes (e.g. one per strata), which we
-call sub-isoscape. It can thus be used to predict annual averages
-precipitation weighted isoscapes.
+This function fits several set of isocapes (e.g. one per strata). It can thus be
+used to predict annual averages precipitation weighted isoscapes.
 }
 \details{
 This function is a wrapper around the function \code{\link{isofit}}.
@@ -71,28 +71,30 @@ This function is a wrapper around the function \code{\link{isofit}}.
 \examples{
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 30) {
+if(getOption_IsoriX("example_maxtime") > 30) {
 
 ## We prepare the GNIP monthly data between January and June for Germany
 
-GNIPDataDEmonthly <- prepiso(data = GNIPDataDE,
-                              month = 1:6,
-                              split.by = "month")
+GNIPDataDEmonthly <- prepsources(data = GNIPDataDE,
+                                 month = 1:6,
+                                 split_by = "month")
 
-dim(GNIPDataDEmonthly)
+head(GNIPDataDEmonthly)
 
 ## We fit the isoscapes
 
-isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly)
+GermanMonthlyFit <- isomultifit(data = GNIPDataDEmonthly)
 
-isoscapemodels
+GermanMonthlyFit
+
+plot(GermanMonthlyFit)
 }
 }
 \seealso{
-\code{\link{isofit}} for information about the fitting procedure of 
-  each sub-isoscape.
+\code{\link{isofit}} for information about the fitting procedure of
+  each isoscape.
 }

@@ -4,20 +4,19 @@
 \name{CalibDataBat}
 \alias{CalibDataBat}
 \title{Calibration dataset for bat species}
-\format{A \var{dataframe} with 178 observations on 7 variables:
-\tabular{rlll}{ [, 1] \tab siteID \tab (\var{Factor}) \tab Identification of
+\format{A \var{dataframe} with 178 observations on 6 variables:
+\tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
 the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
 coordinate [decimal degrees]\cr [, 3] \tab lat \tab (\var{numeric}) \tab
 Latitude coordinate [decimal degrees]\cr [, 4] \tab elev \tab
-(\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab animalID \tab
-(\var{Factor}) \tab Identification of the sampled animal\cr [, 6] \tab
-species \tab (\var{Factor}) \tab Species name \cr [, 7] \tab tissue.value
-\tab (\var{numeric}) \tab Deuterium delta value of the tissue\cr }}
+(\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab sample_ID \tab
+(\var{Factor}) \tab Identification of the sampled animal\cr [, 6] 
+\tab sample_value \tab (\var{numeric}) \tab hydrogen delta value of the tissue\cr }}
 \source{
 data directly provided by the authors of the following publication
 }
 \description{
-This dataset contains deuterium delta values of fur keratin from sedentary
+This dataset contains hydrogen delta values of fur keratin from sedentary
 bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
 The data can be used as an example to fit a calibration model using the
 function \code{\link{calibfit}}.
@@ -50,9 +49,9 @@ if(require(raster)){
 
     ## We reconstruct the elevation data using an elevation raster
     ## (see ?getelev for details on how to get the tif file)
-    elevationrasterbig <- raster("gmted2010_30mn.tif")
+    ElevationRasterBig <- raster("gmted2010_30mn.tif")
     CalibDataBat$elev <- extract(
-        elevationrasterbig,
+        ElevationRasterBig,
         cbind(CalibDataBat$long, CalibDataBat$lat))
     head(CalibDataBat)
 }

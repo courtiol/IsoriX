@@ -3,21 +3,21 @@
 \docType{data}
 \name{GNIPDataDE}
 \alias{GNIPDataDE}
-\title{Deuterium in precipitation water, Germany}
+\title{Hydrogen delta values in precipitation water, Germany}
 \format{The \var{dataframe} includes 8591 observations on the following
 variables: \tabular{rlll}{ [, 1] \tab lat \tab (\var{numeric}) \tab Latitude
 coordinate [decimal degrees]\cr [, 2] \tab long \tab (\var{numeric}) \tab
 Longitude coordinate [decimal degrees]\cr [, 3] \tab elev \tab
-(\var{numeric}) \tab Elevation asl [m]\cr [, 4] \tab isoscape.value \tab
-(\var{numeric}) \tab Deuterium stable hydrogen delta value [per thousand]\cr
+(\var{numeric}) \tab Elevation asl [m]\cr [, 4] \tab source_value \tab
+(\var{numeric}) \tab hydrogen delta value [per thousand]\cr
 [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr [, 6] \tab
-month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab stationID
+month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab source_ID
 \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }}
 \source{
 Data provided by the IAEA.
 }
 \description{
-This dataset contains the mean and variance of Deuterium delta value from
+This dataset contains the mean and variance of hydrogen delta value from
 precipitation water sampled at weather stations between 1961 and 2013 in
 Germany. These data have been kindly provided by Christine Stumpp and
 processed by the International Atomic Energy Agency IAEA in Vienna (GNIP
@@ -35,11 +35,11 @@ The dataset contains non-aggregated data for 27 weather stations across Germany.
 This dataset is the raw data source and should not be directly used for
 fitting isoscapes.
 
-Please use \code{\link{prepiso}} to filter the dataset by time and
+Please use \code{\link{prepsources}} to filter the dataset by time and
 location.
 
 If you want to use your own dataset, you must format your data as those
-produced by the function \code{\link{prepiso}}.
+produced by the function \code{\link{prepsources}}.
 }
 \examples{
 
@@ -54,7 +54,7 @@ Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isoto
 Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 }
 \seealso{
-\code{\link{prepiso}} to prepare the dataset for the analyses and
+\code{\link{prepsources}} to prepare the dataset for the analyses and
 to filter by time and location.
 }
 \keyword{datasets}
