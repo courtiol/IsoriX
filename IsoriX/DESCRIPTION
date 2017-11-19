@@ -1,5 +1,5 @@
 Package: IsoriX
-Version: 0.7.7
+Version: 0.7.8
 Date: 2017-06-29
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
@@ -40,7 +40,8 @@ Suggests:
     maptools,
     RandomFields,
     rgeos,
-    rgl
+    rgl,
+    testthat
 LazyData: true
 URL: https://github.com/courtiol/IsoriX_project/
 BugReports: https://github.com/courtiol/IsoriX_project/issues/
