@@ -1,5 +1,17 @@
 note <- sprintf("R package version %s", meta$Version)
 
+bibentry(bibtype="article",
+  author = personList(as.person("Alexandre Courtiol"),
+
+                      as.person("François Rousset")),
+  title = "Modelling isoscapes using mixed models",
+  year = "2017",
+  doi = "10.1101/207662",
+  publisher = "Cold Spring Harbor Laboratory",
+  eprint = "https://www.biorxiv.org/content/early/2017/10/23/207662.full.pdf",
+  journal = "bioRxiv"
+)
+
 bibentry(bibtype="Manual",
   title = "Isoscape Computation and Inference of Spatial Origins using Mixed Models",
   author = personList(as.person("Alexandre Courtiol"),
@@ -12,3 +24,5 @@ bibentry(bibtype="Manual",
   year = "2016",
   note = note
 )
+
+

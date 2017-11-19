@@ -5,13 +5,14 @@
   ## This function should not be called by the user.
   ## It displays a message when the package is being loaded.
   packageStartupMessage(## display message
-                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is loaded!",
+                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is now loaded!",
                         "\n",
                         "\n The names of the functions and objects are not yet stable.",
                         "\n We keep revising them to make IsoriX more intuitive for you to use.",
                         "\n We will do our best to limit changes in names from version 1.0 onward!!",
                         "\n",
                         "\n Type:",
+                        "\n    * citation('IsoriX') for information on how to cite IsoriX.",
                         "\n    * browseURL('https://bookdown.org/content/782/') for the documentation.",
                         "\n    * ?IsoriX for a short description.",
                         "\n    * news(package = 'IsoriX') for news.",
