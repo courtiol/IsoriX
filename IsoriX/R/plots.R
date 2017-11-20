@@ -11,6 +11,9 @@
 #'
 #' When called upon an object of class \var{ISOSCAPE}, the plot function draws a
 #' fine-tuned plot of the isoscape.
+#' 
+#' When called upon an object of class \var{RasterLayer}, the plot function 
+#' displays the raster (just for checking things fast and dirty).
 #'
 #' When used on a fitted isoscape, the user can choose between plotting the
 #' predictions (\code{which} = "mean"; default), the prediction variance
@@ -106,7 +109,10 @@
 #'   returned as a rotating sphere and if the image created during the process 
 #'   should be saved in your current working directory. The default settings are
 #'    FALSE.
-#' @param ... Additional arguments (not in use)
+#' @param xlab A \var{string} the x-axis label in plot.CALIBFIT
+#' @param ylab A \var{string} the y-axis label in plot.CALIBFIT
+#' @param ... Additional arguments (only in use in plot.CALIBFIT and 
+#' plot.RasterLayer)
 #'
 #' @seealso \code{\link{isofit}} for the function fitting the isoscape
 #'
@@ -643,7 +649,11 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 #' @rdname plots
 #' @method plot CALIBFIT
 #' @export
-plot.CALIBFIT <- function(x, ...) {
+plot.CALIBFIT <- function(x,
+                          xlab = "Predicted isotopic value in the environment",
+                          ylab = "Isotopic value in the calibration sample",
+                          ...) {
+  
   xs <- with(x$data,
              seq(min(mean_source_value),
                  max(mean_source_value),
@@ -659,19 +669,22 @@ plot.CALIBFIT <- function(x, ...) {
   X <- cbind(1, xs)
   fitted <- X %*% x$param
   fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
-
+  lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
+  upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
+  
   with(x$data,
        graphics::plot(sample_value ~ mean_source_value,
-                      xlab = "Isotopic value in the environment",
-                      ylab = "Isotopic value in the samples",
+                      xlab = xlab,
+                      ylab = ylab,
+                      ylim = range(c(lwr, upr)),
                       las = 1,
                       ...
        )
   )
 
   graphics::points(fitted ~ xs, type = "l", col = "blue", lwd = 2)
-  graphics::points(fitted + stats::qnorm(0.025)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
-  graphics::points(fitted + stats::qnorm(0.975)*fixedVar ~ xs, col = "blue", lty = 2, type = "l")
+  graphics::points(lwr ~ xs, col = "blue", lty = 2, type = "l")
+  graphics::points(upr ~ xs, col = "blue", lty = 2, type = "l")
 
   ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
   rm(fitted, fixedVar)
