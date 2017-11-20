@@ -166,7 +166,7 @@ calibfit!")
       data$mean_origin <-
         (data$sample_value - calibfit$param["intercept"])/calibfit$param["slope"]
       ## we create individual rasters containing the test statistics
-      list_stat_layers <- sapply(1:nrow(data),
+      list_stat_layers <- sapply(1:nrow(data),  ## ToDo: change that so it can use HD for heavy layers
                                  function(i) {
                                    data$mean_origin[i] - isoscape$isoscapes$mean
                                  }
