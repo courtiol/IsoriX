@@ -82,7 +82,8 @@ if(getOption_IsoriX("example_maxtime") > 30) {
 GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
 ## We fit the models for Germany:
-GermanFit <- isofit(data = GNIPDataDEagg)
+GermanFit <- isofit(data = GNIPDataDEagg,
+                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 
 ## We fit the calibration model:
 CalibAlien <- calibfit(data = CalibDataAlien, isofit = GermanFit)
