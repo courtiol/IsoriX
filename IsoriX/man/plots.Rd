@@ -33,7 +33,9 @@
 
 \method{plot}{ISOFIT}(x, cex_scale = 0.2, ...)
 
-\method{plot}{CALIBFIT}(x, ...)
+\method{plot}{CALIBFIT}(x,
+  xlab = "Predicted isotopic value in the environment",
+  ylab = "Isotopic value in the calibration sample", ...)
 
 \method{plot}{RasterLayer}(x, ...)
 }
@@ -68,7 +70,8 @@ returned as a rotating sphere and if the image created during the process
 should be saved in your current working directory. The default settings are
  FALSE.}
 
-\item{...}{Additional arguments (not in use)}
+\item{...}{Additional arguments (only in use in plot.CALIBFIT and 
+plot.RasterLayer)}
 
 \item{who}{Either "group", or a vector of indices (e.g. 1:3) or names of the
 individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots}
@@ -84,6 +87,10 @@ location of the calibration sampling area (see details)}
 
 \item{cex_scale}{A \var{numeric} giving a scalling factor for the points in
 the plots}
+
+\item{xlab}{A \var{string} the x-axis label in plot.CALIBFIT}
+
+\item{ylab}{A \var{string} the y-axis label in plot.CALIBFIT}
 }
 \description{
 These functions plot objects created by \pkg{\link{IsoriX}} (with the
@@ -98,6 +105,9 @@ the fitted calibration function.
 
 When called upon an object of class \var{ISOSCAPE}, the plot function draws a
 fine-tuned plot of the isoscape.
+
+When called upon an object of class \var{RasterLayer}, the plot function 
+displays the raster (just for checking things fast and dirty).
 
 When used on a fitted isoscape, the user can choose between plotting the
 predictions (\code{which} = "mean"; default), the prediction variance
