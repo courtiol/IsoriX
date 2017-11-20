@@ -7,7 +7,7 @@
   packageStartupMessage(## display message
                         "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is now loaded!",
                         "\n",
-                        "\n The names of the functions and objects are not yet stable.",
+                        "\n The names of all objects (including functions) are not yet stable.",
                         "\n We keep revising them to make IsoriX more intuitive for you to use.",
                         "\n We will do our best to limit changes in names from version 1.0 onward!!",
                         "\n",
