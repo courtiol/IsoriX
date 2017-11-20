@@ -676,7 +676,7 @@ plot.CALIBFIT <- function(x,
        graphics::plot(sample_value ~ mean_source_value,
                       xlab = xlab,
                       ylab = ylab,
-                      ylim = range(c(lwr, upr)),
+                      ylim = range(c(sample_value, lwr, upr)),
                       las = 1,
                       ...
        )
