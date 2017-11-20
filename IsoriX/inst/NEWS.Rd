@@ -18,6 +18,7 @@
       \item new option in plots that allows to map the isoscape onto a sphere
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
       \item an argument y_title for the plotting function for isoscapes to allow one to simply change the title
+      \item arguments xlab and ylab for the plotting function for calibration fits
     }
   }
   
@@ -56,6 +57,7 @@
   
   \subsection{Solved BUGS}{
     \itemize{
+      \item the plotting function for calibration fit was displaying CI based on variance instead of SD
       \item the function getprecip and prepcipitate were not handling paths manualy defined properly
       \item the plotting functions were crashing in case of no variation in the landscape
       \item the plotting functions were crashing when called on multiple-raster objects not stored 'inMemory'
