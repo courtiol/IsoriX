@@ -16,9 +16,9 @@
 \title{Plotting functions for IsoriX}
 \usage{
 \method{plot}{ISOSCAPE}(x, which = "mean", y_title = list(which = TRUE,
-  title = bquote(delta^2 * H[p])), sources = list(draw = TRUE, cex = 0.5, pch
-  = 2, lwd = 1, col = "red"), borders = list(borders = NA, lwd = 0.5, col =
-  "black"), mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+  title = bquote(italic("δ")^2 * H)), sources = list(draw = TRUE, cex = 0.5,
+  pch = 2, lwd = 1, col = "red"), borders = list(borders = NA, lwd = 0.5, col
+  = "black"), mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
   palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn =
   NA), plot = TRUE, sphere = list(build = FALSE, keep_image = FALSE), ...)
 
