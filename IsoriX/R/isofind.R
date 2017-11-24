@@ -182,6 +182,7 @@ calibfit!")
     
     names(list_stat_layers) <- names_layers
     stat_brick <- raster::brick(list_stat_layers)
+    rm(list_stat_layers)
     if (any(names_layers != names(stat_brick))) {
       warning("Your sample_ID could not be used to name rasters (you may have used numbers, symbols or punctuations that is messing with the package raster), so they have been slightly modified by this package.")
       names_layers <- names(stat_brick) ## trick to track the good names as they can change during stacking (if numbers)
@@ -213,7 +214,8 @@ calibfit!")
 
     names(list_varstat_layers) <- names_layers
     varstat_brick <- raster::brick(list_varstat_layers)
-
+    rm(list_varstat_layers)
+    
     ### WE COMPUTE THE INDIVIDUAL LOG P-VALUE SURFACES
     if (verbose) {
       print("running the assignment test...")
@@ -250,8 +252,8 @@ calibfit!")
     print("converting log p-values into p-values...")
   }
   pv_brick <- exp(logpv_brick)
-  names(pv_brick) <- names_layers  ## we restore the names as they are not kept when computing
   rm(logpv_brick)
+  names(pv_brick) <- names_layers  ## we restore the names as they are not kept when computing
 
   ## replacing values by zeros if they fall in the mask (e.g. in water)
   if (!is.null(mask)) {
@@ -277,7 +279,6 @@ calibfit!")
 
 
   ### RETURNS
-  
   calibs <- NULL
   if (!is.null(calibfit)) {
     calibs <- calibfit$sp_points$calibs
@@ -294,6 +295,11 @@ calibfit!")
               )
 
   class(out) <- c("ISOFIND", "list")
+  
+  if (verbose) {
+    print("done!")
+  }
+  
   return(out)
 }
 
