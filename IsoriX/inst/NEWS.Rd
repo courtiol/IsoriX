@@ -19,6 +19,7 @@
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
       \item an argument y_title for the plotting function for isoscapes to allow one to simply change the title
       \item arguments xlab and ylab for the plotting function for calibration fits
+      \item new method points for plotting more than one calibration fit
     }
   }
   
@@ -43,6 +44,7 @@
   
   \subsection{Geeky changes}{
     \itemize{
+      \item large temporary objects are now deleted within isofind to limit memory usage
       \item the package is now being tested using testthat, but test will be implemented in the future
       \item a lot of the internal code as been rewriten to comply more closely to the IsoriX coding style
       \item the list of suggested packages has been revised and rgdal removed as it caused (again) problems with Travis

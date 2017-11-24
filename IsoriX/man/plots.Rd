@@ -33,9 +33,10 @@
 
 \method{plot}{ISOFIT}(x, cex_scale = 0.2, ...)
 
-\method{plot}{CALIBFIT}(x,
+\method{plot}{CALIBFIT}(x, pch = 1, col = "black",
   xlab = "Predicted isotopic value in the environment",
-  ylab = "Isotopic value in the calibration sample", ...)
+  ylab = "Isotopic value in the calibration sample", CI = list(show = TRUE,
+  col = "blue"), ...)
 
 \method{plot}{RasterLayer}(x, ...)
 }
@@ -65,7 +66,7 @@ colours for the isoscape (see details)}
 \item{plot}{A \var{logical} indicating whether the plot shall be plotted or
 just returned}
 
-\item{sphere}{A \var{list} containing information wether the raster should be 
+\item{sphere}{A \var{list} containing information whether the raster should be 
 returned as a rotating sphere and if the image created during the process 
 should be saved in your current working directory. The default settings are
  FALSE.}
@@ -88,9 +89,16 @@ location of the calibration sampling area (see details)}
 \item{cex_scale}{A \var{numeric} giving a scalling factor for the points in
 the plots}
 
+\item{pch}{The argument pch as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT}
+
+\item{col}{The argument col as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT}
+
 \item{xlab}{A \var{string} the x-axis label in plot.CALIBFIT}
 
 \item{ylab}{A \var{string} the y-axis label in plot.CALIBFIT}
+
+\item{CI}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
+and \code{col}, a \var{string} or \var{integer} indicating the colour for ploting the confidence interval}
 }
 \description{
 These functions plot objects created by \pkg{\link{IsoriX}} (with the
