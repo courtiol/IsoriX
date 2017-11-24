@@ -80,6 +80,18 @@
 #' 
 #' ## We plot the calibration function:
 #' plot(CalibAlien)
+#' 
+#' ## Add other calibrations on the same plot
+#' CalibDataAlien3 <- CalibDataAlien2 <- CalibDataAlien
+#' CalibDataAlien2$sample_value <- rnorm(nrow(CalibDataAlien2), mean = CalibDataAlien2$sample_value, sd = 10)
+#' CalibDataAlien3$sample_value <- rnorm(nrow(CalibDataAlien3), mean = CalibDataAlien3$sample_value, sd = 10)
+#' CalibAlien2 <- calibfit(data = CalibDataAlien2, isofit = GermanFit)
+#' CalibAlien3 <- calibfit(data = CalibDataAlien3, isofit = GermanFit)
+#' plot(CalibAlien3)
+#' points(CalibAlien)
+#' points(CalibAlien2, pch = 3, col = "green", CI = list(col = "green"))
+#' 
+#' 
 #' }
 #' 
 #' @export
