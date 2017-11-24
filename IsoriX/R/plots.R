@@ -105,12 +105,16 @@
 #'   colours for the isoscape (see details)
 #' @param plot A \var{logical} indicating whether the plot shall be plotted or
 #'   just returned
-#' @param sphere A \var{list} containing information wether the raster should be 
+#' @param sphere A \var{list} containing information whether the raster should be 
 #'   returned as a rotating sphere and if the image created during the process 
 #'   should be saved in your current working directory. The default settings are
 #'    FALSE.
 #' @param xlab A \var{string} the x-axis label in plot.CALIBFIT
 #' @param ylab A \var{string} the y-axis label in plot.CALIBFIT
+#' @param pch The argument pch as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
+#' @param col The argument col as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
+#' @param CI A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
+#' and \code{col}, a \var{string} or \var{integer} indicating the colour for ploting the confidence interval
 #' @param ... Additional arguments (only in use in plot.CALIBFIT and 
 #' plot.RasterLayer)
 #'
@@ -650,47 +654,89 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 #' @method plot CALIBFIT
 #' @export
 plot.CALIBFIT <- function(x,
+                          pch = 1,
+                          col = "black",
                           xlab = "Predicted isotopic value in the environment",
                           ylab = "Isotopic value in the calibration sample",
+                          CI = list(show = TRUE, col = "blue"),
                           ...) {
   
-  xs <- with(x$data,
-             seq(min(mean_source_value),
-                 max(mean_source_value),
-                 length = 100
-             )
-  )
+  .complete_args(plot.CALIBFIT)
+
+  plotting_calibfit(x = x, pch = pch, col = col, CI = CI, xlab = xlab, ylab = ylab, points = FALSE, ...)
+  return(invisible(NULL))
+}
+
+
+#' @rdname plot
+#' @method points CALIBFIT
+#' @export
+points.CALIBFIT <- function(x,
+                            pch = 2,
+                            col = "red",
+                            CI = list(show = TRUE, col = "red"),
+                            ...) {
+  .complete_args(points.CALIBFIT)
   
+  plotting_calibfit(x = x, pch = pch, col = col, CI = CI, xlab = NULL, ylab = NULL, points = TRUE, ...)
+  return(invisible(NULL))
+  
+}
+
+plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, points = FALSE, ...) {
+
   if (!(any(class(x) %in% "CALIBFIT"))) {
     stop("This function must be called on an object of class CALIBFIT.")
   }
   
-
-  X <- cbind(1, xs)
-  fitted <- X %*% x$param
-  fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
-  lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
-  upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
+  if (CI$show) {
+    xs <- with(x$data,
+               seq(min(mean_source_value),
+                   max(mean_source_value),
+                   length = 100
+               )
+    )
+    
+    X <- cbind(1, xs)
+    fitted <- X %*% x$param
+    fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
+    lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
+    upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
+  } else {
+    lwr <- min(x$data$sample_value)
+    upr <- max(x$data$sample_value)
+  }
   
+  if (! points) {
   with(x$data,
-       graphics::plot(sample_value ~ mean_source_value,
-                      xlab = xlab,
-                      ylab = ylab,
-                      ylim = range(c(sample_value, lwr, upr)),
-                      las = 1,
-                      ...
+       graphics::plot.default(sample_value ~ mean_source_value,
+                              xlab = xlab,
+                              ylab = ylab,
+                              ylim = range(lwr, sample_value, upr),
+                              las = 1,
+                              pch = pch,
+                              col = col,
+                              ...
        )
   )
-
-  graphics::points(fitted ~ xs, type = "l", col = "blue", lwd = 2)
-  graphics::points(lwr ~ xs, col = "blue", lty = 2, type = "l")
-  graphics::points(upr ~ xs, col = "blue", lty = 2, type = "l")
-
-  ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
-  rm(fitted, fixedVar)
-
+  } else {
+    with(x$data,
+         graphics::points.default(sample_value ~ mean_source_value, pch = pch, col = col, ...)
+    )
+  }
+  
+  
+  if (CI$show) {
+    graphics::points(fitted ~ xs, type = "l", col = CI$col, lwd = 2)
+    graphics::points(lwr ~ xs, col = CI$col, lty = 2, type = "l")
+    graphics::points(upr ~ xs, col = CI$col, lty = 2, type = "l")
+    ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
+    rm(fitted, fixedVar)
+  }
+  
   return(invisible(NULL))
-}
+  }
+
 
 #' @rdname plots
 #' @method plot RasterLayer
@@ -699,7 +745,6 @@ plot.RasterLayer <- function(x, ...) {
   print(rasterVis::levelplot(x, margin = FALSE, ...))
   return(invisible(NULL))
 }
-
 
 
 .build_additional_layers <- function(x, sources, calibs, borders, mask, mask2 = NULL) {
