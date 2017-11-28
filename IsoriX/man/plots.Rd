@@ -2,16 +2,17 @@
 % Please edit documentation in R/plots.R
 \name{plots}
 \alias{plots}
-\alias{plot.isofit}
-\alias{plot.isoscape}
-\alias{plot.calibfit}
-\alias{plot.isorix}
+\alias{plot.ISOFIT}
+\alias{plot.ISOSCAPE}
+\alias{plot.CALIBFIT}
+\alias{plot.ISOFIND}
 \alias{plot.RasterLayer}
 \alias{plot}
 \alias{plot.ISOSCAPE}
 \alias{plot.ISOFIND}
 \alias{plot.ISOFIT}
 \alias{plot.CALIBFIT}
+\alias{points.CALIBFIT}
 \alias{plot.RasterLayer}
 \title{Plotting functions for IsoriX}
 \usage{
@@ -25,7 +26,8 @@
 \method{plot}{ISOFIND}(x, who = "group", cutoff = list(draw = TRUE, level =
   0.05, col = "#909090"), sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd
   = 1, col = "red"), calibs = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1,
-  col = "blue"), borders = list(borders = NA, lwd = 0.5, col = "black"),
+  col = "blue"), assigns = list(draw = TRUE, cex = 0.5, pch = 5, lwd = 1, col
+  = "white"), borders = list(borders = NA, lwd = 0.5, col = "black"),
   mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
   mask2 = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
   palette = list(step = NA, range = c(0, 1), n_labels = 11, digits = 2, fn =
@@ -37,6 +39,9 @@
   xlab = "Predicted isotopic value in the environment",
   ylab = "Isotopic value in the calibration sample", CI = list(show = TRUE,
   col = "blue"), ...)
+
+\method{points}{CALIBFIT}(x, pch = 2, col = "red", CI = list(show = TRUE,
+  col = "red"), ...)
 
 \method{plot}{RasterLayer}(x, ...)
 }
@@ -81,7 +86,10 @@ individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots}
 region outside the prediction interval (see details)}
 
 \item{calibs}{A \var{list} containing information for the display of the
-location of the calibration sampling area (see details)}
+location of the calibration sampling location (see details)}
+
+\item{assigns}{A \var{list} containing information for the display of the
+location of the assingment sampling location (see details)}
 
 \item{mask2}{A \var{list} containing information for the display of a mask
 (e.g. a distribution mask) (see details)}
@@ -141,14 +149,15 @@ be displayed or not. The element \code{title} is a string or a call used to
 define the rest of the title. By default it draws the delta value for
 hydrogen. Check the syntax of this default before trying to modify it.
 
-The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{borders},
+The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{assigns}, \code{borders},
 \code{mask}, and \code{mask2} are used to fine-tune additional layers that
 can be added to the main plot to embellish it. These arguments must be lists
 that provide details on how to draw, respectively, the area outside the
 prediction interval (for assignment plots), the locations of sources (for
 both isoscape and assignment plots), the locations of the calibration
-sampling area (for assignment plots, the borders (for both types of plots),
-and the mask (again, for both)). For assignment maps, an extra mask can be
+samples (for assignment plots), the locations of the assignment
+samples (for assignment plots), the borders (for both types of plots),
+and the mask (again, for both). For assignment maps, an extra mask can be
 used (mask2), as one may want to add a mask covering the area outside the
 biological range of the species. Within these lists, the elements \code{lwd},
 \code{col}, \code{cex}, \code{pch} and \code{fill} influences their

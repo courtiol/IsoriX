@@ -31,7 +31,7 @@ session and \var{FALSE} otherwise.}
 This function returns a \var{list} of class \var{ISOFIND} containing
 itself three lists (\code{sample}, \code{group}, and \code{sp_points})
 storing all rasters built during assignment and the spatial points for
-sources and calibration. The \var{list} \code{sample} contains three set of
+sources, calibration and assignments. The \var{list} \code{sample} contains three set of
 raster layers: one storing the value of the test statistic ("stat"), one
 storing the value of the variance of the test statistic ("var") and one
 storing the p-value of the test ("pv"). The \var{list} \code{group} contains

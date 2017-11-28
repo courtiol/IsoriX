@@ -66,7 +66,7 @@ to the sum of the prediction variance and the residual variance (note that
 the residual variance considered assume that a single observation is being
 observed per location).
 
-The isoscape can be plotted using the function \code{\link{plot.isoscape}}
+The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
 (see examples).
 }
 \examples{
