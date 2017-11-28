@@ -39,14 +39,15 @@
 #' define the rest of the title. By default it draws the delta value for
 #' hydrogen. Check the syntax of this default before trying to modify it.
 #'
-#' The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{borders},
+#' The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{assigns}, \code{borders},
 #' \code{mask}, and \code{mask2} are used to fine-tune additional layers that
 #' can be added to the main plot to embellish it. These arguments must be lists
 #' that provide details on how to draw, respectively, the area outside the
 #' prediction interval (for assignment plots), the locations of sources (for
 #' both isoscape and assignment plots), the locations of the calibration
-#' sampling area (for assignment plots, the borders (for both types of plots),
-#' and the mask (again, for both)). For assignment maps, an extra mask can be
+#' samples (for assignment plots), the locations of the assignment
+#' samples (for assignment plots), the borders (for both types of plots),
+#' and the mask (again, for both). For assignment maps, an extra mask can be
 #' used (mask2), as one may want to add a mask covering the area outside the
 #' biological range of the species. Within these lists, the elements \code{lwd},
 #' \code{col}, \code{cex}, \code{pch} and \code{fill} influences their
@@ -77,7 +78,7 @@
 #' simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 #' 
 #' @name plots
-#' @aliases plot.isofit plot.isoscape plot.calibfit plot.isorix plot.RasterLayer plot
+#' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND plot.RasterLayer plot
 #' @param x The return object of an \code{\link{isofit}},
 #'   \code{\link{isoscape}}, \code{\link{calibfit}}, \code{\link{isofind}}, or \code{\link[raster]{raster}}
 #'   call
@@ -94,7 +95,9 @@
 #' @param sources A \var{list} containing information for the display of the
 #'   location of the sources (see details)
 #' @param calibs A \var{list} containing information for the display of the
-#'   location of the calibration sampling area (see details)
+#'   location of the calibration sampling location (see details)
+#' @param assigns A \var{list} containing information for the display of the
+#'   location of the assingment sampling location (see details)
 #' @param borders A \var{list} containing information for the display of borders
 #'   (e.g. country borders) (see details)
 #' @param mask A \var{list} containing information for the display of a mask
@@ -133,7 +136,6 @@
 NULL
 
 #' @rdname plots
-#' @method plot ISOSCAPE
 #' @export
 plot.ISOSCAPE <- function(x,
                           which   = "mean",
@@ -314,13 +316,13 @@ plot.ISOSCAPE <- function(x,
 }
 
 #' @rdname plots
-#' @method plot ISOFIND
 #' @export
 plot.ISOFIND <- function(x,
                         who     = "group",
                         cutoff  = list(draw = TRUE, level = 0.05, col = "#909090"),
                         sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                         calibs  = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
+                        assigns = list(draw = TRUE, cex = 0.5, pch = 5, lwd = 1, col = "white"),
                         borders = list(borders = NA, lwd = 0.5, col = "black"),
                         mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
                         mask2   = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
@@ -418,6 +420,7 @@ plot.ISOFIND <- function(x,
   decor <- .build_additional_layers(x = x,
                                     sources = sources,
                                     calibs = calibs,
+                                    assigns = assigns,
                                     borders = borders,
                                     mask = mask,
                                     mask2 = mask2
@@ -442,7 +445,7 @@ plot.ISOFIND <- function(x,
 
   ## pilling all layers together
   complete_map <- map + decor$borders_layer + decor$mask_layer + decor$mask2_layer +
-    decor$sources_layer + decor$calibs_layer
+    decor$sources_layer + decor$calibs_layer + decor$assigns_layer
 
   ## plotting
   if (plot & !sphere$build) {
@@ -541,7 +544,6 @@ plot.ISOFIND <- function(x,
 }
 
 #' @rdname plots
-#' @method plot ISOFIT
 #' @export
 plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 
@@ -651,7 +653,6 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 
 
 #' @rdname plots
-#' @method plot CALIBFIT
 #' @export
 plot.CALIBFIT <- function(x,
                           pch = 1,
@@ -668,8 +669,7 @@ plot.CALIBFIT <- function(x,
 }
 
 
-#' @rdname plot
-#' @method points CALIBFIT
+#' @rdname plots
 #' @export
 points.CALIBFIT <- function(x,
                             pch = 2,
@@ -739,7 +739,6 @@ plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, points = FALSE, ...) 
 
 
 #' @rdname plots
-#' @method plot RasterLayer
 #' @export
 plot.RasterLayer <- function(x, ...) {
   print(rasterVis::levelplot(x, margin = FALSE, ...))
@@ -747,7 +746,7 @@ plot.RasterLayer <- function(x, ...) {
 }
 
 
-.build_additional_layers <- function(x, sources, calibs, borders, mask, mask2 = NULL) {
+.build_additional_layers <- function(x, sources, calibs, assigns = NULL, borders, mask, mask2 = NULL) {
   ## This function should not be called by the user.
   ## It builds the additional layers for the plots.
   
@@ -783,6 +782,27 @@ plot.RasterLayer <- function(x, ...) {
       ),
       data = list(calibs = x$sp_points$calibs,
                   pt = calibs,
+                  sp.points = sp::sp.points
+      )
+      )
+    }
+  }
+  
+  ## layer for assignment points
+  if (is.null(assigns)) {
+    assigns_layer <- latticeExtra::layer()
+  } else {
+    if (!assigns$draw) {
+      assigns_layer <- latticeExtra::layer()
+    } else {
+      assigns_layer <- latticeExtra::layer(sp::sp.points(assigns,
+                                                        col = pt$col,
+                                                        cex = pt$cex,
+                                                        pch = pt$pch,
+                                                        lwd = pt$lwd
+      ),
+      data = list(assigns = x$sp_points$assigns,
+                  pt = assigns,
                   sp.points = sp::sp.points
       )
       )
@@ -836,6 +856,7 @@ plot.RasterLayer <- function(x, ...) {
   layers <- list(sources_layer = sources_layer,
                  calibs_layer = calibs_layer,
                  borders_layer = borders_layer,
+                 assigns_layer = assigns_layer,
                  mask_layer = mask_layer,
                  mask2_layer = mask2_layer
   )
