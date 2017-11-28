@@ -40,7 +40,7 @@
 #' the residual variance considered assume that a single observation is being
 #' observed per location).
 #'
-#' The isoscape can be plotted using the function \code{\link{plot.isoscape}}
+#' The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
 #' (see examples).
 #'
 #' @aliases isoscape print.isoscape summary.isoscape
