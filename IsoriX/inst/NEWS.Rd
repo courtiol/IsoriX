@@ -20,6 +20,7 @@
       \item an argument y_title for the plotting function for isoscapes to allow one to simply change the title
       \item arguments xlab and ylab for the plotting function for calibration fits
       \item new method points for plotting more than one calibration fit
+      \item the plotting function for assignments can now show the location of the assignment samples
     }
   }
   
