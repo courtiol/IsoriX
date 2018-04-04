@@ -69,6 +69,19 @@
   }
 }
 
+\section{version 0.7.1}{
+  \subsection{New features}{
+    \itemize{
+     \item this is a minor update necessary to maintain compatibility with spaMM 2.4
+    }
+  }
+  \subsection{Geeky changes}{
+    \itemize{
+      \item the syntax for the extraction of correlation terms of spaMM objects has changed
+    }
+  }
+}
+
 \section{version 0.7}{
   \subsection{New features}{
     \itemize{
