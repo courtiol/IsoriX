@@ -139,7 +139,7 @@ NULL
 #' @export
 plot.ISOSCAPE <- function(x,
                           which   = "mean",
-                          y_title  = list(which = TRUE, title = bquote(italic("\u03B4")**2*H)), ## bquote(delta**2*H[p]) does not allow delta as italic...
+                          y_title  = list(which = TRUE, title = bquote(delta**2*H)), ## bquote(italic("\u03B4")**2*H[p]) does not work on all system...
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                           borders = list(borders = NA, lwd = 0.5, col = "black"),
                           mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
