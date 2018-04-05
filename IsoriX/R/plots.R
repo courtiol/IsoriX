@@ -491,8 +491,8 @@ plot.isofit <- function(x, cex.scale = 0.2, ...) {
   d.stop <- FALSE
   d <- 0
   
-  rho <- ifelse(utils::packageVersion(pkg = "spaMM") < "2.3.72",  model$corrPars$rho, model$corrPars[[1]]$rho)
-  nu  <- ifelse(utils::packageVersion(pkg = "spaMM") < "2.3.72",  model$corrPars$nu, model$corrPars[[1]]$nu)
+  rho <- ifelse(utils::packageVersion(pkg = "spaMM") < "2.4",  model$corrPars$rho, model$corrPars[[1]]$rho)
+  nu  <- ifelse(utils::packageVersion(pkg = "spaMM") < "2.4",  model$corrPars$nu, model$corrPars[[1]]$nu)
   
   while ((d < 50000) & !d.stop) {
     d <- d + 10
