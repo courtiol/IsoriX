@@ -38,7 +38,7 @@ Off course, unless you are in the same institute than some of us, replace the nu
 
 ## Where to learn about IsoriX?
 
-Here, on github, we are planning to provide documentation in [our Wiki](https://github.com/courtiol/IsoriX_project/wiki/). It is just starting, so check regularly for updates.
+Here, on github, we are planning to provide documentation in [our Wiki](https://github.com/courtiol/IsoriX/wiki/). It is just starting, so check regularly for updates.
 
 Otherwise, you can access the documentation and tutorials about IsoriX on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or if you have installed IsoriX you can type:
 
