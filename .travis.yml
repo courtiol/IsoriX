@@ -21,7 +21,6 @@ r_packages:
   - maptools
   - RandomFields
   - rgeos
-  - rgl
   - testthat
 
 addons:
@@ -29,6 +28,7 @@ addons:
     packages:
       - ghostscript
       - libnlopt-dev
+      - libmagick++-dev
 
 after_success:
   - Rscript -e 'library(covr); codecov(type = "examples")'
