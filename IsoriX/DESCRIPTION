@@ -1,20 +1,20 @@
 Package: IsoriX
-Version: 0.7.86
+Version: 0.7.87
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
 Authors@R: c(
-    person("Alexandre", "Courtiol", email = "courtiol@izw-berlin.de", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0637-2959")),
+    person("Alexandre", "Courtiol", email = "alexandre.courtiol@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0637-2959")),
     person("François", "Rousset", role = "aut", comment = c(ORCID = "0000-0003-4670-0371")),
     person("Marie-Sophie", "Rohwaeder", role = "aut"),
     person("Stephanie", "Kramer-Schadt", role = "aut", comment = c(ORCID = "0000-0002-9269-4446"))
     )
-Maintainer: Alexandre Courtiol <alexandre.courtiol@gmail.com>
 Depends:
     R (>= 3.1.0)
 Imports:
     graphics,
     grDevices,
     grid,
+    lattice,
     latticeExtra,
     numDeriv,
     raster,
@@ -35,7 +35,6 @@ Description:
 License: GPL (>= 2)
 Suggests:
     gmp,
-    lattice,
     magick,
     maps,
     maptools,
@@ -47,3 +46,5 @@ LazyData: true
 URL: https://github.com/courtiol/IsoriX_project/
 BugReports: https://github.com/courtiol/IsoriX_project/issues/
 RoxygenNote: 6.1.0
+Roxygen: list(markdown = TRUE)
+
