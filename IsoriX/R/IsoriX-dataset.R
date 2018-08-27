@@ -9,6 +9,7 @@
 #' 
 #' @name AssignDataBat
 #' @docType data
+#' @noMd
 #' @format A \var{dataframe} with 244 observations on 3 variables:
 #' \tabular{rlll}{ [, 1] \tab sampleID \tab (\var{Factor}) \tab Identification
 #' of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
@@ -50,6 +51,7 @@ NULL
 #' 
 #' @name CalibDataBat
 #' @docType data
+#' @noMd
 #' @format A \var{dataframe} with 178 observations on 6 variables:
 #' \tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
 #' the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
@@ -106,6 +108,7 @@ NULL
 #' 
 #' @name AssignDataAlien
 #' @docType data
+#' @noMd
 #' @format A \var{dataframe} with 10 observations on 2 variables:
 #' \tabular{rlll}{ [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification
 #' of the sample\cr [, 2] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
@@ -175,6 +178,7 @@ NULL
 #' 
 #' @name CalibDataAlien
 #' @docType data
+#' @noMd
 #' @format A \var{dataframe} with x observations on 6 variables:
 #' \tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
 #' the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
@@ -316,8 +320,8 @@ NULL
 
 #' The raster of elevation for Germany
 #' 
-#' This raster contains the elevation of the surface of Germany [meters above sea
-#' level] with a resolution of approximately 30 square-km.
+#' This raster contains the elevation of the surface of Germany (meters above sea
+#' level) with a resolution of approximately 30 square-km.
 #' 
 #' This raster contains elevation data of Germany in a highly aggregated form
 #' corresponding to a resolution of approximately one elevation value per 50
@@ -389,7 +393,7 @@ NULL
 
 #' The precipitation monthly amounts for Germany
 #'
-#' This brick of rasters contains the monthly precipitation amounts [in mm] for
+#' This brick of rasters contains the monthly precipitation amounts (in mm) for
 #' Germany with a resolution of approximately 30 square-km..
 #'
 #' The data are derived from "precipitation (mm) WorldClim Version2" which can
@@ -446,6 +450,7 @@ NULL
 #' 
 #' @name GNIPDataDE
 #' @docType data
+#' @noMd
 #' @format The \var{dataframe} includes 8591 observations on the following
 #' variables: \tabular{rlll}{ [, 1] \tab lat \tab (\var{numeric}) \tab Latitude
 #' coordinate [decimal degrees]\cr [, 2] \tab long \tab (\var{numeric}) \tab
