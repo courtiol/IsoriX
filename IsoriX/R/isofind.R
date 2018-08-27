@@ -119,9 +119,9 @@
 #' ## We plot the assignment and 
 #' ## show where the station really is (using lattice)
 #' plot(AssignedGP) +
-#'   lattice::xyplot(47.48~11.06,
-#'                   panel = lattice::panel.points,
-#'                   cex = 5, pch = 13, lwd = 2, col = "black") 
+#'   xyplot(47.48~11.06,
+#'          panel = lattice::panel.points,
+#'          cex = 5, pch = 13, lwd = 2, col = "black") 
 #' 
 #' 
 #' }
