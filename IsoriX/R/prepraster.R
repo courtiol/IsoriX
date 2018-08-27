@@ -26,7 +26,7 @@
 #' functions. In particular, \code{\link[raster]{crop}} expects extents with
 #' increasing longitudes and latitudes. We have tried to partially relax this
 #' constrains for longitude and you can use the argument \code{manual_crop} to
-#' provide longitudes in decreasing order, which is useful to center a isoscape
+#' provide longitudes in decreasing order, which is useful to centre a isoscape
 #' around the pacific for instance. But this fix does not solve all the
 #' limitations as plotting polygons or points on top of that remains problematic
 #' (see example bellow). We will work on this on the future but we have other 

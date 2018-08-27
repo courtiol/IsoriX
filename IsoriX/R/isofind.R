@@ -5,7 +5,7 @@
 #' An assignment is a comparison, for a given organism, of the predicted
 #' isotopic source value at its location of origin and the predicted isotopic
 #' source value at each location of the \code{isoscape}. The difference between
-#' these two values constitute the statistic of the assingment test. Under the
+#' these two values constitute the statistic of the assignment test. Under the
 #' null hypothesis (the organism is at a location with the same isotopic value
 #' than its original location), the test statistics follows a normal
 #' distribution with mean zero and a certain variance that stems from both the

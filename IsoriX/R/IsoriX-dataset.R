@@ -430,7 +430,7 @@ NULL
 #' Germany. These data have been kindly provided by Christine Stumpp and
 #' processed by the International Atomic Energy Agency IAEA in Vienna (GNIP
 #' Project: Global Network of Isotopes in Precipitation). These data are free to
-#' reuse provided the relevent citations (see references). These data represent
+#' reuse provided the relevant citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
 #' provide larger GNIP dataset in the package as those are not free to reuse.
 #' You can still download the complete GNIP dataset for free, but you will have
@@ -487,7 +487,7 @@ NULL
 #' These datasets contain colour vectors that can be used for plotting. In our
 #' examples, we use the \code{isopalette1} for plotting the isoscape using
 #' \code{\link{plot.ISOSCAPE}} and \code{isopalette2} for plotting the
-#' assignment outcoume using \code{\link{plot.ISOFIND}}.
+#' assignment outcome using \code{\link{plot.ISOFIND}}.
 #' 
 #' Colour palettes can be created by using the function \code{\link{colorRamp}}
 #' that interpolates colours between a set of given colours. One can also use

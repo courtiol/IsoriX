@@ -133,7 +133,7 @@
 
 .converts_months_to_numbers <- function(x) {
   ## This function should not be called by the user.
-  ## It converts an english month names (abbrieviated or not) into numbers.
+  ## It converts an English month names (abbreviated or not) into numbers.
   ## If the months are already as numbers, it works too.
   ## Example: .converts_months_to_numbers(c("January", "Feb", 3, "April", "Toto"))
   end <- sapply(x, function(x) {
