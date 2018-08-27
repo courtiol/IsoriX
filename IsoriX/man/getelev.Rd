@@ -2,7 +2,6 @@
 % Please edit documentation in R/getelev.R
 \name{getelev}
 \alias{getelev}
-\alias{downloadfile}
 \title{Download an elevation raster from internet}
 \source{
 \url{http://topotools.cr.usgs.gov/gmted_viewer/}
