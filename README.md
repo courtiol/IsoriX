@@ -21,7 +21,7 @@ install.packages("IsoriX")
 If you want the development version of IsoriX, you can download and install it by typing:
 
 ```R
-devtools::install_github("courtiol/IsoriX_project/IsoriX")
+devtools::install_github("courtiol/IsoriX/IsoriX")
 ```
 
 Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![build passing](image/build_passing.png). The current built status is provided at the top of this readme document.
