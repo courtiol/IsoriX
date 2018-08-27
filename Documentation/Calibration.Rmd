@@ -1,0 +1,8 @@
+```{r initialization, echo = FALSE}
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/calibration/", fig.path = "./cache/fig_knitr/calibration/", global.par = TRUE, fig.align = "center", error = TRUE)
+```
+
+# Calibration procedure {#calibration}
+
+## Preparing the data
+

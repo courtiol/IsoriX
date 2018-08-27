@@ -5,29 +5,30 @@
 \title{Predicts the average spatial distribution of isotopic values over months,
 years...}
 \usage{
-isomultiscape(elevation.raster, isofit, weighting = NULL,
-  verbose = interactive())
+isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
 }
 \arguments{
-\item{elevation.raster}{The elevation raster (\var{RasterLayer}) created by
-\code{\link{relevate}}}
+\item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
+raster created using \code{\link{prepelev}}}
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
-\item{weighting}{An optional RasterBrick containing the weights
-#' @return This function returns a \var{list} of class \var{isoscape}
-containing a stack of all 8 raster layers mentioned above (all being of
-class \var{RasterLayer}), and the location of the sources as spatial points.}
+\item{weighting}{An optional RasterBrick containing the weights}
 
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
 }
+\value{
+This function returns a \var{list} of class \var{isoscape}
+containing a set of all 8 raster layers mentioned above (all being of
+class \var{RasterLayer}), and the location of the sources as spatial points.
+}
 \description{
 This function is the counterpart of \code{\link{isoscape}} for the objects
 created with \code{\link{isomultifit}}. It creates the isoscapes for each
-strata (e.g. month) defined by \code{split.by} during the call to
+strata (e.g. month) defined by \code{split_by} during the call to
 \code{\link{isomultifit}} and the aggregate them. The function can handle
 weighting for the aggregation process and can thus be used to predict annual
 averages precipitation weighted isoscapes.
@@ -35,46 +36,52 @@ averages precipitation weighted isoscapes.
 \examples{
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 180) {
+if(getOption_IsoriX("example_maxtime") > 180) {
 
 ## We prepare the data and split them by month:
 
-GNIPDataDEmonthly <- prepdata(data = GNIPDataDE,
-                              split.by = "month")
+GNIPDataDEmonthly <- prepsources(data = GNIPDataDE,
+                                 split_by = "month")
 
 dim(GNIPDataDEmonthly)
 
 ## We fit the isoscapes:#' 
-isoscapemodels <- isomultifit(iso.data = GNIPDataDEmonthly,
-                              mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+GermanMultiFit <- isomultifit(data = GNIPDataDEmonthly,
+                              mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
 
 ## We build the annual isoscapes by simple averaging (equal weighting):
-isoscapes <- isomultiscape(elevation.raster = ElevRasterDE,
-                           isofit = isoscapemodels)
+GermanMultiscape <- isomultiscape(raster = ElevRasterDE,
+                                  isofit = GermanMultiFit)
 
-## We plot the mean isoscape of the averaging:
-plot(x = isoscapes, which = "mean")
+## We build the annual isoscapes with a weighing based on precipitation amount:
+GermanMultiscapeWeighted <- isomultiscape(raster = ElevRasterDE,
+                                          isofit = GermanMultiFit,
+                                          weighting = PrecipBrickDE)
+
+## We plot the mean isoscape of the averaging with equal weighting:
+plot(x = GermanMultiscape, which = "mean")
+
+## We plot the mean isoscape of the averaging with precipitation weighting:
+plot(x = GermanMultiscapeWeighted, which = "mean")
 
 ## We build the isoscapes for a given month (here January):
-isoscape.jan <- isoscape(elevation.raster = ElevRasterDE,
-                         isofit = isoscapemodels$multi.fits[["month_1"]])
+GermanScapeJan <- isoscape(raster = ElevRasterDE,
+                           isofit = GermanMultiFit$multi_fits[["month_1"]])
                          
 ## We plot the mean isoscape for January:
-plot(x = isoscape.jan, which = "mean")
+plot(x = GermanScapeJan, which = "mean")
 
 }
 }
 \seealso{
 \code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
-\code{\link{isofit}} for the function fitting the isoscape
+\code{\link{isomultifit}} for the function fitting the isoscape
 
-\code{\link{plot.isoscape}} for the function plotting the isoscape model
-
-\code{\link{plot.isoscape}} for the function plotting the isoscape model
+\code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
 
 \code{\link{IsoriX}} for the complete work-flow
 }

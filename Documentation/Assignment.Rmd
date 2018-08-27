@@ -1,0 +1,8 @@
+```{r initialization, echo = FALSE}
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/assignment/", fig.path = "./cache/fig_knitr/assignment/", global.par = TRUE, fig.align = "center", error = TRUE)
+```
+
+# Inferring geographic origins {#assignment}
+
+## Preparing the data
+

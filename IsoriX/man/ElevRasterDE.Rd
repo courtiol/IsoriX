@@ -10,7 +10,7 @@
 }
 \description{
 This raster contains the elevation of the surface of Germany [meters above sea
-level] with a resolution of approximately 50 square-km.
+level] with a resolution of approximately 30 square-km.
 }
 \details{
 This raster contains elevation data of Germany in a highly aggregated form
@@ -36,8 +36,7 @@ provide the url link of the \var{tif} file in the example below.
 }
 \examples{
 
-
-## The following example require to have downloaded
+## The following example require to download
 ## a large elevation raster with the function getelev()
 ## and will therefore not run unless you type:
 ## example(ElevRasterDE, run.dontrun=TRUE)
@@ -51,12 +50,12 @@ provide the url link of the \var{tif} file in the example below.
 
 ## Convert the tif into R raster format
 if(require(raster)) {
-  elevationrasterbig <- raster("gmted2010_30mn.tif")
+  ElevationRasterBig <- raster("gmted2010_30mn.tif")
   
   ## Create the highly agregated elevation raster
-  ElevRasterDE <- relevate(elevationrasterbig,
-                           aggregation.factor = 10,
-                           manual.crop = c(5.5, 15.5, 47, 55.5))
+  ElevRasterDE <- prepraster(ElevationRasterBig,
+                             aggregation_factor = 10,
+                             manual_crop = c(5.5, 15.5, 47, 55.5))
                            
   ## Plot the elevation
   if (require("sp") & require("rasterVis")) {
@@ -72,7 +71,6 @@ if(require(raster)) {
 
 }
 \seealso{
-\code{\link{relevate}} to crop and/or aggregate the elevation
-raster
+\code{\link{prepraster}} to crop and/or aggregate this raster
 }
 \keyword{datasets}

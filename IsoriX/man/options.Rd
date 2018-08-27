@@ -2,37 +2,37 @@
 % Please edit documentation in R/options.R
 \name{options}
 \alias{options}
-\alias{IsoriX.options}
-\alias{IsoriX.getOption}
-\alias{IsoriX.getOption}
+\alias{options_IsoriX}
+\alias{getOption_IsoriX}
+\alias{getOption_IsoriX}
 \title{Setting and displaying the options of the package}
 \usage{
-IsoriX.options(...)
+options_IsoriX(...)
 
-IsoriX.getOption(x)
+getOption_IsoriX(x = NULL)
 }
 \arguments{
 \item{...}{A named value or a list of named values. The following values, with their defaults, are used:
 \describe{
   \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
-  \item{Ncpu}{An \var{integer} corresponding to the number of cores to be used (for future version)}
+  \item{Ncpu}{An \var{integer} corresponding to the number of cores to be used (for future versions)}
   \item{dont_ask}{A \var{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
 }}
 
 \item{x}{A character string holding an option name.}
 }
 \value{
-The options invisibly in an object called \code{.IsoriX.data$options}
+The options are invisibly returned in an object called \code{IsoriX:::.data_IsoriX$options}
 }
 \description{
 Setting and displaying the options of the package
 }
 \examples{
-IsoriX.options()
-IsoriX.getOption("example_maxtime")
+options_IsoriX()
+getOption_IsoriX("example_maxtime")
 
 \dontrun{
-IsoriX.options(example_maxtime = 30)
-IsoriX.options()
+options_IsoriX(example_maxtime = 30)
+options_IsoriX()
 }
 }

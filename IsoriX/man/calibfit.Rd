@@ -2,33 +2,33 @@
 % Please edit documentation in R/calibfit.R
 \name{calibfit}
 \alias{calibfit}
-\alias{print.calibfit}
-\alias{summary.calibfit}
+\alias{print.CALIBFIT}
+\alias{summary.CALIBFIT}
 \title{Fit the calibration model}
 \usage{
-calibfit(calib.data, isofit, verbose = interactive(),
-  control.optim = list())
+calibfit(data, isofit, verbose = interactive(), control_optim = list())
 }
 \arguments{
-\item{calib.data}{A \var{dataframe} containing the calibration data (see
-note below)}
+\item{data}{A \var{dataframe} containing the calibration data (see note
+below)}
 
-\item{isofit}{The fitted isoscape model created by \code{\link{isofit}}}
+\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
 
-\item{control.optim}{A \var{list} to pass information to the argument
-control of the optim call (for advanced users only).}
+\item{control_optim}{A \var{list} to pass information to the argument control
+of the optim call (for advanced users only).}
 }
 \value{
-This function returns a \var{list} of class \var{calibfit}
-containing the fixed-effect estimates of the calibration function, the
-covariance of the fixed effects, the fitted calibration model, the original
-calibration data set with additional information added during the fit, and
-the location of the calibration points as spatial points.
+This function returns a \var{list} of class \var{CALIBFIT} containing
+  the fixed-effect estimates of the calibration function, the covariance of
+  the fixed effects, the residual variance of the calibration fit, the fitted
+  calibration model, the original calibration data set with additional
+  information added during the fit, and the location of the calibration
+  points as spatial points.
 }
 \description{
 This function fits a model that establishes the relationship between the 
@@ -67,33 +67,48 @@ function of source isotopic values.
 }
 \note{
 See \code{\link{CalibDataAlien}} to know which variables are needed to
-perform the calibration fit and their names.
+  perform the calibration fit and their names.
 }
 \examples{
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 30) {
+if(getOption_IsoriX("example_maxtime") > 30) {
+
+## We prepare the data:
+GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
 ## We fit the models for Germany:
-GNIPDataDEagg <- prepdata(data = GNIPDataDE)
-
-GermanFit <- isofit(iso.data = GNIPDataDEagg)
+GermanFit <- isofit(data = GNIPDataDEagg,
+                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 
 ## We fit the calibration model:
-calib <- calibfit(calib.data = CalibDataAlien, isofit = GermanFit)
+CalibAlien <- calibfit(data = CalibDataAlien, isofit = GermanFit)
 
 ## We display minimal information:
-calib
+CalibAlien
 
 ## We display more information:
-summary(calib)
+summary(CalibAlien)
 
 ## We plot the calibration function:
-plot(calib)
+plot(CalibAlien)
+
+## Add other calibrations on the same plot
+CalibDataAlien3 <- CalibDataAlien2 <- CalibDataAlien
+CalibDataAlien2$sample_value <- rnorm(nrow(CalibDataAlien2),
+  mean = CalibDataAlien2$sample_value, sd = 10)
+CalibDataAlien3$sample_value <- rnorm(nrow(CalibDataAlien3),
+  mean = CalibDataAlien3$sample_value, sd = 10)
+CalibAlien2 <- calibfit(data = CalibDataAlien2, isofit = GermanFit)
+CalibAlien3 <- calibfit(data = CalibDataAlien3, isofit = GermanFit)
+plot(CalibAlien3)
+points(CalibAlien)
+points(CalibAlien2, pch = 3, col = "green", CI = list(col = "green"))
+
 
 }
 

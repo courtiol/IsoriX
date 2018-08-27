@@ -1,91 +1,101 @@
-## Here are internal functions of the package IsoriX
+## Here are internal (not exported) functions of the package IsoriX.
+## They should not be called by the user but are instead called by other IsoriX functions.
 
 .onAttach <- function(libname, pkgname) {
   ## This function should not be called by the user.
-  ## It display a message when the package is being loaded
+  ## It displays a message when the package is being loaded.
   packageStartupMessage(## display message
-                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is loaded!",
+                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is now loaded!",
                         "\n",
-                        "\n The names of the functions and objects are not yet stable.",
+                        "\n The names of all objects (including functions) are not yet stable.",
                         "\n We keep revising them to make IsoriX more intuitive for you to use.",
                         "\n We will do our best to limit changes in names from version 1.0 onward!!",
                         "\n",
                         "\n Type:",
+                        "\n    * citation('IsoriX') for information on how to cite IsoriX.",
+                        "\n    * browseURL('https://bookdown.org/content/782/') for the documentation.",
                         "\n    * ?IsoriX for a short description.",
-                        "\n    * browseVignettes(package = 'IsoriX') for tutorials.",
                         "\n    * news(package = 'IsoriX') for news.",
                         "\n"
                         )
   }
 
 
-.IsoriX.data <- new.env(parent = emptyenv())
-
 .onLoad <- function(libname, pkgname) {
   ## This function should not be called by the user.
-  ## It changes the default beahviour of sp concerning lat/long boundaries
-  .IsoriX.data$sp_ll_warn <- sp::get_ll_warn()
+  ## It changes the default behaviour of sp concerning lat/long boundaries
+  ## and stores the all R options.
+  .data_IsoriX$sp_options$sp_ll_warn <- sp::get_ll_warn()
   sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
-  .IsoriX.data$R_options <- .Options ## backup R options
+  .data_IsoriX$R_options <- .Options ## backup R options
 }
 
 
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
   ## It restores the original behaviour of sp
-  sp::set_ll_warn(.IsoriX.data$sp_ll_warn)
-  options(.IsoriX.data$R_options)  ## reset R options to their backed up values
+  ## and the original R options.
+  sp::set_ll_warn(.data_IsoriX$sp_options$sp_ll_warn)
+  options(.data_IsoriX$R_options)  ## reset R options to their backed up values
 }
 
 
-.NiceRound <- function(x, digits) {
-  formatC(round(x, digits), digits = digits, format = "f")
+.print_nice_and_round <- function(x, digits = 2) {
+  if (digits < 0) {
+    stop("digits must be positive")
+  }
+  ## This function should not be called by the user.
+  ## It displays a rounded number keeping the number of decimals constant.
+  ## digits is the number of decimals beeing displayed.
+  formatC(x, digits = digits, format = "f")
 }
 
 
-.CreateRaster <- function(long, lat, values, proj) {
-  ## This function should not be called by the user but is itself called by other functions.
+.create_raster <- function(long, lat, values, proj = "+proj=longlat +datum=WGS84") {
+  ## This function should not be called by the user.
   ## It creates a raster.
   ##
   ## Args:
-  ##   long: a vector of the longitudes of the raster cells
-  ##   lat: a vector of the latitudes of the raster cells
-  ##   values: a vector of the values of the raster cells
+  ##   long: a vector of the longitudes for the raster cells
+  ##   lat: a vector of the latitudes for the raster cells
+  ##   values: a vector of the values for the raster cells
   ##   proj: the projection system for the raster
-  ##   save.spatial.files: logical indicating if an hard copy of the raster should be saved (as ascii)
-  ##   filename: name of the file for the hard copy
-  ##   overwrite.spatial.files: logical indicating if an existing hard copy should be overwritten or not
   ##
   ## Returns:
-  ##   The raster.
+  ##   The raster
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~long+lat  ## coordonates are being set for the raster
+  sp::coordinates(data) <- ~ long+lat  ## coordonates are being set for the raster
   sp::proj4string(data) <- sp::CRS(proj)  ## projection is being set for the raster
   sp::gridded(data) <- TRUE  ## a gridded structure is being set for the raster
-  data.raster <- raster::raster(data)  ## the raster is being created
-  # if(save.spatial.files) writeRaster(
-  #   data.raster,
-  #   filename = paste(filename, ".asc", sep = ""),
-  #   overwrite = overwrite.spatial.files
-  #   )  ## if save = TRUE the raster is exported as an ascii file
-  return(data.raster) ## the raster is being returned
+  raster::raster(data)  ## the raster is being created
 }
 
 
-.CreateSpatialPoints <- function(long, lat, values = -9999, proj) {
-  ##  This function should not be called by the user but is itself called by .CreateRasterFromAssignment().
-  data.sp <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data.sp) <- ~long+lat
-  sp::proj4string(data.sp) <- sp::CRS(proj)
-  return(data.sp)
+.create_spatial_points <- function(long, lat, values = -9999, proj = "+proj=longlat +datum=WGS84") {
+  ## This function should not be called by the user.
+  ## It creates spatial points.
+  ##
+  ## Args:
+  ##   long: a vector of the longitudes for the spatial points
+  ##   lat: a vector of the latitudes for the spatial points
+  ##   values: a vector of the values for the spatial points
+  ##   proj: the projection system for the spatial points
+  ##
+  ## Returns:
+  ##   The spatial points
+  ##
+  data <- data.frame(long = long, lat = lat, values = values)
+  sp::coordinates(data) <- ~long+lat
+  sp::proj4string(data) <- sp::CRS(proj)
+  return(data)
 }
 
 
-.HitReturn <- function() {
-  ## This function should not be called by the user but is itself called by other functions.
-  ## It asks the user to press return in RStudio (for plotting).
-  if (interactive() & .Platform$GUI == "RStudio" & IsoriX.getOption("dont_ask") == FALSE) {
+.hit_return <- function() {
+  ## This function should not be called by the user.
+  ## It asks the user to press return in RStudio (used for plotting).
+  if (interactive() & .Platform$GUI == "RStudio" & getOption_IsoriX("dont_ask") == FALSE) {
     cat("Hit <Return> for next plot")
     readline()
   }
@@ -93,19 +103,27 @@
 }
 
 
-.CompleteArgs <- function(fn) {
-  ## This function should not be called by the user but is itself called by other functions.
+.complete_args <- function(fn) {
+  ## This function should not be called by the user.
   ## It keeps the default list elements when
-  ## a new list with fewer elements is provided
+  ## a new list with fewer elements is provided.
   env <- parent.frame()
   args <- formals(fn)
-  for (arg.name in names(args)) {
-    if (is.call(arg <- args[[arg.name]])) {
+  for (arg_name in names(args)) {
+    if (is.call(arg <- args[[arg_name]])) {
       if (arg[1] == "list()") {
-        arg.input <- mget(names(args), envir = env)[[arg.name]]
-        arg.full  <- eval(formals(fn)[[arg.name]])
-        arg.full.updated <- utils::modifyList(arg.full, arg.input)
-        assign(arg.name, arg.full.updated, envir = env)
+        arg_input <- mget(names(args), envir = env)[[arg_name]]
+        arg_full  <- eval(formals(fn)[[arg_name]])
+        if (is.null(names(arg_input))) {
+          if (length(arg_input) == length(arg_full)) {
+            names(arg_input) <- names(arg_full)
+          }
+          else {
+            stop(paste("The list", arg_name, "should contain names, or be of length equal to the default."))
+          }
+        }
+        arg_full_updated <- utils::modifyList(arg_full, arg_input)
+        assign(arg_name, arg_full_updated, envir = env)
       }
     }
   }
@@ -113,110 +131,11 @@
 }
 
 
-.BuildAdditionalLayers <- function(x, sources, calib, borders, mask, mask2 = NULL) {
-  ## This function should not be called by the user but is itself called by other functions.
-  ## It build the additional layers for plots
-
-  ## layer for sources
-  if (!sources$draw) {
-    sources.layer <- latticeExtra::layer()
-  } else {
-    sources.layer <- latticeExtra::layer(sp::sp.points(sources,
-                                                   col = pt$col,
-                                                   cex = pt$cex,
-                                                   pch = pt$pch,
-                                                   lwd = pt$lwd
-                                                   ),
-                           data = list(sources = x$sp.points$sources,
-                                       pt = sources,
-                                       sp.points = sp::sp.points
-                                       )
-                           )
-  }
-
-  ## layer for calibration points
-  if (is.null(calib)) {
-    calib.layer <- latticeExtra::layer()
-  } else {
-    if (!calib$draw) {
-      calib.layer <- latticeExtra::layer()
-    } else {
-      calib.layer <- latticeExtra::layer(sp::sp.points(calib, col = pt$col,
-                                         cex = pt$cex,
-                                         pch = pt$pch,
-                                         lwd = pt$lwd
-                                         ),
-                           data = list(calib = x$sp.points$calibs,
-                                       pt = calib,
-                                       sp.points = sp::sp.points
-                                       )
-                           )
-    }
-  }
-
-  ## layer for country borders
-  if (is.null(borders$borders)) {
-    borders.layer <- latticeExtra::layer()
-  }  else {
-    borders.layer <- latticeExtra::layer(sp::sp.polygons(b$borders,
-                                                     lwd = b$lwd,
-                                                     col = b$col,
-                                                     fill = "transparent"
-                                                     ),
-                           data = list(b = borders,
-                                       sp.polygons = sp::sp.polygons
-                                       )
-                           )
-  }
-  
-  ## layer for mask
-  if (is.null(mask$mask)) {
-    mask.layer <- latticeExtra::layer()
-  } else {
-    mask.layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
-                                      fill = m$fill,
-                                      col = m$col,
-                                      lwd = m$lwd
-                                      ),
-                        data = list(m = mask,
-                                    sp.polygons = sp::sp.polygons
-                                    )
-                        )
-  }
-  
-  if (is.null(mask2$mask)) {
-    mask2.layer <- latticeExtra::layer()
-  } else {
-    mask2.layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
-                                       fill = m$fill,
-                                       col = m$col,
-                                       lwd = m$lwd
-                                       ),
-                         data = list(m = mask2,
-                                     sp.polygons = sp::sp.polygons
-                                     )
-                         )
-  }
-  
-  out <- list(sources.layer = sources.layer,
-              calib.layer = calib.layer,
-              borders.layer = borders.layer,
-              mask.layer = mask.layer,
-              mask2.layer = mask2.layer
-              )
-  
-  ## tweack to please code checking procedure
-  b <- m <- pt <- NULL
-
-  return(out)
-}
-
-
 .converts_months_to_numbers <- function(x) {
-  ## This function should not be called by the user but is itself called by other functions.
-  ## It converts an english month names (abbrieviated or not) into numbers
-  ## If the months are already as numbers, it works too
-  ## Example: .month_as_numbers(c("January", "Feb", 3, "April", "Toto"))
+  ## This function should not be called by the user.
+  ## It converts an english month names (abbrieviated or not) into numbers.
+  ## If the months are already as numbers, it works too.
+  ## Example: .converts_months_to_numbers(c("January", "Feb", 3, "April", "Toto"))
   end <- sapply(x, function(x) {
     res <- match(tolower(x), tolower(month.abb))  ## deals with abbreviation
     if (is.na(res)) {
@@ -231,9 +150,40 @@
     if (is.numeric(res)) {
       return(res)
     } else {
-      warning("some months are NA after the conversion in integers check your data!")
+      warning("some months are NA after the conversion in integers, please check/fix your data!")
       return(NA)  ## if final output is not a number, it returns NA
     }
   })
   return(end)
+}
+
+.summarize_values <- function(var, nb_quantiles = 1e4) {
+  ## This function should not be called by the user.
+  ## It extracts and summarizes the raster values using quantiles if needed.
+  if (!class(var) %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
+    return(var)
+  } else if (raster::inMemory(var)) {
+    return(as.numeric(raster::values(var)))
+  }
+  
+  if (interactive()) {
+    print("extracting values from stored rasters...")
+  }
+  
+  if (class(var) %in% c("RasterLayer")) {
+    max_var <- raster::maxValue(var)
+    min_var <- raster::minValue(var)
+    var <- unique(c(min_var,
+                    raster::quantile(var, seq(min_var, max_var, length = nb_quantiles)),
+                    max_var))
+    return(var)
+  } else if (class(var) %in% c("RasterStack", "RasterBrick")) {
+    max_var <- max(raster::maxValue(var))
+    min_var <- min(raster::minValue(var))
+    var <- unique(c(min_var,
+                    apply(raster::quantile(var, seq(min_var, max_var, length = nb_quantiles)), 2, stats::median),
+                    max_var))
+    return(var)
+  }
+  stop("'var' has an unknown class")
 }

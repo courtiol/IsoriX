@@ -4,13 +4,13 @@
 \alias{isoscape}
 \alias{print.isoscape}
 \alias{summary.isoscape}
-\title{Predicts the spatial distribution of isotopic values}
+\title{Predicts the spatial distribution of source isotopic values}
 \usage{
-isoscape(elevation.raster, isofit, verbose = interactive())
+isoscape(raster, isofit, verbose = interactive())
 }
 \arguments{
-\item{elevation.raster}{The elevation raster (\var{RasterLayer}) created by
-\code{\link{relevate}}}
+\item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
+raster created using \code{\link{prepelev}}}
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
@@ -20,102 +20,120 @@ running. By default verbose is \var{TRUE} if users use an interactive R
 session and \var{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \var{isoscape}
-containing a stack of all 8 raster layers mentioned above (all being of
-class \var{RasterLayer}), and the location of the sources as spatial points.
+This function returns a \var{list} of class \var{ISOSCAPE} containing
+  a set of all 8 raster layers mentioned above (all being of class
+  \var{RasterLayer}), and the location of the sources as spatial points.
 }
 \description{
-This function produces the isoscape, i.e. a spatial prediction (i.e. map) of
-the distribution of isotopic delta values. Predictions are computed using
-the fitted isoscape for each raster cell of the elevation raster. All shape
-files can be exported and loaded into any Geographic Information System
-(GIS) if needed.
+This function produces the set of isoscapes, i.e. the spatial prediction
+(i.e. maps) of the distribution of source isotopic values, as well as several
+variances around such predictions. The predictions are computed using the
+fittedm geostatistical models for each raster cell of a structural raster.
+All shape files can be exported and loaded into any Geographic Information
+System (GIS) if needed (see online tutorials).
 }
 \details{
 This function computes the predictions (\code{mean}), prediction variances
-(\code{mean.predVar}), residual variances (\code{mean.residVar}) and
-response variances (\code{mean.respVar}) for the isotopic values at a
-resolution equal to the one of the elevation raster. It also computes the
-same information for the residual dispersion variance (\code{disp.pred},
-\code{disp.predVar}, \code{disp.residVar}, or \code{disp.respVar}).
+(\code{mean_predVar}), residual variances (\code{mean_residVar}) and response
+variances (\code{mean_respVar}) for the isotopic values at a resolution equal
+to the one of the structural raster. It also computes the same information
+for the residual dispersion variance (\code{disp_pred}, \code{disp_predVar},
+\code{disp_residVar}, or \code{disp_respVar}).
 
 The predictions of isotopic values across the landscape are performed by
 calling the function \code{\link[spaMM]{predict}} from the package
-\pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by \code{\link{isofit}}.
+\pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by
+\code{\link{isofit}}.
 
-Let us detail the meaning of \code{mean}, \code{mean.predVar} and
-\code{mean.respVar}:
+Let us summarize the meaning of \code{mean}, \code{mean_predVar} and
+\code{mean_respVar} (see Courtiol & Rousset 2017 for more details):
 
-Our model assumes that that there is a single true unknown isoscape, which
-is fixed but which is represented by the mixed-effect model as a random draw
+Our model assumes that that there is a single true unknown isoscape, which is
+fixed but which is represented by the mixed-effect model as a random draw
 from possible realizations of isoscapes (random draws of the
-Matern-correlated process and of the uncorrelated random effects if
+Matérn-correlated process and of the uncorrelated random effects if
 considered). We infer this realized isoscape by fitting the model to a
-limited amount of data, with some uncertainty since different random draws
-of the unknown isoscape may give the same observed data. There is thus a
+limited amount of data, with some uncertainty since different random draws of
+the unknown isoscape may give the same observed data. There is thus a
 conditional distribution of possible true isoscapes given the data. For
-linear mixed-effects models, the mean prediction, technically called the
-best linear unbiased prediction (BLUP), is the mean of this conditional
-distribution. The prediction variance is ideally the mean square difference
-between the true unknown value of the linear predictor and the BLUP at a
-given location. The response variance has a different meaning. It estimates
-the variance of new observations drawn from the true unknown isoscape at a
-given location. The response variance is simply equal to the sum of the
-prediction variance and the residual variance (note that the residual
-variance considered assume that a single observation is being observed per
-location).
+linear mixed-effects models, the mean prediction is the mean of this
+conditional distribution. The prediction variance is ideally the mean square
+difference between the true unknown value of the linear predictor and the
+mean prediction at a given location. The response variance has a different
+meaning. It estimates the variance of new observations drawn from the true
+unknown isoscape at a given location. The response variance is simply equal
+to the sum of the prediction variance and the residual variance (note that
+the residual variance considered assume that a single observation is being
+observed per location).
 
-The isoscape can be plotted using the function \code{\link{plot.isoscape}}
+The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
 (see examples).
 }
 \examples{
 
 ## The examples below will only be run if sufficient time is allowed
-## You can change that by typing e.g. IsoriX.options(example_maxtime = XX)
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(IsoriX.getOption("example_maxtime") > 30) {
+if(getOption_IsoriX("example_maxtime") > 30) {
 
 ## We prepare the data
-GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
 ## We fit the models
-GermanFit <- isofit(iso.data = GNIPDataDEagg,
-                    mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+GermanFit <- isofit(data = GNIPDataDEagg,
+                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 
 ## We build the isoscapes
-isoscape <- isoscape(elevation.raster = ElevRasterDE,
-                     isofit = GermanFit)
+GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
-isoscape
+GermanScape
+plot(GermanScape)
 
-## We build the plots
-plot.mean <- plot(x = isoscape, which = "mean", plot = FALSE)
+## We build more plots
+PlotMean <- plot(x = GermanScape, which = "mean", plot = FALSE)
 
-plot.mean.predVar <- plot(x = isoscape, which = "mean.predVar", plot = FALSE)
+PlotMeanPredVar <- plot(x = GermanScape, which = "mean_predVar", plot = FALSE)
 
-plot.mean.residVar <- plot(x = isoscape, which = "mean.residVar", plot = FALSE)
+PlotMeanResidVar <- plot(x = GermanScape, which = "mean_residVar", plot = FALSE)
 
-plot.mean.respVar <- plot(x = isoscape, which = "mean.respVar", plot = FALSE)
+PlotMeanRespVar <- plot(x = GermanScape, which = "mean_respVar", plot = FALSE)
 
 ## We display the plots
 if(require(lattice)) {
- print(plot.mean, split = c(1, 1, 2, 2), more = TRUE)
- print(plot.mean.predVar,   split = c(2, 1, 2, 2), more = TRUE)
- print(plot.mean.residVar,  split = c(1, 2, 2, 2), more = TRUE)
- print(plot.mean.respVar,   split = c(2, 2, 2, 2), more = FALSE)
+ print(PlotMean, split = c(1, 1, 2, 2), more = TRUE)
+ print(PlotMeanPredVar,   split = c(2, 1, 2, 2), more = TRUE)
+ print(PlotMeanResidVar,  split = c(1, 2, 2, 2), more = TRUE)
+ print(PlotMeanRespVar,   split = c(2, 2, 2, 2), more = FALSE)
+ }
+ 
+## We build a sphere with our isoscape
+plot(x = GermanScape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
+ 
+## We can save a rotating sphere with the isoscape as a .gif-file.
+## This file will be located inside your working directory.
+## Make sure your current rgl device (from the previous step) is still open
+## and that you have both the packages 'rgl' and 'magick' installed.
+## The building of the .gif implies to create temporarily many .png
+## but those will be removed automatically once the .gif is done.
+if(require("rgl") & require("magick")) {
+  movie3d(spin3d(axis = c(0, 0, 1), rpm = 2), duration = 30, dir = getwd())
 }
 
 }
 
+}
+\references{
+Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
+  models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
 }
 \seealso{
 \code{\link{isofit}} for the function fitting the isoscape
 
-\code{\link{plot.isoscape}} for the function plotting the isoscape model
+  \code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
 
-\code{\link{IsoriX}} for the complete work-flow
+  \code{\link{IsoriX}} for the complete workflow
 }
 \keyword{models}
 \keyword{predict}

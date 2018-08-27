@@ -34,6 +34,7 @@
 CRAN_releases/
 local_trials/
 biblio_nonshared/
+sources_for_datasets/
 IsoriX.Rcheck
 
 # Files in vignettes that can easily be generated locally

@@ -2,14 +2,14 @@
 #' 
 #' This functions turns the WorldClim data downloaded using the function
 #' \code{\link{getprecip}} into a \var{RasterBrick} of same resolution and
-#' extent as the elevation raster. This function is designed to be used with
+#' extent as the structural raster. This function is designed to be used with
 #' \code{\link{isomultiscape}}.
 #' 
 #' @param path A \var{string} indicating the path where the WorldClim data have
 #'   been downloaded. If the path is null (the default) the function will assume
 #'   that the folder containing the precipitation data is in the current 
 #'   directory
-#' @param elevation.raster A \var{raster} containing the elevation raster
+#' @param raster A \var{raster} containing the structural raster
 #' @param verbose A \var{logical} indicating whether information about the 
 #'   progress of the procedure should be displayed or not while the function is 
 #'   running. By default verbose is \var{TRUE} if users use an interactive R 
@@ -19,62 +19,65 @@
 #' 
 #' \code{\link{getprecip}} to download the relevant precipitation data
 #' 
-#' \code{\link{relevate}} to prepare the elevation raster
+#' \code{\link{PrecipBrickDE}} for the stored precipitation data for Germany
+#' 
+#' \code{\link{prepelev}} to prepare an elevation raster
 #' 
 #' @examples
 #' 
-#' ## The following example takes some time and download heavy data.
+#' ## The following example takes some time and download a large amount of data (~ 1 Gb).
 #' ## It will therefore not be run unless you type: 
 #' ## example(prepcipitate, run.dontrun = TRUE)
 #' 
 #' \dontrun{
 #' 
 #' ## We fit the models for Germany:
-#' GNIPDataDEagg <- prepdata(data = GNIPDataDE)
+#' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #' 
-#' GermanFit <- isofit(iso.data = GNIPDataDEagg,
-#'                     mean.model.fix = list(elev = TRUE, lat.abs = TRUE))
+#' GermanFit <- isofit(data = GNIPDataDEagg,
+#'                     mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
 #' 
-#' elevation.raster <- relevate(
-#'     elevation.raster = ElevRasterDE,
-#'     isofit = GermanFit,
-#'     aggregation.factor = 0)
+#' StrRaster <- prepraster(raster = ElevRasterDE,
+#'                         isofit = GermanFit,
+#'                         aggregation_factor = 0)
 #' 
 #' getprecip(path = "~/Desktop/")
 #' 
-#' precipitation.brick <- prepcipitate(path = "~/Desktop/",
-#'                                     elevation.raster = ElevRaster
-#'                                     )
+#' PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
+#'                                    raster = StrRaster
+#'                                    )
 #'  
 #'  if (require(rasterVis)) {
-#'    levelplot(precipitation.brick)
+#'    levelplot(PrecipitationBrick)
 #'  }
 #' 
 #' }
 #' @export
 prepcipitate <- function(path = NULL,
-                         elevation.raster,
+                         raster,
                          verbose = interactive()
                         ) {
   
   ## Prepare path
   if (is.null(path)) {
     path <- paste0(getwd(), "/wc2.0_30s_prec")
+  } else {
+    path <- paste0(path, "/wc2.0_30s_prec")
   }
   
   path <- normalizePath(path, mustWork = FALSE)
   
   ## List the tif files
-  list.tif <- list.files(path = path, pattern = "\\.tif$")
+  list_tif <- list.files(path = path, pattern = "\\.tif$")
   
   ## Checks if the tif files are there
-  if (length(list.tif) == 0) {
-    stop("no *.tif file in path... you may have the path wrong or you may not have downloaded the file using 'getprecip()'")
+  if (length(list_tif) == 0) {
+    stop("There is no *.tif file in path... you may have the path wrong or you may not have downloaded the file using 'getprecip()'.")
   }
   
   ## Checks if the tif files are the good ones
-  if (!all(paste0("wc2.0_30s_prec_", formatC(1:12, digits = 0, width = 2, format = "f", flag = 0), ".tif") %in% list.tif)) {
-    stop("the '.tif' files do not have expected names: 'wc2.0_30s_prec_01.tif', 'wc2.0_30s_prec_02.tif', ...")
+  if (!all(paste0("wc2.0_30s_prec_", formatC(1:12, digits = 0, width = 2, format = "f", flag = 0), ".tif") %in% list_tif)) {
+    stop("The '.tif' files do not have expected names: 'wc2.0_30s_prec_01.tif', 'wc2.0_30s_prec_02.tif', ...")
   }
   
   ## Small function to get the name of a given file
@@ -88,7 +91,7 @@ prepcipitate <- function(path = NULL,
       print(paste("Preparing precipitation raster for month", month, "..."), quote = FALSE)
     }
     tmp.raster <- raster::raster(getfilename(month))
-    assign(paste0("month_", month), raster::resample(x = tmp.raster, y = elevation.raster))
+    assign(paste0("month_", month), raster::resample(x = tmp.raster, y = raster))
     rm(tmp.raster)
   }
   

@@ -1,0 +1,16 @@
+language: r
+cache: packages
+pandoc_version: 1.19.2.1
+
+r_packages:
+  - rsconnect
+
+before_script:
+  #- chmod +x ./_build.sh
+  #- chmod +x ./_deploy.sh
+  - chmod +x ./_publish.sh
+
+script:
+  #- ./_build.sh
+  #- ./_deploy.sh
+  - ./_publish.sh

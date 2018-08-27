@@ -22,6 +22,7 @@ if(require(sp)) {
 
 ## How did we create this file?
 
+\donttest{
 if(require(raster) & require(rgeos)){
     worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
     proj4string(worldlimit) <- crs(CountryBorders)
@@ -31,6 +32,7 @@ if(require(raster) & require(rgeos)){
 ## Uncomment the following to store the file as we did
 #save(OceanMask, file = "OceanMask.rda", compress = "xz")
 
+}
 }
 
 

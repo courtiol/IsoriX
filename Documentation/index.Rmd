@@ -1,0 +1,30 @@
+--- 
+title: "IsoriX: Isoscape Computation and Inference of Spatial Origins using R"
+author: "The IsoriX core Team"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+site: bookdown::bookdown_site
+documentclass: book
+github-repo: courtiol/IsoriX_docs
+cover-image: images/isoscape.png
+biblio-style: apalike
+link-citations: yes
+colorlinks: yes
+lot: yes
+lof: yes
+description: "This book is the official documentation for the R package IsoriX."
+---
+
+```{r setup, include = FALSE}
+options(
+  htmltools.dir.version = FALSE, formatR.indent = 2,
+  width = 55, digits = 4, warnPartialMatchAttr = FALSE, warnPartialMatchDollar = FALSE
+)
+knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/index/", fig.path = "./cache/fig_knitr/index/", global.par = TRUE, fig.align = "center", error = TRUE)
+```
+
+# Please do not use this documentation yet, this is work in progress!!! {-}
+
+```{r image_intro, fig.align = 'center', echo = FALSE}
+knitr::include_graphics('images/isoscape.png', dpi = NA)
+```

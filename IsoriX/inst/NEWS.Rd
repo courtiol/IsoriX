@@ -12,6 +12,63 @@
   }
 }
 
+\section{version 0.8}{
+  \subsection{New features}{
+    \itemize{
+      \item new option in plots that allows to map the isoscape onto a sphere
+      \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
+      \item an argument y_title for the plotting function for isoscapes to allow one to simply change the title
+      \item arguments xlab and ylab for the plotting function for calibration fits
+      \item new method points for plotting more than one calibration fit
+      \item the plotting function for assignments can now show the location of the assignment samples
+    }
+  }
+  
+  \subsection{Major changes}{
+    \itemize{
+      \item many objects have been renamed to prepare the release of the version 1.0
+      \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
+    }
+  }
+  
+  \subsection{Minor changes}{
+    \itemize{
+      \item all arguments 'bla.bla' have been renamed 'bla_bla'
+      \item the plotting function for calibfit gains an argument "..." for more control
+      \item a ploting method for rasterLayer has been included for conveniance
+      \item the function relevate is now called prepraster
+      \item the function prepdata is now called prepsources
+      \item in several functions the argument elevation.raster has been renamed as raster
+      \item in several functions the argument xxx.data has been renamed as data
+    }
+  }
+  
+  \subsection{Geeky changes}{
+    \itemize{
+      \item large temporary objects are now deleted within isofind to limit memory usage
+      \item the package is now being tested using testthat, but test will be implemented in the future
+      \item a lot of the internal code as been rewriten to comply more closely to the IsoriX coding style
+      \item the list of suggested packages has been revised and rgdal removed as it caused (again) problems with Travis
+      \item following a change in spaMM predict.HLfit, the prediction are now being made by chunck of 1000 points instead of 150. This should lead to a tiny gain in performance under spaMM version higher than 2.2.
+      \item the function isoscape was performing predictions twice every 150 (or now 1000) locations, this was not influencing the isoscapes produced, but this has now been corrected
+      \item the function prepraster now produces an raster stored in memory if it is possible. This should prevent bugs that appears when using loaded rasters that were previously saved (the temporary link to the hard drive location is no longer correct in this case).
+      \item the function .objective_fn_calib has been moved within the function calibfit as it is not used elsewhere
+      \item the function calibfit as been prepared for a possible activation of a random effect for species ID in the future. But whether it would make sense or not remains to be determined.
+      \item the function .Fisher_method now directly computes the exponential of the log pv if only one value is provided. This leads to much faster assignment in the case of a single observation.
+    }
+  }
+  
+  \subsection{Solved BUGS}{
+    \itemize{
+      \item the plotting function for calibration fit was displaying CI based on variance instead of SD
+      \item the function getprecip and prepcipitate were not handling paths manualy defined properly
+      \item the plotting functions were crashing in case of no variation in the landscape
+      \item the plotting functions were crashing when called on multiple-raster objects not stored 'inMemory'
+      \item the plotting function for fitted model was not displaying one plot in RStudio when called on objects of class MULTIISOFIT
+    }
+  }
+}
+
 \section{version 0.7.1}{
   \subsection{New features}{
     \itemize{
