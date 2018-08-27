@@ -78,9 +78,9 @@ sampling}
 }
 \value{
 This function returns a \var{dataframe} containing the filtered data
-  aggregated by sampling location, or a \var{list}, see above argument
-  \code{prop_random}. For each sampling location the mean and variance sample
-  estimates are computed.
+aggregated by sampling location, or a \var{list}, see above argument
+\code{prop_random}. For each sampling location the mean and variance sample
+estimates are computed.
 }
 \description{
 This function prepares the available dataset to be used for creating the

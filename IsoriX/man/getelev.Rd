@@ -12,7 +12,7 @@ getelev(path = NULL, overwrite = FALSE, verbose = interactive())
 }
 \arguments{
 \item{path}{A \var{string} indicating where to store the file on the hard
-drive}
+drive (without the file name!)}
 
 \item{overwrite}{A \var{logical} indicating if an existing file should be
 re-downloaded}

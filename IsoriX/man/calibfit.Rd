@@ -24,20 +24,20 @@ of the optim call (for advanced users only).}
 }
 \value{
 This function returns a \var{list} of class \var{CALIBFIT} containing
-  the fixed-effect estimates of the calibration function, the covariance of
-  the fixed effects, the residual variance of the calibration fit, the fitted
-  calibration model, the original calibration data set with additional
-  information added during the fit, and the location of the calibration
-  points as spatial points.
+the fixed-effect estimates of the calibration function, the covariance of
+the fixed effects, the residual variance of the calibration fit, the fitted
+calibration model, the original calibration data set with additional
+information added during the fit, and the location of the calibration
+points as spatial points.
 }
 \description{
-This function fits a model that establishes the relationship between the 
-isotopic values of organisms (e.g. tissues such as hair, horn, ivory or 
+This function fits a model that establishes the relationship between the
+isotopic values of organisms (e.g. tissues such as hair, horn, ivory or
 feathers) and the isotopic values of their environment (e.g. precipitation).
 }
 \details{
-The calibration model is a linear mixed-effects model (LMM) that fits the 
-isotopic values of sedentary organisms as a linear function of the isotopic 
+The calibration model is a linear mixed-effects model (LMM) that fits the
+isotopic values of sedentary organisms as a linear function of the isotopic
 values in their environment (e.g. precipitation).
 
 This function considers that the isotopic values from the environment (e.g.
@@ -67,7 +67,7 @@ function of source isotopic values.
 }
 \note{
 See \code{\link{CalibDataAlien}} to know which variables are needed to
-  perform the calibration fit and their names.
+perform the calibration fit and their names.
 }
 \examples{
 

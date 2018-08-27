@@ -9,7 +9,7 @@
 \url{http://worldclim.org/version2}
 }
 \description{
-This brick of rasters contains the monthly precipitation amounts [in mm] for
+This brick of rasters contains the monthly precipitation amounts (in mm) for
 Germany with a resolution of approximately 30 square-km..
 }
 \details{

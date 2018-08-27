@@ -13,9 +13,9 @@ getOption_IsoriX(x = NULL)
 \arguments{
 \item{...}{A named value or a list of named values. The following values, with their defaults, are used:
 \describe{
-  \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
-  \item{Ncpu}{An \var{integer} corresponding to the number of cores to be used (for future versions)}
-  \item{dont_ask}{A \var{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
+\item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
+\item{Ncpu}{An \var{integer} corresponding to the number of cores to be used (for future versions)}
+\item{dont_ask}{A \var{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
 }}
 
 \item{x}{A character string holding an option name.}

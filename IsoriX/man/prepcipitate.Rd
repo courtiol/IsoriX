@@ -9,14 +9,14 @@ prepcipitate(path = NULL, raster, verbose = interactive())
 \arguments{
 \item{path}{A \var{string} indicating the path where the WorldClim data have
 been downloaded. If the path is null (the default) the function will assume
-that the folder containing the precipitation data is in the current 
+that the folder containing the precipitation data is in the current
 directory}
 
 \item{raster}{A \var{raster} containing the structural raster}
 
-\item{verbose}{A \var{logical} indicating whether information about the 
-progress of the procedure should be displayed or not while the function is 
-running. By default verbose is \var{TRUE} if users use an interactive R 
+\item{verbose}{A \var{logical} indicating whether information about the
+progress of the procedure should be displayed or not while the function is
+running. By default verbose is \var{TRUE} if users use an interactive R
 session, and \var{FALSE} otherwise.}
 }
 \description{

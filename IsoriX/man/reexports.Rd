@@ -5,6 +5,7 @@
 \alias{reexports}
 \alias{raster}
 \alias{grid.text}
+\alias{xyplot}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -13,6 +14,8 @@ below to see their documentation.
 
 \describe{
   \item{grid}{\code{\link[grid]{grid.text}}}
+
+  \item{lattice}{\code{\link[lattice]{xyplot}}}
 
   \item{raster}{\code{\link[raster]{raster}}}
 }}

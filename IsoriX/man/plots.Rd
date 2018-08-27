@@ -68,12 +68,12 @@ colours for the isoscape (see details)}
 \item{plot}{A \var{logical} indicating whether the plot shall be plotted or
 just returned}
 
-\item{sphere}{A \var{list} containing information whether the raster should be 
-returned as a rotating sphere and if the image created during the process 
+\item{sphere}{A \var{list} containing information whether the raster should be
+returned as a rotating sphere and if the image created during the process
 should be saved in your current working directory. The default settings are
- FALSE.}
+FALSE.}
 
-\item{...}{Additional arguments (only in use in plot.CALIBFIT and 
+\item{...}{Additional arguments (only in use in plot.CALIBFIT and
 plot.RasterLayer)}
 
 \item{who}{Either "group", or a vector of indices (e.g. 1:3) or names of the
@@ -119,7 +119,7 @@ the fitted calibration function.
 When called upon an object of class \var{ISOSCAPE}, the plot function draws a
 fine-tuned plot of the isoscape.
 
-When called upon an object of class \var{RasterLayer}, the plot function 
+When called upon an object of class \var{RasterLayer}, the plot function
 displays the raster (just for checking things fast and dirty).
 
 When used on a fitted isoscape, the user can choose between plotting the
@@ -191,12 +191,12 @@ simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 \seealso{
 \code{\link{isofit}} for the function fitting the isoscape
 
-  \code{\link{isoscape}} for the function building the isoscape
+\code{\link{isoscape}} for the function building the isoscape
 
-  \code{\link{calibfit}} for the function fitting the calibration function
+\code{\link{calibfit}} for the function fitting the calibration function
 
-  \code{\link{isofind}} for the function performing the assignment
+\code{\link{isofind}} for the function performing the assignment
 
-  \code{\link{IsoriX}} for the complete workflow
+\code{\link{IsoriX}} for the complete workflow
 }
 \keyword{plot}

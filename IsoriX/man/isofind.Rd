@@ -15,8 +15,8 @@ note below)}
 
 \item{isoscape}{The output of the function \code{\link{isoscape}}}
 
-\item{calibfit}{The output of the function \code{\link{calibfit}} (This 
-argument is not needed if the isoscape had been fitted using isotopic 
+\item{calibfit}{The output of the function \code{\link{calibfit}} (This
+argument is not needed if the isoscape had been fitted using isotopic
 ratios from sedentary animals.)}
 
 \item{mask}{A \var{SpatialPolygons} of a mask to replace values on all
@@ -61,7 +61,7 @@ sample do NOT come from the candidate location (and not the opposite!).
 A mask can be used so to remove all values falling in the mask. This can be
 useful for performing for example assignments on lands only and discard
 anything falling in large bodies of water (see example). By default our
-\code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows 
+\code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows
 to prevent this automatic behaviour.
 }
 \note{
@@ -135,9 +135,9 @@ AssignedGP <- isofind(data = AssignDataGP,
 ## We plot the assignment and 
 ## show where the station really is (using lattice)
 plot(AssignedGP) +
-  lattice::xyplot(47.48~11.06,
-                  panel = lattice::panel.points,
-                  cex = 5, pch = 13, lwd = 2, col = "black") 
+  xyplot(47.48~11.06,
+         panel = lattice::panel.points,
+         cex = 5, pch = 13, lwd = 2, col = "black") 
 
 
 }

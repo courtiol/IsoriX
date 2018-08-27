@@ -21,8 +21,8 @@ session and \var{FALSE} otherwise.}
 }
 \value{
 This function returns a \var{list} of class \var{ISOSCAPE} containing
-  a set of all 8 raster layers mentioned above (all being of class
-  \var{RasterLayer}), and the location of the sources as spatial points.
+a set of all 8 raster layers mentioned above (all being of class
+\var{RasterLayer}), and the location of the sources as spatial points.
 }
 \description{
 This function produces the set of isoscapes, i.e. the spatial prediction
@@ -101,12 +101,10 @@ PlotMeanResidVar <- plot(x = GermanScape, which = "mean_residVar", plot = FALSE)
 PlotMeanRespVar <- plot(x = GermanScape, which = "mean_respVar", plot = FALSE)
 
 ## We display the plots
-if(require(lattice)) {
- print(PlotMean, split = c(1, 1, 2, 2), more = TRUE)
- print(PlotMeanPredVar,   split = c(2, 1, 2, 2), more = TRUE)
- print(PlotMeanResidVar,  split = c(1, 2, 2, 2), more = TRUE)
- print(PlotMeanRespVar,   split = c(2, 2, 2, 2), more = FALSE)
- }
+print(PlotMean, split = c(1, 1, 2, 2), more = TRUE)
+print(PlotMeanPredVar,   split = c(2, 1, 2, 2), more = TRUE)
+print(PlotMeanResidVar,  split = c(1, 2, 2, 2), more = TRUE)
+print(PlotMeanRespVar,   split = c(2, 2, 2, 2), more = FALSE)
  
 ## We build a sphere with our isoscape
 plot(x = GermanScape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
@@ -126,14 +124,14 @@ if(require("rgl") & require("magick")) {
 }
 \references{
 Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
-  models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
+models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
 }
 \seealso{
 \code{\link{isofit}} for the function fitting the isoscape
 
-  \code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
+\code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
 
-  \code{\link{IsoriX}} for the complete workflow
+\code{\link{IsoriX}} for the complete workflow
 }
 \keyword{models}
 \keyword{predict}

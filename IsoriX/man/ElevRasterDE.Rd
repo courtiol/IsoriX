@@ -9,8 +9,8 @@
 \url{http://topotools.cr.usgs.gov/gmted_viewer/}
 }
 \description{
-This raster contains the elevation of the surface of Germany [meters above sea
-level] with a resolution of approximately 30 square-km.
+This raster contains the elevation of the surface of Germany (meters above sea
+level) with a resolution of approximately 30 square-km.
 }
 \details{
 This raster contains elevation data of Germany in a highly aggregated form

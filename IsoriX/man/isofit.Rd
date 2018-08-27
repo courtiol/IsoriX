@@ -56,9 +56,9 @@ session and \code{FALSE} otherwise.}
 }
 \value{
 This function returns a \var{list} of class \code{ISOFIT} containing
-  two inter-related fits: \code{mean_fit} and \code{disp_fit}. The returned
-  \var{list} also contains the object \code{info_fit} that contains all the
-  call arguments.
+two inter-related fits: \code{mean_fit} and \code{disp_fit}. The returned
+\var{list} also contains the object \code{info_fit} that contains all the
+call arguments.
 }
 \description{
 This function fits the aggregated source data using mixed models. The fitting
@@ -170,28 +170,28 @@ for building isoscapes or performing assignments.
 }
 \note{
 There is no reason to restrict \code{mean_fit} and \code{disp_fit} to
-  using the same parametrization for fixed and random effects.
+using the same parametrization for fixed and random effects.
 
-  Never use a mean_fit object to draw predictions without considering a
-  disp_fit object: mean_fit is not fitted independently from disp_fit.
+Never use a mean_fit object to draw predictions without considering a
+disp_fit object: mean_fit is not fitted independently from disp_fit.
 
-  For all methods, fixed effects are being estimated by Maximum Likelihood
-  (ML) and dispersion parameters (i.e. random effects and Matern correlation
-  parameters) are estimated by Restricted Maximum Likelihood (REML). Using
-  REML provides more accurate prediction intervals but impedes the accuracy
-  of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the
-  fact that our package is more likely to be used for drawing inferences than
-  null hypothesis testing. Users interested in model comparisons may rely on
-  the conditional AIC values that can be extracted from fitted models using
-  the function \code{\link[spaMM:extractors]{AIC}} from
-  \pkg{\link[spaMM]{spaMM}}.
+For all methods, fixed effects are being estimated by Maximum Likelihood
+(ML) and dispersion parameters (i.e. random effects and Matern correlation
+parameters) are estimated by Restricted Maximum Likelihood (REML). Using
+REML provides more accurate prediction intervals but impedes the accuracy
+of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the
+fact that our package is more likely to be used for drawing inferences than
+null hypothesis testing. Users interested in model comparisons may rely on
+the conditional AIC values that can be extracted from fitted models using
+the function \code{\link[spaMM:extractors]{AIC}} from
+\pkg{\link[spaMM]{spaMM}}.
 
-  Variable names for \code{data} must be respected to ensure a correct
-  utilization of this package. Alteration to the fixed effect structure is
-  not implemented so far (beyond the different options proposed) to avoid
-  misuse of the package. Users that would require more flexibility should
-  consider using spaMM directly (see Courtiol & Rousset 2017) or let us know
-  which other covariates would be useful to add in IsoriX.
+Variable names for \code{data} must be respected to ensure a correct
+utilization of this package. Alteration to the fixed effect structure is
+not implemented so far (beyond the different options proposed) to avoid
+misuse of the package. Users that would require more flexibility should
+consider using spaMM directly (see Courtiol & Rousset 2017) or let us know
+which other covariates would be useful to add in IsoriX.
 }
 \examples{
 
@@ -217,27 +217,27 @@ plot(GermanFit)
 }
 \references{
 Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
-  models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
+models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
 
-  Rousset, F., Ferdy, J. B. (2014). Testing environmental and genetic effects
-  in the presence of spatial autocorrelation. Ecography, 37(8):781-790.
+Rousset, F., Ferdy, J. B. (2014). Testing environmental and genetic effects
+in the presence of spatial autocorrelation. Ecography, 37(8):781-790.
 
-  Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global application of
-  stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
-  143(3):337-348.
+Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global application of
+stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
+143(3):337-348.
 }
 \seealso{
 \pkg{\link[spaMM]{spaMM}} for an overview of the \pkg{spaMM} package
 
-  \code{\link[spaMM]{fitme}} and \code{\link[spaMM]{corrHLfit}} for
-  information about the two possible fitting procedures that can be used here
+\code{\link[spaMM]{fitme}} and \code{\link[spaMM]{corrHLfit}} for
+information about the two possible fitting procedures that can be used here
 
-  \code{\link[spaMM]{Matern.corr}} for information about the Matérn
-  correlation structure
+\code{\link[spaMM]{Matern.corr}} for information about the Matérn
+correlation structure
 
-  \code{\link{prepsources}} for the function preparing the data for isofit
+\code{\link{prepsources}} for the function preparing the data for isofit
 
-  \code{\link{IsoriX}} for the complete workflow of our package
+\code{\link{IsoriX}} for the complete workflow of our package
 }
 \keyword{models}
 \keyword{regression}

@@ -9,14 +9,14 @@ create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
   min_n_samples = 1, max_n_samples = 10)
 }
 \arguments{
-\item{calib_fn}{A \var{list} containing the parameter values describing the 
+\item{calib_fn}{A \var{list} containing the parameter values describing the
 relationship between the isotope values in the environment and those in the
 simulated organisms. This list must contain three parameters: the
 intercept, the slope, and the residual variance.}
 
 \item{isoscape}{The output of the function \code{\link{isoscape}}}
 
-\item{coordinates}{An optional \var{data.frame} with columns \code{site_ID}, 
+\item{coordinates}{An optional \var{data.frame} with columns \code{site_ID},
 \code{long} and \code{lat}}
 
 \item{raster}{A \var{RasterLayer} containing an elevation raster}
@@ -32,12 +32,12 @@ site}
 }
 \value{
 This functions returns a \var{data.frame} (see example for column
-  names)
+names)
 }
 \description{
 This function allows to simulate data so to provide examples for the
 calibration and for the assignment procedure. We name the simulated
-individuals 'Aliens' so to make it clear that the data we use to illustrate 
+individuals 'Aliens' so to make it clear that the data we use to illustrate
 our package are not real data.
 }
 \details{
@@ -54,7 +54,7 @@ provide a data frame containing three columns (\code{site_ID}, \code{long} and
 \code{lat}) to input the coordinate of the sampling site manually.
 
 Irrespectivelly of how locations are choosen, a random number of observations
-will be drawn, at each site, according to a uniform distribution bounded by 
+will be drawn, at each site, according to a uniform distribution bounded by
 the values of the argument \code{min_n_samples} and \code{max_n_samples}.
 
 From the selected coordinates, the isotope values for the environement are
@@ -116,10 +116,10 @@ head(Aliens2)
 }
 \seealso{
 \code{\link{calibfit}} for a calibration based on simulated data
-  
-  \code{\link{isofind}} for an assignment based on simulated data
-  
-  \code{\link{IsoriX}} for the complete work-flow of our package
+
+\code{\link{isofind}} for an assignment based on simulated data
+
+\code{\link{IsoriX}} for the complete work-flow of our package
 }
 \keyword{simulate}
 \keyword{simulation}

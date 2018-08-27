@@ -57,9 +57,9 @@ session and \code{FALSE} otherwise.}
 }
 \value{
 This function returns a \var{list} of class \code{MULTIISOFIT}
-  containing all pairs of inter-related fits (stored under
-  \code{multi_fits}). The returned \var{list} also contains the object
-  \code{info_fit} that contains all the call arguments.
+containing all pairs of inter-related fits (stored under
+\code{multi_fits}). The returned \var{list} also contains the object
+\code{info_fit} that contains all the call arguments.
 }
 \description{
 This function fits several set of isocapes (e.g. one per strata). It can thus be
@@ -96,5 +96,5 @@ plot(GermanMonthlyFit)
 }
 \seealso{
 \code{\link{isofit}} for information about the fitting procedure of
-  each isoscape.
+each isoscape.
 }

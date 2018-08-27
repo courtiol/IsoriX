@@ -46,6 +46,7 @@
   
   \subsection{Geeky changes}{
     \itemize{
+      \item the function downloadfile is now exported
       \item large temporary objects are now deleted within isofind to limit memory usage
       \item the package is now being tested using testthat, but test will be implemented in the future
       \item a lot of the internal code as been rewriten to comply more closely to the IsoriX coding style

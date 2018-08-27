@@ -14,7 +14,7 @@ prepraster(raster, isofit = NULL, margin_pct = 5,
 \item{isofit}{The fitted isoscape model returned by the function
 \code{\link{isofit}}}
 
-\item{margin_pct}{The percentage representing by how much the space should 
+\item{margin_pct}{The percentage representing by how much the space should
 extend outside the range of the coordinates of the sources
 (default = 5).}
 
@@ -65,7 +65,7 @@ constrains for longitude and you can use the argument \code{manual_crop} to
 provide longitudes in decreasing order, which is useful to center a isoscape
 around the pacific for instance. But this fix does not solve all the
 limitations as plotting polygons or points on top of that remains problematic
-(see example bellow). We will work on this on the future but we have other 
+(see example bellow). We will work on this on the future but we have other
 priorities for now (let us know if you really need this feature).
 }
 \note{
