@@ -115,17 +115,17 @@
 #'         lambda_matern_source_ID = 0,
 #'         lambda_matern_disp = 5),
 #'     fitted = c(
-#'         intercept = isoscapemodel$mean.fit$fixef[1],
-#'         lat.abs = isoscapemodel$mean.fit$fixef[2], 
-#'         elev = isoscapemodel$mean.fit$fixef[3],
-#'         nu = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$nu,
-#'         rho = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$rho,
-#'         rho_div_nu = with(isoscapemodel$mean.fit$ranFix$corrPars[[1]],rho/nu),
-#'         lambda.matern = isoscapemodel$mean.fit$lambda,
-#'         intercept.disp = isoscapemodel$disp.fit$fixef[1],
-#'         nu.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$nu,
-#'         rho.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$rho,
-#'         lambda.matern.disp = isoscapemodel$disp.fit$lambda)), 4)
+#'         intercept = NewdatFit$mean.fit$fixef[1],
+#'         lat.abs = NewdatFit$mean.fit$fixef[2], 
+#'         elev = NewdatFit$mean.fit$fixef[3],
+#'         nu = NewdatFit$mean.fit$ranFix$corrPars[[1]]$nu,
+#'         rho = NewdatFit$mean.fit$ranFix$corrPars[[1]]$rho,
+#'         rho_div_nu = with(NewdatFit$mean.fit$ranFix$corrPars[[1]],rho/nu),
+#'         lambda.matern = NewdatFit$mean.fit$lambda,
+#'         intercept.disp = NewdatFit$disp.fit$fixef[1],
+#'         nu.disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$nu,
+#'         rho.disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$rho,
+#'         lambda.matern.disp = NewdatFit$disp.fit$lambda)), 4)
 #' 
 #' }
 #' 
