@@ -34,6 +34,7 @@ Description:
   plotting the maps produced with 'raster' using 'lattice'.
 License: GPL (>= 2)
 Suggests:
+    gmp,
     lattice,
     magick,
     maps,
