@@ -15,6 +15,14 @@ r_check_args:
 
 r_packages:
   - covr
+  - magick
+  - lattice
+  - maps
+  - maptools
+  - RandomFields
+  - rgeos
+  - rgl
+  - testthat
 
 addons:
   apt:
