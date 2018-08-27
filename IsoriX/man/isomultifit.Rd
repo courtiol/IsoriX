@@ -62,7 +62,7 @@ containing all pairs of inter-related fits (stored under
 \code{info_fit} that contains all the call arguments.
 }
 \description{
-This function fits several set of isocapes (e.g. one per strata). It can thus be
+This function fits several set of isoscapes (e.g. one per strata). It can thus be
 used to predict annual averages precipitation weighted isoscapes.
 }
 \details{

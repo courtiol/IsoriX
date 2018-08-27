@@ -27,11 +27,11 @@ The options are invisibly returned in an object called \code{IsoriX:::.data_Isor
 Setting and displaying the options of the package
 }
 \examples{
-options_IsoriX()
+OldOptions <- options_IsoriX()
+OldOptions
 getOption_IsoriX("example_maxtime")
-
-\dontrun{
 options_IsoriX(example_maxtime = 30)
 options_IsoriX()
-}
+options_IsoriX(example_maxtime = OldOptions$example_maxtime)
+options_IsoriX()
 }

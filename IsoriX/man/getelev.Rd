@@ -26,7 +26,7 @@ greater than 1.}
 \description{
 The function \code{getelev} allows for the download of an elevation raster
 from internet. It downloads the "Global Multi-resolution Terrain Elevation
-Data 2010" from our server. The file was orifginally downloaded from: \cr
+Data 2010" from our server. The file was originally downloaded from: \cr
 \url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted into a
 \var{tif} file by us. The function \code{getelev} uses the generic function
 \code{downloadfile} that can also be used to download directly other files.

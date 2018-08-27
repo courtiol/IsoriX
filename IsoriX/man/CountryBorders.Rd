@@ -22,18 +22,15 @@ if(require(sp))
 
 ## How did we create this file?
 
-\donttest{
-if(require(maps) & require(maptools) & require(rgeos)){
-    worldmap <- map("world", fill = TRUE, plot = FALSE)
-    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
-    CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-    proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
-    CountryBorders
-    ## Uncomment the following to store the file as we did
-    #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
-}
-}
-
+## Uncomment the following to store the file as we did
+#if(require(maps) & require(maptools) & require(rgeos)){
+#    worldmap <- map("world", fill = TRUE, plot = FALSE)
+#    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
+#    CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
+#    proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
+#    CountryBorders
+#    save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
+#}
 
 }
 \seealso{

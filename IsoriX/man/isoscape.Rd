@@ -28,7 +28,7 @@ a set of all 8 raster layers mentioned above (all being of class
 This function produces the set of isoscapes, i.e. the spatial prediction
 (i.e. maps) of the distribution of source isotopic values, as well as several
 variances around such predictions. The predictions are computed using the
-fittedm geostatistical models for each raster cell of a structural raster.
+fitted geostatistical models for each raster cell of a structural raster.
 All shape files can be exported and loaded into any Geographic Information
 System (GIS) if needed (see online tutorials).
 }

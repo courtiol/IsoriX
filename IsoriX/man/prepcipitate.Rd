@@ -28,32 +28,28 @@ extent as the structural raster. This function is designed to be used with
 \examples{
 
 ## The following example takes some time and download a large amount of data (~ 1 Gb).
-## It will therefore not be run unless you type: 
-## example(prepcipitate, run.dontrun = TRUE)
+## It will therefore not be run unless you uncomment it
 
-\dontrun{
+### We fit the models for Germany:
+#GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+#
+#GermanFit <- isofit(data = GNIPDataDEagg,
+#                    mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
+#
+#StrRaster <- prepraster(raster = ElevRasterDE,
+#                        isofit = GermanFit,
+#                        aggregation_factor = 0)
+#
+#getprecip(path = "~/Desktop/")
+#
+#PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
+#                                   raster = StrRaster
+#                                   )
+# 
+# if (require(rasterVis)) {
+#   levelplot(PrecipitationBrick)
+# }
 
-## We fit the models for Germany:
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
-
-GermanFit <- isofit(data = GNIPDataDEagg,
-                    mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
-
-StrRaster <- prepraster(raster = ElevRasterDE,
-                        isofit = GermanFit,
-                        aggregation_factor = 0)
-
-getprecip(path = "~/Desktop/")
-
-PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
-                                   raster = StrRaster
-                                   )
- 
- if (require(rasterVis)) {
-   levelplot(PrecipitationBrick)
- }
-
-}
 }
 \seealso{
 \code{\link{getprecip}} to download the relevant precipitation data

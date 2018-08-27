@@ -39,24 +39,20 @@ str(CalibDataBat)
 
 ## The following example require to have downloaded
 ## a large elevation raster with the function getelev()
-## and will therefore not run unless you type:
-## example(CalibDataBat, run.dontrun=TRUE)
+## and will therefore not run unless you uncomment it
 
-\dontrun{
-if(require(raster)){
-    ## We delete the elevation data
-    CalibDataBat$elev <- NULL
-
-    ## We reconstruct the elevation data using an elevation raster
-    ## (see ?getelev for details on how to get the tif file)
-    ElevationRasterBig <- raster("gmted2010_30mn.tif")
-    CalibDataBat$elev <- extract(
-        ElevationRasterBig,
-        cbind(CalibDataBat$long, CalibDataBat$lat))
-    head(CalibDataBat)
-}
-
-}
+#if(require(raster)){
+#    ## We delete the elevation data
+#    CalibDataBat$elev <- NULL
+#
+#    ## We reconstruct the elevation data using an elevation raster
+#    ## (see ?getelev for details on how to get the tif file)
+#    ElevationRasterBig <- raster("gmted2010_30mn.tif")
+#    CalibDataBat$elev <- extract(
+#        ElevationRasterBig,
+#        cbind(CalibDataBat$long, CalibDataBat$lat))
+#    head(CalibDataBat)
+#}
 
 
 }

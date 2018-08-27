@@ -91,7 +91,7 @@ location of the assingment sampling location (see details)}
 \item{mask2}{A \var{list} containing information for the display of a mask
 (e.g. a distribution mask) (see details)}
 
-\item{cex_scale}{A \var{numeric} giving a scalling factor for the points in
+\item{cex_scale}{A \var{numeric} giving a scaling factor for the points in
 the plots}
 
 \item{pch}{The argument pch as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT}
@@ -103,7 +103,7 @@ the plots}
 \item{ylab}{A \var{string} the y-axis label in plot.CALIBFIT}
 
 \item{CI}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
-and \code{col}, a \var{string} or \var{integer} indicating the colour for ploting the confidence interval}
+and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the confidence interval}
 }
 \description{
 These functions plot objects created by \pkg{\link{IsoriX}} (with the
@@ -171,13 +171,13 @@ The argument \code{palette} is used to define how to colour the isoscape and
 assignment plot. Within this list, \code{step} defines the number of units on
 the z-scale that shares a given colour; \code{range} can be used to constrain
 the minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this
-latter argument is usefull if one wants to create several plots with the same
+latter argument is useful if one wants to create several plots with the same
 z-scale); \code{n_labels} allows for the user to approximatively define the
 maximum number of numbers plotted on the z-scale; \code{digits} defines the
 number of digits displayed for the numbers used as labels; and \code{fn} is
 used to specify the function that is used to sample the colours. If \code{fn}
 is NULL (default) the palette functions derived from
-\code{\link{isopalette1}} and \code{\link{isopalette2}} are used when ploting
+\code{\link{isopalette1}} and \code{\link{isopalette2}} are used when plotting
 isoscape and assignments, respectivelly. If \code{fn} is NA the function used
 is the palette \code{\link[viridisLite]{viridis}}.
 

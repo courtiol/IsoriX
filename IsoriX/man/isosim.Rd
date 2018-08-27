@@ -66,7 +66,7 @@ function is not required to fit an isoscape, nor to perform assignments. It
 is an additional function that can be useful to test the method, and to
 study the effect of different parameters on isoscapes. We chose default
 values for parameters inspired to model fits in order to simulate a
-relatively realistic isoscape. We precised 'relatively' because, in the
+relatively realistic isoscape. We say 'relatively' because, in the
 simulations, the Matérn realizations for the mean and the dispersion are
 drawn independently, which is not the case in nature. Note that extra
 parameters present in the input lists will not make the function crash but
@@ -143,17 +143,17 @@ round(cbind(
         lambda_matern_source_ID = 0,
         lambda_matern_disp = 5),
     fitted = c(
-        intercept = isoscapemodel$mean.fit$fixef[1],
-        lat.abs = isoscapemodel$mean.fit$fixef[2], 
-        elev = isoscapemodel$mean.fit$fixef[3],
-        nu = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$nu,
-        rho = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$rho,
-        rho_div_nu = with(isoscapemodel$mean.fit$ranFix$corrPars[[1]],rho/nu),
-        lambda.matern = isoscapemodel$mean.fit$lambda,
-        intercept.disp = isoscapemodel$disp.fit$fixef[1],
-        nu.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$nu,
-        rho.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$rho,
-        lambda.matern.disp = isoscapemodel$disp.fit$lambda)), 4)
+        intercept = NewdatFit$mean.fit$fixef[1],
+        lat.abs = NewdatFit$mean.fit$fixef[2], 
+        elev = NewdatFit$mean.fit$fixef[3],
+        nu = NewdatFit$mean.fit$ranFix$corrPars[[1]]$nu,
+        rho = NewdatFit$mean.fit$ranFix$corrPars[[1]]$rho,
+        rho_div_nu = with(NewdatFit$mean.fit$ranFix$corrPars[[1]],rho/nu),
+        lambda.matern = NewdatFit$mean.fit$lambda,
+        intercept.disp = NewdatFit$disp.fit$fixef[1],
+        nu.disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$nu,
+        rho.disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$rho,
+        lambda.matern.disp = NewdatFit$disp.fit$lambda)), 4)
 
 }
 

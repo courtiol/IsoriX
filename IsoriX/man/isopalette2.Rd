@@ -15,7 +15,7 @@ For information on how to use themes, check:
 These datasets contain colour vectors that can be used for plotting. In our
 examples, we use the \code{isopalette1} for plotting the isoscape using
 \code{\link{plot.ISOSCAPE}} and \code{isopalette2} for plotting the
-assignment outcoume using \code{\link{plot.ISOFIND}}.
+assignment outcome using \code{\link{plot.ISOFIND}}.
 }
 \details{
 Colour palettes can be created by using the function \code{\link{colorRamp}}

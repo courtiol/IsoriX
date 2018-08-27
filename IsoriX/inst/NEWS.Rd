@@ -46,6 +46,7 @@
   
   \subsection{Geeky changes}{
     \itemize{
+      \item the dontrun and donttest have been replaced by comments due to new R CMD check flags
       \item the function downloadfile is now exported
       \item large temporary objects are now deleted within isofind to limit memory usage
       \item the package is now being tested using testthat, but tests will be implemented in the future

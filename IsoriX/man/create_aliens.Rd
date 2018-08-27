@@ -42,27 +42,27 @@ our package are not real data.
 }
 \details{
 The isostopic values for the organisms are assumed to be linearly related to
-the one from the environement. The linear function can be parameterized using
+the one from the environment. The linear function can be parametrized using
 the first argument of the function (\code{calib_fn}). With this function the
 user can simulate data for different sites.
 
-The number and locations of sites can be controled in two ways. A first
-possiblity is to use the argument \code{n_sites}. The sites will then be
+The number and locations of sites can be controlled in two ways. A first
+possibility is to use the argument \code{n_sites}. The sites will then be
 selected randomly among the locations present in the isoscape (argument
-\code{isoscape}) provided to this function. An alternative possiblity is to
+\code{isoscape}) provided to this function. An alternative possibility is to
 provide a data frame containing three columns (\code{site_ID}, \code{long} and
 \code{lat}) to input the coordinate of the sampling site manually.
 
-Irrespectivelly of how locations are choosen, a random number of observations
+Irrespectively of how locations are chosen, a random number of observations
 will be drawn, at each site, according to a uniform distribution bounded by
 the values of the argument \code{min_n_samples} and \code{max_n_samples}.
 
-From the selected coordinates, the isotope values for the environement are
+From the selected coordinates, the isotope values for the environment are
 directly extracted from the corresponding point predictions stored in the
 isoscape object. No uncertainty is considered during this process. Then the
 linear calibration defines the means of the isotope values for the simulated
-organims. The actual values is then drawn from a Gaussian distribution
-centered around such mean and a variance defined by the residual variance
+organisms. The actual values is then drawn from a Gaussian distribution
+centred around such mean and a variance defined by the residual variance
 (\code{resid_var}) input within the list \code{calib_fn}.
 }
 \examples{

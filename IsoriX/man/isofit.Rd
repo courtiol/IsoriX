@@ -120,10 +120,10 @@ values are (e.g. because they are likely to be traversed by the same air
 masses).
 
 The arguments \code{uncorr_terms} allow the choice between two alternative
-parameterizations for the uncorrelated random effect in the fits:
+parametrizations for the uncorrelated random effect in the fits:
 \code{"lambda"} or \code{"nugget"} for each model. When using
 \code{"lambda"}, the variance of the uncorrelated random terms is classically
-modeled by a variance. When a spatial random effect is considered, one can
+modelled by a variance. When a spatial random effect is considered, one can
 alternatively choose \code{"nugget"}, which modifies the Matérn correlation
 value when distance between location tends to zero. If no random effect is
 considered, one should stick to the default setting and it will be ignored by
