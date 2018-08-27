@@ -96,12 +96,10 @@
 #' PlotMeanRespVar <- plot(x = GermanScape, which = "mean_respVar", plot = FALSE)
 #' 
 #' ## We display the plots
-#' if(require(lattice)) {
-#'  print(PlotMean, split = c(1, 1, 2, 2), more = TRUE)
-#'  print(PlotMeanPredVar,   split = c(2, 1, 2, 2), more = TRUE)
-#'  print(PlotMeanResidVar,  split = c(1, 2, 2, 2), more = TRUE)
-#'  print(PlotMeanRespVar,   split = c(2, 2, 2, 2), more = FALSE)
-#'  }
+#' print(PlotMean, split = c(1, 1, 2, 2), more = TRUE)
+#' print(PlotMeanPredVar,   split = c(2, 1, 2, 2), more = TRUE)
+#' print(PlotMeanResidVar,  split = c(1, 2, 2, 2), more = TRUE)
+#' print(PlotMeanRespVar,   split = c(2, 2, 2, 2), more = FALSE)
 #'  
 #' ## We build a sphere with our isoscape
 #' plot(x = GermanScape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
