@@ -145,7 +145,7 @@ isofind <- function(data,
 "The assignment is computed directly on the isoscape
 without using a calibration! This means that IsoriX 
 considers that you directly fitted the isoscape on 
-the same material than the material you are trying
+the same material as the material you are trying
 to assign. If this is not the case, rerun isofind()
 by providing a calibration object to the argument
 calibfit!")
