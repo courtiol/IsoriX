@@ -28,6 +28,7 @@
     \itemize{
       \item many objects have been renamed to prepare the release of the version 1.0
       \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
+      \item the citation for the package has been updated
     }
   }
   

@@ -1,28 +1,19 @@
-note <- sprintf("R package version %s", meta$Version)
-
-bibentry(bibtype="article",
+bibentry(bibtype = "incollection",
+  title = "Isoscape computation and inference of spatial origins with mixed models using the R package IsoriX",
   author = personList(as.person("Alexandre Courtiol"),
-
-                      as.person("François Rousset")),
-  title = "Modelling isoscapes using mixed models",
-  year = "2017",
-  doi = "10.1101/207662",
-  publisher = "Cold Spring Harbor Laboratory",
-  eprint = "https://www.biorxiv.org/content/early/2017/10/23/207662.full.pdf",
-  journal = "bioRxiv"
-)
-
-bibentry(bibtype="Manual",
-  title = "Isoscape Computation and Inference of Spatial Origins using Mixed Models",
-  author = personList(as.person("Alexandre Courtiol"),
-
                       as.person("François Rousset"),
-                      
-                      as.person("Marie-Sophie Rohwaeder"),
-  
+                      as.person("Marie-Sophie Rohwäder"),
+                      as.person("David X. Soto"),
+                      as.person("Linn Lehnert"),
+                      as.person("Christian C. Voigt"),
+                      as.person("Keith A. Hobson"),
+                      as.person("Leonard I. Wassenaar"),
                       as.person("Stephanie Kramer-Schadt")),
-  year = "2016",
-  note = note
-)
-
-
+  booktitle = "Tracking Animal Migration with Stable Isotopes",
+  editor = personList(as.person("Keith A. Hobson"),
+                      as.person("Leonard I. Wassenaar")),
+  year = "2019",
+  edition = "second",
+  publisher = "Academic Press",
+  address = "London"
+  )
