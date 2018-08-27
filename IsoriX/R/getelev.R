@@ -16,9 +16,8 @@
 #' \code{\link{getelev}}. In case of corruption, try downloading the file again,
 #' specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
-#' @aliases getelev downloadfile
 #' @param path A \var{string} indicating where to store the file on the hard
-#' drive
+#' drive (without the file name!)
 #' @param overwrite A \var{logical} indicating if an existing file should be
 #' re-downloaded
 #' @param verbose A \var{logical} indicating whether information about the
@@ -127,10 +126,33 @@ getprecip <- function(path = NULL,
   return(invisible(NULL))
 }
 
-## The following function is a generic function to download files and check 
-## their binary integrity
-## We should write the help and export it.
 
+#' Download files and check their binary integrity
+#'
+#' This function is the internal function used in IsoriX to download the large
+#' files from internet and it could be useful to download anything from within
+#' R. We created this function to make sure that the downloaded files are valid.
+#' Downloads can indeed result in files that are corrupted, so we tweaked the
+#' options to reduce this possibility and the function runs a check if the
+#' signature of the file is provided to the argument `md5sum`.
+#'
+#' @note Users should directly use the function [getelev()] and
+#'   [getprecip()].
+#'
+#' @inheritParams getelev
+#' @param address A \var{string} indicating the address of the file on internet
+#' @param filename A \var{string} indicating the name under which the file must
+#'   be stored
+#' @param md5sum A \var{string} indicating the md5 signature of the valid file
+#'   as created with [tools::md5sum()]
+#'
+#' @return The complete path of the downloaded file (invisibly)
+#'
+#' @export
+#'
+#' @seealso [getelev()], [getprecip()]
+#' 
+#' 
 downloadfile <- function(address = NULL, filename = NULL, path = NULL,
                          overwrite = FALSE, md5sum = NULL, verbose = interactive()
                          ) {
