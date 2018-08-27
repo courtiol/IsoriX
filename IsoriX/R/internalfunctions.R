@@ -15,7 +15,7 @@
                         "\n    * citation('IsoriX') for information on how to cite IsoriX.",
                         "\n    * browseURL('https://bookdown.org/content/782/') for the documentation.",
                         "\n    * ?IsoriX for a short description.",
-                        "\n    * news(package = 'IsoriX') for news.",
+                        "\n    * news(package = 'IsoriX') for info on what has changed between the different versions of IsoriX.",
                         "\n"
                         )
   }
