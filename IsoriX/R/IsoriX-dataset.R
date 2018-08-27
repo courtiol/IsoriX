@@ -85,7 +85,7 @@ NULL
 #' #        ElevationRasterBig,
 #' #        cbind(CalibDataBat$long, CalibDataBat$lat))
 #' #    head(CalibDataBat)
-#' }
+#' #}
 #' 
 #' 
 NULL
@@ -252,7 +252,7 @@ NULL
 #' #    OceanMask <- gDifference(worldlimit, CountryBorders)  
 #' #    OceanMask
 #' #    save(OceanMask, file = "OceanMask.rda", compress = "xz")
-#' }
+#' #}
 #' 
 #' 
 NULL
@@ -290,7 +290,7 @@ NULL
 #' #    proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
 #' #    CountryBorders
 #' #    save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
-#' }
+#' #}
 #' 
 NULL
 
@@ -379,7 +379,7 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' ## The following example require to download
+#' ## The following example requires to download
 #' ## a large precipitation rasters with the function getprecip()
 #' ## and will therefore not run unless you uncomment it
 #' 
