@@ -21,7 +21,7 @@ install.packages("IsoriX")
 If you want the development version of IsoriX, you can download and install it by typing:
 
 ```R
-devtools::install_github("courtiol/IsoriX_project/IsoriX")
+devtools::install_github("courtiol/IsoriX/IsoriX")
 ```
 
 Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![build passing](image/build_passing.png). The current built status is provided at the top of this readme document.
@@ -30,7 +30,7 @@ Also, if you access the network via a proxy, you may experience troubles with ``
 
 ```R
 library(httr)
-with_config(use_proxy("192.168.2.2:3128"), devtools::install_github("courtiol/IsoriX_project/IsoriX"))
+with_config(use_proxy("192.168.2.2:3128"), devtools::install_github("courtiol/IsoriX/IsoriX"))
 ```
 
 Off course, unless you are in the same institute than some of us, replace the numbers with your proxy settings!

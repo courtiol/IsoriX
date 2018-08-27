@@ -3,7 +3,7 @@ language: r
 cache: packages
 
 before_install:
- - cd /home/travis/build/courtiol/IsoriX_project/IsoriX/
+ - cd /home/travis/build/courtiol/IsoriX/IsoriX/
 
 r:
   - oldrel
