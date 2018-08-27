@@ -145,14 +145,15 @@ round(cbind(
         intercept = NewdatFit$mean_fit$fixef[1],
         lat_abs = NewdatFit$mean_fit$fixef[2], 
         elev = NewdatFit$mean_fit$fixef[3],
-        nu = NewdatFit$mean_fit$ranFix$nu,
-        rho = NewdatFit$mean_fit$ranFix$rho,
-        rho_div_nu = with(NewdatFit$mean_fit$ranFix,rho/nu),
+        nu = NewdatFit$mean.fit$ranFix$corrPars[[1]]$nu,
+        rho = NewdatFit$mean.fit$ranFix$corrPars[[1]]$rho,
+        rho_div_nu = with(NewdatFit$mean.fit$ranFix$corrPars[[1]],rho/nu),
         lambda_matern = NewdatFit$mean_fit$lambda,
         intercept_disp = NewdatFit$disp_fit$fixef[1],
-        nu_disp = NewdatFit$disp_fit$ranFix$nu,
-        rho_disp = NewdatFit$disp_fit$ranFix$rho,
+        nu_disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$nu,
+        rho_disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$rho,
         lambda_matern_disp = NewdatFit$disp_fit$lambda)), 4)
+
 
 }
 
