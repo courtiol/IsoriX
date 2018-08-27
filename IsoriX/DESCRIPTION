@@ -43,8 +43,8 @@ Suggests:
     rgl,
     testthat
 LazyData: true
-URL: https://github.com/courtiol/IsoriX_project/
-BugReports: https://github.com/courtiol/IsoriX_project/issues/
+URL: https://github.com/courtiol/IsoriX/
+BugReports: https://github.com/courtiol/IsoriX/issues/
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
 
