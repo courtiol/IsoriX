@@ -144,13 +144,13 @@ round(cbind(
         intercept = isoscapemodel$mean.fit$fixef[1],
         lat.abs = isoscapemodel$mean.fit$fixef[2], 
         elev = isoscapemodel$mean.fit$fixef[3],
-        nu = isoscapemodel$mean.fit$ranFix$nu,
-        rho = isoscapemodel$mean.fit$ranFix$rho,
-        rho_div_nu = with(isoscapemodel$mean.fit$ranFix,rho/nu),
+        nu = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$nu,
+        rho = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$rho,
+        rho_div_nu = with(isoscapemodel$mean.fit$ranFix$corrPars[[1]],rho/nu),
         lambda.matern = isoscapemodel$mean.fit$lambda,
         intercept.disp = isoscapemodel$disp.fit$fixef[1],
-        nu.disp = isoscapemodel$disp.fit$ranFix$nu,
-        rho.disp = isoscapemodel$disp.fit$ranFix$rho,
+        nu.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$nu,
+        rho.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$rho,
         lambda.matern.disp = isoscapemodel$disp.fit$lambda)), 4)
 
 }
