@@ -625,11 +625,10 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
   d_stop <- FALSE
   d <- 0
 
+  rho <- model$corrPars[[1]]$rho
+  nu  <- model$corrPars[[1]]$nu
   
-  rho <- ifelse(utils::packageVersion(pkg = "spaMM") < "2.4",  model$corrPars$rho, model$corrPars[[1]]$rho)
-  nu  <- ifelse(utils::packageVersion(pkg = "spaMM") < "2.4",  model$corrPars$nu, model$corrPars[[1]]$nu)
-  
-  while ((d < 50000) & !d.stop) {
+  while ((d < 50000) & !d_stop) {
     d <- d + 10
     m <- spaMM::MaternCorr(d = d, rho = rho, nu = nu)
     if (m < limit) d.stop <- TRUE
