@@ -70,8 +70,3 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 [spaMM](http://kimura.univ-montp2.fr/~rousset/spaMM.htm)
 
 [rasterVis](https://oscarperpinan.github.io/rastervis/)
-
-## Authors
-* [Alexandre Courtiol](https://sites.google.com/site/alexandrecourtiol/home)
-* [François Rousset](http://www.isem.univ-montp2.fr/recherche/teams/evolutionary-genetics/staff/roussetfrancois/?lang=en)
-* [Stephanie Kramer-Schadt](https://www.researchgate.net/profile/Stephanie_Kramer-Schadt)
