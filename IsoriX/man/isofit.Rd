@@ -10,14 +10,14 @@
 }
 \usage{
 isofit(data, mean_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 =
-  FALSE, long = FALSE, long_2 = FALSE), disp_model_fix = list(elev = FALSE,
-  lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE),
+  FALSE, long = FALSE, long_2 = FALSE), disp_model_fix = list(elev =
+  FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE),
   mean_model_rand = list(uncorr = TRUE, spatial = TRUE),
   disp_model_rand = list(uncorr = TRUE, spatial = TRUE),
   uncorr_terms = list(mean_model = "lambda", disp_model = "lambda"),
   spaMM_method = list(mean_model = "fitme", disp_model = "fitme"),
-  dist_method = "Earth", control_mean = list(), control_disp = list(),
-  verbose = interactive())
+  dist_method = "Earth", control_mean = list(),
+  control_disp = list(), verbose = interactive())
 }
 \arguments{
 \item{data}{The \var{dataframe} containing the data used for fitting the

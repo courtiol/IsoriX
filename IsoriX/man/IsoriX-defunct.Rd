@@ -15,19 +15,6 @@
 \alias{prepiso}
 \alias{RElevate}
 \alias{relevate}
-\alias{Calibfit}
-\alias{GetElev}
-\alias{Isofit}
-\alias{Isorix}
-\alias{Isoscape}
-\alias{Isosim}
-\alias{QueryGNIP}
-\alias{queryGNIP}
-\alias{prepdata}
-\alias{prepelev}
-\alias{prepiso}
-\alias{RElevate}
-\alias{relevate}
 \title{Defunct and depreciated functions}
 \usage{
 Calibfit(...)

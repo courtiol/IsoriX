@@ -4,7 +4,6 @@
 \alias{options}
 \alias{options_IsoriX}
 \alias{getOption_IsoriX}
-\alias{getOption_IsoriX}
 \title{Setting and displaying the options of the package}
 \usage{
 options_IsoriX(...)

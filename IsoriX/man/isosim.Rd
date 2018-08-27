@@ -4,14 +4,15 @@
 \alias{isosim}
 \title{Simulate isotopic values}
 \usage{
-isosim(data, mean_model_fix_coef = c(intercept = 64, elev = -0.01, lat_abs =
-  -2.3, lat_2 = 0, long = 0, long_2 = 0), disp_model_fix_coef = c(intercept =
-  5.8, elev = 0, lat_abs = 0, lat_2 = 0, long = 0, long_2 = 0),
-  mean_model_matern_coef = c(nu = 0.35, rho = 5e-05, lambda = 899),
-  disp_model_matern_coef = c(nu = 0.32, rho = 1.5e-05, lambda = 5),
-  mean_model_uncorr_coef = c(nugget = 0, lambda = 0),
-  disp_model_uncorr_coef = c(nugget = 0, lambda = 0), dist_method = "Earth",
-  seed = NULL, save_dataframe = FALSE, verbose = interactive())
+isosim(data, mean_model_fix_coef = c(intercept = 64, elev = -0.01,
+  lat_abs = -2.3, lat_2 = 0, long = 0, long_2 = 0),
+  disp_model_fix_coef = c(intercept = 5.8, elev = 0, lat_abs = 0, lat_2 =
+  0, long = 0, long_2 = 0), mean_model_matern_coef = c(nu = 0.35, rho =
+  5e-05, lambda = 899), disp_model_matern_coef = c(nu = 0.32, rho =
+  1.5e-05, lambda = 5), mean_model_uncorr_coef = c(nugget = 0, lambda =
+  0), disp_model_uncorr_coef = c(nugget = 0, lambda = 0),
+  dist_method = "Earth", seed = NULL, save_dataframe = FALSE,
+  verbose = interactive())
 }
 \arguments{
 \item{data}{A \var{data.frame} containing the covariates needed for the
@@ -142,18 +143,17 @@ round(cbind(
         lambda_matern_source_ID = 0,
         lambda_matern_disp = 5),
     fitted = c(
-        intercept = NewdatFit$mean_fit$fixef[1],
-        lat_abs = NewdatFit$mean_fit$fixef[2], 
-        elev = NewdatFit$mean_fit$fixef[3],
-        nu = NewdatFit$mean.fit$ranFix$corrPars[[1]]$nu,
-        rho = NewdatFit$mean.fit$ranFix$corrPars[[1]]$rho,
-        rho_div_nu = with(NewdatFit$mean.fit$ranFix$corrPars[[1]],rho/nu),
-        lambda_matern = NewdatFit$mean_fit$lambda,
-        intercept_disp = NewdatFit$disp_fit$fixef[1],
-        nu_disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$nu,
-        rho_disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$rho,
-        lambda_matern_disp = NewdatFit$disp_fit$lambda)), 4)
-
+        intercept = isoscapemodel$mean.fit$fixef[1],
+        lat.abs = isoscapemodel$mean.fit$fixef[2], 
+        elev = isoscapemodel$mean.fit$fixef[3],
+        nu = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$nu,
+        rho = isoscapemodel$mean.fit$ranFix$corrPars[[1]]$rho,
+        rho_div_nu = with(isoscapemodel$mean.fit$ranFix$corrPars[[1]],rho/nu),
+        lambda.matern = isoscapemodel$mean.fit$lambda,
+        intercept.disp = isoscapemodel$disp.fit$fixef[1],
+        nu.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$nu,
+        rho.disp = isoscapemodel$disp.fit$ranFix$corrPars[[1]]$rho,
+        lambda.matern.disp = isoscapemodel$disp.fit$lambda)), 4)
 
 }
 

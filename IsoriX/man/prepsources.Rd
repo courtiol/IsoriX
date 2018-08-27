@@ -4,8 +4,8 @@
 \alias{prepsources}
 \title{Filter and aggregate the raw source dataset}
 \usage{
-prepsources(data, month = 1:12, year, long_min, long_max, lat_min, lat_max,
-  split_by = NULL, prop_random = 0, random_level = "source",
+prepsources(data, month = 1:12, year, long_min, long_max, lat_min,
+  lat_max, split_by = NULL, prop_random = 0, random_level = "source",
   col_source_value = "source_value", col_source_ID = "source_ID",
   col_lat = "lat", col_long = "long", col_elev = "elev",
   col_month = "month", col_year = "year")

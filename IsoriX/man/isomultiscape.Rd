@@ -5,7 +5,8 @@
 \title{Predicts the average spatial distribution of isotopic values over months,
 years...}
 \usage{
-isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
+isomultiscape(raster, isofit, weighting = NULL,
+  verbose = interactive())
 }
 \arguments{
 \item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
