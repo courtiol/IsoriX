@@ -18,7 +18,7 @@ be downloaded using the function \code{\link{getprecip}}.
 }
 \examples{
 
-## The following example require to download
+## The following example requires to download
 ## a large precipitation rasters with the function getprecip()
 ## and will therefore not run unless you uncomment it
 
