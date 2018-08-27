@@ -12,5 +12,9 @@ grid::grid.text
 
 # reexport from lattice:
 
+#' @importFrom lattice xyplot
+#' @export
+lattice::xyplot
+
 # reexport from spaMM:
 
