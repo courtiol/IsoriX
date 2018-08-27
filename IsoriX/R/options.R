@@ -14,13 +14,13 @@
 #' @export
 #'
 #' @examples
-#' options_IsoriX()
+#' OldOptions <- options_IsoriX()
+#' OldOptions
 #' getOption_IsoriX("example_maxtime")
-#'
-#' \dontrun{
 #' options_IsoriX(example_maxtime = 30)
 #' options_IsoriX()
-#' }
+#' options_IsoriX(example_maxtime = OldOptions$example_maxtime)
+#' options_IsoriX()
 
 options_IsoriX <- function(...) { ## as in spaMM
   if (nargs() == 0) return(.data_IsoriX$IsoriX_options)

@@ -6,7 +6,6 @@
 #' genus Myotis from the original study. The data can be used as an example to
 #' perform assignments using the function \code{\link{isofind}}.
 #' 
-#' 
 #' @name AssignDataBat
 #' @docType data
 #' @noMd
@@ -27,8 +26,6 @@
 #' str(AssignDataBat)
 #' 
 NULL
-
-
 
 
 
@@ -75,29 +72,23 @@ NULL
 #' 
 #' ## The following example require to have downloaded
 #' ## a large elevation raster with the function getelev()
-#' ## and will therefore not run unless you type:
-#' ## example(CalibDataBat, run.dontrun=TRUE)
+#' ## and will therefore not run unless you uncomment it
 #' 
-#' \dontrun{
-#' if(require(raster)){
-#'     ## We delete the elevation data
-#'     CalibDataBat$elev <- NULL
-#' 
-#'     ## We reconstruct the elevation data using an elevation raster
-#'     ## (see ?getelev for details on how to get the tif file)
-#'     ElevationRasterBig <- raster("gmted2010_30mn.tif")
-#'     CalibDataBat$elev <- extract(
-#'         ElevationRasterBig,
-#'         cbind(CalibDataBat$long, CalibDataBat$lat))
-#'     head(CalibDataBat)
-#' }
-#' 
+#' #if(require(raster)){
+#' #    ## We delete the elevation data
+#' #    CalibDataBat$elev <- NULL
+#' #
+#' #    ## We reconstruct the elevation data using an elevation raster
+#' #    ## (see ?getelev for details on how to get the tif file)
+#' #    ElevationRasterBig <- raster("gmted2010_30mn.tif")
+#' #    CalibDataBat$elev <- extract(
+#' #        ElevationRasterBig,
+#' #        cbind(CalibDataBat$long, CalibDataBat$lat))
+#' #    head(CalibDataBat)
 #' }
 #' 
 #' 
 NULL
-
-
 
 
 
@@ -155,8 +146,6 @@ NULL
 #' }
 #' 
 NULL
-
-
 
 
 
@@ -233,8 +222,6 @@ NULL
 
 
 
-
-
 #' Mask of world oceans
 #' 
 #' This dataset contains a polygon shapefile that can be used to mask large
@@ -258,23 +245,17 @@ NULL
 #' 
 #' ## How did we create this file?
 #' 
-#' \donttest{
-#' if(require(raster) & require(rgeos)){
-#'     worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
-#'     proj4string(worldlimit) <- crs(CountryBorders)
-#'     OceanMask <- gDifference(worldlimit, CountryBorders)  
-#'     OceanMask
-#'     
 #' ## Uncomment the following to store the file as we did
-#' #save(OceanMask, file = "OceanMask.rda", compress = "xz")
-#' 
-#' }
+#' #if(require(raster) & require(rgeos)){
+#' #    worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
+#' #    proj4string(worldlimit) <- crs(CountryBorders)
+#' #    OceanMask <- gDifference(worldlimit, CountryBorders)  
+#' #    OceanMask
+#' #    save(OceanMask, file = "OceanMask.rda", compress = "xz")
 #' }
 #' 
 #' 
 NULL
-
-
 
 
 
@@ -301,18 +282,15 @@ NULL
 #' 
 #' ## How did we create this file?
 #' 
-#' \donttest{
-#' if(require(maps) & require(maptools) & require(rgeos)){
-#'     worldmap <- map("world", fill = TRUE, plot = FALSE)
-#'     CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
-#'     CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-#'     proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
-#'     CountryBorders
-#'     ## Uncomment the following to store the file as we did
-#'     #save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
+#' ## Uncomment the following to store the file as we did
+#' #if(require(maps) & require(maptools) & require(rgeos)){
+#' #    worldmap <- map("world", fill = TRUE, plot = FALSE)
+#' #    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
+#' #    CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
+#' #    proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
+#' #    CountryBorders
+#' #    save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
 #' }
-#' }
-#' 
 #' 
 NULL
 
@@ -354,40 +332,34 @@ NULL
 #' 
 #' ## The following example require to download
 #' ## a large elevation raster with the function getelev()
-#' ## and will therefore not run unless you type:
-#' ## example(ElevRasterDE, run.dontrun=TRUE)
+#' ## and will therefore not run unless you uncomment it
 #' 
-#' \dontrun{
-#' ### Creating the object ElevRasterDE
-#' 
-#' ## Download the tif file (ca. 700 Mb)
-#' ## (see ?getelev for details on how to get the tif file)
-#' # getelev()
-#' 
-#' ## Convert the tif into R raster format
-#' if(require(raster)) {
-#'   ElevationRasterBig <- raster("gmted2010_30mn.tif")
-#'   
-#'   ## Create the highly agregated elevation raster
-#'   ElevRasterDE <- prepraster(ElevationRasterBig,
-#'                              aggregation_factor = 10,
-#'                              manual_crop = c(5.5, 15.5, 47, 55.5))
-#'                            
-#'   ## Plot the elevation
-#'   if (require("sp") & require("rasterVis")) {
-#'     levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#'       layer(sp.polygons(CountryBorders, col = "white"))
-#'   }
-#'   
-#'   ## Compute crudely the resolution:
-#'   median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
-#' }
-#' }
-#' 
+#' #### Creating the object ElevRasterDE
+#' #
+#' ### Download the tif file (ca. 700 Mb)
+#' ### (see ?getelev for details on how to get the tif file)
+#' #getelev()
+#' #
+#' ### Convert the tif into R raster format
+#' #if(require(raster)) {
+#' #  ElevationRasterBig <- raster("gmted2010_30mn.tif")
+#' #  
+#' #  ## Create the highly agregated elevation raster
+#' #  ElevRasterDE <- prepraster(ElevationRasterBig,
+#' #                             aggregation_factor = 10,
+#' #                             manual_crop = c(5.5, 15.5, 47, 55.5))
+#' #                           
+#' #  ## Plot the elevation
+#' #  if (require("sp") & require("rasterVis")) {
+#' #    levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
+#' #      layer(sp.polygons(CountryBorders, col = "white"))
+#' #  }
+#' #  
+#' #  ## Compute crudely the resolution:
+#' #  median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
+#' #}
 #' 
 NULL
-
-
 
 
 
@@ -409,15 +381,12 @@ NULL
 #' 
 #' ## The following example require to download
 #' ## a large precipitation rasters with the function getprecip()
-#' ## and will therefore not run unless you type:
-#' ## example(PrecipBrickDE, run.dontrun=TRUE)
+#' ## and will therefore not run unless you uncomment it
 #' 
-#' \dontrun{
-#' ### Creating the object PrecipBrickDE
-#' getprecip() ## Download the tif files (~ 1 Gb compressed)
-#' PrecipBrickDE <- prepcipitate(raster = ElevRasterDE)
-#' save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
-#' }
+#' #### Creating the object PrecipBrickDE
+#' #getprecip() ## Download the tif files (~ 1 Gb compressed)
+#' #PrecipBrickDE <- prepcipitate(raster = ElevRasterDE)
+#' #save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
 #' 
 NULL
 
@@ -477,8 +446,6 @@ NULL
 #' head(GNIPDataDE)
 #' 
 NULL
-
-
 
 
 
