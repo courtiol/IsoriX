@@ -88,12 +88,10 @@
 #' PlotDispFitted <- plot(x = Isoscape, which = "disp", sources = list(draw = FALSE))
 #' 
 #' ## We compare simulated and fitted data visually
-#' if(require(lattice)){
-#'     print(PlotMeanSimu, split = c(1, 1, 2, 2), more = TRUE)
-#'     print(PlotDispSimu, split = c(2, 1, 2, 2), more = TRUE)
-#'     print(PlotMeanFitted, split = c(1, 2, 2, 2), more = TRUE)
-#'     print(PlotDispFitted, split = c(2, 2, 2, 2), more = FALSE)
-#' }
+#' print(PlotMeanSimu, split = c(1, 1, 2, 2), more = TRUE)
+#' print(PlotDispSimu, split = c(2, 1, 2, 2), more = TRUE)
+#' print(PlotMeanFitted, split = c(1, 2, 2, 2), more = TRUE)
+#' print(PlotDispFitted, split = c(2, 2, 2, 2), more = FALSE)
 #' 
 #' ## We compare simulated and fitted data numerically
 #' ## Note that differences are expected, as the geographic
@@ -115,17 +113,17 @@
 #'         lambda_matern_source_ID = 0,
 #'         lambda_matern_disp = 5),
 #'     fitted = c(
-#'         intercept = NewdatFit$mean.fit$fixef[1],
-#'         lat.abs = NewdatFit$mean.fit$fixef[2], 
-#'         elev = NewdatFit$mean.fit$fixef[3],
-#'         nu = NewdatFit$mean.fit$ranFix$corrPars[[1]]$nu,
-#'         rho = NewdatFit$mean.fit$ranFix$corrPars[[1]]$rho,
-#'         rho_div_nu = with(NewdatFit$mean.fit$ranFix$corrPars[[1]],rho/nu),
-#'         lambda.matern = NewdatFit$mean.fit$lambda,
-#'         intercept.disp = NewdatFit$disp.fit$fixef[1],
-#'         nu.disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$nu,
-#'         rho.disp = NewdatFit$disp.fit$ranFix$corrPars[[1]]$rho,
-#'         lambda.matern.disp = NewdatFit$disp.fit$lambda)), 4)
+#'         intercept = NewdatFit$mean_fit$fixef[1],
+#'         lat.abs = NewdatFit$mean_fit$fixef[2], 
+#'         elev = NewdatFit$mean_fit$fixef[3],
+#'         nu = NewdatFit$mean_fit$ranFix$corrPars[[1]]$nu,
+#'         rho = NewdatFit$mean_fit$ranFix$corrPars[[1]]$rho,
+#'         rho_div_nu = with(NewdatFit$mean_fit$ranFix$corrPars[[1]],rho/nu),
+#'         lambda.matern = NewdatFit$mean_fit$lambda,
+#'         intercept.disp = NewdatFit$disp_fit$fixef[1],
+#'         nu.disp = NewdatFit$disp_fit$ranFix$corrPars[[1]]$nu,
+#'         rho.disp = NewdatFit$disp_fit$ranFix$corrPars[[1]]$rho,
+#'         lambda.matern.disp = NewdatFit$disp_fit$lambda)), 4)
 #' 
 #' }
 #' 
