@@ -7,7 +7,7 @@
   \subsection{Upcoming features planned for future releases}{
       \itemize{
       \item (version 1.0 does not exist yet)
-      \item feature requests can be defined and watched here: \url{https://github.com/courtiol/IsoriX_project/issues}
+      \item feature requests can be defined and watched here: \url{https://github.com/courtiol/IsoriX/issues}
     }
   }
 }
@@ -26,9 +26,9 @@
   
   \subsection{Major changes}{
     \itemize{
+      \item the citation for the package has been updated!
       \item many objects have been renamed to prepare the release of the version 1.0
-      \item the vignettes have now been rewriten as a bookdown and moved out from the package. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
-      \item the citation for the package has been updated
+      \item the vignettes have now been moved to a bookdown. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
     }
   }
   
@@ -48,10 +48,10 @@
     \itemize{
       \item the function downloadfile is now exported
       \item large temporary objects are now deleted within isofind to limit memory usage
-      \item the package is now being tested using testthat, but test will be implemented in the future
+      \item the package is now being tested using testthat, but tests will be implemented in the future
       \item a lot of the internal code as been rewriten to comply more closely to the IsoriX coding style
-      \item the list of suggested packages has been revised and rgdal removed as it caused (again) problems with Travis
-      \item following a change in spaMM predict.HLfit, the prediction are now being made by chunck of 1000 points instead of 150. This should lead to a tiny gain in performance under spaMM version higher than 2.2.
+      \item the list of suggested packages has been revised and rgdal removed as it caused (again) problems with Travis CI
+      \item following a change in spaMM predict.HLfit, the prediction are now being made by chunck of 1000 points instead of 150. This should lead to a tiny gain in performance
       \item the function isoscape was performing predictions twice every 150 (or now 1000) locations, this was not influencing the isoscapes produced, but this has now been corrected
       \item the function prepraster now produces an raster stored in memory if it is possible. This should prevent bugs that appears when using loaded rasters that were previously saved (the temporary link to the hard drive location is no longer correct in this case).
       \item the function .objective_fn_calib has been moved within the function calibfit as it is not used elsewhere
