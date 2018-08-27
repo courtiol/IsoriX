@@ -1,9 +1,9 @@
 # Welcome to IsoriX
-[![Build Status](https://travis-ci.org/courtiol/IsoriX_project.svg?branch=master)](https://travis-ci.org/courtiol/IsoriX_project)
+[![Build Status](https://travis-ci.org/courtiol/IsoriX.svg?branch=master)](https://travis-ci.org/courtiol/IsoriX_project)
 [![CRAN](http://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX)
 [![Rdoc](http://www.rdocumentation.org/badges/version/IsoriX)](http://www.rdocumentation.org/packages/IsoriX)
-[![codecov](https://codecov.io/gh/courtiol/IsoriX_project/branch/master/graph/badge.svg)](https://codecov.io/gh/courtiol/IsoriX_project)
+[![codecov](https://codecov.io/gh/courtiol/IsoriX/branch/master/graph/badge.svg)](https://codecov.io/gh/courtiol/IsoriX)
 
 
 
@@ -38,19 +38,14 @@ Off course, unless you are in the same institute than some of us, replace the nu
 
 ## Where to learn about IsoriX?
 
-Here, on github, we are planning to provide documentation in [our Wiki](https://github.com/courtiol/IsoriX/wiki/). It is just starting, so check regularly for updates.
+You can access the documentation and tutorials about IsoriX using our [bookdown](https://bookdown.org/content/782/).
 
-Otherwise, you can access the documentation and tutorials about IsoriX on [CRAN](https://cran.r-project.org/web/packages/IsoriX/index.html), or if you have installed IsoriX you can type:
+For more specific help on IsoriX functions and objects, simply type:
 
 ```R
 help(package="IsoriX", help_type="html")
 ```
-to access the help files of all exported IsoriX functions and objects. Or you can type:
-
-```R
-browseVignettes(package="IsoriX")
-```
-to find our tutorials.
+in R after having installed and loaded the package.
 
 
 ## How can you contribute?
