@@ -7,16 +7,15 @@
 \format{A \var{dataframe} with 14 observations on 4 variables:
 \tabular{rlll}{
 [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
-[, 2] \tab lat \tab (\var{numeric}) \tab The latitude\cr
-[, 2] \tab lomg \tab (\var{numeric}) \tab The longitude\cr
-[, 4] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
-value of the tissue\cr }}
+[, 2] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+[, 2] \tab lomg \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+[, 4] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
 \source{
 data directly provided by the authors of the following publication
 }
 \description{
 This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
-delta values of fur keratin from common noctule bats (Nyctalus noctula)
+delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 killed at wind turbines in northern Germany. The data can be used as an
 example to perform assignments using the function \code{\link{isofind}}.
 }
@@ -27,8 +26,8 @@ str(AssignDataBat)
 
 }
 \references{
-Voigt CC & Lehnert L (2019). "Tracking of movements of terrestrial 
-mammals using stable isotopes." In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial 
+mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
 Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{

@@ -5,26 +5,27 @@
 \alias{GNIPDataDE}
 \title{Hydrogen delta values in precipitation water, Germany}
 \format{The \var{dataframe} includes 8591 observations on the following
-variables: \tabular{rlll}{ [, 1] \tab lat \tab (\var{numeric}) \tab Latitude
-coordinate [decimal degrees]\cr [, 2] \tab long \tab (\var{numeric}) \tab
-Longitude coordinate [decimal degrees]\cr [, 3] \tab elev \tab
-(\var{numeric}) \tab Elevation asl [m]\cr [, 4] \tab source_value \tab
-(\var{numeric}) \tab hydrogen delta value [per thousand]\cr
-[, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr [, 6] \tab
-month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab source_ID
-\tab (\var{Factor}) \tab The unique identifier of the weather station\cr }}
+variables: \tabular{rlll}{
+[, 1] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+[, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+[, 3] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+[, 4] \tab source_value \tab (\var{numeric}) \tab hydrogen delta value [per thousand]\cr
+[, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr
+[, 6] \tab month \tab (\var{numeric}) \tab Month of sampling\cr
+[, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }}
 \source{
 Data provided by the IAEA.
 }
 \description{
-This dataset contains the mean and variance of hydrogen delta value from
+This dataset contains the hydrogen delta value from
 precipitation water sampled at weather stations between 1961 and 2013 in
 Germany. These data have been kindly provided by Christine Stumpp and
 processed by the International Atomic Energy Agency IAEA in Vienna (GNIP
 Project: Global Network of Isotopes in Precipitation). These data are free to
 reuse provided the relevant citations (see references). These data represent
 a small sample of the much larger dataset compiled by the GNIP. We no longer
-provide larger GNIP dataset in the package as those are not free to reuse.
+provide larger GNIP dataset in the package as those are not free to reuse (but
+we do provide aggregated verisons of it; see \code{\link{GNIPDataEUagg}}).
 You can still download the complete GNIP dataset for free, but you will have
 to proceed to a registration process with GNIP and use their downloading
 interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).

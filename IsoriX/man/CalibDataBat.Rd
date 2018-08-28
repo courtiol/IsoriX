@@ -4,20 +4,19 @@
 \name{CalibDataBat}
 \alias{CalibDataBat}
 \title{Calibration dataset for bat species}
-\format{A \var{dataframe} with 178 observations on 6 variables:
-\tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
-the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
-coordinate [decimal degrees]\cr [, 3] \tab lat \tab (\var{numeric}) \tab
-Latitude coordinate [decimal degrees]\cr [, 4] \tab elev \tab
-(\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab sample_ID \tab
-(\var{Factor}) \tab Identification of the sampled animal\cr [, 6] 
-\tab sample_value \tab (\var{numeric}) \tab hydrogen delta value of the tissue\cr }}
-\source{
-data directly provided by the authors of the following publication
-}
+\format{A \var{dataframe} with 335 observations on 7 variables:
+\tabular{rlll}{
+[, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
+[, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+[, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+[, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+[, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
+[, 6] \tab species \tab (\var{Factor}) \tab A code for the species\cr
+[, 7] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
 \description{
-This dataset contains hydrogen delta values of fur keratin from sedentary
-bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
+This dataset contains hydrogen delta values of fur keratin from 6 sedentary
+bat species. It corresponds to the combination of several studies as detailed
+in Voigt & Lenhert 2019. This is the dataset used in Courtiol et al. 2019.
 The data can be used as an example to fit a calibration model using the
 function \code{\link{calibfit}}.
 }
@@ -27,43 +26,26 @@ Users who wish to use their own dataset for calibration should create a
 'species' can be dropped). The columns should possess the same names as the
 ones described above. If the elevation is unknown at the sampling sites,
 elevation information can be extracted from a high resolution elevation
-raster using the function \code{\link[raster]{extract}}. In this dataset, we
-retrieved elevations from the Global Multi-resolution Terrain Elevation Data
-2010. Note that the original study used a different source of elevation
-data.
+raster using the function \code{\link[raster]{extract}} as shown in the 
+example of \code{\link{CalibDataBat2}}.
 }
 \examples{
 
 head(CalibDataBat)
 str(CalibDataBat)
-
-## The following example require to have downloaded
-## a large elevation raster with the function getelev()
-## and will therefore not run unless you uncomment it
-
-#if(require(raster)){
-#    ## We delete the elevation data
-#    CalibDataBat$elev <- NULL
-#
-#    ## We reconstruct the elevation data using an elevation raster
-#    ## (see ?getelev for details on how to get the tif file)
-#    ElevationRasterBig <- raster("gmted2010_30mn.tif")
-#    CalibDataBat$elev <- extract(
-#        ElevationRasterBig,
-#        cbind(CalibDataBat$long, CalibDataBat$lat))
-#    head(CalibDataBat)
-#}
-
-
 }
 \references{
-Popa-Lisseanu, A. G., Soergel, K., Luckner, A., Wassenaar, L.
-I., Ibanez, C., Kramer-Schadt, S., Ciechanowski, M., Goerfoel, T., Niermann,
-I., Beuneux, G., Myslajek, R. W., Juste, J., Fonderflick, J., Kelm, D.,
-Voigt, C. C. (2012). A triple isotope approach to predict the breeding
-origins of European bats. PLoS ONE 7(1):e30388.
+Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial 
+mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+Migration with Stable Isotopes, second edition. Academic Press, London.
+
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
+computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
+\code{\link{CalibDataBat2}} for another (related) calibration dataset
+
 \code{\link{calibfit}} to fit a calibration model
 }
 \keyword{datasets}

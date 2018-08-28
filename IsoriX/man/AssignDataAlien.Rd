@@ -5,9 +5,9 @@
 \alias{AssignDataAlien}
 \title{Simulated assignment dataset}
 \format{A \var{dataframe} with 10 observations on 2 variables:
-\tabular{rlll}{ [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification
-of the sample\cr [, 2] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
-value of the tissue\cr }}
+\tabular{rlll}{
+[, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sample\cr
+[, 2] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr}}
 \description{
 This dataset contains simulated hydrogen delta values. 
 The data can be used as an example to perform assignments using the function \code{\link{isofind}}.

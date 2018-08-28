@@ -15,6 +15,7 @@
 \section{version 0.8}{
   \subsection{New features}{
     \itemize{
+      \item the datasets used in Courtiol et al. 2019 are now provided
       \item new option in plots that allows to map the isoscape onto a sphere
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
       \item an argument y_title for the plotting function for isoscapes to allow one to simply change the title
@@ -26,7 +27,7 @@
   
   \subsection{Major changes}{
     \itemize{
-      \item the citation for the package has been updated!
+      \item the citations for the package have been updated!
       \item many objects have been renamed to prepare the release of the version 1.0
       \item the vignettes have now been moved to a bookdown. To access the documentation you should now visit: \url{https://bookdown.org/content/782/}
     }

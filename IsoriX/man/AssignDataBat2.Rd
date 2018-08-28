@@ -5,10 +5,10 @@
 \alias{AssignDataBat2}
 \title{Assignment dataset for bat species}
 \format{A \var{dataframe} with 244 observations on 3 variables:
-\tabular{rlll}{ [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification
-of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
-name\cr [, 3] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
-value of the tissue\cr }}
+\tabular{rlll}{
+[, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
+[, 2] \tab species \tab (\var{Factor}) \tab Animal species name\cr
+[, 3] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
 \source{
 data directly provided by the authors of the following publication
 }
