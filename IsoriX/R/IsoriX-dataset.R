@@ -425,7 +425,6 @@ NULL
 #' #getelev()
 #' #
 #' ### Convert the tif into R raster format
-#' #if(require(raster)) {
 #' #  ElevationRasterBig <- raster("gmted2010_30mn.tif")
 #' #  
 #' #  ## Create the highly agregated elevation raster
@@ -434,14 +433,11 @@ NULL
 #' #                             manual_crop = c(5.5, 15.5, 47, 55.5))
 #' #                           
 #' #  ## Plot the elevation
-#' #  if (require("sp") & require("rasterVis")) {
-#' #    levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#' #      layer(sp.polygons(CountryBorders, col = "white"))
-#' #  }
+#' #  levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
+#' #    layer(sp.polygons(CountryBorders, col = "white"))
 #' #  
 #' #  ## Compute crudely the resolution:
 #' #  median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
-#' #}
 #' 
 NULL
 
@@ -450,7 +446,7 @@ NULL
 #' The precipitation monthly amounts for Germany
 #'
 #' This brick of rasters contains the monthly precipitation amounts (in mm) for
-#' Germany with a resolution of approximately 30 square-km..
+#' Germany with a resolution of approximately 30 square-km.
 #'
 #' The data are derived from "precipitation (mm) WorldClim Version2" which can
 #' be downloaded using the function \code{\link{getprecip}}.
@@ -467,7 +463,9 @@ NULL
 #' ## a large precipitation rasters with the function getprecip()
 #' ## and will therefore not run unless you uncomment it
 #' 
-#' #### Creating the object PrecipBrickDE
+#' ## How did we create this file?
+#' 
+#' ## Uncomment the following to create the file as we did
 #' #getprecip() ## Download the tif files (~ 1 Gb compressed)
 #' #PrecipBrickDE <- prepcipitate(raster = ElevRasterDE)
 #' #save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
