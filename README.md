@@ -15,6 +15,12 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 You can download and install the stable version of IsoriX directly from within R by typing:
 
 ```R
+install.packages("IsoriX", dependencies = TRUE)
+```
+
+Note: if you have troubles caused by ```gmp```, ```magick```, ```maps```, ```maptools```, ```RandomFields```, ```rgeos```, or ```rgl```, retry using simply:
+
+```R
 install.packages("IsoriX")
 ```
 
