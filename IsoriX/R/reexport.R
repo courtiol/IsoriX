@@ -24,6 +24,10 @@ raster::values
 #' @export
 raster::area
 
+#' @importFrom raster extent
+#' @export
+raster::extent
+
 
 
 # reexport from rasterVis:
