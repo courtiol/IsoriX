@@ -18,11 +18,13 @@ You can download and install the stable version of IsoriX directly from within R
 install.packages("IsoriX", dependencies = TRUE)
 ```
 
-Note: if you have troubles caused by ```gmp```, ```magick```, ```maps```, ```maptools```, ```RandomFields```, ```rgeos```, or ```rgl```, retry using simply:
+Note: if you get into troubles due to ```gmp```, ```magick```, ```maps```, ```maptools```, ```RandomFields```, ```rgeos```, or ```rgl```, retry using simply:
 
 ```R
 install.packages("IsoriX")
 ```
+
+These packages offer additional functionalities but some of them are particularly difficult to install on some systems.
 
 If you want the development version of IsoriX, you can download and install it by typing:
 
@@ -30,7 +32,7 @@ If you want the development version of IsoriX, you can download and install it b
 devtools::install_github("courtiol/IsoriX/IsoriX")
 ```
 
-Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build satus is ![build passing](image/build_passing.png). The current built status is provided at the top of this readme document.
+Mind that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build status is ![build passing](image/build_passing.png). The current built status is provided at the top of this readme document.
 
 Also, if you access the network via a proxy, you may experience troubles with ```install_github```. In such case try something like:
 
