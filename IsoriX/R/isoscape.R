@@ -110,7 +110,7 @@
 #' ## and that you have both the packages 'rgl' and 'magick' installed.
 #' ## The building of the .gif implies to create temporarily many .png
 #' ## but those will be removed automatically once the .gif is done.
-#' if(require("rgl") & require("magick")) {
+#' if(interactive() & require("rgl") & require("magick")) {
 #'   movie3d(spin3d(axis = c(0, 0, 1), rpm = 2), duration = 30, dir = getwd())
 #' }
 #' 
