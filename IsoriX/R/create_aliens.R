@@ -99,11 +99,10 @@
 #'                                                   long   = c(13.52134, 8.49914),
 #'                                                   lat    = c(52.50598, 52.03485)),
 #'                          raster = ElevRasterDE,
-#'                          n_sites = 25,
 #'                          min_n_samples = 5,
 #'                          max_n_samples = 5)
 #'
-#' head(Aliens2)
+#' Aliens2
 #'
 #' }
 #' 
@@ -112,7 +111,7 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
                           isoscape = NULL,
                           coordinates = NA,
                           raster = NULL,
-                          n_sites = 1,
+                          n_sites = NA,
                           min_n_samples = 1,
                           max_n_samples = 10) {
   
@@ -129,7 +128,7 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
     if (!all(c("site_ID", "long", "lat") %in% colnames(coordinates))) {
       stop("the argument coordinates must contain the columns 'site_ID', 'long' and 'lat'")
     }
-    if (n_sites != nrow(coordinates)) {
+    if (!is.na(n_sites)) {
       warnings("the argument coordinates has been used so the argument 'n_sites' has been ignored")
     }
     LocationData <- coordinates
@@ -151,8 +150,7 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
   
   ## Predict the tissue value for each animal
   AlienData$sample_value <- stats::rnorm(n = nrow(AlienData),
-                                         mean = rep(calib_fn$intercept + LocationData$source_value * calib_fn$slope,
-                                                    times = LocationData$n_samples),
+                                         mean = calib_fn$intercept + AlienData$source_value * calib_fn$slope,
                                          sd = sqrt(calib_fn$resid_var))
   ## Cleanup and return
   rownames(AlienData) <- NULL
