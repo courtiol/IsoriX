@@ -23,6 +23,11 @@ r_packages:
   - rgeos
   - testthat
 
+script: 
+  - |
+    R CMD build .
+    travis_wait 40 R CMD check IsoriX*tar.gz
+
 addons:
   apt:
     packages:
@@ -32,3 +37,6 @@ addons:
 
 after_success:
   - Rscript -e 'library(covr); codecov(type = "examples")'
+
+after_failure:
+  find *Rcheck -name '*.fail' -print -exec cat '{}' \;
