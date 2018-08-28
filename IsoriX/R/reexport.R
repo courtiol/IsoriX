@@ -1,27 +1,36 @@
-# reexport from sp:
+# reexport from grid:
 
-#' @importFrom sp sp.polygons
+#' @importFrom grid gpar
 #' @export
-sp::sp.polygons
+grid::gpar
 
-#' @importFrom sp sp.points
+#' @importFrom grid grid.text
 #' @export
-sp::sp.points
+grid::grid.text
 
-#' @importFrom sp CRS
+
+
+# reexport from lattice:
+
+#' @importFrom lattice panel.points
 #' @export
-sp::CRS
+lattice::panel.points
+
+#' @importFrom lattice xyplot
+#' @export
+lattice::xyplot
+
+
+
+# reexport from latticeExtra:
+
+#' @importFrom latticeExtra layer
+#' @export
+latticeExtra::layer
+
 
 
 # reexport from raster:
-
-#' @importFrom raster raster
-#' @export
-raster::raster
-
-#' @importFrom raster values
-#' @export
-raster::values
 
 #' @importFrom raster area
 #' @export
@@ -35,50 +44,58 @@ raster::extent
 #' @export
 raster::`extent<-`
 
+#' @importFrom raster extract
+#' @export
+raster::extract
+
 #' @importFrom raster "projection<-"
 #' @export
 raster::`projection<-`
+
+#' @importFrom raster raster
+#' @export
+raster::raster
 
 #' @importFrom raster shift
 #' @export
 raster::shift
 
+#' @importFrom raster values
+#' @export
+raster::values
+
 
 
 # reexport from rasterVis:
-
-#' @importFrom rasterVis RdBuTheme
-#' @export
-rasterVis::RdBuTheme
 
 #' @importFrom rasterVis levelplot
 #' @export
 rasterVis::levelplot
 
-
-
-# reexport from grid:
-
-#' @importFrom grid grid.text
+#' @importFrom rasterVis RdBuTheme
 #' @export
-grid::grid.text
+rasterVis::RdBuTheme
 
 
 
-# reexport from lattice:
+# reexport from sp:
 
-#' @importFrom lattice xyplot
+#' @importFrom sp CRS
 #' @export
-lattice::xyplot
+sp::CRS
 
-#' @importFrom lattice panel.points
+#' @importFrom sp sp.points
 #' @export
-lattice::panel.points
+sp::sp.points
 
-
-
-# reexport from latticeExtra:
-
-#' @importFrom latticeExtra layer
+#' @importFrom sp sp.polygons
 #' @export
-latticeExtra::layer
+sp::sp.polygons
+
+
+
+# reexport from spaMM:
+
+#' @importFrom spaMM get_ranPars
+#' @export
+spaMM::get_ranPars
