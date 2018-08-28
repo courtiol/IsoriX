@@ -47,6 +47,7 @@
   
   \subsection{Geeky changes}{
     \itemize{
+      \item the file storing the internal functions is now called zzz.R
       \item the dontrun and donttest have been replaced by comments due to new R CMD check flags
       \item the function downloadfile is now exported
       \item large temporary objects are now deleted within isofind to limit memory usage
