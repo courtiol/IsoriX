@@ -14,9 +14,9 @@
                         "\n",
                         "\n Type:",
                         "\n    * ?IsoriX for a very short description.",
-                        "\n    * help(package = 'IsoriX') for a list of the package objects and their help files.",
+                        "\n    * help(package = 'IsoriX', help_type = 'html') for a list of the package objects and their help files.",
                         "\n    * browseURL('https://bookdown.org/content/782/') for online tutorials & documentation.",
-                        "\n    * citation('IsoriX') for information on how to cite IsoriX.",
+                        "\n    * citation('IsoriX') for information on how to cite IsoriX (i.e. the papers you should read).",
                         "\n    * news(package = 'IsoriX') for info on what has changed between the different versions of IsoriX.",
                         "\n"
                         )
