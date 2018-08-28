@@ -1,16 +1,48 @@
 #' Assignment dataset for bat species
 #' 
+#' This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
+#' delta values of fur keratin from common noctule bats (Nyctalus noctula)
+#' killed at wind turbines in northern Germany. The data can be used as an
+#' example to perform assignments using the function \code{\link{isofind}}.
+#' 
+#' @name AssignDataBat
+#' @docType data
+#' @noMd
+#' @format A \var{dataframe} with 14 observations on 4 variables:
+#' \tabular{rlll}{
+#' [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
+#' [, 2] \tab lat \tab (\var{numeric}) \tab The latitude\cr
+#' [, 2] \tab lomg \tab (\var{numeric}) \tab The longitude\cr
+#' [, 4] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
+#' value of the tissue\cr }
+#' @seealso \code{\link{isofind}} to perform assignments
+#' @references Voigt CC & Lehnert L (2019). "Tracking of movements of terrestrial 
+#' mammals using stable isotopes." In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+#' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' 
+#' @source data directly provided by the authors of the following publication
+#' @keywords datasets
+#' @examples
+#' 
+#' head(AssignDataBat)
+#' str(AssignDataBat)
+#' 
+NULL
+
+
+#' Assignment dataset for bat species
+#' 
 #' This dataset contains data from Voigt, Lehmann and Greif (2015). It contains
 #' hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
 #' 2013 from their roosting sites in Bulgaria. We only retained the bats of the
 #' genus Myotis from the original study. The data can be used as an example to
 #' perform assignments using the function \code{\link{isofind}}.
 #' 
-#' @name AssignDataBat
+#' @name AssignDataBat2
 #' @docType data
 #' @noMd
 #' @format A \var{dataframe} with 244 observations on 3 variables:
-#' \tabular{rlll}{ [, 1] \tab sampleID \tab (\var{Factor}) \tab Identification
+#' \tabular{rlll}{ [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification
 #' of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
 #' name\cr [, 3] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
 #' value of the tissue\cr }
@@ -22,8 +54,8 @@
 #' @keywords datasets
 #' @examples
 #' 
-#' head(AssignDataBat)
-#' str(AssignDataBat)
+#' head(AssignDataBat2)
+#' str(AssignDataBat2)
 #' 
 NULL
 
@@ -118,16 +150,18 @@ NULL
 #' 
 #' if(getOption_IsoriX("example_maxtime") > 30) {
 #' 
-#' ## We prepare the precipitation data
+#' ## The following describes how we created such dataset
+#' 
+#' ### We prepare the precipitation data
 #' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #' 
-#' ## We fit the models for Germany
+#' ### We fit the models for Germany
 #' GermanFit <- isofit(data = GNIPDataDEagg)
 #'
-#' ## We build the isoscape
+#' ### We build the isoscape
 #' GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 #'
-#' ## We create a simulated dataset with 1 site and 10 observations
+#' ### We create a simulated dataset with 1 site and 10 observations
 #' set.seed(1L)
 #' Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
 #'                         isoscape = GermanScape,
@@ -140,7 +174,7 @@ NULL
 #'                         max_n_samples = 10)
 #' AssignDataAlien <- Aliens[, c("sample_ID", "sample_value")]
 #' 
-#' ## Uncomment the following to store the file as we did
+#' ### Uncomment the following to store the file as we did
 #' #save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
 #' 
 #' }
