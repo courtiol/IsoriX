@@ -106,9 +106,9 @@ PlotMeanRespVar <- plot(x = GermanScape, which = "mean_respVar", plot = FALSE)
 
 ## We display the plots
 print(PlotMean, split = c(1, 1, 2, 2), more = TRUE)
-print(PlotMeanPredVar,   split = c(2, 1, 2, 2), more = TRUE)
-print(PlotMeanResidVar,  split = c(1, 2, 2, 2), more = TRUE)
-print(PlotMeanRespVar,   split = c(2, 2, 2, 2), more = FALSE)
+print(PlotMeanPredVar,  split = c(2, 1, 2, 2), more = TRUE)
+print(PlotMeanResidVar, split = c(1, 2, 2, 2), more = TRUE)
+print(PlotMeanRespVar,  split = c(2, 2, 2, 2), more = FALSE)
  
 ## We build a sphere with our isoscape
 plot(x = GermanScape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
@@ -119,9 +119,10 @@ plot(x = GermanScape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
 ## and that you have both the packages 'rgl' and 'magick' installed.
 ## The building of the .gif implies to create temporarily many .png
 ## but those will be removed automatically once the .gif is done.
-if(interactive() & require("rgl") & require("magick")) {
-  movie3d(spin3d(axis = c(0, 0, 1), rpm = 2), duration = 30, dir = getwd())
-}
+## Uncomment to proceed (after making sure you have rgl and magick installed)
+#if(require("rgl") & require("magick")) {
+#   movie3d(spin3d(axis = c(0, 0, 1), rpm = 2), duration = 30, dir = getwd())
+#}
 
 }
 
