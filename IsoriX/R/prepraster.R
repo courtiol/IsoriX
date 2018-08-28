@@ -93,25 +93,23 @@
 #'     aggregation_factor = 5, aggregation_fn = max)
 #' 
 #' ## We build the plots of the outcome of the 3 different aggregation schemes
-#' if(require(rasterVis)) {
-#'     PlotAggregation1 <- levelplot(ElevationRaster1,
-#'             margin = FALSE, main = "Original small raster") + 
-#'         layer(sp.polygons(CountryBorders)) +
-#'         layer(sp.polygons(OceanMask, fill = "blue"))
-#'     PlotAggregation2 <- levelplot(ElevationRaster2,
-#'             margin = FALSE, main = "Small raster aggregated (by mean)") + 
-#'         layer(sp.polygons(CountryBorders)) +
-#'         layer(sp.polygons(OceanMask, fill = "blue"))
-#'     PlotAggregation3 <- levelplot(ElevationRaster3,
-#'             margin = FALSE, main = "Small raster aggregated (by max)") + 
-#'         layer(sp.polygons(CountryBorders)) +
-#'         layer(sp.polygons(OceanMask, fill = "blue"))  
-#'     
-#'     ## We plot as a panel using lattice syntax:
-#'     print(PlotAggregation1, split = c(1, 1, 3, 1), more = TRUE)
-#'     print(PlotAggregation2, split = c(2, 1, 3, 1), more = TRUE)
-#'     print(PlotAggregation3, split = c(3, 1, 3, 1))
-#' }
+#' PlotAggregation1 <- levelplot(ElevationRaster1,
+#'         margin = FALSE, main = "Original small raster") + 
+#'     layer(sp.polygons(CountryBorders)) +
+#'     layer(sp.polygons(OceanMask, fill = "blue"))
+#' PlotAggregation2 <- levelplot(ElevationRaster2,
+#'         margin = FALSE, main = "Small raster aggregated (by mean)") + 
+#'     layer(sp.polygons(CountryBorders)) +
+#'     layer(sp.polygons(OceanMask, fill = "blue"))
+#' PlotAggregation3 <- levelplot(ElevationRaster3,
+#'         margin = FALSE, main = "Small raster aggregated (by max)") + 
+#'     layer(sp.polygons(CountryBorders)) +
+#'     layer(sp.polygons(OceanMask, fill = "blue"))  
+#' 
+#' ## We plot as a panel using lattice syntax:
+#' print(PlotAggregation1, split = c(1, 1, 3, 1), more = TRUE)
+#' print(PlotAggregation2, split = c(2, 1, 3, 1), more = TRUE)
+#' print(PlotAggregation3, split = c(3, 1, 3, 1))
 #' }
 #' 
 #' ## The examples below will only be run if sufficient time is allowed

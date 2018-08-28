@@ -43,10 +43,7 @@
 #' #PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
 #' #                                   raster = StrRaster
 #' #                                   )
-#' # 
-#' # if (require(rasterVis)) {
-#' #   levelplot(PrecipitationBrick)
-#' # }
+#' #levelplot(PrecipitationBrick)
 #'
 #' @export
 prepcipitate <- function(path = NULL,
