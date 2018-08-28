@@ -1,7 +1,7 @@
 #' Assignment dataset for bat species
 #' 
 #' This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
-#' delta values of fur keratin from common noctule bats (Nyctalus noctula)
+#' delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 #' killed at wind turbines in northern Germany. The data can be used as an
 #' example to perform assignments using the function \code{\link{isofind}}.
 #' 
@@ -11,13 +11,12 @@
 #' @format A \var{dataframe} with 14 observations on 4 variables:
 #' \tabular{rlll}{
 #' [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
-#' [, 2] \tab lat \tab (\var{numeric}) \tab The latitude\cr
-#' [, 2] \tab lomg \tab (\var{numeric}) \tab The longitude\cr
-#' [, 4] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
-#' value of the tissue\cr }
+#' [, 2] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+#' [, 2] \tab lomg \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+#' [, 4] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
 #' @seealso \code{\link{isofind}} to perform assignments
-#' @references Voigt CC & Lehnert L (2019). "Tracking of movements of terrestrial 
-#' mammals using stable isotopes." In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+#' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial 
+#' mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
 #' Migration with Stable Isotopes, second edition. Academic Press, London.
 #' 
 #' @source data directly provided by the authors of the following publication
@@ -28,6 +27,7 @@
 #' str(AssignDataBat)
 #' 
 NULL
+
 
 
 #' Assignment dataset for bat species
@@ -42,10 +42,10 @@ NULL
 #' @docType data
 #' @noMd
 #' @format A \var{dataframe} with 244 observations on 3 variables:
-#' \tabular{rlll}{ [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification
-#' of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
-#' name\cr [, 3] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
-#' value of the tissue\cr }
+#' \tabular{rlll}{
+#' [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
+#' [, 2] \tab species \tab (\var{Factor}) \tab Animal species name\cr
+#' [, 3] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
 #' @seealso \code{\link{isofind}} to perform assignments
 #' @references Voigt, C.C., Lehmann, D., Greif, S. (2015). Stable isotope
 #' ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
@@ -57,6 +57,54 @@ NULL
 #' head(AssignDataBat2)
 #' str(AssignDataBat2)
 #' 
+NULL
+
+
+
+#' Calibration dataset for bat species
+#' 
+#' This dataset contains hydrogen delta values of fur keratin from 6 sedentary
+#' bat species. It corresponds to the combination of several studies as detailed
+#' in Voigt & Lenhert 2019. This is the dataset used in Courtiol et al. 2019.
+#' The data can be used as an example to fit a calibration model using the
+#' function \code{\link{calibfit}}.
+#' 
+#' Users who wish to use their own dataset for calibration should create a
+#' \var{dataframe} of similar structure than this one (only the column
+#' 'species' can be dropped). The columns should possess the same names as the
+#' ones described above. If the elevation is unknown at the sampling sites,
+#' elevation information can be extracted from a high resolution elevation
+#' raster using the function \code{\link[raster]{extract}} as shown in the 
+#' example of \code{\link{CalibDataBat2}}.
+#' 
+#' @name CalibDataBat
+#' @docType data
+#' @noMd
+#' @format A \var{dataframe} with 335 observations on 7 variables:
+#' \tabular{rlll}{
+#' [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
+#' [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+#' [, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+#' [, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+#' [, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
+#' [, 6] \tab species \tab (\var{Factor}) \tab A code for the species\cr
+#' [, 7] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+#' @seealso \code{\link{CalibDataBat2}} for another (related) calibration dataset
+#' 
+#' \code{\link{calibfit}} to fit a calibration model
+#' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial 
+#' mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+#' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' 
+#' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
+#' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+#' 
+#' @keywords datasets
+#' @examples
+#' 
+#' head(CalibDataBat)
+#' str(CalibDataBat)
 NULL
 
 
@@ -78,18 +126,20 @@ NULL
 #' 2010. Note that the original study used a different source of elevation
 #' data.
 #' 
-#' @name CalibDataBat
+#' @name CalibDataBat2
 #' @docType data
 #' @noMd
 #' @format A \var{dataframe} with 178 observations on 6 variables:
-#' \tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
-#' the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
-#' coordinate [decimal degrees]\cr [, 3] \tab lat \tab (\var{numeric}) \tab
-#' Latitude coordinate [decimal degrees]\cr [, 4] \tab elev \tab
-#' (\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab sample_ID \tab
-#' (\var{Factor}) \tab Identification of the sampled animal\cr [, 6] 
-#' \tab sample_value \tab (\var{numeric}) \tab hydrogen delta value of the tissue\cr }
-#' @seealso \code{\link{calibfit}} to fit a calibration model
+#' \tabular{rlll}{
+#' [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
+#' [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+#' [, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+#' [, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+#' [, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
+#' [, 6]  \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+#' @seealso \code{\link{CalibDataBat}} for another (related) calibration dataset
+#' 
+#' \code{\link{calibfit}} to fit a calibration model
 #' @references Popa-Lisseanu, A. G., Soergel, K., Luckner, A., Wassenaar, L.
 #' I., Ibanez, C., Kramer-Schadt, S., Ciechanowski, M., Goerfoel, T., Niermann,
 #' I., Beuneux, G., Myslajek, R. W., Juste, J., Fonderflick, J., Kelm, D.,
@@ -99,8 +149,8 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
-#' head(CalibDataBat)
-#' str(CalibDataBat)
+#' head(CalibDataBat2)
+#' str(CalibDataBat2)
 #' 
 #' ## The following example require to have downloaded
 #' ## a large elevation raster with the function getelev()
@@ -108,15 +158,15 @@ NULL
 #' 
 #' #if(require(raster)){
 #' #    ## We delete the elevation data
-#' #    CalibDataBat$elev <- NULL
+#' #    CalibDataBat2$elev <- NULL
 #' #
 #' #    ## We reconstruct the elevation data using an elevation raster
 #' #    ## (see ?getelev for details on how to get the tif file)
 #' #    ElevationRasterBig <- raster("gmted2010_30mn.tif")
-#' #    CalibDataBat$elev <- extract(
+#' #    CalibDataBat2$elev <- extract(
 #' #        ElevationRasterBig,
-#' #        cbind(CalibDataBat$long, CalibDataBat$lat))
-#' #    head(CalibDataBat)
+#' #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
+#' #    head(CalibDataBat2)
 #' #}
 #' 
 #' 
@@ -133,9 +183,9 @@ NULL
 #' @docType data
 #' @noMd
 #' @format A \var{dataframe} with 10 observations on 2 variables:
-#' \tabular{rlll}{ [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification
-#' of the sample\cr [, 2] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
-#' value of the tissue\cr }
+#' \tabular{rlll}{
+#' [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sample\cr
+#' [, 2] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr}
 #' @seealso \code{\link{isofind}} to perform assignments
 #' @keywords datasets
 #' @examples
@@ -203,13 +253,13 @@ NULL
 #' @docType data
 #' @noMd
 #' @format A \var{dataframe} with x observations on 6 variables:
-#' \tabular{rlll}{ [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of
-#' the sampling site\cr [, 2] \tab long \tab (\var{numeric}) \tab Longitude
-#' coordinate [decimal degrees]\cr [, 3] \tab lat \tab (\var{numeric}) \tab
-#' Latitude coordinate [decimal degrees]\cr [, 4] \tab elev \tab
-#' (\var{numeric}) \tab Elevation asl [m]\cr [, 5] \tab sample_ID \tab
-#' (\var{Factor}) \tab Identification of the sampled animal\cr [, 6] \tab tissue.value
-#' \tab (\var{numeric}) \tab hydrogen delta value of the tissue\cr }
+#' \tabular{rlll}{
+#' [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
+#' [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+#' [, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+#' [, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+#' [, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
+#' [, 6] \tab tissue.value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
 #' @seealso \code{\link{calibfit}} to fit a calibration model
 #' @keywords datasets
 #' @examples
@@ -428,14 +478,15 @@ NULL
 
 #' Hydrogen delta values in precipitation water, Germany
 #' 
-#' This dataset contains the mean and variance of hydrogen delta value from
+#' This dataset contains the hydrogen delta value from
 #' precipitation water sampled at weather stations between 1961 and 2013 in
 #' Germany. These data have been kindly provided by Christine Stumpp and
 #' processed by the International Atomic Energy Agency IAEA in Vienna (GNIP
 #' Project: Global Network of Isotopes in Precipitation). These data are free to
 #' reuse provided the relevant citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
-#' provide larger GNIP dataset in the package as those are not free to reuse.
+#' provide larger GNIP dataset in the package as those are not free to reuse (but
+#' we do provide aggregated verisons of it; see \code{\link{GNIPDataEUagg}}).
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
 #' interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
@@ -455,14 +506,14 @@ NULL
 #' @docType data
 #' @noMd
 #' @format The \var{dataframe} includes 8591 observations on the following
-#' variables: \tabular{rlll}{ [, 1] \tab lat \tab (\var{numeric}) \tab Latitude
-#' coordinate [decimal degrees]\cr [, 2] \tab long \tab (\var{numeric}) \tab
-#' Longitude coordinate [decimal degrees]\cr [, 3] \tab elev \tab
-#' (\var{numeric}) \tab Elevation asl [m]\cr [, 4] \tab source_value \tab
-#' (\var{numeric}) \tab hydrogen delta value [per thousand]\cr
-#' [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr [, 6] \tab
-#' month \tab (\var{numeric}) \tab Month of sampling\cr [, 7] \tab source_ID
-#' \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
+#' variables: \tabular{rlll}{
+#' [, 1] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+#' [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+#' [, 3] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+#' [, 4] \tab source_value \tab (\var{numeric}) \tab hydrogen delta value [per thousand]\cr
+#' [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr
+#' [, 6] \tab month \tab (\var{numeric}) \tab Month of sampling\cr
+#' [, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
 #' @seealso \code{\link{prepsources}} to prepare the dataset for the analyses and
 #' to filter by time and location.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
@@ -471,13 +522,60 @@ NULL
 #' 
 #' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 #' 
-#' 
-#' 
 #' @source Data provided by the IAEA.
 #' @keywords datasets
 #' @examples
 #' 
 #' head(GNIPDataDE)
+#' 
+NULL
+
+
+
+#' Hydrogen delta values in precipitation water (aggregated per location)
+#'
+#' These datasets contain the mean and variance of hydrogen delta value from
+#' precipitation water sampled at weather stations between 1953 and 2015 in
+#' Europe (\code{GNIPDataEUagg}) and in the entire world
+#' (\code{GNIPDataALLagg}). These data have been extracted from the
+#' International Atomic Energy Agency IAEA in Vienna (GNIP Project: Global
+#' Network of Isotopes in Precipitation) and processed by us using the function
+#' \code{\link{prepsources}}. The data are aggregated per location. We no longer
+#' provide the full non-aggregate GNIP dataset in the package as it is not free
+#' to reuse. You can still download the complete GNIP dataset for free, but you
+#' will have to proceed to a registration process with GNIP and use their
+#' downloading interface WISER
+#' (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
+#'
+#' These datasets have been aggregated and can thus be directly used for fitting
+#' isoscapes.
+#'
+#' If you want to use your own dataset, you must format your data as these
+#' datasets.
+#' 
+#' @name GNIPDataEUagg
+#' @aliases GNIPDataEUagg GNIPDataALLagg
+#' @docType data
+#' @noMd
+#' @format The \var{dataframe}s include many observations on the following
+#' variables: \tabular{rlll}{
+#' [, 1] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
+#' [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
+#' [, 3] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
+#' [, 4] \tab source_value \tab (\var{numeric}) \tab hydrogen delta value [per thousand]\cr
+#' [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr
+#' [, 6] \tab month \tab (\var{numeric}) \tab Month of sampling\cr
+#' [, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
+#' @seealso \code{\link{GNIPDataDE}} for a non-aggregated dataset.
+#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
+#' @source Data provided by the IAEA and processed by us.
+#' @keywords datasets
+#' @examples
+#' 
+#' head(GNIPDataALLagg)
+#' dim(GNIPDataALLagg)
+#' head(GNIPDataEUagg)
+#' dim(GNIPDataEUagg)
 #' 
 NULL
 
