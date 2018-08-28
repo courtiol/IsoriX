@@ -3,9 +3,17 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{sp.polygons}
+\alias{sp.points}
 \alias{raster}
+\alias{values}
+\alias{area}
+\alias{RdBuTheme}
+\alias{levelplot}
 \alias{grid.text}
 \alias{xyplot}
+\alias{panel.points}
+\alias{layer}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -15,8 +23,14 @@ below to see their documentation.
 \describe{
   \item{grid}{\code{\link[grid]{grid.text}}}
 
-  \item{lattice}{\code{\link[lattice]{xyplot}}}
+  \item{lattice}{\code{\link[lattice]{xyplot}}, \code{\link[lattice]{panel.points}}}
 
-  \item{raster}{\code{\link[raster]{raster}}}
+  \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
+
+  \item{raster}{\code{\link[raster]{raster}}, \code{\link[raster]{values}}, \code{\link[raster]{area}}}
+
+  \item{rasterVis}{\code{\link[rasterVis]{RdBuTheme}}, \code{\link[rasterVis]{levelplot}}}
+
+  \item{sp}{\code{\link[sp]{sp.polygons}}, \code{\link[sp]{sp.points}}}
 }}
 

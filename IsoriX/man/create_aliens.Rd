@@ -5,7 +5,7 @@
 \title{Simulate datasets for calibrations or assignments}
 \usage{
 create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
-  isoscape = NULL, coordinates = NA, raster = NULL, n_sites = 1,
+  isoscape = NULL, coordinates = NA, raster = NULL, n_sites = NA,
   min_n_samples = 1, max_n_samples = 10)
 }
 \arguments{
@@ -105,11 +105,10 @@ Aliens2 <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var =
                                                   long   = c(13.52134, 8.49914),
                                                   lat    = c(52.50598, 52.03485)),
                          raster = ElevRasterDE,
-                         n_sites = 25,
                          min_n_samples = 5,
                          max_n_samples = 5)
 
-head(Aliens2)
+Aliens2
 
 }
 

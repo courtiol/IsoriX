@@ -84,7 +84,7 @@ estimates are computed.
 }
 \description{
 This function prepares the available dataset to be used for creating the
-isoscape (e.g. \var{GNIPDataDE}) . This function allows the trimming of data
+isoscape (e.g. \var{GNIPDataDE}). This function allows the trimming of data
 by months, years and location, and for the aggregation of selected data per
 location, location:month combination or location:year combination. The
 function can also be used to randomly exclude some observations.

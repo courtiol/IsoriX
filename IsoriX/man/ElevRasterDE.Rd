@@ -47,7 +47,6 @@ provide the url link of the \var{tif} file in the example below.
 #getelev()
 #
 ### Convert the tif into R raster format
-#if(require(raster)) {
 #  ElevationRasterBig <- raster("gmted2010_30mn.tif")
 #  
 #  ## Create the highly agregated elevation raster
@@ -56,14 +55,11 @@ provide the url link of the \var{tif} file in the example below.
 #                             manual_crop = c(5.5, 15.5, 47, 55.5))
 #                           
 #  ## Plot the elevation
-#  if (require("sp") & require("rasterVis")) {
-#    levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#      layer(sp.polygons(CountryBorders, col = "white"))
-#  }
+#  levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
+#    layer(sp.polygons(CountryBorders, col = "white"))
 #  
 #  ## Compute crudely the resolution:
 #  median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
-#}
 
 }
 \seealso{

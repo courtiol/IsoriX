@@ -45,10 +45,7 @@ extent as the structural raster. This function is designed to be used with
 #PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
 #                                   raster = StrRaster
 #                                   )
-# 
-# if (require(rasterVis)) {
-#   levelplot(PrecipitationBrick)
-# }
+#levelplot(PrecipitationBrick)
 
 }
 \seealso{

@@ -22,7 +22,7 @@ if(require(sp)) {
 
 ## How did we create this file?
 
-## Uncomment the following to store the file as we did
+## Uncomment the following to create the file as we did
 #if(require(raster) & require(rgeos)){
 #    worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
 #    proj4string(worldlimit) <- crs(CountryBorders)

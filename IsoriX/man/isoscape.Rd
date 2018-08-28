@@ -45,8 +45,9 @@ calling the function \code{\link[spaMM]{predict}} from the package
 \pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by
 \code{\link{isofit}}.
 
-Let us summarize the meaning of \code{mean}, \code{mean_predVar} and
-\code{mean_respVar} (see Courtiol & Rousset 2017 for more details):
+Let us summarize the meaning of \code{mean}, \code{mean_predVar},
+\code{mean_residVar} and \code{mean_respVar} (see Courtiol & Rousset 2017 and
+Curtiol et al. 2019 for more details):
 
 Our model assumes that that there is a single true unknown isoscape, which is
 fixed but which is represented by the mixed-effect model as a random draw
@@ -59,12 +60,15 @@ conditional distribution of possible true isoscapes given the data. For
 linear mixed-effects models, the mean prediction is the mean of this
 conditional distribution. The prediction variance is ideally the mean square
 difference between the true unknown value of the linear predictor and the
-mean prediction at a given location. The response variance has a different
-meaning. It estimates the variance of new observations drawn from the true
-unknown isoscape at a given location. The response variance is simply equal
-to the sum of the prediction variance and the residual variance (note that
-the residual variance considered assume that a single observation is being
-observed per location).
+mean prediction at a given location. The residual variance is simply the
+prediction of the variance in isotopic value at a given location. Its exact
+meaning depends on the aggregation scheme used in \code{\link{prepsources}},
+but by default, it would correspond to the temporal variation between months
+and across years. The response variance estimates the variance of new
+observations drawn from the true unknown isoscape at a given location. The
+response variance is simply equal to the sum of the prediction variance and
+the residual variance (note that the residual variance considered assume that
+a single observation is being observed per location).
 
 The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
 (see examples).
@@ -125,6 +129,10 @@ if(interactive() & require("rgl") & require("magick")) {
 \references{
 Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
+
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
+computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
 \code{\link{isofit}} for the function fitting the isoscape

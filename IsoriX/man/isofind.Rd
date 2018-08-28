@@ -58,6 +58,10 @@ entire group by combining the p-value maps of all samples using the Fisher's
 method (Fisher 1925). Significant p-values are strong evidence that the
 sample do NOT come from the candidate location (and not the opposite!).
 
+For statistical details about this procedure as well as a discussion
+of which uncertainties are captured and which are not, please refer to
+Courtiol et al. 2019.
+
 A mask can be used so to remove all values falling in the mask. This can be
 useful for performing for example assignments on lands only and discard
 anything falling in large bodies of water (see example). By default our
@@ -136,7 +140,7 @@ AssignedGP <- isofind(data = AssignDataGP,
 ## show where the station really is (using lattice)
 plot(AssignedGP) +
   xyplot(47.48~11.06,
-         panel = lattice::panel.points,
+         panel = panel.points,
          cex = 5, pch = 13, lwd = 2, col = "black") 
 
 
@@ -144,6 +148,10 @@ plot(AssignedGP) +
 
 }
 \references{
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
+computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+
 Fisher, R.A. (1925). Statistical Methods for Research Workers.
 Oliver and Boyd (Edinburgh). ISBN 0-05-002170-2.
 }
