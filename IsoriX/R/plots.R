@@ -624,8 +624,8 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
   d_stop <- FALSE
   d <- 0
 
-  rho <- model$corrPars[[1]]$rho
-  nu  <- model$corrPars[[1]]$nu
+  rho <- spaMM::get_ranPars(model, which = "corrPars")[[1]]$rho
+  nu  <- spaMM::get_ranPars(model, which = "corrPars")[[1]]$nu
   
   while ((d < 50000) & !d_stop) {
     d <- d + 10

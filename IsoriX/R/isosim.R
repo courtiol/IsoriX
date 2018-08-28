@@ -116,13 +116,13 @@
 #'         intercept = NewdatFit$mean_fit$fixef[1],
 #'         lat.abs = NewdatFit$mean_fit$fixef[2], 
 #'         elev = NewdatFit$mean_fit$fixef[3],
-#'         nu = NewdatFit$mean_fit$ranFix$corrPars[[1]]$nu,
-#'         rho = NewdatFit$mean_fit$ranFix$corrPars[[1]]$rho,
-#'         rho_div_nu = with(NewdatFit$mean_fit$ranFix$corrPars[[1]],rho/nu),
+#'         nu = get_ranPars(NewdatFit$mean_fit, which = "corrPars")[[1]]$nu,
+#'         rho = get_ranPars(NewdatFit$mean_fit, which = "corrPars")[[1]]$rho,
+#'         rho_div_nu = with(get_ranPars(NewdatFit$mean_fit, which = "corrPars")[[1]],rho/nu),
 #'         lambda.matern = NewdatFit$mean_fit$lambda,
 #'         intercept.disp = NewdatFit$disp_fit$fixef[1],
-#'         nu.disp = NewdatFit$disp_fit$ranFix$corrPars[[1]]$nu,
-#'         rho.disp = NewdatFit$disp_fit$ranFix$corrPars[[1]]$rho,
+#'         nu.disp = get_ranPars(NewdatFit$disp_fit, which = "corrPars")[[1]]$nu,
+#'         rho.disp = get_ranPars(NewdatFit$disp_fit, which = "corrPars")[[1]]$rho,
 #'         lambda.matern.disp = NewdatFit$disp_fit$lambda)), 4)
 #' 
 #' }
