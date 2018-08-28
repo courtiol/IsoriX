@@ -131,11 +131,9 @@
 #' extent(PacificA) # note that the extent has changed!
 #' 
 #' ## We plot (note the use of the function shift()!)
-#' if(require(rasterVis)) {
-#'   levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue")+
-#'     layer(sp.polygons(CountryBorders, fill = "black"))+
-#'     layer(sp.polygons(shift(CountryBorders, x = 360), fill = "black"))
-#'   }
+#' levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue")+
+#'   layer(sp.polygons(CountryBorders, fill = "black"))+
+#'   layer(sp.polygons(shift(CountryBorders, x = 360), fill = "black"))
 #' 
 #' }
 #' 
