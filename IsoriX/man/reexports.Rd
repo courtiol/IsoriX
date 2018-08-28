@@ -5,10 +5,14 @@
 \alias{reexports}
 \alias{sp.polygons}
 \alias{sp.points}
+\alias{CRS}
 \alias{raster}
 \alias{values}
 \alias{area}
 \alias{extent}
+\alias{extent<-}
+\alias{projection<-}
+\alias{shift}
 \alias{RdBuTheme}
 \alias{levelplot}
 \alias{grid.text}
@@ -28,10 +32,10 @@ below to see their documentation.
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
-  \item{raster}{\code{\link[raster]{raster}}, \code{\link[raster]{values}}, \code{\link[raster]{area}}, \code{\link[raster]{extent}}}
+  \item{raster}{\code{\link[raster]{raster}}, \code{\link[raster]{values}}, \code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster]{extent<-}}, \code{\link[raster]{projection<-}}, \code{\link[raster]{shift}}}
 
   \item{rasterVis}{\code{\link[rasterVis]{RdBuTheme}}, \code{\link[rasterVis]{levelplot}}}
 
-  \item{sp}{\code{\link[sp]{sp.polygons}}, \code{\link[sp]{sp.points}}}
+  \item{sp}{\code{\link[sp]{sp.polygons}}, \code{\link[sp]{sp.points}}, \code{\link[sp]{CRS}}}
 }}
 
