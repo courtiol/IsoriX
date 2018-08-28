@@ -119,8 +119,5 @@ inference of spatial origins with mixed models using the R package IsoriX.
 In Hobson KA, Wassenaar LI (eds.), Tracking Animal Migration with Stable
 Isotopes, second edition. Academic Press, London.
 }
-\seealso{
-\code{\link{IsoriX}} for the complete workflow
-}
 \keyword{models}
 \keyword{regression}

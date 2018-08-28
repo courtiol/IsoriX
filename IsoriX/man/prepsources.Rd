@@ -161,6 +161,3 @@ GNIPDataDE50pctsourcesMonthly <- prepsources(data = GNIPDataDE,
 lapply(GNIPDataDE50pctsourcesMonthly, head)
 
 }
-\seealso{
-\code{\link{IsoriX}} for the complete workflow
-}

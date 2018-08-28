@@ -196,7 +196,5 @@ simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 \code{\link{calibfit}} for the function fitting the calibration function
 
 \code{\link{isofind}} for the function performing the assignment
-
-\code{\link{IsoriX}} for the complete workflow
 }
 \keyword{plot}

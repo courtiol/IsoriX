@@ -130,8 +130,6 @@ models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
 \code{\link{isofit}} for the function fitting the isoscape
 
 \code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
-
-\code{\link{IsoriX}} for the complete workflow
 }
 \keyword{models}
 \keyword{predict}

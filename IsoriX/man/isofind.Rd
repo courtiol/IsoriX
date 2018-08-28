@@ -147,8 +147,5 @@ plot(AssignedGP) +
 Fisher, R.A. (1925). Statistical Methods for Research Workers.
 Oliver and Boyd (Edinburgh). ISBN 0-05-002170-2.
 }
-\seealso{
-\code{\link{IsoriX}} for the complete workflow
-}
 \keyword{models}
 \keyword{regression}

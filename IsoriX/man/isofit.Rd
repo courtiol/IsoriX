@@ -236,8 +236,6 @@ information about the two possible fitting procedures that can be used here
 correlation structure
 
 \code{\link{prepsources}} for the function preparing the data for isofit
-
-\code{\link{IsoriX}} for the complete workflow of our package
 }
 \keyword{models}
 \keyword{regression}

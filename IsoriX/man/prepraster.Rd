@@ -163,7 +163,5 @@ if(require(rasterVis)) {
 \seealso{
 \code{\link{ElevRasterDE}} for information on elevation rasters, which
 can be used as structural rasters.
-
-\code{\link{IsoriX}} for the complete workflow
 }
 \keyword{utilities}
