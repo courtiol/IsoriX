@@ -329,7 +329,7 @@ NULL
 #' 
 #' ## How did we create this file?
 #' 
-#' ## Uncomment the following to store the file as we did
+#' ## Uncomment the following to create the file as we did
 #' #if(require(raster) & require(rgeos)){
 #' #    worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
 #' #    proj4string(worldlimit) <- crs(CountryBorders)
@@ -366,7 +366,7 @@ NULL
 #' 
 #' ## How did we create this file?
 #' 
-#' ## Uncomment the following to store the file as we did
+#' ## Uncomment the following to create the file as we did
 #' #if(require(maps) & require(maptools) & require(rgeos)){
 #' #    worldmap <- map("world", fill = TRUE, plot = FALSE)
 #' #    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
