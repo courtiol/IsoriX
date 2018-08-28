@@ -44,14 +44,16 @@ Off course, unless you are in the same institute than some of us, replace the nu
 
 ## Where to learn about IsoriX?
 
-You can access the documentation and tutorials about IsoriX using our [bookdown](https://bookdown.org/content/782/).
+You can start by reading our papers [here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
+
+You should also have a look at the documentation and tutorials about IsoriX using our [bookdown](https://bookdown.org/content/782/).
 
 For more specific help on IsoriX functions and objects, simply type:
 
 ```R
-help(package="IsoriX", help_type="html")
+help(package = "IsoriX")
 ```
-in R after having installed and loaded the package.
+in R after having installed and attached (= loaded) the package.
 
 
 ## How can you contribute?
