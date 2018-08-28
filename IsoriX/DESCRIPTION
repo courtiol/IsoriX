@@ -28,7 +28,8 @@ Imports:
 Description:
   Building isoscapes using mixed models and inferring the geographic origin of 
   samples based on their isotopic ratios. This package is essentially a 
-  simplified interface to several other packages. It uses 'spaMM' for fitting 
+  simplified interface to several other packages which implements the statistical
+  framework proposed by Courtiol & Rousset 2017. It uses 'spaMM' for fitting 
   and predicting isoscapes, and assigning an organism's origin depending on its 
   isotopic ratio. 'IsoriX' also relies heavily on the package 'rasterVis' for 
   plotting the maps produced with 'raster' using 'lattice'.
