@@ -8,6 +8,9 @@ sp::sp.polygons
 #' @export
 sp::sp.points
 
+#' @importFrom sp CRS
+#' @export
+sp::CRS
 
 
 # reexport from raster:
@@ -27,6 +30,18 @@ raster::area
 #' @importFrom raster extent
 #' @export
 raster::extent
+
+#' @importFrom raster "extent<-"
+#' @export
+raster::`extent<-`
+
+#' @importFrom raster "projection<-"
+#' @export
+raster::`projection<-`
+
+#' @importFrom raster shift
+#' @export
+raster::shift
 
 
 
@@ -67,8 +82,3 @@ lattice::panel.points
 #' @importFrom latticeExtra layer
 #' @export
 latticeExtra::layer
-
-
-
-# reexport from spaMM:
-
