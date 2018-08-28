@@ -3,22 +3,25 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{sp.polygons}
-\alias{sp.points}
-\alias{CRS}
-\alias{raster}
-\alias{values}
+\alias{gpar}
+\alias{grid.text}
+\alias{panel.points}
+\alias{xyplot}
+\alias{layer}
 \alias{area}
 \alias{extent}
 \alias{extent<-}
+\alias{extract}
 \alias{projection<-}
+\alias{raster}
 \alias{shift}
-\alias{RdBuTheme}
+\alias{values}
 \alias{levelplot}
-\alias{grid.text}
-\alias{xyplot}
-\alias{panel.points}
-\alias{layer}
+\alias{RdBuTheme}
+\alias{CRS}
+\alias{sp.points}
+\alias{sp.polygons}
+\alias{get_ranPars}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -26,16 +29,18 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{grid}{\code{\link[grid]{grid.text}}}
+  \item{grid}{\code{\link[grid]{gpar}}, \code{\link[grid]{grid.text}}}
 
-  \item{lattice}{\code{\link[lattice]{xyplot}}, \code{\link[lattice]{panel.points}}}
+  \item{lattice}{\code{\link[lattice]{panel.points}}, \code{\link[lattice]{xyplot}}}
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
-  \item{raster}{\code{\link[raster]{raster}}, \code{\link[raster]{values}}, \code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster]{extent<-}}, \code{\link[raster]{projection<-}}, \code{\link[raster]{shift}}}
+  \item{raster}{\code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster]{extent<-}}, \code{\link[raster]{extract}}, \code{\link[raster]{projection<-}}, \code{\link[raster]{raster}}, \code{\link[raster]{shift}}, \code{\link[raster]{values}}}
 
-  \item{rasterVis}{\code{\link[rasterVis]{RdBuTheme}}, \code{\link[rasterVis]{levelplot}}}
+  \item{rasterVis}{\code{\link[rasterVis]{levelplot}}, \code{\link[rasterVis]{RdBuTheme}}}
 
-  \item{sp}{\code{\link[sp]{sp.polygons}}, \code{\link[sp]{sp.points}}, \code{\link[sp]{CRS}}}
+  \item{sp}{\code{\link[sp]{CRS}}, \code{\link[sp]{sp.points}}, \code{\link[sp]{sp.polygons}}}
+
+  \item{spaMM}{\code{\link[spaMM]{get_ranPars}}}
 }}
 
