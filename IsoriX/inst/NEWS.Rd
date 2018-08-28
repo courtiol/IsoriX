@@ -12,10 +12,11 @@
   }
 }
 
-\section{version 0.8}{
+\section{version 0.8.1}{
   \subsection{New features}{
     \itemize{
       \item the datasets used in Courtiol et al. 2019 are now provided
+      \item many useful functions from raster, rasterVis, lattice... are now re-exported so they can be used without attaching those packages
       \item new option in plots that allows to map the isoscape onto a sphere
       \item a new dataset PrecipBrickDE containing monthly precipitation amounts for Germany
       \item an argument y_title for the plotting function for isoscapes to allow one to simply change the title
