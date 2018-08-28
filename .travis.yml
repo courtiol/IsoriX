@@ -23,7 +23,7 @@ r_packages:
 script: 
   - |
     R CMD build .
-    travis_wait 40 R CMD check --as-cran IsoriX*tar.gz
+    travis_wait R CMD check --as-cran IsoriX*tar.gz
 
 addons:
   apt:
