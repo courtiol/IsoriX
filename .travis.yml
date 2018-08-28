@@ -9,9 +9,6 @@ r:
   - oldrel
   - release
   - devel
-  
-r_check_args: 
-  --as-cran
 
 r_packages:
   - covr
@@ -26,7 +23,7 @@ r_packages:
 script: 
   - |
     R CMD build .
-    travis_wait 40 R CMD check IsoriX*tar.gz
+    travis_wait 40 R CMD check --as-cran IsoriX*tar.gz
 
 addons:
   apt:
