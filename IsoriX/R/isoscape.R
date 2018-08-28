@@ -58,8 +58,6 @@
 #'
 #'   \code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
 #'
-#'   \code{\link{IsoriX}} for the complete workflow
-#'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
 #'

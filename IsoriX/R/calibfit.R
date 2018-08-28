@@ -50,7 +50,6 @@
 #'   points as spatial points.
 #' @note See \code{\link{CalibDataAlien}} to know which variables are needed to
 #'   perform the calibration fit and their names.
-#' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @keywords models regression
 #' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC,
 #'   Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape computation and

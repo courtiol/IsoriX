@@ -168,8 +168,6 @@
 #'
 #'   \code{\link{prepsources}} for the function preparing the data for isofit
 #'
-#'   \code{\link{IsoriX}} for the complete workflow of our package
-#'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
 #'

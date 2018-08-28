@@ -129,7 +129,6 @@
 #'
 #'   \code{\link{isofind}} for the function performing the assignment
 #'
-#'   \code{\link{IsoriX}} for the complete workflow
 #' @keywords plot
 #' @examples ## See ?isoscape or ?isofind for examples
 #'

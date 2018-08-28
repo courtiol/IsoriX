@@ -79,7 +79,6 @@
 #'   aggregated by sampling location, or a \var{list}, see above argument
 #'   \code{prop_random}. For each sampling location the mean and variance sample
 #'   estimates are computed.
-#' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @examples
 #' ## Create a processed dataset for Germany
 #' GNIPDataDEagg <- prepsources(data = GNIPDataDE)

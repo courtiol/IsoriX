@@ -48,7 +48,6 @@
 #' \code{sources} and \code{calibs}.
 #' @note See \code{\link{AssignDataAlien}} to know which variables are needed to
 #' perform the assignment and their names.
-#' @seealso \code{\link{IsoriX}} for the complete workflow
 #' @references Fisher, R.A. (1925). Statistical Methods for Research Workers.
 #' Oliver and Boyd (Edinburgh). ISBN 0-05-002170-2.
 #' @keywords models regression
