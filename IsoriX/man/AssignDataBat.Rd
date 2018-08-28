@@ -4,20 +4,21 @@
 \name{AssignDataBat}
 \alias{AssignDataBat}
 \title{Assignment dataset for bat species}
-\format{A \var{dataframe} with 244 observations on 3 variables:
-\tabular{rlll}{ [, 1] \tab sampleID \tab (\var{Factor}) \tab Identification
-of the animal\cr [, 2] \tab species \tab (\var{Factor}) \tab Animal species
-name\cr [, 3] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
+\format{A \var{dataframe} with 14 observations on 4 variables:
+\tabular{rlll}{
+[, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
+[, 2] \tab lat \tab (\var{numeric}) \tab The latitude\cr
+[, 2] \tab lomg \tab (\var{numeric}) \tab The longitude\cr
+[, 4] \tab sample_value \tab (\var{numeric}) \tab hydrogen delta
 value of the tissue\cr }}
 \source{
 data directly provided by the authors of the following publication
 }
 \description{
-This dataset contains data from Voigt, Lehmann and Greif (2015). It contains
-hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
-2013 from their roosting sites in Bulgaria. We only retained the bats of the
-genus Myotis from the original study. The data can be used as an example to
-perform assignments using the function \code{\link{isofind}}.
+This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
+delta values of fur keratin from common noctule bats (Nyctalus noctula)
+killed at wind turbines in northern Germany. The data can be used as an
+example to perform assignments using the function \code{\link{isofind}}.
 }
 \examples{
 
@@ -26,9 +27,9 @@ str(AssignDataBat)
 
 }
 \references{
-Voigt, C.C., Lehmann, D., Greif, S. (2015). Stable isotope
-ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
-Methods in Ecology and Evolution 6(11).
+Voigt CC & Lehnert L (2019). "Tracking of movements of terrestrial 
+mammals using stable isotopes." In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
 \code{\link{isofind}} to perform assignments

@@ -9,24 +9,27 @@
 \pkg{IsoriX} can be used for building isoscapes using mixed models and
 inferring the geographic origin of organisms based on their isotopic
 signature. This package is essentially a simplified interface combining
-several other packages. It uses the package \pkg{\link[spaMM]{spaMM}} for
+several other packages which implements the statistical framework proposed by
+Courtiol & Rousset 2017. It uses the package \pkg{\link[spaMM]{spaMM}} for
 fitting and predicting isoscapes, and for performing the assignment.
 \pkg{IsoriX} also heavily relies on the package
 \pkg{\link[rasterVis:rasterVis-package]{rasterVis}} for plotting the maps
-using the powerful \pkg{\link[lattice:Lattice]{lattice}} visualization
-system.
+produced with \pkg{\link[raster:raster-package]{raster}} using the powerful
+\pkg{\link[lattice:Lattice]{lattice}} visualization system.
 }
 \details{
-We describe below, step-by-step, the general workflow that aims at performing
-the construction of an isoscape and the assignment of organisms of unknown
-geographic origin(s) based on their isotopic signature. We advise you to also
-read the online documentation provided with this package, which essentially
-cover the same material in a more practical and detailed manner. You should
-also read the dedicated help pages of the functions you are using.
+Below, we describe briefly the main steps of the workflow that aims at
+performing the construction of an isoscape and the assignment of organisms of
+unknown geographic origin(s) based on their isotopic signature. We advise you
+to also read the detailed book chapter we wrote (in press), as well as our
+\href{https://bookdown.org/content/782/}{online documentation}, which essentially
+cover the same material in a more detailed manner. You should also read the
+dedicated help pages of the functions you are using.
 
 The statistical methods will not be detailed in this document but information
-on the computation of isoscapes is available in Courtiol & Rousset 2017 and
-information on the calibration and assignment will appear soon elsewhere.
+on the computation of isoscapes is available in Courtiol & Rousset 2017, and
+information on the calibration and assignment in the appendix of Courtiol et
+al. 2019.
 
 \enumerate{ \item Fitting the isoscape model with \code{\link{isofit}}:
 
@@ -85,13 +88,14 @@ documentation for details).
 \item Fitting the calibration model with \code{\link{calibfit}}:
 
 In most cases, organisms are of another kind than the sources used to build
-the isoscape (e.g. the isoscape is built on precipitation isotopic values and
-organisms are not water drops, i.e. the hydrogen delta values of their
-keratin structures were modulated by their distinct physiology). In this
-situation, one must use sedentary organisms to study the relationship between
-the isotopic values in organisms and that of their environment. The function
-\code{\link{calibfit}} fits a statistical model on such a calibration
-dataset.
+the isoscape (i.e. the isoscape is built on precipitation isotopic values and
+organisms are not water drops, but e.g. the fur of some bats). In such a
+case, the hydrogen delta values of the sampled organisms were modulated by
+their distinct physiology and do not directly correspond to the isotopic
+signature of the sources. In this situation, one must use sedentary organisms
+to study the relationship between the isotopic values in organisms and that
+of their environment. The function \code{\link{calibfit}} fits a statistical
+model on such a calibration dataset.
 
 If the isoscape is directly built from isotopic values of organisms, there is
 no need to fit a calibration model.
@@ -100,33 +104,35 @@ no need to fit a calibration model.
 
 The function \code{\link{isofind}} tests for each location across the
 isoscape if it presents a similar isotopic signature than the unknown origin
-of a given individual(s). This assignment procedure considered the
-uncertainty stemming from the model fits (geostatistical models and
-calibration model). The function \code{\link{plot.ISOFIND}} then draws such
-assignment by plotting the most likely origin with the prediction region
-around it. When several organisms are being assigned, both assignments at the
-level of each sample and a single assignment for the whole group can be
-performed. }
+of a given individual(s). This assignment procedure considered the some (but
+not all, see Courtiol et al. 2019) uncertainty stemming from the model fits
+(geostatistical models and calibration model). The function
+\code{\link{plot.ISOFIND}} then draws such assignment by plotting the most
+likely origin with the prediction region around it. When several organisms
+are being assigned, both assignments at the level of each sample and a single
+assignment for the whole group can be performed. }
 }
 \note{
 Please note that the geographic coordinates (latitude,
 longitude) of any spatial data (locations, rasters) must be given in decimal
 degrees following the WGS84 spheroid standard.
 }
-\examples{
-
-### A simple workflow for IsoriX
-### is provided in a vignette:
-### vignette("Workflow", "IsoriX")
-
-}
 \references{
-Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global
-application of stable hydrogen and oxygen isotopes to wildlife forensics.
-Oecologia, 143(3): 337-348.
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA,
+Wassenaar LI, Kramer-Schadt S (2019). "Isoscape computation and inference of
+spatial origins with mixed models using the R package IsoriX." In Hobson KA,
+Wassenaar LI (eds.), Tracking Animal Migration with Stable Isotopes, second
+edition. Academic Press, London.
+
+Courtiol A, Rousset F (2017). "Modelling isoscapes using mixed models." bioRxiv.
+doi: 10.1101/207662, \href{https://www.biorxiv.org/content/early/2017/10/23/207662}{link}.
 }
 \author{
 Alexandre Courtiol \email{alexandre.courtiol@gmail.com},
+
+François Rousset,
+
+Marie-Sophie Rohwaeder,
 
 Stephanie Kramer-Schadt \email{kramer@izw-berlin.de}
 }

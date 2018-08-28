@@ -24,16 +24,18 @@ str(AssignDataAlien)
 
 if(getOption_IsoriX("example_maxtime") > 30) {
 
-## We prepare the precipitation data
+## The following describes how we created such dataset
+
+### We prepare the precipitation data
 GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-## We fit the models for Germany
+### We fit the models for Germany
 GermanFit <- isofit(data = GNIPDataDEagg)
 
-## We build the isoscape
+### We build the isoscape
 GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
-## We create a simulated dataset with 1 site and 10 observations
+### We create a simulated dataset with 1 site and 10 observations
 set.seed(1L)
 Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
                         isoscape = GermanScape,
@@ -46,7 +48,7 @@ Aliens <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 
                         max_n_samples = 10)
 AssignDataAlien <- Aliens[, c("sample_ID", "sample_value")]
 
-## Uncomment the following to store the file as we did
+### Uncomment the following to store the file as we did
 #save(AssignDataAlien, file = "AssignDataAlien.rda", compress = "xz")
 
 }
