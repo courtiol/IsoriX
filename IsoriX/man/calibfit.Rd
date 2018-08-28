@@ -51,8 +51,7 @@ structure: an intercept and a slope. The random effect is more complex: it is
 normally distributed with mean zero, a certain variance between locations
 proportional to the squared fixed slope, and a covariance structure defined
 by the prediction covariance matrix of the isoscape model between the
-calibration locations. All models used in \pkg{IsoriX} will be soon detailed
-in an additional document.
+calibration locations. See appendix in Courtiol et al. 2019 for more details.
 
 This function is only needed in the case for which the assignment of
 organisms has to be performed within an isoscape that was built using another
@@ -112,6 +111,13 @@ points(CalibAlien2, pch = 3, col = "green", CI = list(col = "green"))
 
 }
 
+}
+\references{
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC,
+Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape computation and
+inference of spatial origins with mixed models using the R package IsoriX.
+In Hobson KA, Wassenaar LI (eds.), Tracking Animal Migration with Stable
+Isotopes, second edition. Academic Press, London.
 }
 \seealso{
 \code{\link{IsoriX}} for the complete workflow
