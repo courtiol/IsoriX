@@ -7,7 +7,7 @@ bookdown::gitbook:
       before: |
         <li><a href="./">Documentation for IsoriX</a></li>
       after: |
-        <li><a href="https://github.com/courtiol/IsoriX_project" target="blank">Click here for the R package</a></li>
+        <li><a href="https://github.com/courtiol/IsoriX" target="blank">Click here for the R package</a></li>
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
