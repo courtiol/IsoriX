@@ -23,7 +23,7 @@ options(
 knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/index/", fig.path = "./cache/fig_knitr/index/", global.par = TRUE, fig.align = "center", error = TRUE)
 ```
 
-# Please do not use this documentation yet, this is work in progress!!! {-}
+# This documentation is a work in progress! {-}
 
 ```{r image_intro, fig.align = 'center', echo = FALSE}
 knitr::include_graphics('images/isoscape.png', dpi = NA)
