@@ -1,11 +1,8 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-```{r initialization, echo = FALSE}
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE)
+```{r initialization2, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(cache = FALSE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE)
 library(IsoriX)
+library(knitr)
+library(kableExtra)
 ```
 
 # Building Isoscapes {#isoscape}
@@ -24,9 +21,9 @@ The GNIP data are free to download after the registration process is completed. 
 https://websso.iaea.org/IM/UserRegistrationPage.aspx?returnpage=http://nucleus.iaea.org/wiser
 
 Once your acount has been activated, download the data you need from here:
-https://nucleus.iaea.org/wiser/gnip.php
+https://nucleus.iaea.org/wiser/index.aspx (Tab Datasets)
 
-For the time being, downloads are limited to 10,000 records per batch, which makes the compilation of huge databases fastidious. GNIP promised to come up, in the future, with datasets directly prepared for IsoriX to save you the trouble. We are eagerly waiting for this to happen.
+For the time being, downloads are limited to 5,000 records per batch, which makes the compilation of huge databases fastidious. GNIP promised to come up, in the future, with datasets directly prepared for IsoriX to save you the trouble. We are eagerly waiting for this to happen!
 
 ### A toy example: GNIPDataDE {#GNIPDataDE}
 
@@ -95,7 +92,7 @@ GNIPData$Name.of.Site <- as.factor(GNIPData$Name.of.Site)
 Last, we rename the columns to conform to the general IsoriX format and we check that the data seem correct:
 
 ```{r GNIP_change_column_names}
-colnames(GNIPData) <- c("stationID", "lat", "long", "elev", "year", "month", "isoscape.value")
+colnames(GNIPData) <- c("source_ID", "lat", "long", "elev", "year", "month", "source_value")
 str(GNIPData)
 ```
 
@@ -116,20 +113,20 @@ As you can see, the format is the same as the one for `GNIPDataDE`, which is wha
 
 In order to build your isoscape with IsoriX, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, and potentially over fixed periods of time.
 
-The time interval considered corresponds to the interval for which single isoscapes will be build. For example, if the interval is the month you will end up with one set of isoscapes for each month of the year (even if those can later be aggregated to form yearly isoscape as we shall see in section XX). 
+The time interval considered corresponds to the interval for which single isoscapes will be build. For example, if the interval is the month you will end up with one set of isoscapes for each month of the year (even if those can later be aggregated to form yearly isoscape as we shall see in section XX [to come]). 
 
-To aggregate the data, you can choose to aggregate your dataset on your own, or to use our function `prepdata()`. This function allows you to aggregate the data over different time intervals. It also allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
+To aggregate the data, you can choose to aggregate your dataset on your own, or to use our function `prepsources()`. This function allows you to aggregate the data over different time intervals. It also allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
 
-Here we will use the function `prepdata()` to select from the dataset `GNIPData` the observations available within an extent of latitude and longitude that covers roughly Europe.
+Here we will use the function `prepsources()` to select from the dataset `GNIPData` the observations available within an extent of latitude and longitude that covers roughly Europe.
 
 ### Aggregation for a single set of isoscapes
 
 We will start by using the default aggregation scheme, which simply produces an overall average per location.
 
 ```{r GNIP_EU_build}
-GNIPDataEUagg <- prepdata(data = GNIPData,
-                         long.min = -30, long.max = 60,
-                         lat.min = 30, lat.max = 70)
+GNIPDataEUagg <- prepsources(data = GNIPData,
+                             long_min = -30, long_max = 60,
+                             lat_min = 30, lat_max = 70)
 ```
 
 
@@ -140,8 +137,13 @@ head(GNIPDataEUagg)
 ```
 
 ```{r GNIPDataEU_view_bis, echo = FALSE}
-knitr::kable(head(GNIPDataEUagg))
+kable(head(GNIPDataEUagg)) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
+
+
+As you can see, you now have observation for each location.
+The column `mean_source_value` gives the average accross months and years.
+The column `var_source_value` gives the variance between monthly measurements spanning across years.
 
 
 ### Aggregation for multiple sets of isoscapes {#multiplesets}
@@ -149,13 +151,13 @@ knitr::kable(head(GNIPDataEUagg))
 Depending on what you want to do, you may need to prepare the data for multiple sets of isoscapes.
 This is for example the case if you want to ultimately build a yearly isoscape for which the weight of the data from each month is being controlled, as it is the case for the widely use annual precipitation-weighted isoscape. We will choose this example and thus prepare the data in view of building 12 sets of isoscapes (one for each month).
 
-This can be done again with the use of the function  `prepdata()` using the argument `split.by = "month"`:
+This can be done again with the use of the function  `prepsources()` using the argument `split_by = "month"`:
 
 ```{r GNIP_EU_12_build}
-GNIPDataEU12agg <- prepdata(data = GNIPData,
-                           long.min = -30, long.max = 60,
-                           lat.min = 30, lat.max = 70,
-                           split.by = "month")
+GNIPDataEU12agg <- prepsources(data = GNIPData,
+                               long_min = -30, long_max = 60,
+                               lat_min = 30, lat_max = 70,
+                               split_by = "month")
 ```
 
 Let us visualise the first 15 lines of the dataset:
@@ -165,12 +167,13 @@ head(GNIPDataEU12agg, n = 15)
 ```
 
 ```{r GNIPDataEU12_view_bis, echo = FALSE}
-knitr::kable(head(GNIPDataEU12agg, n = 15))
+kable(head(GNIPDataEU12agg, n = 15)) %>% kable_styling(bootstrap_options = "striped", font_size = 14)
 ```
 
+
 As you can see, you now have observation for each month.
-The column `isoscape.value` gives the average for each month accross the years.
-The column `var.isoscape.value` gives the between-year variance in monthly measurements.
+The column `mean_source_value` gives the average for each month accross the years.
+The column `var_source_value` gives the between-year variance in monthly measurements.
 
 
 ## Fitting the geostatistical models
