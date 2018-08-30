@@ -23,7 +23,17 @@ options(
 knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/index/", fig.path = "./cache/fig_knitr/index/", global.par = TRUE, fig.align = "center", error = TRUE)
 ```
 
-# This documentation is a work in progress! {-}
+# Work in progress! {-}
+
+This new documentation of the R package _IsoriX_ which aims at replacing the former vignettes and will ultimately provide much more information than before. The chapters 1, 2 and 3 are now almost complete but you will have to wait for a couple of weeks for the other main chapter to follow. For the time being please directly refer to the documentation of the package:
+
+```{r get help}
+help("IsoriX") ## for the general description
+help(package = "IsoriX") ## for the links to all the help files of the package
+```
+
+PS: for this to work you must have installed the package before (see section \@ref(installation)).
+
 
 ```{r image_intro, fig.align = 'center', echo = FALSE}
 knitr::include_graphics('images/isoscape.png', dpi = NA)
