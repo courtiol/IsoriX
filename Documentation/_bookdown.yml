@@ -1,7 +1,5 @@
-book_filename: "IsoriX documentation"
+book_filename: "Documentation for IsoriX"
 chapter_name: "Chapter "
-repo: https://github.com/courtiol/IsoriX
 output_dir: docs
 rmd_files: ["index.Rmd", "Preface.Rmd", "Installation.Rmd", "Isoscape.Rmd", "Calibration.Rmd", "Assignment.Rmd"]
-clean: [packages.bib, bookdown.bbl]
 new_session: yes
