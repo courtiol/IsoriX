@@ -7,9 +7,9 @@ knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/settingup/
 ## Installation
 
 Before installing a new package it is good practice to have the latest version of R installed.
-The current documentation has been created with ```r R.Version()$version.string```. So make sure you have at least an R version as recent as that one.
+The current documentation has been created with `r R.Version()$version.string`. So make sure you have at least an R version as recent as that one.
 
-Please also make sure that all your R packages are up to date. You can update them all by simply typing in the R console ```update.packages()```; and if you don't want to be bothered by confirmation messages asking you to type Y or yes, just add the option ```ask = FALSE```.
+Please also make sure that all your R packages are up to date. You can update them all by simply typing in the R console ```update.packages()```; and if you don't want to be bothered by confirmation messages asking you to type Y or yes, just add the option `ask = FALSE`.
 
 Once your R and all installed R packages are up to date, you can install IsoriX:
 
@@ -17,13 +17,13 @@ Once your R and all installed R packages are up to date, you can install IsoriX:
 install.packages("IsoriX", dependencies = TRUE)
 ```
 
-This will install IsoriX as well as all packages IsoriX depends on. If you don't specify ```dependencies = TRUE``` the suggested packages -- that is those we use in some examples but that are not essential to IsoriX -- will not be installed.
+This will install IsoriX as well as all packages IsoriX depends on. If you don't specify `dependencies = TRUE` the suggested packages -- that is those we use in some examples but that are not essential to IsoriX -- will not be installed.
 
 Any package should only be installed once for a given R installation. Then just keep updating regularly your packages if you want less bugs and more functionalities. You will have to install IsoriX from scratch again only when you reinstall R.
 
 ## Dependency problem?
 
-In the unlikely event you encounter a difficulty installing IsoriX, that may come from another package on which IsoriX depends, or from another package on which these other packages depends on, and so on. Indeed, much of the work performed by a given package in R is acutally outsourced to other packages. For example, IsoriX uses spaMM to fit the models and rasterVis to make the plots. So if a single package that is needed by IsoriX or by the packages used by IsoriX cannot install, IsoriX will not install.
+In the unlikely event you encounter a difficulty installing IsoriX, that may come from another package on which IsoriX depends, or from another package on which these other packages depends on, and so on. Indeed, much of the work performed by a given package in R is actually outsourced to other packages. For example, IsoriX uses spaMM to fit the models and rasterVis to make the plots. So if a single package that is needed by IsoriX or by the packages used by IsoriX cannot install, IsoriX will not install.
 
 In case of problem, you should thus read carefully the error message and make sure that the problem is not caused by some other package. If that is the case, read the documentation of that other package. A work around is possible if the problematic package is one that IsoriX suggests to install but does not depend on; in that case, you can try again to install IsoriX using:
 
@@ -33,9 +33,9 @@ install.packages("IsoriX")
 
 that is, without specifically asking to install the dependencies. If you are used to install the packages using the RStudio menu, a small box that you can tick or untick allows for the same thing. 
 
-To avoid problems caused by dependencies, the only thing we can do on our side is to try not to use packages people have often problems with. That is why we have already stopped relying on rgdal and Cairo which are not so easy to install on some systems.
+To avoid problems caused by dependencies, the only thing we can do on our side is to try not to use packages people have often problems with. That is why we have already stopped relying on _rgdal_ and _Cairo_ which are not so easy to install on some systems.
 
-The current IsoriX version indirectly uses ```r length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))``` packages (on top of some R base packages) and ```r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE)) - length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))``` more packages can optionally be used to increase functionalities. We can show all that more precisely using the package miniCRAN:
+The current _IsoriX_ version indirectly uses `r length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))` packages (on top of some R base packages) and `r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE)) - length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))` more packages can optionally be used to increase functionalities. We can show all that more precisely using the package miniCRAN:
 
 ```{r mini_CRAN}
 library(miniCRAN) ## you need to install it beforehand!
@@ -51,15 +51,15 @@ Once you have installed IsoriX, before using it you must load it. And this must 
 library(IsoriX)
 ```
 
-If you have just updated IsoriX, don't forget to check the news by typing ```news(package = "IsoriX")```. This will show you what we have changed since the last version!
+If you have just updated IsoriX, don't forget to check the news by typing `news(package = "IsoriX")`. This will show you what we have changed since the last version!
 
 ## Working directory
 
 Don't forget to set up your working directory, that is to tell R in which folder you want to work.
 This matters because you will have to read and write files in this directory while using IsoriX.
-One way to do that is to use the R command ```setwd()```. You can also use the RStudio menu for that
-or the shortcut that seems to be by default CTRL-SHIFT-H. In any case, double check that the foler
-you selected in the right one by looking at the content of the working directory with ```dir()```.
+One way to do that is to use the R command `setwd()`. You can also use the RStudio menu for that
+or the shortcut that seems to be by default CTRL-SHIFT-H. In any case, double check that the folder
+you selected in the right one by looking at the content of the working directory with `dir()`.
 
 
 ## Global options {#globaloptions}
@@ -67,9 +67,9 @@ you selected in the right one by looking at the content of the working directory
 There are a few general options you can set up for IsoriX (see ```?options_IsoriX``` for details).
 Like the loading of the package, changing the general options must be done again each time you start an R session.
 
-Two of these general options are particularly usefull: ```example_maxtime``` and ```Ncpu```.
+Two of these general options are particularly usefull: `example_maxtime` and `Ncpu`.
 The former allows you to control whether examples in the IsoriX help files should be run or not
-depending on the time they take. We have to restrict long examples to run as CRAN, the plateform
+depending on the time they take. We have to restrict long examples to run as CRAN, the platform
 hosting R packages, checks all examples but do not allow for them to last more than a few seconds.
 None of our examples takes a terribly long time to run so we recommend you to activate them all by typing:
 
@@ -77,7 +77,7 @@ None of our examples takes a terribly long time to run so we recommend you to ac
 options_IsoriX(example_maxtime = Inf)
 ```
 
-The option ```Ncpu``` allows you to set up how many CPU you allow IsoriX to use.
+The option `Ncpu` allows you to set up how many CPU you allow IsoriX to use.
 Most computer nowadays have 2, 4 or 8. If a function can use several CPU and performed
 so-called parallel computing, the computation will be much faster if you allows it to use more CPU.
 For now, only a few functions in IsoriX can make good use of that.
