@@ -1,9 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-_publish.R
-_book
-_bookdown_files
 rsconnect
 
 #local folders
@@ -12,7 +9,6 @@ cache/
 data/
 output/
 docs/
-images/
 *.Rproh
 *.sh
 *.cls
@@ -21,4 +17,3 @@ images/
 *.css
 *.Rproj
 *.csl
-DESCRIPTION
