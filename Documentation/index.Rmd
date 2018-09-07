@@ -5,8 +5,9 @@ date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 documentclass: book
-github-repo: courtiol/IsoriX_docs
+github-repo: courtiol/IsoriX
 cover-image: images/isoscape.png
+bibliography: ["IsoriX.bib"]
 biblio-style: apalike
 link-citations: yes
 colorlinks: yes
@@ -15,17 +16,23 @@ lof: yes
 description: "This book is the official documentation for the R package IsoriX."
 ---
 
-```{r setup, include = FALSE}
-options(
-  htmltools.dir.version = FALSE, formatR.indent = 2,
-  width = 55, digits = 4, warnPartialMatchAttr = FALSE, warnPartialMatchDollar = FALSE
-)
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/index/", fig.path = "./cache/fig_knitr/index/", global.par = TRUE, fig.align = "center", error = TRUE)
+```{r setup, echo = FALSE}
+library(IsoriX)
+library(knitr)
+library(kableExtra)
+options(width = 80)
+opts_chunk$set(cache = TRUE,
+               cache.path = "./cache/cache_knitr/",
+               fig.path = "./cache/fig_knitr/",
+               global.par = TRUE,
+               fig.align = "center",
+               error = TRUE)
 ```
 
 # Work in progress! {-}
 
-This new documentation of the R package _IsoriX_ which aims at replacing the former vignettes and will ultimately provide much more information than before. The chapters 1, 2 and 3 are now almost complete but you will have to wait for a couple of weeks for the other main chapter to follow. For the time being please directly refer to the documentation of the package:
+This new documentation of the R package _IsoriX_ which aims at replacing the former vignettes and will ultimately provide much more information than before.
+The chapters 1 to 4 are now almost complete but you will have to wait for a couple of weeks for the other main chapter to follow. For the time being please directly refer to the documentation of the package:
 
 ```{r get help}
 help("IsoriX") ## for the general description
@@ -36,5 +43,5 @@ PS: for this to work you must have installed the package before (see section \@r
 
 
 ```{r image_intro, fig.align = 'center', echo = FALSE}
-knitr::include_graphics('images/isoscape.png', dpi = NA)
+include_graphics('images/isoscape.png', dpi = NA)
 ```
