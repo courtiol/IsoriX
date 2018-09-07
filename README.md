@@ -46,9 +46,11 @@ Off course, unless you are in the same institute than some of us, replace the nu
 
 ## Where to learn about IsoriX?
 
-You can start by reading our papers [here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
+You can start by reading our [bookdown](https://bookdown.org/content/782/)!
 
-You should also have a look at the documentation and tutorials about IsoriX using our [bookdown](https://bookdown.org/content/782/).
+Then, if may not be a bad idea to also have a look at our papers:
+[here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
+
 
 For more specific help on IsoriX functions and objects, simply type:
 
