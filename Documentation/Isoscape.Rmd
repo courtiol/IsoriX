@@ -255,23 +255,14 @@ _Be carefull_, we do not recommend you to reused saved object after updating eit
 
 You can display some information about the model fits by typing:
 
-```{r plot isofit, eval = FALSE}
+```{r plot isofit fake, eval = FALSE}
 plot(EuropeFit)
 ```
 
-
-```{r plot EuropeFit models, fig.align = 'center', echo = FALSE, results = FALSE}
-pdf("images/EuropeFit.pdf")
+```{r plot_isofit_real, echo = FALSE, out.width = '50%', fig.show = 'hold', fig.align = 'default', fig.width = 5}
 old_opt <- options_IsoriX(dont_ask = TRUE)
 plot(EuropeFit)
-dev.off()
 options_IsoriX(old_opt)
-system("convert docs/images/EuropeFit.pdf docs/images/EuropeFit.png")
-system("rm docs/images/EuropeFit.pdf")
-```
-
-```{r image EuropeFit models, fig.align = 'center', echo = FALSE}
-include_graphics('images/EuropeFit.png', dpi = NA)
 ```
 
 In the panel produced, the left column shows the relationship between the observed and predicted response (top) and the variation in spatial autocorrelation with the distance between location (bottom) captured by the model for the fit called `mean_fit`, which corresponds to the fit of the mean isotopic values. The right column shows the same information for the fit called `disp_fit`, which corresponds to the fit of the residual dispersion variance in the isotope values. On the first row you can see points distributed practically along the 1:1 diagonal. A different slope would suggest a high residual variance of the data. We do not expect the points to fall exactly on the line because the model fit does not attempt to predict perfectly the observations used during the fit. Instead, the model fit produces a smooth surface that aims at reaching a maximum predictive power for locations not considered during the fit. The second row gives you an idea of the strength of the spatial autocorrelation captured by the models. Here the results suggest that the autocorrelation is very strong. Not considering this autocorrelation would thus lead here to a poor approximation of the isoscape and resulting assignments.
@@ -370,7 +361,7 @@ Here we set the `aggregation_factor` to 4 to speed up the example, but you shoul
 
 You can easily check what your structural raster looks like by plotting it using the functions of the packages [_lattice_](http://lattice.r-forge.r-project.org) and [_rasterVis_](https://oscarperpinan.github.io/rastervis/) which we made available in _IsoriX_:
 
-```{r plot ElevEurope fake, eval = FALSE}
+```{r plot_ElevEurope, dev='CairoPNG'}
 levelplot(ElevEurope,
           margin = FALSE,
           main = "Structural raster") + 
@@ -378,19 +369,6 @@ layer(sp.polygons(CountryBorders)) +
 layer(sp.polygons(OceanMask, fill = "cyan"))
 ```
 
-```{r plot ElevEurope real, echo = FALSE, results = FALSE}
-png("images/ElevEurope.png")
-levelplot(ElevEurope,
-          margin = FALSE,
-          main = "Structural raster") + 
-layer(sp.polygons(CountryBorders)) +
-layer(sp.polygons(OceanMask, fill = "cyan"))
-dev.off()
-```
-
-```{r image ElevEurope, fig.align = 'center', echo = FALSE}
-include_graphics('images/ElevEurope.png', dpi = NA)
-```
 
 ### Predicting the isoscapes
 
@@ -408,12 +386,8 @@ if (file.exists("output/EuropeIsoscape.rda")) {
 } else {
   EuropeIsoscape <- isoscape(raster = ElevEurope,
                              isofit = EuropeFit)
-}
-```
-
-```{r save EuropeIsoscape, echo = FALSE}
-if (!file.exists("output/EuropeIsoscape.rda"))
   save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
+}
 ```
 
 The function `isoscape()` creates 8 different rasters that correspond to different aspects of the isoscape (see `?isoscape()` for details).
@@ -435,20 +409,10 @@ All plotting functions in IsoriX present default settings so that a simple call 
 
 For example, here you can obtain the main isoscape by typing:
 
-```{r plot EuropeIsoscape fake, eval = FALSE, results = FALSE}
+```{r plot_EuropeIsoscape, dev='CairoPNG'}
 plot(EuropeIsoscape)
 ```
 
-```{r plot EuropeIsoscape real, echo = FALSE, results = FALSE}
-PlotMean <- plot(EuropeIsoscape, plot = FALSE)
-Cairo::CairoPNG("images/EuropeIsoscape.png")
-PlotMean
-dev.off()
-```
-
-```{r image EuropeIsoscape, fig.align = 'center', echo = FALSE}
-include_graphics('images/EuropeIsoscape.png', dpi = NA)
-```
 
 This shows the prediction of the average isotope value in space (i.e. the point predictions).
 
@@ -457,48 +421,26 @@ This shows the prediction of the average isotope value in space (i.e. the point 
 You can also plot any of the other isoscapes by specifying the name of the raster using the argument `which`.
 As examples, we are now going to plot the residual variation in isotope values predicted at each location, and the prediction variance:
 
-```{r plot residVar fake, eval = FALSE, results = FALSE}
+```{r plot_residVar, dev='CairoPNG'}
 plot(EuropeIsoscape, which = "mean_residVar")
-```
-
-```{r plot residVar real, echo = FALSE, results = FALSE}
-PlotResidVar <- plot(EuropeIsoscape, which = "mean_residVar", plot = FALSE)
-Cairo::CairoPNG("images/EuropeIsoscape_residVar.png")
-PlotResidVar
-dev.off()
-```
-
-```{r image residVar, fig.align = 'center', echo = FALSE}
-include_graphics('images/EuropeIsoscape_residVar.png', dpi = NA)
 ```
 
 This first isoscape quantifies the temporal variation at each location.
 Here it is the between month variance spanning across years but it will not always be so as it depends on what how you aggregated the data (see section \@ref(processing)). Interestingly, you can see that the variance is large and spatially structured. Believe or not but most alternative method of assignment consider such variance to be equal to zero!
 
-```{r plot predVar fake, eval = FALSE, results = FALSE}
+```{r plot_predVar, dev='CairoPNG'}
 plot(EuropeIsoscape, which = "mean_predVar")
-```
-
-```{r plot rpredVar real, echo = FALSE, results = FALSE}
-PlotPredVar <- plot(EuropeIsoscape, which = "mean_predVar", plot = FALSE)
-Cairo::CairoPNG("images/EuropeIsoscape_predVar.png")
-PlotPredVar
-dev.off()
-```
-
-```{r image predVar, fig.align = 'center', echo = FALSE}
-include_graphics('images/EuropeIsoscape_predVar.png', dpi = NA)
 ```
 
 This second isoscape quantifies the uncertainty in your point predictions. As you can see, the uncertainty increases when you go far from the source location. This isoscape can help to update the design of the data collection. It is also used internally when performing assignment. Indeed, if you are very uncertain of what the average isotope value is in a location, then you cannot rule out that any organism may have come from that location. It is unfortunate but an inescapable reality.
 
-### Fiddling with the plots
+### Fiddling with the plots {#plot_isoscapes}
 
 If you want to change anything on the existing plot, have a look at `?plots`.
 The help file should provide you with all the details you need to customise your plots.
 Here is are a couples of example:
 
-```{r plot EuropeIsoscape2 fake, eval = FALSE, results = FALSE}
+```{r plot_EuropeIsoscape2, dev='CairoPNG'}
 plot(EuropeIsoscape,
      sources = list(pch = 3, col = "orange"),
      borders = list(col = "white"),
@@ -506,42 +448,13 @@ plot(EuropeIsoscape,
      palette = list(range = c(-130, 10), step = 1, n_labels = 10, fn = "rainbow"))
 ```
 
-```{r plot EuropeIsoscape2 real, echo = FALSE, results = FALSE}
-Cairo::CairoPNG("images/EuropeIsoscape2.png")
-plot(EuropeIsoscape,
-     sources = list(pch = 3, col = "orange"),
-     borders = list(col = "white"),
-     mask    = list(fill = "darkgrey"),
-     palette = list(range = c(-130, 10), step = 1, n_labels = 10, fn = "rainbow"))
-dev.off()
-```
-
-```{r image EuropeIsoscape2, fig.align = 'center', echo = FALSE}
-include_graphics('images/EuropeIsoscape2.png', dpi = NA)
-```
-
-```{r plot EuropeIsoscape3 fake, eval = FALSE}
+```{r plot_EuropeIsoscape3, dev='CairoPNG'}
 plot(EuropeIsoscape,
      title = "H Isoscape",
      sources = list(draw = FALSE),
      borders = list(borders = NULL),
      mask    = list(fill = "black"),
      palette = list(range = c(-130, 20), step = 30, fn = NULL))  
-```
-
-```{r plot EuropeIsoscape3 real, echo = FALSE, results = FALSE, include = FALSE}
-Cairo::CairoPNG("images/EuropeIsoscape3.png")
-plot(EuropeIsoscape,
-     y_title = list(title = "H Isoscape"),
-     sources = list(draw = FALSE),
-     borders = list(borders = NULL),
-     mask    = list(fill = "black"),
-     palette = list(range = c(-130, 20), step = 30, fn = NULL))  
-dev.off()
-```
-
-```{r image EuropeIsoscape3, fig.align = 'center', echo = FALSE, cache = FALSE}
-include_graphics('images/EuropeIsoscape3.png', dpi = NA)
 ```
 
 For example, you can see that it is possible to provide a function defining the colours using the argument `fn` from the list `palette`. Note that when it is set to `NULL`, the famous palette [_viridis_](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
@@ -551,7 +464,7 @@ If you want to add things on top of the plots, you can do it as you would do it 
 
 We will also add plotting tutorials in this bookdown.
 
-### Why you should save plots or how to remove white lines in the middle of the plots?
+### Why you should save plots or how to remove white lines in the middle of the plots? {#Cairo}
 
 Displaying the plot directly using R is very inefficient when it comes to high resolution isoscapes.
 It may take a very long time and it may not fully work.
