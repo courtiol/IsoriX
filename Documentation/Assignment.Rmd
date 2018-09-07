@@ -1,8 +1,124 @@
-```{r initialization, echo = FALSE}
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/assignment/", fig.path = "./cache/fig_knitr/assignment/", global.par = TRUE, fig.align = "center", error = TRUE)
-```
 
 # Inferring geographic origins {#assignment}
 
+We will now show how to perform the geographic assignment as such.
+For this, you need the isoscapes built as shown in section \@ref(isoscape) and the isotope data of the _assignment samples_.
+If the type of samples you want to assign differ from the type of samples you used to create the isoscapes, then you will also need a calibration fit obtained as shown in section \@ref(calibration).
+
 ## Preparing the data
 
+You need at least two pieces of information from the samples that you want to assign: a label and an isotope value.
+You should provide such information as a data frame with the column names `sample_ID` and `sample_value`.
+You may also add the latitude and longitude of the sampling locations for the assignment samples, if you want that such locations appear on your assignment maps.
+However, such locations are not considered for the statistical assignment.
+
+Here we are going to assign the following bats:
+
+```{r AssignDataBat fake, eval = FALSE}
+AssignDataBat
+```
+
+```{r AssignDataBat real, echo = FALSE}
+kable(AssignDataBat)
+```
+
+This dataset is available in _IsoriX_.
+It contains hydrogen delta values of fur keratin from common noctule bats (_Nyctalus noctula_) killed at wind turbines in northern Germany.
+The question we want to answer is whether those bats are local bats or migratory bats killed during their migration.
+
+## Running the geographic assignments
+
+Running the assignment is fairly straightforward: you must use the function `isofind()` and provide it with the data frame with the data to assign, the isoscape object (i.e. the object produced by the function `isoscape()`; see section \@ref(isoscape)), and (if needed) the calibration object (i.e. the object produced by the function `calibfit()`; see section \@ref(calibration)):
+
+```{r assignment fake, eval = FALSE}
+AssignedBats <- isofind(data = AssignDataBat,
+                        isoscape = EuropeIsoscape,
+                        calibfit = CalibBats)
+```
+
+```{r assignment real, echo = FALSE, message = FALSE}
+if (!file.exists("output/AssignedBats.rda")) {
+  AssignedBats <- isofind(data = AssignDataBat,
+                          isoscape = EuropeIsoscape,
+                          calibfit = CalibBats)
+  save(AssignedBats, file = "output/AssignedBats.rda", compress = "xz")
+} else {
+  load("output/AssignedBats.rda")
+}
+```
+
+The output of the function, here stored under the name `AssignedBats`, is a list of class `ISOFIND` containing 3 elements: the element `sample` storing all rasters related to the assignment of each single sample, `group` storing the rasters related to the group assignment, and `sp_points` storing the spatial points of the source locations as well as the ones for the calibration samples and the assignment samples (if available).
+As for the output of the function `isoscape()`, we choose to store all this information into a single R object to make the plotting of the assignment maps easy peasy.
+
+## How does the assignment work?
+
+Here we explain how the assignment procedure work without going into geeky details.
+It is important that you understand how it works because it has bearing on how you will interpret the assingment results.
+
+First, `isofind()` runs the assignment test for each sample at each candidate location or cell from our structural raster.
+Precisely, for each candidate location the function tests whether the isoscape value at the unknown location of origin of a given sample is consistent with the predicted isoscape value at the candidate location.
+
+To do this, we use the difference between these two isocape values as test statistics.
+The isoscape value at the unknown location of origin is either the isoscape value of the assignment sample if no calibration is being supplied (when the source samples and assignment samples are of the same type), or `isofind()` computes it by inverting the calibration relationship established by the calibration fit (when a calibration is required; see section \@ref(calibration)).
+The predicted isoscape value of the candidate location is directly the point prediction of the isotope value at each prediction location, which is an information given by the main isoscape (see section \@ref(isoscape)).
+The test statistics over all locations can be retrieved for each sample from the object produced by isofind.
+For example, the raster stored under the name `AssignedBats$sample$stat$Nnoc_1` contains such information for the first bat:
+
+```{r AssignedBats raster stats}
+AssignedBats$sample$stat$Nnoc_1
+```
+
+We know detail the variance associated to the test statistics.
+Under the null hypothesis (the isotope value at location of origin = the isotope value at the  candidate location), the variance of the test statistic is the variance of the difference between the two isoscape values that defines it.
+The variance of the test statistics is also stored as a raster (e.g. `AssignedBats$sample$stat_var$Nnoc_1`).
+
+In the appendix of our book chapter [@IsoriX], we show that such variance of the assignment test depends on (1) the prediction variance of the mean fit and is therefore not constant over the entire spatial range (see Appendix).
+Therefore, a small difference in isoscape values at a location where the prediction variance is very small may argue against an assignment at the corresponding location, while a large difference where the prediction variance is very large may not.
+The variance of the test also depends on (2) the residual variation among samples at the unknown location of origin.
+In the current workflow, we estimate such variance from the residual variance of the calibration fit, which we assume constant.
+Other approaches are possible.
+In particular, if assignment samples are of the same kind as the source sample (and thus when no calibration model exists), such variance is instead given by the residual dispersion variance of the isoscape.
+The distribution of the assignment test also depends on (3) the prediction variance of the calibration fit (which decreases with the size of the calibration dataset) given the predicted isoscape value at the candidate location.
+Finally, the distribution of the assignment test depends on (4) a covariance term between the prediction error of the calibration fit given the predicted isotope value at the candidate location, and the prediction error of the isoscape at this location.
+We can compute this last term, which relates the uncertainty of the isoscape to the one of the calibration, in IsoriX because the calibration and the geographic assignment are both computed within the same software package.
+Note however that we have not yet implemented this 4th variance term. We are planning to do so for the version 1.0.
+
+For each candidate location of origin, the p-value of the assignment test is _the probability that an assignment sample truly originating from the candidate location has a larger absolute value than the observed test statistic_.
+__Even if a location presents a perfect match (p-value close to one), it does not mean that the location is the true place of origin__.
+It only means that the candidate location has an isotopic composition similar to the one of the true origin location, irrespective of where this location may be.
+This limitation is of course not specific to IsoriX.
+
+The p-value of the assignment test is also stored in a raster within the object produced by `isofind()` (e.g. `AssignedBats$sample$pv$Nnoc_1`) and you can used such raster to directly extract the result of the test of an assignment hypothesis.
+For example, to test whether the first bat to assign (`Nnoc_1`) originates from its sample location we can simply type:
+
+```{r test Nnoc1}
+extract(AssignedBats$sample$pv[[1]], cbind(AssignDataBat$long[1], AssignDataBat$lat[1]))
+```
+
+The outcome of this call gives a non-significant p-value, so we cannot rule out a local origin for the first bat.
+Repeating this for all assignment samples shows that we only reject a local origin for the bat Nnoc_15:
+
+```{r test all Nnocs}
+Pvalues <- sapply(1:nrow(AssignDataBat),
+                  function(i) extract(AssignedBats$sample$pv[[i]],
+                                       cbind(AssignDataBat$long[i],
+                                             AssignDataBat$lat[i])))
+AssignDataBat$sample_ID[Pvalues <= 0.05]
+```
+
+
+The assignment function `isofind()` always performs two types of geographic assignments: an individual assignment and a group assignment.
+The individual assignment which we have just explored is useful to infer the origin of a single sample or to infer independently the origin of several samples.
+In contrast, the group assignment infers a single origin for all the samples in the data frame.
+The underlying assumption of a group assignment is that all the individuals come from the same origin location.
+
+Note: if you wish to assign different groups of samples separately, you simply have to prepare several data frames and run the assignment function on each of the groups separately.
+
+Once the function `isofind()` has assigned all samples individually, it thus performs the group assignment.
+The p-value of the geographic assignment test for the entire group (here stored as the raster `AssignedBats$group$pv`) is computed by combining, at each location, the p-value of the geographic assignment for all assignment samples using Fisher’s combination of probabilities method [@fisher1925statistical].
+
+
+The null hypothesis of this group assignment is now that all assignment samples originated from a location with identical distribution of source isotope values as the one being tested. Therefore, the test considers that all assignment samples must come from the same location of origin (or at least from a location presenting the same isotopic composition), and if this assumption is not fulfilled, the test may exclude all candidate locations. This is why you should always start by exploring individual assignments even you are ultimately interested in a group assignment!
+
+
+## Plotting the geographic assignments
