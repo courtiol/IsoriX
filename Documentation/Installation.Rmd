@@ -1,7 +1,3 @@
-```{r initialization, echo = FALSE}
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/settingup/", fig.path = "./cache/fig_knitr/settingup/", global.par = TRUE, fig.align = "center", error = TRUE)
-```
-
 # Setting up IsoriX
 
 ## Installation
@@ -39,8 +35,8 @@ The current _IsoriX_ version indirectly uses `r length(miniCRAN::pkgDep("IsoriX"
 
 ```{r mini_CRAN}
 library(miniCRAN) ## you need to install it beforehand!
-set.seed(1L) ## the seed controls the rotation
-plot(makeDepGraph("IsoriX"), cex = 0.8, main = "")
+set.seed(8L) ## the seed controls the rotation
+plot(makeDepGraph("IsoriX", suggests = FALSE), cex = 0.8, main = "")
 ```
 
 ## Loading IsoriX
@@ -67,7 +63,7 @@ you selected in the right one by looking at the content of the working directory
 There are a few general options you can set up for IsoriX (see ```?options_IsoriX``` for details).
 Like the loading of the package, changing the general options must be done again each time you start an R session.
 
-Two of these general options are particularly usefull: `example_maxtime` and `Ncpu`.
+Two of these general options are particularly useful: `example_maxtime` and `Ncpu`.
 The former allows you to control whether examples in the IsoriX help files should be run or not
 depending on the time they take. We have to restrict long examples to run as CRAN, the platform
 hosting R packages, checks all examples but do not allow for them to last more than a few seconds.
