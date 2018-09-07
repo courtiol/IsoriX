@@ -53,15 +53,15 @@ As for the output of the function `isoscape()`, we choose to store all this info
 ## How does the assignment work?
 
 Here we explain how the assignment procedure work without going into geeky details.
-It is important that you understand how it works because it has bearing on how you will interpret the assingment results.
+It is important that you understand how it works because it has bearing on how you will interpret the assignment results.
 
 First, `isofind()` runs the assignment test for each sample at each candidate location or cell from our structural raster.
 Precisely, for each candidate location the function tests whether the isoscape value at the unknown location of origin of a given sample is consistent with the predicted isoscape value at the candidate location.
 
-To do this, we use the difference between these two isocape values as test statistics.
+To do this, we use the difference between these two isoscape values as test statistics.
 The isoscape value at the unknown location of origin is either the isoscape value of the assignment sample if no calibration is being supplied (when the source samples and assignment samples are of the same type), or `isofind()` computes it by inverting the calibration relationship established by the calibration fit (when a calibration is required; see section \@ref(calibration)).
 The predicted isoscape value of the candidate location is directly the point prediction of the isotope value at each prediction location, which is an information given by the main isoscape (see section \@ref(isoscape)).
-The test statistics over all locations can be retrieved for each sample from the object produced by isofind.
+The test statistics over all locations can be retrieved for each sample from the object produced by `isofind()`.
 For example, the raster stored under the name `AssignedBats$sample$stat$Nnoc_1` contains such information for the first bat:
 
 ```{r AssignedBats raster stats}
@@ -122,3 +122,102 @@ The null hypothesis of this group assignment is now that all assignment samples 
 
 
 ## Plotting the geographic assignments
+
+You can plot the geographic assignments by simply calling the generic function `plot()`.
+The generic function will invokes a plotting method very similar to the one described for isoscapes (section \@ref(plot_isoscapes)).
+Most arguments between the two plotting methods are the same.
+They are detailed in the help file `?plots`.
+One main difference, however, is that the argument `which` used to indicate which raster to plot (`mean`, `mean_predVar`, ...) is now replaced by an argument `who`.
+If you set `who` to `"group"`, the function will show a single map representing the geographic assignment for the group.
+If instead you want to obtain a single assignment map per sample, you can provide a vector of the samples to be plotted (as indices or using their ID)to `who` .
+
+Here is an example for plotting the first 4 bats:
+
+```{r plot_AssignedBats_id1to4, dev = 'CairoPNG'}
+plot(AssignedBats, who = 1:4)
+```
+
+Here is an example for plotting specific all 14 bats:
+
+```{r plot_AssignedBats_id, dev = 'CairoPNG'}
+plot(AssignedBats,
+     who = 1:14,
+     sources = list(draw = FALSE),
+     calibs = list(draw = FALSE),
+     assigns = list(draw = FALSE)
+     )
+```
+
+Note that we used the arguments `sources`, `calibs` and `assigns` to prevent the automatic display of points which would saturate the tiny maps.
+
+Here is an example showing how to plot a specific sample using its name:
+
+```{r plot_AssignedBats_id15, dev = 'CairoPNG'}
+plot(AssignedBats, who = "Nnoc_15")
+```
+
+We did not choose the bat randomly.
+As you can see, this probability maps confirm what we found above: the sampling location (eastern Germany) being rejected as a source of origin for the bat Nnoc_15.
+
+We will now make a group assignment:
+
+```{r plot_AssignedBats_group, dev = 'CairoPNG'}
+plot(AssignedBats, who = "group")
+```
+
+This map does not make much sense if the bats come from different location.
+So instead, we will now rerun the assignment and plot the result after taking out the individual that is likely to originate from outside Germany (Nnoc_15).
+This can be done by typing:
+
+```{r plot_AssignedBats_group_no15, dev = 'CairoPNG', message = FALSE}
+AssignDataBat2 <- subset(AssignDataBat, sample_ID != "Nnoc_15")
+AssignedBats2 <- isofind(data = AssignDataBat2,
+                         isoscape = EuropeIsoscape,
+                         calibfit = CalibBats)
+plot(AssignedBats2, who = "group")
+```
+
+### More information on the assignment plots
+
+The plotting method use the information from the assignment test to define confidence regions. 
+By default, a 95%-confidence region is being displayed in grey, which means that the non grey area should contain the true location of origin with a 95% probability.
+You can alter this setting using the argument `level`.
+
+Another default setting you choose, is to apply a mask to hide the outcome of the geographic assignment over the large water bodies.
+You can change that as well if you fancy using the argument `mask`.
+
+Related to this arguments, you can also define another mask using the argument `mask2`.
+For example, you may want to use it in order to hide areas outside the IUCN distribution map for your species.
+If more than two masks are necessary, just combine several masks into one and provide that one to this argument `mask2`.
+Otherwise, or if the masks need to be visually distinct, you can use the function `layer()`.
+
+
+## Fiddling with the assignment plots
+
+There are plenty options you can change and plenty functions from the packages _lattice_, _latticeExtra_ and _rasterVis_ that you can also use to produce the perfect plot.
+We will add here different examples.
+
+### Example: adding the maximum
+
+As a first example, we will show you how to add the point that is the most compatible with the unknown origin of these bats using the package _raster_.
+
+We start by recovering the coordinate of such a point:
+
+```{r maximum, message = FALSE}
+library(raster)
+coord <- coordinates(AssignedBats2$group$pv)
+MaxLocation <- coord[which.max(values(AssignedBats2$group$pv)), ]
+Maximum <- data.frame(long = MaxLocation[1], lat = MaxLocation[2])
+Maximum
+```
+
+You can then plot these information on top of the last plot we created by simply typing:
+
+```{r plot_maximum, message = FALSE, dev = 'CairoPNG'}
+plot(AssignedBats2, who = "group", plot = FALSE) + 
+  xyplot(Maximum$lat ~ Maximum$long,
+         pch = 13, col = "orange", cex = 5, lwd = 2, panel = panel.points)
+```
+
+[more examples to come!]
+
