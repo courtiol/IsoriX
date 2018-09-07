@@ -1,10 +1,3 @@
-```{r initialization2, echo = FALSE, message = FALSE}
-library(IsoriX)
-library(knitr)
-library(kableExtra)
-opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/isoscape/", fig.path = "./cache/fig_knitr/isoscape/", global.par = TRUE, fig.align = "center", error = TRUE)
-```
-
 # Building Isoscapes {#isoscape}
 
 ## Preparing the raw data
@@ -189,18 +182,36 @@ To fit the geostatisical model required to build a single set of isoscapes, you 
 This function has several parameters that can be adjusted to fit different models (see ```?isofit```).
 Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting:
 
-```{r isofit}
+```{r isofit fake, eval = FALSE}
 EuropeFit <- isofit(data = GNIPDataEUagg,
                     mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+```
+
+```{r isofit real, echo = FALSE, results = FALSE}
+if (file.exists("output/EuropeFit.rda")) {
+  load("output/EuropeFit.rda")
+} else {
+  EuropeFit <- isofit(data = GNIPDataEUagg,
+                      mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+}
 ```
 
 ### Fitting the models for a multiple set of isoscapes
 
 If you have created multiple sets of data, you need to use the function `isomultifit()` for fitting one set of isoscapes per set of data. As for `isofit()`, several parameters can be adjusted to fit different models, but we will again use here the default settings of the function.
 
-```{r isomultifit}
+```{r isomultifit fake, eval = FALSE}
 EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
                            mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+```
+
+```{r isomultifit real, echo = FALSE, results = FALSE}
+if (file.exists("output/EuropeFit12.rda")) {
+  load("output/EuropeFit12.rda")
+} else {
+  EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
+                             mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+}
 ```
 
 For the time being this function will fit sequentially the sets of isoscapes. So for the example used here, it means that 12 sets of isoscapes are fitted sequentially which thus takes more computing time than building a single set of isoscape. In the near future we will however revise the internal structure of this function for it to be able to use several CPUs simultaneously and thus make profit of IsoriX option used to define the number of CPUs allowed for IsoriX to work with (see section \@ref(globaloptions)).
@@ -218,8 +229,10 @@ save(EuropeFit12, file = "EuropeFit12.rda", compress = "xz")
 ```
 
 ```{r saving models real, echo = FALSE}
-save(EuropeFit, file = "output/EuropeFit.rda", compress = "xz")
-save(EuropeFit12, file = "output/EuropeFit12.rda", compress = "xz")
+if (!file.exists("output/EuropeFit.rda"))
+  save(EuropeFit, file = "output/EuropeFit.rda", compress = "xz")
+if (!file.exists("output/EuropeFit12.rda"))
+  save(EuropeFit12, file = "output/EuropeFit12.rda", compress = "xz")
 ```
 
 The function `save()` will (by default) store your R object in a file that can be found in your working directory.
@@ -292,10 +305,10 @@ AIC(EuropeFit$mean_fit)
 print(AIC(EuropeFit$mean_fit))
 ```
 
-Note that we reexported some _spaMM_ functions for you to use without the need to load the package _spaMM_ (e.g. `AIC.HLfit()` which is implicitely here), but you will have to do `library(spaMM)` to access all _spaMM_ functionalities.
+Note that we re-exported some _spaMM_ functions for you to use without the need to load the package _spaMM_ (e.g. `AIC.HLfit()` which is implicitly here), but you will have to do `library(spaMM)` to access all _spaMM_ functionalities.
 
 
-## Building the isocapes
+## Building the isoscapes
 
 ### Prepare the structural raster
 
@@ -334,10 +347,20 @@ Here, the downloaded structural raster covers the entire planet but we will crop
 
 You can do this easily by using our function `prepraster()`. To crop the elevation raster to a particular size, you can either provide a set of coordinates to the function by means of the argument `manual_crop`. Alternatively, you can simply provide a fitted model to the function `prepraster()` by means of the argument `isofit`.  In this latte case, the function will determine the coordinates required for the cropping automatically, from the coordinates of the weather stations used during the fitting procedure. We choose here to use this latter alternative:
 
-```{r build ElevEurope}
+```{r build ElevEurope fake, eval = FALSE}
 ElevEurope <- prepraster(raster = ElevWorld,
                          isofit = EuropeFit,
                          aggregation_factor = 4)
+```
+
+```{r build ElevEurope real, echo = FALSE, results = FALSE}
+if (file.exists("output/ElevEurope.rda")) {
+  load("output/ElevEurope.rda") } else {
+ElevEurope <- prepraster(raster = ElevWorld,
+                         isofit = EuropeFit,
+                         aggregation_factor = 4)
+save(ElevEurope, file = "output/ElevEurope.rda", compress = "xz")
+}
 ```
 
 You may see that we also choose here to reduce the resolution of the elevation raster by choosing an aggregation factor of 10.
@@ -350,7 +373,7 @@ You can easily check what your structural raster looks like by plotting it using
 ```{r plot ElevEurope fake, eval = FALSE}
 levelplot(ElevEurope,
           margin = FALSE,
-          main = "Stuctural raster") + 
+          main = "Structural raster") + 
 layer(sp.polygons(CountryBorders)) +
 layer(sp.polygons(OceanMask, fill = "cyan"))
 ```
@@ -359,7 +382,7 @@ layer(sp.polygons(OceanMask, fill = "cyan"))
 png("images/ElevEurope.png")
 levelplot(ElevEurope,
           margin = FALSE,
-          main = "Stuctural raster") + 
+          main = "Structural raster") + 
 layer(sp.polygons(CountryBorders)) +
 layer(sp.polygons(OceanMask, fill = "cyan"))
 dev.off()
@@ -374,13 +397,23 @@ include_graphics('images/ElevEurope.png', dpi = NA)
 We will now build the isoscapes using the function `isoscape()`.
 The function simply takes the structural raster and the fitted model as arguments:
 
-```{r build EuropeIsoscape, warning = FALSE}
+```{r build EuropeIsoscape fake, eval = FALSE}
 EuropeIsoscape <- isoscape(raster = ElevEurope,
                            isofit = EuropeFit)
 ```
 
+```{r build EuropeIsoscape real, warning = FALSE, echo = FALSE, results = FALSE}
+if (file.exists("output/EuropeIsoscape.rda")) {
+  load("output/EuropeIsoscape.rda")
+} else {
+  EuropeIsoscape <- isoscape(raster = ElevEurope,
+                             isofit = EuropeFit)
+}
+```
+
 ```{r save EuropeIsoscape, echo = FALSE}
-save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
+if (!file.exists("output/EuropeIsoscape.rda"))
+  save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
 ```
 
 The function `isoscape()` creates 8 different rasters that correspond to different aspects of the isoscape (see `?isoscape()` for details).
@@ -402,13 +435,14 @@ All plotting functions in IsoriX present default settings so that a simple call 
 
 For example, here you can obtain the main isoscape by typing:
 
-```{r plot EuropeIsoscape fake, eval = FALSE}
+```{r plot EuropeIsoscape fake, eval = FALSE, results = FALSE}
 plot(EuropeIsoscape)
 ```
 
 ```{r plot EuropeIsoscape real, echo = FALSE, results = FALSE}
+PlotMean <- plot(EuropeIsoscape, plot = FALSE)
 Cairo::CairoPNG("images/EuropeIsoscape.png")
-plot(EuropeIsoscape)
+PlotMean
 dev.off()
 ```
 
@@ -423,13 +457,14 @@ This shows the prediction of the average isotope value in space (i.e. the point 
 You can also plot any of the other isoscapes by specifying the name of the raster using the argument `which`.
 As examples, we are now going to plot the residual variation in isotope values predicted at each location, and the prediction variance:
 
-```{r plot residVar fake, eval = FALSE}
+```{r plot residVar fake, eval = FALSE, results = FALSE}
 plot(EuropeIsoscape, which = "mean_residVar")
 ```
 
 ```{r plot residVar real, echo = FALSE, results = FALSE}
+PlotResidVar <- plot(EuropeIsoscape, which = "mean_residVar", plot = FALSE)
 Cairo::CairoPNG("images/EuropeIsoscape_residVar.png")
-plot(EuropeIsoscape, which = "mean_residVar")
+PlotResidVar
 dev.off()
 ```
 
@@ -440,13 +475,14 @@ include_graphics('images/EuropeIsoscape_residVar.png', dpi = NA)
 This first isoscape quantifies the temporal variation at each location.
 Here it is the between month variance spanning across years but it will not always be so as it depends on what how you aggregated the data (see section \@ref(processing)). Interestingly, you can see that the variance is large and spatially structured. Believe or not but most alternative method of assignment consider such variance to be equal to zero!
 
-```{r plot predVar fake, eval = FALSE}
+```{r plot predVar fake, eval = FALSE, results = FALSE}
 plot(EuropeIsoscape, which = "mean_predVar")
 ```
 
 ```{r plot rpredVar real, echo = FALSE, results = FALSE}
+PlotPredVar <- plot(EuropeIsoscape, which = "mean_predVar", plot = FALSE)
 Cairo::CairoPNG("images/EuropeIsoscape_predVar.png")
-plot(EuropeIsoscape, which = "mean_predVar")
+PlotPredVar
 dev.off()
 ```
 
@@ -462,7 +498,7 @@ If you want to change anything on the existing plot, have a look at `?plots`.
 The help file should provide you with all the details you need to customise your plots.
 Here is are a couples of example:
 
-```{r plot EuropeIsoscape2 fake, eval = FALSE}
+```{r plot EuropeIsoscape2 fake, eval = FALSE, results = FALSE}
 plot(EuropeIsoscape,
      sources = list(pch = 3, col = "orange"),
      borders = list(col = "white"),
@@ -493,10 +529,10 @@ plot(EuropeIsoscape,
      palette = list(range = c(-130, 20), step = 30, fn = NULL))  
 ```
 
-```{r plot EuropeIsoscape3 real, echo = FALSE, results = FALSE}
+```{r plot EuropeIsoscape3 real, echo = FALSE, results = FALSE, include = FALSE}
 Cairo::CairoPNG("images/EuropeIsoscape3.png")
 plot(EuropeIsoscape,
-     title = "H Isoscape",
+     y_title = list(title = "H Isoscape"),
      sources = list(draw = FALSE),
      borders = list(borders = NULL),
      mask    = list(fill = "black"),
@@ -504,7 +540,7 @@ plot(EuropeIsoscape,
 dev.off()
 ```
 
-```{r image EuropeIsoscape3, fig.align = 'center', echo = FALSE}
+```{r image EuropeIsoscape3, fig.align = 'center', echo = FALSE, cache = FALSE}
 include_graphics('images/EuropeIsoscape3.png', dpi = NA)
 ```
 
@@ -539,8 +575,8 @@ Here we will show how to save our isoscape both as a png and as a pdf.
 
 Let us start by creating a PNG file with the main isoscape:
 
-```{r Cairo PNG, results = FALSE, eval = FALSE}
-CairoPNG(filename = "./output/Myisoscape.png",
+```{r Cairo PNG, results = FALSE, eval = FALSE, results = FALSE}
+CairoPNG(filename = "output/Myisoscape.png",
          height = 1080,
          width = 1920,
          res = 100)
@@ -561,8 +597,8 @@ The parameter `res` is very useful as it rescales the line and fonts in the plot
 
 And for a PDF it is very similar:
 
-```{r Cairo PDF, results = FALSE, eval = FALSE}
-CairoPDF(file = "./output/Myisoscape.pdf",
+```{r Cairo PDF, results = FALSE, eval = FALSE, results = FALSE}
+CairoPDF(file = "output/Myisoscape.pdf",
          height = 10,
          width = 15)
 plot(EuropeIsoscape)
