@@ -1,5 +1,6 @@
 book_filename: "Documentation for IsoriX"
 chapter_name: "Chapter "
 output_dir: docs
-rmd_files: ["index.Rmd", "Preface.Rmd", "Installation.Rmd", "Isoscape.Rmd", "Calibration.Rmd", "Assignment.Rmd"]
-new_session: yes
+rmd_files: ["index.Rmd", "Preface.Rmd", "Installation.Rmd", "Isoscape.Rmd", "Calibration.Rmd", "Assignment.Rmd", "References.Rmd"]
+new_session: no
+delete_merged_file: true
