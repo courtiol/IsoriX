@@ -1,0 +1,5 @@
+# Exporting spatial objects to GIS {#GIS}
+
+It is straigthforward to export all spatial objects created by IsoriX into format compatible with the main software for Geographic Information System (GIS).
+This can be done using R package such as _GISTools_, _maptools_ and _rgdal_.
+We will explain how to in the future.

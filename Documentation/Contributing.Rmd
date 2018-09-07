@@ -1,0 +1,69 @@
+# Contributing to IsoriX
+
+In this chapter we will give you tips on how you can help us to make _IsoriX_ better.
+
+[more to come]
+
+## Coding conventions
+
+This section is only intended to those who would like to contribute source code.
+It describes the conventions one should follow while coding for _IsoriX_.
+Note that we have not always followed such conventions but we will progressivelly reformat the code in such way.
+
+### Object assignment
+
+Object assignments are done using an arrow `<-`, not `=`.
+```{r object assignment, eval = FALSE}
+## Example:
+y <- 2
+```
+
+### Notation and naming
+
+* datasets should be named in the format `SomethingSomething`.
+
+* classes should have a name of the format `SOMETHING`.
+
+* internal functions should have a name of the format `dosomething_somethingelse`, where the input is `something_somethingelse` and the output for the global environment should be `my_something`.
+
+### Curly braces
+
+The opening curly braces are separated with one white space and the closing ones go on a new line and are aligned with the first command.
+The else statement is surrounded by curly braces on the same line.
+
+```{r curly, eval = FALSE}
+## Example for an if-condition:
+if (y == 0) {
+  log(y)
+} else {
+  y ^ 2
+}
+```
+
+The same goes for a function except we do not put a space before the left parentheses.
+
+```{r eval = FALSE}
+## Example for a function:
+function(x) {
+  x + x
+}
+```
+
+### Indentation and spacing
+
+We have 2 spaces indentation throughout the whole code.
+An exception is made when a line break occurs inside parentheses, then the wrapped line is aligned with the first character inside the parenthesis.
+```{r indentation, eval = FALSE}
+## Example:
+plot(x = sort(rnorm(47)),
+     type = "s",
+     main = "title")
+```
+
+Spaces go around all operators (```+```, ```=```, ```<-```, ```!=```, ```==```, etc.) for improved readability.
+
+### Commenting guidelines
+
+For comments providing explanation inside the code we use a double hash ```##``` in order to distinguish such comments from commented code which we comment using a single hash ```#```.
+
+[more to come]

@@ -1,0 +1,18 @@
+# Troubleshooting
+
+In this chapter we will try to solve problems that may affect many users.
+
+If you think your problem qualifies and is not there, please leave us an [issue](https://github.com/courtiol/IsoriX/issues) on GitHub or send us an email.
+
+## I cannot install Cairo but I need to save my plots {-}
+
+If you really don't manage to use _Cairo_ (or if you don't want to use it), you can always use the simple out-of-the-box alternative offered by R.
+You just need to use different function calls corresponding to the one we described in section \@ref(Cairo):
+
+* `CairoPNG()` --> `png()`
+
+* `CairoPDF()` --> `pdf()`
+
+Nothing else changes, the inputs should be the same and you still need to close the graphic device using `dev.off()` after ploting.
+
+[more to come]
