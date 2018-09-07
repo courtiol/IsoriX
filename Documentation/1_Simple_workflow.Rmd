@@ -1,44 +1,3 @@
----
-title: "A simple workflow for IsoriX"
-author: "The IsoriX core team"
-date: "`r Sys.Date()`"
-output:
-    pdf_document
-vignette: >
-  %\VignetteIndexEntry{1_Simple_workflow}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, initialization, echo=FALSE}
-library(knitr)
-set.seed(123)  ## set seed for entire manuscript
-# set global options for knitr (if changed, all cashed chunked will be rerun!)
-knitr::opts_chunk$set(cache = TRUE, cache.path = "./cache/cache_knitr/chapter1/", fig.path = "./cache/fig_knitr/chapter1/", global.par = TRUE, fig.align = "center", error = TRUE) # use dpi=100 for small pdfs
-docache <- TRUE
-```
-
-
-
-## Step 7 - Fit the calibration function
-
-In this example, we will use the calibration dataset `CalibDataBat` that is provided with __IsoriX__. This dataset concerns sedentary bats inhabiting Europe (see `?CalibDataBat` for details). We now use the function `calibfit()` to fit the relationship between the isotope values in the environment and the isotope values in our calibration organisms:
-
-```{r calib}
-calib <- calibfit(calib.data = CalibDataBat, isofit = Europefit)
-```
-
-These warnings should disappear in the future. They reflect limitations of the current version of the package __spaMM__, which we use to fit our models.
-
-To get the result of the calibration fit, you can simply type the name of the object we just created, or plot it:
-
-```{r calib2, fig.asp = 1}
-calib
-plot(calib)
-```
-
-\newpage
-
 ## Step 8 - Perform the assignment
 
 We will now perform the assignment procedure that aims at identifying areas with the same isotopic signature than the area where individuals originate. To put this into practice, we will use a dataset containing isotopic measurements on other bats, which is also provided in __IsoriX__. We will select from this dataset the bats of the species "Myotis_bechsteinii":
@@ -140,25 +99,3 @@ table(pvs > 0.05)
 ```
 
 All bats are in! That is great but it will not necessarily happen all the time, especially if as here the calibration is performed on a different species than the individuals you want to allocate. As an exercise you can now try to plot the bats we assigned into the calibration fit to see if they do behave in the same way as other species.
-
-## Next?
-
-For other tutorials on __IsoriX__, check the other vignettes we created for you by simply typing:
-
-```{r vignette, eval = FALSE}
-browseVignettes(package ='IsoriX')
-```
-
-Please note that the number and the quality of the vignettes keeps growing with updates of __IsoriX__. So keep updating your packages in R and check what has been changing between two versions by typing:
-
-```{r news, eval = FALSE}
-news(package = 'IsoriX')
-```
-
-## The End
-
-That is all for now! Here are the information of the R session we used:
-
-```{r R session}
-sessionInfo()
-```
