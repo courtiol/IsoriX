@@ -9,6 +9,10 @@ cache/
 data/
 output/
 docs/
+_bookdown_files
+
+# local files
+
 *.Rproh
 *.sh
 *.cls
@@ -17,3 +21,4 @@ docs/
 *.css
 *.Rproj
 *.csl
+
