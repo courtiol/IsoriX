@@ -32,16 +32,35 @@ opts_chunk$set(cache = TRUE,
 # Work in progress! {-}
 
 This new documentation of the R package _IsoriX_ which aims at replacing the former vignettes and will ultimately provide much more information than before.
-The chapters 1 to 4 are now almost complete but you will have to wait for a couple of weeks for the other main chapter to follow. For the time being please directly refer to the documentation of the package:
+The chapters 1 to 5 are almost complete but you will have to wait for the other chapters to follow.
 
-```{r get help}
-help("IsoriX") ## for the general description
-help(package = "IsoriX") ## for the links to all the help files of the package
-```
-
-PS: for this to work you must have installed the package before (see section \@ref(installation)).
-
-
-```{r image_intro, fig.align = 'center', echo = FALSE}
-include_graphics('images/isoscape.png', dpi = NA)
+```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6}
+## for the following to work several chapters must be compiled!
+if (file.exists("output/EuropeIsoscape.rda") &
+    file.exists("output/CalibBats.rda") &
+    file.exists("output/AssignedBats.rda")) {
+  load("output/EuropeIsoscape.rda")
+  load("output/CalibBats.rda")
+  load("output/AssignedBats.rda")
+  plot(EuropeIsoscape)
+  plot(EuropeIsoscape,
+     sources = list(pch = 3, col = "orange"),
+     borders = list(col = "white"),
+     mask    = list(fill = "darkgrey"),
+     palette = list(range = c(-130, 10), step = 1, n_labels = 10, fn = "rainbow"))
+  plot(EuropeIsoscape,
+     title = "H Isoscape",
+     sources = list(draw = FALSE),
+     borders = list(borders = NULL),
+     mask    = list(fill = "black"),
+     palette = list(range = c(-130, 20), step = 30, fn = NULL))
+  plot(EuropeIsoscape, which = "mean_predVar")
+  plot(EuropeIsoscape, which = "mean_residVar")
+  plot(CalibBats)
+  plot(AssignedBats, who = "Nnoc_15")
+  plot(AssignedBats, who = 1:4,
+       sources = list(draw = FALSE),
+       calibs = list(draw = FALSE),
+       assigns = list(draw = FALSE))
+}
 ```
