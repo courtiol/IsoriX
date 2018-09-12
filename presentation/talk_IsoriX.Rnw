@@ -74,20 +74,6 @@
 
 \newcommand{\origin}{\texttt{o}}
 
-\newcommand{\ie}{\emph{i.e.}}
-\newcommand{\eg}{\emph{e.g.}}
-
-\newcommand{\frp}[1]{\textcolor{purple}{\textbf{#1}}}
-\newcommand{\frm}[1]{\textcolor{red}{\st{#1}}}
-\newcommand{\frc}[1]{\textcolor{blue}{{[FR:\ #1]}}}
-
-\newcommand{\alexp}[1]{\textcolor{olive}{\textbf{#1}}}
-\newcommand{\alexm}[1]{\textcolor{orange}{\st{#1}}}
-\newcommand{\alexc}[1]{\textcolor{cyan}{{[Alex:\ #1]}}}
-
-\newcommand{\todo}[1]{\textcolor{green}{{[ToDo:\ #1]}}}
-\newcommand{\question}[1]{\textcolor{red}{{[\begin{Large}QUESTION:\end{Large}\ #1]}}}
-
 
 \AtBeginSection[]{%
   \begin{frame}%
@@ -409,7 +395,7 @@ Uncertainty check list:
 \pause
 Remember:
 \begin{itemize}
-\item Always try to be explicit about which sources of uncertainty are acounted for and which are not!
+\item Always try to be explicit about which sources of uncertainty are accounted for and which are not!
 \item No work can consider them all, so it is worth recognising and discussing the limitations of any approach.
 \item Being open source, in IsoriX, with a little effort you can figure out which assumptions are being made.
 \end{itemize}
@@ -1030,7 +1016,7 @@ where difference $\delta_g - \hat{\delta}_g$ represents the prediction error of 
 <<calibfit plot, out.height = "6cm", out.width = "6cm", fig.width = 6, fig.height = 6>>=
 plot(CalibBats)
 @
-Note: this looks bad, but in fact it is increadibly good! Despite huge extrapolation, the fit is very close to a calibration fitted on an european isoscape (see \url{https://bookdown.org/content/782/calibration.html}). The reason why it works so well is that the uncertainty in $x$ is accounted for.
+Note: this looks bad, but in fact it is incredibly good! Despite huge extrapolation, the fit is very close to a calibration fitted on an European isoscape (see \url{https://bookdown.org/content/782/calibration.html}). The reason why it works so well is that the uncertainty in $x$ is accounted for.
 \end{frame}
 
 
@@ -1243,12 +1229,42 @@ plot(AssignedBats2)
 \end{frame}
 
 
+\begin{frame}[t,fragile]{Step 6. Perform the assignment}
+The most important questions you must answer:
+\bigskip
+\begin{itemize}
+\item Are all samples coming from the same location?
+\item Can the true origin be outside the map?
+\end{itemize}
+\pause
+\vfill
+Recommendation:
+\begin{itemize}
+\item Always look at plot per sample before looking at group assignment.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Step 6. Perform the assignment}
+Uncertainty check list:
+\bigskip
+\begin{itemize}
+\item[\checkmark] prediction variance of the fit of the mean model
+\item[\checkmark] prediction variance of the inverted calibration fit
+\item[\checkmark] residual variance of the calibration fit
+\item[$\times$] covariation between predictions from the mean model and the inverted calibration fit
+\end{itemize}
+\end{frame}
+
+
+
 \subsection{Summary}
 
 \againframe{workflow}
 
 
 \begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
+The whole workflow only takes 5 or 6 line of codes:
+\bigskip
 <<all in one, size = "scriptsize">>=
 ## GNIPDataEUagg is readily available in IsoriX (already prepared)
 EuropeFit      <- isofit(data = GNIPDataEUagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
@@ -1258,11 +1274,14 @@ CalibBatsEU    <- calibfit(data = CalibDataBat, isofit = EuropeFit)
 Assigned15     <- isofind(data = subset(AssignDataBat, sample_ID == "Nnoc_15"),
                           isoscape = EuropeIsoscape, calibfit = CalibBatsEU)
 @
+\vfill
+Note:\\
+Never do that blindly! You must check all intermediary outputs as we did for Germany.
 \end{frame}
 
 
-\begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
-<<all_in_one_plot, out.height = "7.5cm", out.width = "7.5cm", size = "scriptsize">>=
+\begin{frame}[b, fragile]{Where does the bat Nnoc\_15 comes from?}
+<<all_in_one_plot, out.height = "10cm", out.width = "10cm", dpi = 2000>>=
 plot(Assigned15)
 @
 \end{frame}
@@ -1270,31 +1289,39 @@ plot(Assigned15)
 
 \section{Future of IsoriX}
 
-\begin{frame}{Life of IsoriX}
-Official releases:
-\begin{small}
-\begin{itemize}
-\item IsoriX 0.4-1: stable version (1$^\text{st}$ submission to CRAN, 11/09/2016)
-\item IsoriX 0.4-2: development version
-\end{itemize}
-\end{small}
+
+\begin{frame}{Future features}
+\begin{itemize}[<+->]
+\item Better documentation.
 \vfill
-Soon:
-\begin{small}
-\begin{itemize}
-\item more tutorials and better help files
-\item supporting publications
-\item optional calibration
-\item 3D plots
-\item map projections
-\item finer statistical methods (DHGLM)
+\item Fixing little glitches.
+\vfill
+\item Easier functions for weighting by precipitation amount.
+\vfill
+\item Additional plotting functions (e.g. to check calibration fit).
+\vfill
+\item Full assignment variance (include a complex covariance term).
+\vfill
+\item DHGLM to capture the uncertainty of the residual dispersion model.
+\vfill
+\item Possibility to input estimates from external calibration fits?
+\vfill
+\item 3D isoscapes? 4D isoscapes?
+\vfill
+\item Move to \texttt{ggplot2} \& \texttt{sf}?
+\vfill
+\item Anything else?
 \end{itemize}
-\end{small}
 \end{frame}
 
-\begin{frame}{To follow the development of IsoriX}
-\centerline{
-\url{https://github.com/courtiol/IsoriX}
-}
+
+\begin{frame}{To follow or contribute to the development of IsoriX}
+\begin{Large}
+\begin{itemize}
+\item \url{https://github.com/courtiol/IsoriX}
+\bigskip
+\item \url{https://www.researchgate.net/project/IsoriX}
+\end{itemize}
+\end{Large}
 \end{frame}
 \end{document}
