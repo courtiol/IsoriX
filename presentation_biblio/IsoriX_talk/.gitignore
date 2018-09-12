@@ -1,0 +1,12 @@
+cache_knitr
+fig_knitr
+*.aux
+*.nav
+*.tex
+*.asc
+*.xml
+*.log
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
