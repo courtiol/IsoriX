@@ -1,0 +1,1300 @@
+\documentclass[xcolor=dvipsnames, aspectratio=1610, 9pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} % so that dollar sign does not turn into pound when italic!!
+\usepackage{amsmath,amssymb,lmodern} % nice T1 compatible fonts
+\usepackage[UKenglish]{babel}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{amsthm}
+\usepackage{xparse} % for starred forms of commands
+\usepackage{ragged2e}%pour justifier le text, après il suffit de tapper \justifying avant le paragraphe
+
+\setbeamertemplate{navigation symbols}{}%no nav symbols
+\usetheme{Madrid}%
+\def\R{{\Large \bf R}}
+
+\newcommand{\Esp}{\ensuremath{\mathrm{E}}}
+\newcommand{\Var}{\ensuremath{\textrm{Var}}}
+\newcommand{\Cov}{\ensuremath{\textrm{Cov}}}
+
+\newcommand{\F}{\texttt{Fix}}
+\newcommand{\Fg}{\texttt{Fix}_g}
+\newcommand{\Fphi}{\texttt{Fix}^{\mathrm{D}}}
+\newcommand{\Fphig}{\texttt{Fix}^{\mathrm{D}}_g}
+
+\newcommand{\Rig}{\texttt{Random}_{gi}} 
+\newcommand{\Rg}{\texttt{Random}_g}
+\newcommand{\Rj}{\texttt{Random}_j}
+
+\newcommand{\RS}{\texttt{RandomSpatial}}
+\newcommand{\RSg}{\texttt{RandomSpatial}_g}
+\newcommand{\RphiS}{\texttt{RandomSpatial}^{\mathrm{D}}}
+\newcommand{\RphiSg}{\texttt{RandomSpatial}^{\mathrm{D}}_g}
+
+\newcommand{\RNS}{\texttt{RandomUncorr}}
+\newcommand{\RNSig}{\texttt{RandomUncorr}_{gi}}
+\newcommand{\RNSg}{\texttt{RandomUncorr}_{g}}
+\newcommand{\RphiNS}{\texttt{RandomUncorr}^{\mathrm{D}}}
+\newcommand{\RphiNSg}{\texttt{RandomUncorr}^{\mathrm{D}}_{g}}
+
+\newcommand{\Eig}{\texttt{Error}_{gi}}
+\newcommand{\Ephi}{\texttt{Error}^{\mathrm{D}}}
+\newcommand{\Ephiig}{\texttt{Error}^{\mathrm{D}}_{gi}}
+\newcommand{\E}{\texttt{Error}}
+
+\newcommand{\resp}{\texttt{Source}_{gi}}
+\newcommand{\respdot}{\texttt{Source}_{g.}}
+
+\newcommand{\bF}{\beta_{0}}
+\newcommand{\blatF}{\beta_{\texttt{lat}}}
+\newcommand{\belevF}{\beta_{\texttt{elev}}}
+
+\newcommand{\lamRS}{\lambda_{\texttt{RS}}}
+\newcommand{\lamRNS}{\lambda_{\texttt{RU}}}
+
+\newcommand{\rhoRS}{\rho}
+\newcommand{\nuRS}{\nu}
+\newcommand{\bbet}{\boldsymbol{\beta}}
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bW}{\mathbf{W}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bdelta}{\boldsymbol{\delta}}
+\newcommand{\beps}{\boldsymbol{\epsilon}}
+
+\newcommand{\est}[1]{\expandafter\hat#1}
+\NewDocumentCommand{\disp}{smm}{ \IfBooleanTF{#1} {\hat{#2}^{\mathrm{D}}_{#3}} {{#2}^{\mathrm{D}}_{#3}} }
+\NewDocumentCommand{\bE}{s}{ \IfBooleanTF{#1} {\disp*{\beta}{0}} {\disp{\beta}{0}} }
+\NewDocumentCommand{\lamERS}{s}{ \IfBooleanTF{#1} {\disp*{\lambda}{\texttt{RS}}} {\disp{\lambda}{\texttt{RS}}} }
+\NewDocumentCommand{\lamERNS}{s}{ \IfBooleanTF{#1} {\disp*{\lambda}{\texttt{RU}}} {\disp{\lambda}{\texttt{RU}}} }
+\NewDocumentCommand{\rhoE}{s}{ \IfBooleanTF{#1} {\disp*{\rho}{}} {\disp{\rho}{}} }
+\NewDocumentCommand{\nuE}{s}{ \IfBooleanTF{#1} {\disp*{\nu}{}} {\disp{\nu}{}} }
+\NewDocumentCommand{\phiphi}{s}{ \IfBooleanTF{#1} {\disp*{\phi}{}} {\disp{\phi}{}} }
+\NewDocumentCommand{\phiE}{s}{ \IfBooleanTF{#1} {\hat{\phi}_{g}} {\phi_{g}} }
+
+\newcommand{\origin}{\texttt{o}}
+
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+
+\newcommand{\frp}[1]{\textcolor{purple}{\textbf{#1}}}
+\newcommand{\frm}[1]{\textcolor{red}{\st{#1}}}
+\newcommand{\frc}[1]{\textcolor{blue}{{[FR:\ #1]}}}
+
+\newcommand{\alexp}[1]{\textcolor{olive}{\textbf{#1}}}
+\newcommand{\alexm}[1]{\textcolor{orange}{\st{#1}}}
+\newcommand{\alexc}[1]{\textcolor{cyan}{{[Alex:\ #1]}}}
+
+\newcommand{\todo}[1]{\textcolor{green}{{[ToDo:\ #1]}}}
+\newcommand{\question}[1]{\textcolor{red}{{[\begin{Large}QUESTION:\end{Large}\ #1]}}}
+
+
+\AtBeginSection[]{%
+  \begin{frame}%
+    \setcounter{tocdepth}{2}
+    \frametitle{Table of contents}%
+    \tableofcontents[currentsection]%
+  \end{frame}%
+}%
+
+
+\AtBeginSubsection[]{%
+  \begin{frame}%
+    \setcounter{tocdepth}{2}
+    \frametitle{Table of contents}%
+    \tableofcontents[currentsubsection]%
+  \end{frame}%
+}%
+
+\title[\url{https://github.com/courtiol/IsoriX}]{{\Huge IsoriX}\\ an R package for isoscape computation and inference of spatial origins using mixed models}
+\author[]{The IsoriX core team}
+
+\date[]{\small September 2018}%
+
+\begin{document}
+<<initialization, echo=FALSE>>=
+options(width = 120)
+knitr::opts_chunk$set(cache = TRUE,
+                      cache.path = "./cache_knitr/", fig.path = "./fig_knitr/",
+                      width = "\\linewidth",
+                      fig.align = "center",
+                      dev = "CairoPNG", dpi = 500,
+                      size = "small")
+@
+
+
+\setlength{\topsep}{3pt}%space between input and output
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Table of contents}
+\tableofcontents
+\end{frame}
+
+\section{Generalities about IsoriX}
+
+\subsection{Why IsoriX?}
+
+\begin{frame}{Why IsoriX?}
+Benefits:
+\begin{itemize}
+\item fully reproducible methods \& results
+\item simple enough (but not too simple) and highly customizable
+\item compatible with Geographic Information System within and without \R
+\item cutting edge statistical methods
+\item works on Windows, MacOS, Linux, Unix; localy or remotely; with or without Internet
+\item free \& open source (anyone can use and improve IsoriX!)
+\end{itemize}
+\bigskip
+\pause
+Limits:
+\begin{itemize}
+\item \R \ knowledge required
+\item not multivariate (1 isotope only)
+\item not Bayesian (prior information not considered)
+\end{itemize}
+\end{frame}
+
+
+\subsection{What is IsoriX?}
+
+\begin{frame}[fragile]{What is IsoriX?}
+An \R \ package:
+\bigskip
+<<install, eval = FALSE>>=
+install.packages("IsoriX")  ## to install
+@
+
+<<library, size = "scriptsize">>=
+library(IsoriX)  ## to load
+@
+\end{frame}
+
+\begin{frame}[fragile, t]{What is IsoriX?}
+
+<<lines of code, echo = FALSE>>=
+files <- dir(paste0(system.file(package = "IsoriX"), "/R/"))
+filenames_R <- paste0(system.file(package = "IsoriX"), "/R/", files)
+linesofcode <- sum(sapply(filenames_R, function(file) R.utils::countLines(file)))
+@
+
+An interface between \R \ packages (without help files: only \Sexpr{linesofcode} lines of codes):
+\bigskip
+<<pre-dependencies, echo = FALSE>>=
+options(repos = "https://cran.rstudio.com/")
+@
+
+<<dependencies, size = "scriptsize">>=
+tools::package_dependencies("IsoriX") ## note: list dependencies, not suggested packages
+@
+\vfill
+\begin{itemize}
+\item numDeriv, {\bf spaMM}, stats (for statistical computation)
+\item {\bf raster}, sp (for GIS)
+\item graphics, grDevices, grid, lattice, latticeExtra, {\bf rasterVis}, viridisLite (for plotting)
+\item tools, utils (for small geeky details)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile, t]{What is IsoriX?}
+A collection of functions:
+\bigskip
+<<functions, size = "tiny">>==
+setdiff(ls("package:IsoriX"), data(package = "IsoriX")$results[, "Item"])  ## note: does not show methods and unexported functions
+@
+\vfill
+\pause
+\begin{small}
+The main ones being:
+\begin{enumerate}
+\item \verb+prepsources()+
+\item \verb+isofit()+
+\item \verb+prepraster()+
+\item \verb+isoscape()+
+\item \verb+calibfit()+
+\item \verb+isofind()+
+\end{enumerate}
+\end{small}
+\vfill
+All these functions (as well as the methods behind \verb+plot()+) are documented!
+
+So you can type e.g. \verb+?prepsources()+ to get help.
+\end{frame}
+
+
+\begin{frame}[fragile, t]{What is IsoriX?}
+A collection of data to try things out or to make plots nicer:
+\bigskip
+<<datasets, size = "scriptsize">>==
+data(package = "IsoriX")$results[, c("Item", "Title")]
+@
+\vfill
+\pause
+And of course you can use your own data, that is the whole point!
+\end{frame}
+
+
+\begin{frame}[fragile, t]{What is IsoriX?}
+A project that aims at becoming a collaborative platform:
+\vfill
+\begin{center}
+\begin{Large}
+\url{www.github.com/courtiol/IsoriX}
+\end{Large}
+\end{center}
+\vfill
+\end{frame}
+
+
+\subsection{Help?}
+
+\begin{frame}[fragile, t]{Where can you learn about IsoriX?}
+\begin{columns}[t]
+\column{0.5\linewidth}
+\begin{itemize}
+\item In our book chapter
+\end{itemize}
+\begin{center}
+\includegraphics[height = 0.7\textheight]{"figures/cover"}\\
+Note: only in the 2nd edition of the book.
+\end{center}
+\column{0.5\linewidth}
+\begin{itemize}
+\item In the package documentation 
+<<help, eval = FALSE>>=
+help(package = 'IsoriX')
+@
+\vfill
+\item In our (growing) bookdown
+\end{itemize}
+\vfill
+\begin{center}
+\url{https://bookdown.org/content/782/}
+\end{center}
+\vfill
+\end{columns}
+\end{frame}
+
+
+\section{Standard workflow}
+
+\begin{frame}[fragile]{Standard workflow in 6 main functions}
+\begin{enumerate}
+\item Prepare the source data with \texttt{prepsources()}
+\item Fit the Isoscape model with \texttt{isofit()}
+\item Prepare the structural raster with \texttt{prepraster()}
+\item Predict the isoscape with \texttt{isoscape()}
+\item Fit the calibration function with \texttt{calibfit()}
+\item Perform the assignment with \texttt{isofind()}
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[label=workflow, plain]
+\centering
+\includegraphics[height=\textheight]{"figures/workflow"}
+\end{frame}
+
+\subsection{Step 1. Prepare the source data}
+
+\begin{frame}[label=isoscape, plain]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/mean}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 1. Prepare the source data}
+1a. Retrieve (e.g. from GNIP)/Collect data and shape them as the toy dataset \verb+GNIPDataDE+:
+<<GNIPDataDE>>=
+head(GNIPDataDE)
+tail(GNIPDataDE)
+@
+\vfill
+To avoid troubles:
+\begin{itemize}
+\item use a \verb+data.frame+ (and not a \verb+tibble+ or a matrix)
+\item \verb+source_ID+ better be a factor
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 1. Prepare the source data}
+1b. Use \texttt{prepsources()} to aggregate (and filter) the data:
+<<prepsources fake, eval = FALSE>>=
+prepsources(
+  data,
+  month = 1:12, year,
+  long_min, long_max, lat_min, lat_max,
+  split_by = NULL,
+  prop_random = 0, random_level = "source",
+  col_source_value = "source_value",
+  col_source_ID = "source_ID", col_lat = "lat", col_long = "long",
+  col_elev = "elev", col_month = "month", col_year = "year"
+  ) 
+@
+\vfill
+\pause
+Example:
+<<prepsources real>>=
+GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+@
+
+<<prepsources real 2>>=
+head(GNIPDataDEagg)
+@
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 1. Prepare the source data}
+1c. Check your data (it is always a good idea to plot your data!)
+<<check source data, fig.show = "hold", out.width = "5cm", out.height = "5cm", size = "tiny">>=
+library(sp) ## for plotting polygons
+
+plot(CountryBorders, xlim = range(GNIPDataDEagg$long), ylim = range(GNIPDataDEagg$lat), col = "lightgrey", main = "Mean")
+text(x = GNIPDataDEagg$long, y = GNIPDataDEagg$lat, labels = round(GNIPDataDEagg$mean_source_value, digits = 1), col = "blue", cex = 1.5, font = 2)
+
+plot(CountryBorders, xlim = range(GNIPDataDEagg$long), ylim = range(GNIPDataDEagg$lat), col = "lightgrey", main = "SD")
+text(x = GNIPDataDEagg$long, y = GNIPDataDEagg$lat, labels = round(sqrt(GNIPDataDEagg$var_source_value), digits = 1), col = "blue", cex = 1.5, font = 2)
+
+plot(CountryBorders, xlim = range(GNIPDataDEagg$long), ylim = range(GNIPDataDEagg$lat), col = "lightgrey", main = "N")
+text(x = GNIPDataDEagg$long, y = GNIPDataDEagg$lat, labels = GNIPDataDEagg$n_source_value, col = "blue", cex = 1.5, font = 2)
+@
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 1. Prepare the source data}
+The most important questions you must answer: 
+\begin{itemize}
+\item Which years?
+\item Which months?
+\item Which geographic area?
+\item Weighted by precipitation or not? If yes 2 possibilities, before or after fitting:
+\begin{itemize}
+\item before: do the aggregation yourself (for now)\\ NB: don't forget to rise the weights to the square when averaging variances!
+\item after: using \texttt{split\_by} and later on \texttt{isomultifit} and \texttt{isomultiscape} (but not ready yet for calibration)
+\end{itemize}
+\end{itemize}
+\vfill
+\pause
+Issue: 
+\begin{itemize}
+\item More data = more signal or more noise?
+\end{itemize}
+\vfill
+\pause
+Examples:
+\begin{itemize}
+\item The isotopic signature in an environment at time $t$ is not solely influenced by the precipitation at time $t$.
+\item Too small area leads to extrapolation which is unreliable but too large leads to impose a single model over several regions that may differ in how the environment relates to isotopes.
+\end{itemize}
+\vfill
+\pause
+Note:
+\begin{itemize}
+\item In IsoriX it is easy to change a given line of code and re-run your entire workflow to study the impact of your choices.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 1. Prepare the source data}
+Uncertainty check list:
+\begin{itemize}
+\item[\checkmark] variation across space
+\item[\checkmark] variation across years and months
+\item[$\times$] variation within months (includes technical variation)
+\end{itemize}
+\vfill
+\pause
+Remember:
+\begin{itemize}
+\item Always try to be explicit about which sources of uncertainty are acounted for and which are not!
+\item No work can consider them all, so it is worth recognising and discussing the limitations of any approach.
+\item Being open source, in IsoriX, with a little effort you can figure out which assumptions are being made.
+\end{itemize}
+\end{frame}
+
+
+\subsection{Step 2. Fit the isoscape}
+
+\againframe{workflow}
+
+\againframe{isoscape}
+
+
+\begin{frame}[t]{Step 2. Fit the isoscape}
+The statistical model(s) behind the isoscape:
+\begin{small}
+\begin{itemize}[<+->]
+\item Mean model (LMM):
+$$
+\resp = \Fg + \Rg + \Eig
+$$
+\vfill
+\item where
+\begin{flalign*}
+\Fg & = \bF + \blatF \times \left|\texttt{lat}\right|_g + \belevF \times \texttt{elev}_g\\
+\Rg & = \RSg + \RNSg
+\end{flalign*}
+and
+$$
+\texttt{Correlation}(\RS_a,\RS_b) = \texttt{Matern}(d_{ab}, \rhoRS, \nuRS)
+$$
+\vfill
+\item  Residual dispersion model (disp model; $\Gamma$ GLMM):
+$$
+\Esp\left(\E_{gi}^2\right) = \exp\left(\Fphig + \RphiSg + \RphiNSg\right)
+$$
+\end{itemize}
+\end{small}
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 2. Fit the isoscape}
+2a. Use \texttt{isofit()} to fit the geostatistical model(s):
+<<isofit fake, eval = FALSE>>=
+isosfit(
+  data,
+  mean_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE),
+  disp_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE), 
+  mean_model_rand = list(uncorr = TRUE, spatial = TRUE),
+  disp_model_rand = list(uncorr = TRUE, spatial = TRUE),
+  uncorr_terms = list(mean_model = "lambda", disp_model = "lambda"),
+  spaMM_method = list(mean_model = "fitme", disp_model = "fitme"),
+  dist_method = "Earth",
+  control_mean = list(), 
+  control_disp = list(),
+  verbose = interactive()
+  )
+@
+\vfill
+\pause
+Example:
+<<isofit real>>=
+GermanFit <- isofit(data = GNIPDataDEagg,
+                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+@
+
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 2. Fit the isoscape}
+2b. Check the fitted geostatistical model(s):
+<<isofit exploration>>=
+names(GermanFit)
+@
+
+<<isofit meanfit, size = "tiny">>=
+GermanFit$mean_fit
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 2. Fit the isoscape}
+2b. Check the fitted geostatistical model(s):
+<<isofit exploration2, fig.show = "hold", out.width = "0.5\\linewidth">>=
+plot(GermanFit)
+@
+\end{frame}
+
+\begin{frame}[t, fragile]{Step 2. Fit the isoscape}
+2c. You can compare the predictive power of different fitted model(s):
+<<isofit 2>>=
+GermanFit2 <- isofit(data = GNIPDataDEagg,
+                     mean_model_fix = list(elev = TRUE, lat_abs = FALSE))
+@
+
+<<isofit AICc fake 1, eval = FALSE>>=
+AIC(GermanFit$mean_fit)
+@
+
+<<isofit AICc real 1, echo = FALSE>>=
+print(AIC(GermanFit$mean_fit))
+@
+
+<<isofit AICc fake 2, eval = FALSE>>=
+AIC(GermanFit2$mean_fit)
+@
+
+<<isofit AICc real 2, echo = FALSE>>=
+print(AIC(GermanFit2$mean_fit))
+@
+\vfill
+\pause
+Note:
+\begin{itemize}
+\item Use the conditional AIC (cAIC, which is different from AICc!) as it takes into account of the realization of the random effects.
+\pause
+\item If you compare models with different structures for the residual dispersion model, you must correct the cAIC of the mean model by adding to it twice the number of parameters of the residual dispersion model. Here this latter model has 5 parameters (1 intercept, 2 variances of random effects, 2 correlation parameters for the Matern). [Better always correct the cAIC value, even if residual dispersion models are the same to get unbiased estimates of the cAIC]
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t,fragile]{Step 2. Fit the isoscape}
+The most important questions you must answer:
+\bigskip
+\begin{itemize}
+\item Did the models fit properly your data?
+\item Which model structure?
+\end{itemize}
+\bigskip
+\pause
+Issue:
+\begin{itemize}
+\item More parameters = more signal or more noise?
+\end{itemize}
+\bigskip
+\pause
+Note:
+\begin{itemize}
+\item The optimal model depends on your data!
+\item As before, in IsoriX it is easy to change a given line of code and re-run your entire workflow to study the impact of your choices.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 2. Fit the isoscape}
+Uncertainty check list:
+\bigskip
+\begin{itemize}
+\item mean fit
+\begin{itemize}
+\item[\checkmark] uncertainty in fixed-effect estimates
+\item[\checkmark] uncertainty in random-effect estimates
+\item[$\times$] uncertainty in correlation parameters
+\item[\checkmark/$\times$] residual variation
+\end{itemize}
+\bigskip
+\pause
+\item residual dispersion fit
+\begin{itemize}
+\item[\checkmark] mean residual variation at a given location
+\item[$\times$] uncertainty in this residual variation
+\end{itemize}
+\end{itemize}
+\vfill
+\pause
+Note:
+\begin{itemize}
+\item Most of these uncertainties are neglected from alternative approaches!
+\item Some of these uncertainties are huge!!
+\end{itemize}
+\end{frame}
+
+
+\subsection{Step 3. Prepare the sructural raster}
+
+\againframe{workflow}
+
+\againframe{isoscape}
+
+
+\begin{frame}[t, fragile]{Step 3. Prepare the structural raster}
+3a. Download your raw structural raster (e.g. an elevation raster):\\
+\bigskip
+The structural raster is ultimately used to provide the locations and covariates for predictions!\\
+\bigskip
+That is easiest if you want to use our own one (from Global Multi-resolution Terrain Elevation Data 2010):
+<<get elev, eval = FALSE>>=
+getelev(path = "~/Desktop/")
+@
+<<get elev real, echo = FALSE>>=
+if (!file.exists("~/Desktop/gmted2010_30mn.tif")) {
+  getelev(path = "~/Desktop/")
+}
+@
+<<world elev>>=
+ElevWorld <- raster("~/Desktop/gmted2010_30mn.tif")  ## turn the tif into raster
+@
+<<world elev show>>=
+ElevWorld
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 3. Prepare the structural raster}
+3b. Use \texttt{prepraster()} to aggregate and resize the structural raster:\\
+\bigskip
+<<prepraster fake, eval = FALSE>>=
+prepraster(
+  raster,
+  isofit = NULL,
+  margin_pct = 5,
+  aggregation_factor = 0L, 
+  aggregation_fn = mean,
+  manual_crop = NULL,
+  verbose = interactive()
+  ) 
+@
+\vfill
+\pause
+Example:
+<<prepraster real>>=
+ElevRasterDE <- prepraster(ElevWorld, isofit = GermanFit, aggregation_factor = 5)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 3. Prepare the structural raster}
+3c. Check the obtained the structural raster:\\
+<<plot_elev1, out.height = "6.5cm", out.width = "6.5cm">>=
+plot(ElevRasterDE)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 3. Prepare the structural raster}
+3c. Check the obtained the structural raster:\\
+<<plot_elev2, out.height = "6.5cm", out.width = "6.5cm">>=
+levelplot(ElevRasterDE, margin = FALSE) +
+  layer(sp.polygons(CountryBorders, col = "white")) +
+  layer(sp.polygons(OceanMask, fill = "cyan")) +
+  xyplot(GNIPDataDEagg$lat ~ GNIPDataDEagg$long, col = "pink")
+@
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 3. Prepare the structural raster}
+The most important questions you must answer:
+\bigskip
+\begin{itemize}
+\item Over which geographic area you want to draw an isoscape?
+\item At which resolution?
+\item Using which aggegation function?
+\end{itemize}
+\bigskip
+\pause
+Issue:
+\begin{itemize}
+\item Higher resolution = more precise, but requires more computer memory and computation time
+\item For the aggregation function, the mean is not always the best (it depends on the question!)
+\end{itemize}
+\bigskip
+\pause
+Recommendations:
+\begin{itemize}
+\item Start coarse
+\item Then make try to get quite fine if you can!
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Step 3. Prepare the structural raster}
+Uncertainty check list:
+\begin{itemize}
+\item[$\times$] uncertainty behind the raw raster\\ (as isoscapes, structural rasters are the results of some smoothing procedure which contains uncertainty)
+\item[\checkmark] variation between the cells of the processed raster
+\item[$\times$] variation within the cells of the processed raster
+\end{itemize}
+\vfill
+\pause
+Recommendations:
+\begin{itemize}
+\item Get to know how the raster you use has been created:
+\begin{itemize}
+\item Which uncertainty? (not just the average one)
+\item Which smoothing or aggregation function?
+\end{itemize}
+\item Increasing the resolution reduces the variance not considered!
+\end{itemize}
+\end{frame}
+
+
+
+\subsection{Step 4. Predict the isoscape}
+
+\againframe{workflow}
+
+\againframe{isoscape}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4a. Use \texttt{isoscape()} predicts the isoscape:
+<<isoscape fake, eval = FALSE>>=
+isoscape(
+  raster,
+  isofit,
+  verbose = interactive()
+  ) 
+@
+\vfill
+\pause
+Example:
+<<isoscape real>>=
+GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+@
+<<isoscape show>>=
+names(GermanScape)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Step 4. Predict the isoscape}
+There are 8 rasters behind the isoscape:
+<<isoscape show2, size = "scriptsize">>=
+GermanScape$isoscapes
+@
+\vfill
+\pause
+\begin{itemize}
+\item \textcolor{blue}{\texttt{mean} = prediction of the mean isotopic value}
+\item \textcolor{blue}{\texttt{mean\_predVar} = quantify the uncertainty associated to \texttt{mean}}
+\item \textcolor{blue}{\texttt{mean\_residVar} = prediction of the variance between new observations}
+\pause
+\item \texttt{mean\_respVar} = \texttt{mean\_predVar} + \texttt{mean\_residVar}
+\item \texttt{disp} = \texttt{mean\_residVar}
+\item \texttt{disp\_predVar} = quantify the uncertainty associated to \texttt{disp}
+\item \texttt{disp\_residVar} = 2
+\item \texttt{disp\_respVar} = exp(\texttt{disp\_predVar} + \texttt{disp\_residVar})
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<plot.ISOSCAPE fake, eval = FALSE>>=
+plot.ISOSCAPE(
+  x,
+  which   = "mean",
+  y_title = list(which = TRUE, title = bquote(delta^2 * H)),
+  sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
+  borders = list(borders = NA, lwd = 0.5, col = "black"), 
+  mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"), 
+  palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
+  plot    = TRUE,
+  sphere  = list(build = FALSE, keep_image = FALSE),
+  ...
+  ) 
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<mean pred, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<predVar pred, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape, which = "mean_predVar")
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape, which = "mean_residVar")
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred2, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     palette = list(fn = rainbow))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred3, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     palette = list(fn = NULL))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred4, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     palette = list(fn = NULL, step = 1))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred4b, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     palette = list(fn = NULL, step = 10, range = c(-110, -40)))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred5, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     palette = list(fn = NULL, step = 10, range = c(-110, -40), n_labels = 3))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred6, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     sources = list(draw = TRUE, cex = 2, pch = 5, lwd = 2, col = "white"))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred7, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     mask  = list(fill = "orange"))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred8, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     mask  = list(mask = NULL))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+4b. Plot the rasters with \texttt{plot()}:
+<<residVar pred9, out.height = "7cm", out.width = "7cm">>=
+plot(GermanScape,
+     mask  = list(mask = rbind(OceanMask, CountryBorders[names(CountryBorders) != "Germany"]),
+                  fill = "orange"))
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 4. Predict the isoscape}
+If the plotting possibilities of IsoriX are not good enough for you, you can always export the raster for other GIS software (e.g. QGIS).\\
+\bigskip
+Example:
+<<export GIS>>=
+library(raster)
+
+writeRaster(GermanScape$isoscapes$mean,
+            filename = "GermanScape.asc",
+            format = "ascii",
+            overwrite = TRUE,
+            NAflag = -9999)
+
+writeRaster(GermanScape$isoscapes$mean,
+            filename = "GermanScape.tif",
+            format = "GTiff",
+            overwrite = TRUE,
+            NAflag = -9999)
+@
+<<unload raster, echo = FALSE>>=
+detach(package:raster)
+@
+\vfill
+Note: you can also export other spatial objects included or created with IsoriX.
+\end{frame}
+
+
+\begin{frame}[fragile]{Step 4. Predict the isoscape}
+Uncertainty check list $\rightarrow$ same as for \texttt{isofit} (cf Step 2).\\
+\vfill
+\pause
+The most important questions you must answer:
+\bigskip
+\begin{itemize}
+\item How many colours?
+\item Which colours?
+\end{itemize}
+\vfill
+\pause
+Recommendation:
+\begin{itemize}
+\item Perceptually uniform palettes are best
+\item Think of B\&W print, think of colour-blind people
+\end{itemize}
+\end{frame}
+
+\subsection{Step 5. Fit the calibration function}
+
+\againframe{workflow}
+
+\againframe{isoscape}
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5a. Prepare your calibration data:
+<<calib data>>=
+head(CalibDataBat)
+@
+
+<<calib data2>>=
+str(CalibDataBat)
+@
+\vfill
+Note: you need several replicates per location!
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5b. Check your calibration data:
+<<calib data check, out.height = "6cm", out.width = "6cm">>=
+plot(CountryBorders, xlim = range(CalibDataBat$long), ylim = range(CalibDataBat$lat))
+plot(CountryBorders["Germany"], col = "orange", add = TRUE)
+plot(SpatialPoints(coords = CalibDataBat[, c("long", "lat")]), col = "blue", pch = 20, add = TRUE)
+@
+Note: this is NOT good! (but we will do with that for this tutorial)
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5b. Check your calibration data:
+<<calib data check2, out.height = "5cm", out.width = "12cm", fig.width = 12, fig.height = 5>>=
+IsoPredicted <- values(GermanScape$isoscapes$mean)
+IsoAtBats <- extract(GermanScape$isoscapes$mean, SpatialPoints(coords = CalibDataBat[, c("long", "lat")]))
+hist(IsoPredicted, nclass = 1000, main = "", xlab = "Deuterium")
+rug(IsoAtBats, col = "red", lwd = 2)
+legend("topleft", fill = c("red", "black"), legend = c("sampled locations", "predicted locations"))
+@
+Note: this is quite good but very few points are considered (only the German ones).
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5b. Check your calibration data:
+<<calib data check3, out.height = "6cm", out.width = "6cm">>=
+IsoPredictedPredVar <- values(GermanScape$isoscapes$mean_predVar)
+plot(x = IsoPredicted, y = IsoPredictedPredVar, xlab = "Predicted mean", ylab = "PredVar")
+rug(IsoAtBats, col = "red", lwd = 2)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5b. Check your calibration data:
+<<calib data check4, out.height = "6cm", out.width = "6cm">>=
+plot(GermanScape, plot = FALSE) +
+  xyplot(CalibDataBat$lat ~ CalibDataBat$long,
+         pch = 13, col = "white", cex = 2, lwd = 2, panel = panel.points)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5c. Use \texttt{calibfit()} to fit the calibration function:
+<<eval=FALSE>>=
+calibfit(
+  data,
+  isofit,
+  verbose = interactive(),
+  control_optim = list()
+  )
+@
+\vfill
+\pause
+Example:
+<<calibfit>>=
+CalibBats <- calibfit(data = CalibDataBat, isofit = GermanFit)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5d. Check the fitted the calibration model:
+<<calibfit show, size = "scriptsize">>=
+CalibBats
+@
+\vfill
+\pause
+The model is quite complex\dots\\
+\bigskip
+We would like to fit the model
+$\text{calib}_{gi} = \beta^\text{C}_0 + \beta^\text{C}_{\delta}\delta_g+\epsilon^{\text{C}}_{gi}.$
+\vfill
+However we often don't have $\delta_g$, but only $\hat{\delta}_g$ and you should not fit 
+$\text{calib}_{gi} = \beta^\text{C}_0 + \beta^\text{C}_{\delta}\hat{\delta}_g+\varepsilon^{\text{C}}_{gi},$
+because there is error on $y$ (usual) but also on $x$ (violating exogeneity assumption).
+\vfill
+Which leads us to
+$\text{calib}_{gi} = \beta^{\text{C}}_0 + \beta^{\text{C}}_{\delta}\hat{\delta}_g+\beta^{\text{C}}_{\delta}\left(\delta_g - \hat{\delta}_g\right)  + \epsilon^{\text{C}}_{gi},$
+where difference $\delta_g - \hat{\delta}_g$ represents the prediction error of the mean source value at the sampling location $g$ by the mean fit. We deduce the prediction error from the prediction covariance matrix (hence the square above).
+\end{frame}
+
+\begin{frame}[t, fragile]{Step 5. Fit the calibration function}
+5d. Check the fitted the calibration model:
+<<calibfit plot, out.height = "6cm", out.width = "6cm", fig.width = 6, fig.height = 6>>=
+plot(CalibBats)
+@
+Note: this looks bad, but in fact it is increadibly good! Despite huge extrapolation, the fit is very close to a calibration fitted on an european isoscape (see \url{https://bookdown.org/content/782/calibration.html}). The reason why it works so well is that the uncertainty in $x$ is accounted for.
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Step 5. Fit the calibration function}
+The most important questions you must answer:
+\bigskip
+\begin{itemize}
+\item How to get the best possible calibration data?
+\item Do they sample the full range of predicted source isoscape values?
+\item Are the samples of similar type than the ones you want to assign?
+\begin{itemize}
+\item same species?
+\item same reproductive state?
+\item same age?
+\item same diet?
+\item \dots
+\end{itemize}
+\end{itemize}
+\pause
+\vfill
+Recommendation:
+\begin{itemize}
+\item do your very best, this is a critical step.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Step 5. Fit the calibration function}
+Uncertainty check list:
+\bigskip
+\begin{itemize}
+\item[\checkmark] uncertainty in the isoscape
+\item[\checkmark] uncertainty in the intercept and slope of the calibration function
+\item[\checkmark] residual uncertainty
+\end{itemize}
+\end{frame}
+
+
+\subsection{Step 6. Perform the assignment}
+
+\againframe{workflow}
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+6a. Prepare your assignment data:
+<<AssignDataBat>>=
+AssignDataBat
+@
+\vfill
+Our question: among the bats found dead at the bottom of wind turbines, could some be migratory bats?
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+6b. Use \texttt{isofind()} to perform the assignment tests:
+<<isofind fake, eval = FALSE>>=
+isofind(
+  data,
+  isoscape,
+  calibfit = NULL,
+  mask = NA,
+  verbose = interactive()
+  )
+@
+\vfill
+\pause
+Example:
+<<isofind real>>=
+AssignedBats <- isofind(data = AssignDataBat, isoscape = GermanScape, calibfit = CalibBats)
+
+names(AssignedBats)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+\texttt{isofit()} returns the result of the assignment test for each sample:
+<<isofind output1, size = "tiny">>=
+AssignedBats$sample
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+Some important facts about the assignment test:
+\begin{itemize}[<+->]
+\item The test is performed at the level of each sample and each cell defined by the structural raster.
+\item The test statistics is provides the difference between the predicted isoscape value at the origin location and the predicted isoscape value at the location under consideration.
+\item The null hypothesis of the test is that the sample comes from the cell being examined.
+\item A large p-value (i.e. non significant) indicates \alert{support} for the null hypothesis.
+\item A small p-value (i.e. significant) indicates the rejection of the null hypothesis.
+\end{itemize}
+\vfill
+\pause
+Note:
+\begin{itemize}[<+->]
+\item A very high p-value does not imply certainty of the location of origin, only that the isotopic signature between the location of origin and the location under evaluation are similar.
+\item A lack of rejection may stem from a good match, a large uncertainty, or both.
+\item The statistics behind the test are quite complex; see Appendix of book chapter.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+You can easily extract the outcome of the assignment test in the cell corresponding to a given location!
+\vfill
+Example 1: may the first bat (\texttt{Nnoc\_1}) come from where it has been found?
+<<first bat>>=
+extract(AssignedBats$sample$stat[[1]], cbind(AssignDataBat$long[1], AssignDataBat$lat[1]))
+extract(AssignedBats$sample$pv[[1]], cbind(AssignDataBat$long[1], AssignDataBat$lat[1]))
+@
+Answer: it is possible (we cannot reject the proposition).
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+You can easily extract the outcome of the assignment test in the cell corresponding to a given location!
+\vfill
+Example 2: may the bat 13 (\texttt{Nnoc\_15}) come from where it has been found?
+<<bat 13>>=
+extract(AssignedBats$sample$stat[[13]], cbind(AssignDataBat$long[13], AssignDataBat$lat[13]))
+extract(AssignedBats$sample$pv[[13]], cbind(AssignDataBat$long[13], AssignDataBat$lat[13]))
+@
+Answer: it is very unlikely (we can reject the proposition).
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+You can easily extract the outcome of the assignment test in the cell corresponding to a given location!
+\vfill
+Example 3: which bats are unlikely to come from where they have been found?
+<<all bats>>=
+Pvalues <- sapply(1:nrow(AssignDataBat),
+                  function(i) extract(AssignedBats$sample$pv[[i]],
+                                       cbind(AssignDataBat$long[i],
+                                             AssignDataBat$lat[i])))
+AssignDataBat$sample_ID[Pvalues <= 0.05]
+@
+Answer: only \texttt{Nnoc\_15} seem to be a migrant.
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+\texttt{isofind()} returns the result of the assignment test for the whole group of samples:
+<<isofind output2>>=
+AssignedBats$group
+@
+\vfill
+Note:\\
+The null hypothesis is here that all samples come from the location being examined (so it can often be rejected anywhere).
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+6c. Plot the assignment tests with \texttt{plot()}:
+<<plot.ISOFIND, eval = FALSE>>=
+plot(
+  x,
+  who     = "group",
+  cutoff  = list(draw = TRUE, level = 0.05, col = "#909090"),
+  sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
+  calibs  = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
+  assigns = list(draw = TRUE, cex = 0.5, pch = 5, lwd = 1, col = "white"),
+  borders = list(borders = NA, lwd = 0.5, col = "black"),
+  mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+  mask2   = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
+  palette = list(step = NA, range = c(0, 1), n_labels = 11, digits = 2, fn = NA),
+  plot    = TRUE,
+  sphere  = list(build = FALSE, keep_image = FALSE),
+  ...
+  )
+@
+\vfill
+It is quite similar to the function plotting the isoscapes.
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+6c. Plot the assignment tests with \texttt{plot()}:
+<<plot_indiv_assign, out.height = "8cm", out.width = "8cm">>=
+plot(AssignedBats, who = 1:14)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+6c. Plot the assignment tests with \texttt{plot()}:
+<<plot_Nnoc_15_assign, out.height = "7.5cm", out.width = "7.5cm", size = "scriptsize">>=
+plot(AssignedBats, who = "Nnoc_15", plot = FALSE) +
+    xyplot(AssignDataBat$lat[AssignDataBat$sample_ID == "Nnoc_15"] ~ AssignDataBat$long[AssignDataBat$sample_ID == "Nnoc_15"],
+         pch = 13, col = "white", cex = 2, lwd = 2, panel = panel.points)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+6c. Plot the assignment tests with \texttt{plot()}:
+<<plot_group_assign, out.height = "7.5cm", out.width = "7.5cm", size = "scriptsize">>=
+plot(AssignedBats) ## plot the group assignment
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Step 6. Perform the assignment}
+We can rerun the group assignment without \texttt{Nnoc\_15}:
+<<new_group_assign, out.height = "7.5cm", out.width = "7.5cm", size = "scriptsize">>=
+AssignDataBat2 <- subset(AssignDataBat, sample_ID != "Nnoc_15")
+AssignedBats2 <- isofind(data = AssignDataBat2, isoscape = GermanScape, calibfit = CalibBats)
+plot(AssignedBats2)
+@
+\end{frame}
+
+
+\subsection{Summary}
+
+\againframe{workflow}
+
+
+\begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
+<<all in one, size = "scriptsize">>=
+## GNIPDataEUagg is readily available in IsoriX (already prepared)
+EuropeFit      <- isofit(data = GNIPDataEUagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+ElevEurope     <- prepraster(raster = ElevWorld, isofit = EuropeFit, aggregation_factor = 10)
+EuropeIsoscape <- isoscape(raster = ElevEurope, isofit = EuropeFit)
+CalibBatsEU    <- calibfit(data = CalibDataBat, isofit = EuropeFit)
+Assigned15     <- isofind(data = subset(AssignDataBat, sample_ID == "Nnoc_15"),
+                          isoscape = EuropeIsoscape, calibfit = CalibBatsEU)
+@
+\end{frame}
+
+
+\begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
+<<all_in_one_plot, out.height = "7.5cm", out.width = "7.5cm", size = "scriptsize">>=
+plot(Assigned15)
+@
+\end{frame}
+
+
+\section{Future of IsoriX}
+
+\begin{frame}{Life of IsoriX}
+Official releases:
+\begin{small}
+\begin{itemize}
+\item IsoriX 0.4-1: stable version (1$^\text{st}$ submission to CRAN, 11/09/2016)
+\item IsoriX 0.4-2: development version
+\end{itemize}
+\end{small}
+\vfill
+Soon:
+\begin{small}
+\begin{itemize}
+\item more tutorials and better help files
+\item supporting publications
+\item optional calibration
+\item 3D plots
+\item map projections
+\item finer statistical methods (DHGLM)
+\end{itemize}
+\end{small}
+\end{frame}
+
+\begin{frame}{To follow the development of IsoriX}
+\centerline{
+\url{https://github.com/courtiol/IsoriX}
+}
+\end{frame}
+\end{document}
