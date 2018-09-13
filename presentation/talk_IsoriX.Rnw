@@ -1327,6 +1327,8 @@ plot(Assigned15)
 \vfill
 \item Easier functions for weighting by precipitation amount.
 \vfill
+\item More predictors (e.g. temperature).
+\vfill
 \item Additional plotting functions (e.g. to check calibration fit).
 \vfill
 \item Full assignment variance (include a complex covariance term).
