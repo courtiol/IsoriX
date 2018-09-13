@@ -438,7 +438,6 @@ Remember:
 
 \begin{frame}[t]{Step 2. Fit the isoscape}
 The statistical model(s) behind the isoscape:
-\begin{small}
 \begin{itemize}[<+->]
 \item Mean model (LMM):
 $$
@@ -460,7 +459,9 @@ $$
 \Esp\left(\E_{gi}^2\right) = \exp\left(\Fphig + \RphiSg + \RphiNSg\right)
 $$
 \end{itemize}
-\end{small}
+\vfill
+\pause
+Note: $d_{ab}$ is (by default) measured accounting for the curvature of the Earth.
 \end{frame}
 
 
@@ -1140,6 +1141,7 @@ Some important facts about the assignment test:
 Note:
 \begin{itemize}[<+->]
 \item A very high p-value does not imply certainty of the location of origin, only that the isotopic signature between the location of origin and the location under evaluation are similar.
+\item It is possible that all candidate locations are rejected! (unlike relative Bayesian probabilities)
 \item A lack of rejection may stem from a good match, a large uncertainty, or both.
 \item The statistics behind the test are quite complex; see Appendix of book chapter.
 \end{itemize}
