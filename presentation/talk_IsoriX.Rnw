@@ -267,6 +267,30 @@ help(package = 'IsoriX')
 \end{frame}
 
 
+\begin{frame}{Is IsoriX better than alternatives?}
+\begin{itemize}
+\item All methods differ in some details\\
+(e.g. IsoriX does smoothing, not interpolation)
+\item All methods differ in their set of assumptions\\
+(some uncertainties are considered, some are discarded)
+\end{itemize}
+\vfill
+\pause
+Conclusion:
+\begin{itemize}
+\item A single method is unlikely to be best accross all situations
+\item Run several methods on your data!
+\end{itemize}
+\pause
+\vfill
+What to do?
+\begin{itemize}
+\item if all methods give you the same answer, you have a robust result $\rightarrow$  great!
+\item if they don't, try to figure out which assumption(s) introduce the difference and figure out in which respect your data contradict the identified assumption(s)\\ $\rightarrow$ you will better understand the biology/geology/\dots in your system $\rightarrow$  great!
+\end{itemize}
+\end{frame}
+
+
 \section{Standard workflow}
 
 \begin{frame}[fragile]{Standard workflow in 6 main functions}
