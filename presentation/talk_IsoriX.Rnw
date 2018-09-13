@@ -125,11 +125,12 @@ knitr::opts_chunk$set(cache = TRUE,
 
 \begin{frame}{Why IsoriX?}
 Benefits:
-\begin{itemize}
+\begin{itemize}[<+->]
 \item fully reproducible methods \& results
-\item simple enough (but not too simple) and highly customizable
+\item as simple as necessary (but not too beyond that)
+\item each step of the analysis can be thoroughly studied
+\item cutting edge statistical methods accounting for many source of uncertainties
 \item compatible with Geographic Information System within and without \R
-\item cutting edge statistical methods
 \item works on Windows, MacOS, Linux, Unix; localy or remotely; with or without Internet
 \item free \& open source (anyone can use and improve IsoriX!)
 \end{itemize}
@@ -138,6 +139,7 @@ Benefits:
 Limits:
 \begin{itemize}
 \item \R \ knowledge required
+\item a little stable isotope knowledge required
 \item not multivariate (1 isotope only)
 \item not Bayesian (prior information not considered)
 \end{itemize}
@@ -1263,20 +1265,20 @@ Uncertainty check list:
 
 
 \begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
-The whole workflow only takes 5 or 6 line of codes:
+The whole workflow only takes a few line of code:
 \bigskip
-<<all in one, size = "scriptsize">>=
-## GNIPDataEUagg is readily available in IsoriX (already prepared)
-EuropeFit      <- isofit(data = GNIPDataEUagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-ElevEurope     <- prepraster(raster = ElevWorld, isofit = EuropeFit, aggregation_factor = 10)
-EuropeIsoscape <- isoscape(raster = ElevEurope, isofit = EuropeFit)
-CalibBatsEU    <- calibfit(data = CalibDataBat, isofit = EuropeFit)
-Assigned15     <- isofind(data = subset(AssignDataBat, sample_ID == "Nnoc_15"),
-                          isoscape = EuropeIsoscape, calibfit = CalibBatsEU)
+<<all in one, eval = FALSE>>=
+# GNIPDataEUagg <- prepsources(data = GNIPData, long_min = -30, long_max = 60, lat_min = 30, lat_max = 70)
+EuropeFit       <- isofit(data = GNIPDataEUagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+ElevEurope      <- prepraster(raster = ElevWorld, isofit = EuropeFit, aggregation_factor = 10)
+EuropeIsoscape  <- isoscape(raster = ElevEurope, isofit = EuropeFit)
+CalibBatsEU     <- calibfit(data = CalibDataBat, isofit = EuropeFit)
+Assigned15      <- isofind(data = subset(AssignDataBat, sample_ID == "Nnoc_15"),
+                           isoscape = EuropeIsoscape, calibfit = CalibBatsEU)
 @
 \vfill
 Note:\\
-Never do that blindly! You must check all intermediary outputs as we did for Germany.
+You should always check all intermediary outputs as we did for Germany.
 \end{frame}
 
 
