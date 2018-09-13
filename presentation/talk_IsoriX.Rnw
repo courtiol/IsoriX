@@ -127,9 +127,9 @@ knitr::opts_chunk$set(cache = TRUE,
 Benefits:
 \begin{itemize}[<+->]
 \item fully reproducible methods \& results
-\item as simple as necessary (but not too beyond that)
+\item as simple as necessary (but not beyond that)
 \item each step of the analysis can be thoroughly studied
-\item cutting edge statistical methods accounting for many source of uncertainties
+\item cutting edge statistical methods accounting for many sources of uncertainty
 \item compatible with Geographic Information System within and without \R
 \item works on Windows, MacOS, Linux, Unix; localy or remotely; with or without Internet
 \item free \& open source (anyone can use and improve IsoriX!)
@@ -139,8 +139,8 @@ Benefits:
 Limits:
 \begin{itemize}
 \item \R \ knowledge required
-\item a little stable isotope knowledge required
-\item not multivariate (1 isotope only)
+\item a little stable isotope knowledge also required
+\item not multivariate (1 isotope only, but isoscapes or assignment maps can be combined)
 \item not Bayesian (prior information not considered)
 \end{itemize}
 \end{frame}
@@ -166,9 +166,10 @@ library(IsoriX)  ## to load
 files <- dir(paste0(system.file(package = "IsoriX"), "/R/"))
 filenames_R <- paste0(system.file(package = "IsoriX"), "/R/", files)
 linesofcode <- sum(sapply(filenames_R, function(file) R.utils::countLines(file)))
+## results on knitr seem different than in consol... To Check
 @
 
-An interface between \R \ packages (without help files: only \Sexpr{linesofcode} lines of codes):
+An interface between \R \ packages (without help files: only ca. 1000 lines of codes):
 \bigskip
 <<pre-dependencies, echo = FALSE>>=
 options(repos = "https://cran.rstudio.com/")
@@ -215,7 +216,7 @@ So you can type e.g. \verb+?prepsources()+ to get help.
 \begin{frame}[fragile, t]{What is IsoriX?}
 A collection of data to try things out or to make plots nicer:
 \bigskip
-<<datasets, size = "scriptsize">>==
+<<datasets>>==
 data(package = "IsoriX")$results[, c("Item", "Title")]
 @
 \vfill
