@@ -468,7 +468,7 @@ Note: $d_{ab}$ is (by default) measured accounting for the curvature of the Eart
 \begin{frame}[t, fragile]{Step 2. Fit the isoscape}
 2a. Use \texttt{isofit()} to fit the geostatistical model(s):
 <<isofit fake, eval = FALSE>>=
-isosfit(
+isofit(
   data,
   mean_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE),
   disp_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE), 
@@ -596,7 +596,7 @@ Note:
 \end{frame}
 
 
-\subsection{Step 3. Prepare the sructural raster}
+\subsection{Step 3. Prepare the structural raster}
 
 \againframe{workflow}
 
