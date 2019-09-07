@@ -1,5 +1,5 @@
 Package: IsoriX
-Version: 0.8.1
+Version: 0.8.2
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
 Authors@R: c(
@@ -45,6 +45,5 @@ Suggests:
 LazyData: true
 URL: https://github.com/courtiol/IsoriX/
 BugReports: https://github.com/courtiol/IsoriX/issues/
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
-

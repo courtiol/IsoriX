@@ -13,6 +13,14 @@
 }
 
 \section{version 0.8.1}{
+  \subsection{Solved BUGS}{
+    \itemize{
+      \item Fix issue #113: the plotting function was not working for isoscapes not stored in memory due to a wrong use of the quantile function. Many thanks to Dr. Gary Roemer and Amy Withers for reporting it! 
+      }
+  }
+}
+
+\section{version 0.8.1}{
   \subsection{New features}{
     \itemize{
       \item the datasets used in Courtiol et al. 2019 are now provided
