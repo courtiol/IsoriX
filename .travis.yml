@@ -6,6 +6,11 @@ warnings_are_errors: false
 
 before_install:
  - cd /home/travis/build/courtiol/IsoriX/IsoriX/
+ - sudo apt-get install -y ghostscript
+ - sudo apt-get install -y libnlopt-dev
+ - sudo apt-get install -y libmagick++-dev
+ - sudo apt-get install -y libgl1-mesa-dev
+ - sudo apt-get install -y libglu1-mesa-dev
 
 r:
   - oldrel
@@ -13,6 +18,7 @@ r:
   - devel
 
 r_packages:
+  - rgl
   - covr
   - magick
   - lattice
@@ -28,11 +34,7 @@ script:
     
 addons:
   apt:
-    packages:
-      - ghostscript
-      - libnlopt-dev
-      - libmagick++-dev
-      - libcgal-dev
+    update: true
 
 after_success:
   - travis_wait Rscript -e 'covr::codecov(type = "examples")'
