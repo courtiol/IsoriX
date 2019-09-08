@@ -6,11 +6,6 @@ warnings_are_errors: false
 
 before_install:
  - cd /home/travis/build/courtiol/IsoriX/IsoriX/
- - sudo apt-get install -y ghostscript
- - sudo apt-get install -y libnlopt-dev
- - sudo apt-get install -y libmagick++-dev
- - sudo apt-get install -y libgl1-mesa-dev
- - sudo apt-get install -y libglu1-mesa-dev
 
 r:
   - oldrel
@@ -34,6 +29,12 @@ script:
     
 addons:
   apt:
+    packages:
+      - ghostscript
+      - libnlopt-dev
+      - libmagick++-dev
+      - libgl1-mesa-dev
+      - libglu1-mesa-dev
     update: true
 
 after_success:
