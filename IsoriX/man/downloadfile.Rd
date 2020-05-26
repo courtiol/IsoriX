@@ -4,8 +4,14 @@
 \alias{downloadfile}
 \title{Download files and check their binary integrity}
 \usage{
-downloadfile(address = NULL, filename = NULL, path = NULL,
-  overwrite = FALSE, md5sum = NULL, verbose = interactive())
+downloadfile(
+  address = NULL,
+  filename = NULL,
+  path = NULL,
+  overwrite = FALSE,
+  md5sum = NULL,
+  verbose = interactive()
+)
 }
 \arguments{
 \item{address}{A \var{string} indicating the address of the file on internet}

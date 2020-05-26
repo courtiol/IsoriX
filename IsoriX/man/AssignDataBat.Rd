@@ -4,12 +4,14 @@
 \name{AssignDataBat}
 \alias{AssignDataBat}
 \title{Assignment dataset for bat species}
-\format{A \var{dataframe} with 14 observations on 4 variables:
+\format{
+A \var{dataframe} with 14 observations on 4 variables:
 \tabular{rlll}{
 [, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
 [, 2] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
 [, 2] \tab lomg \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
-[, 4] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
+[, 4] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+}
 \source{
 data directly provided by the authors of the following publication
 }

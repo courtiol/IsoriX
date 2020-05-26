@@ -4,15 +4,21 @@
 \alias{isosim}
 \title{Simulate isotopic values}
 \usage{
-isosim(data, mean_model_fix_coef = c(intercept = 64, elev = -0.01,
-  lat_abs = -2.3, lat_2 = 0, long = 0, long_2 = 0),
-  disp_model_fix_coef = c(intercept = 5.8, elev = 0, lat_abs = 0, lat_2 =
-  0, long = 0, long_2 = 0), mean_model_matern_coef = c(nu = 0.35, rho =
-  5e-05, lambda = 899), disp_model_matern_coef = c(nu = 0.32, rho =
-  1.5e-05, lambda = 5), mean_model_uncorr_coef = c(nugget = 0, lambda =
-  0), disp_model_uncorr_coef = c(nugget = 0, lambda = 0),
-  dist_method = "Earth", seed = NULL, save_dataframe = FALSE,
-  verbose = interactive())
+isosim(
+  data,
+  mean_model_fix_coef = c(intercept = 64, elev = -0.01, lat_abs = -2.3, lat_2 = 0, long
+    = 0, long_2 = 0),
+  disp_model_fix_coef = c(intercept = 5.8, elev = 0, lat_abs = 0, lat_2 = 0, long = 0,
+    long_2 = 0),
+  mean_model_matern_coef = c(nu = 0.35, rho = 5e-05, lambda = 899),
+  disp_model_matern_coef = c(nu = 0.32, rho = 1.5e-05, lambda = 5),
+  mean_model_uncorr_coef = c(nugget = 0, lambda = 0),
+  disp_model_uncorr_coef = c(nugget = 0, lambda = 0),
+  dist_method = "Earth",
+  seed = NULL,
+  save_dataframe = FALSE,
+  verbose = interactive()
+)
 }
 \arguments{
 \item{data}{A \var{data.frame} containing the covariates needed for the

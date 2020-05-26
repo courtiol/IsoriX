@@ -4,7 +4,9 @@
 \name{OceanMask}
 \alias{OceanMask}
 \title{Mask of world oceans}
-\format{A \var{SpatialPolygons} object}
+\format{
+A \var{SpatialPolygons} object
+}
 \source{
 This \var{SpatialPolygons} is derived from the
 \code{\link{CountryBorders}}. See example for details on how we created the

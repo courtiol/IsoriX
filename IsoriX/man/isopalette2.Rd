@@ -5,7 +5,9 @@
 \alias{isopalette2}
 \alias{isopalette1}
 \title{Colour palettes for plotting}
-\format{A vector of colours}
+\format{
+A vector of colours
+}
 \source{
 For information on how to use themes, check:
 

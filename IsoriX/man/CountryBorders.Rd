@@ -4,7 +4,9 @@
 \name{CountryBorders}
 \alias{CountryBorders}
 \title{Borders of world CountryBorders}
-\format{A \var{SpatialPolygons}}
+\format{
+A \var{SpatialPolygons}
+}
 \source{
 This \var{SpatialPolygons} is derived from the
 \code{\link[maps]{world}} of the package \pkg{maps}. Please refer to this

@@ -4,7 +4,9 @@
 \name{PrecipBrickDE}
 \alias{PrecipBrickDE}
 \title{The precipitation monthly amounts for Germany}
-\format{A \var{RasterBrick}}
+\format{
+A \var{RasterBrick}
+}
 \source{
 \url{http://worldclim.org/version2}
 }

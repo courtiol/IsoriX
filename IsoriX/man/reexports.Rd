@@ -37,7 +37,7 @@ below to see their documentation.
 
   \item{raster}{\code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster]{extent<-}}, \code{\link[raster]{extract}}, \code{\link[raster]{projection<-}}, \code{\link[raster]{raster}}, \code{\link[raster]{shift}}, \code{\link[raster]{values}}}
 
-  \item{rasterVis}{\code{\link[rasterVis]{levelplot}}, \code{\link[rasterVis]{RdBuTheme}}}
+  \item{rasterVis}{\code{\link[rasterVis]{RdBuTheme}}, \code{\link[rasterVis]{levelplot}}}
 
   \item{sp}{\code{\link[sp]{CRS}}, \code{\link[sp]{sp.points}}, \code{\link[sp]{sp.polygons}}}
 

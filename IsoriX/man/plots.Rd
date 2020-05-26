@@ -11,34 +11,48 @@
 \alias{points.CALIBFIT}
 \title{Plotting functions for IsoriX}
 \usage{
-\method{plot}{ISOSCAPE}(x, which = "mean", y_title = list(which = TRUE,
-  title = bquote(delta^2 * H)), sources = list(draw = TRUE, cex = 0.5,
-  pch = 2, lwd = 1, col = "red"), borders = list(borders = NA, lwd = 0.5,
-  col = "black"), mask = list(mask = NA, lwd = 0, col = "black", fill =
-  "black"), palette = list(step = NA, range = c(NA, NA), n_labels = 11,
-  digits = 2, fn = NA), plot = TRUE, sphere = list(build = FALSE,
-  keep_image = FALSE), ...)
+\method{plot}{ISOSCAPE}(
+  x,
+  which = "mean",
+  y_title = list(which = TRUE, title = bquote(delta^2 * H)),
+  sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
+  borders = list(borders = NA, lwd = 0.5, col = "black"),
+  mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+  palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
+  plot = TRUE,
+  sphere = list(build = FALSE, keep_image = FALSE),
+  ...
+)
 
-\method{plot}{ISOFIND}(x, who = "group", cutoff = list(draw = TRUE,
-  level = 0.05, col = "#909090"), sources = list(draw = TRUE, cex = 0.5,
-  pch = 2, lwd = 1, col = "red"), calibs = list(draw = TRUE, cex = 0.5,
-  pch = 4, lwd = 1, col = "blue"), assigns = list(draw = TRUE, cex = 0.5,
-  pch = 5, lwd = 1, col = "white"), borders = list(borders = NA, lwd =
-  0.5, col = "black"), mask = list(mask = NA, lwd = 0, col = "black",
-  fill = "black"), mask2 = list(mask = NA, lwd = 0, col = "purple", fill
-  = "purple"), palette = list(step = NA, range = c(0, 1), n_labels = 11,
-  digits = 2, fn = NA), plot = TRUE, sphere = list(build = FALSE,
-  keep_image = FALSE), ...)
+\method{plot}{ISOFIND}(
+  x,
+  who = "group",
+  cutoff = list(draw = TRUE, level = 0.05, col = "#909090"),
+  sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
+  calibs = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
+  assigns = list(draw = TRUE, cex = 0.5, pch = 5, lwd = 1, col = "white"),
+  borders = list(borders = NA, lwd = 0.5, col = "black"),
+  mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
+  mask2 = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
+  palette = list(step = NA, range = c(0, 1), n_labels = 11, digits = 2, fn = NA),
+  plot = TRUE,
+  sphere = list(build = FALSE, keep_image = FALSE),
+  ...
+)
 
 \method{plot}{ISOFIT}(x, cex_scale = 0.2, ...)
 
-\method{plot}{CALIBFIT}(x, pch = 1, col = "black",
+\method{plot}{CALIBFIT}(
+  x,
+  pch = 1,
+  col = "black",
   xlab = "Predicted isotopic value in the environment",
-  ylab = "Isotopic value in the calibration sample", CI = list(show =
-  TRUE, col = "blue"), ...)
+  ylab = "Isotopic value in the calibration sample",
+  CI = list(show = TRUE, col = "blue"),
+  ...
+)
 
-\method{points}{CALIBFIT}(x, pch = 2, col = "red", CI = list(show =
-  TRUE, col = "red"), ...)
+\method{points}{CALIBFIT}(x, pch = 2, col = "red", CI = list(show = TRUE, col = "red"), ...)
 
 \method{plot}{RasterLayer}(x, ...)
 }

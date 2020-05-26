@@ -4,7 +4,9 @@
 \name{ElevRasterDE}
 \alias{ElevRasterDE}
 \title{The raster of elevation for Germany}
-\format{A \var{RasterLayer}}
+\format{
+A \var{RasterLayer}
+}
 \source{
 \url{http://topotools.cr.usgs.gov/gmted_viewer/}
 }

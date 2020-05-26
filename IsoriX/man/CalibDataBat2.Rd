@@ -4,14 +4,16 @@
 \name{CalibDataBat2}
 \alias{CalibDataBat2}
 \title{Calibration dataset for bat species}
-\format{A \var{dataframe} with 178 observations on 6 variables:
+\format{
+A \var{dataframe} with 178 observations on 6 variables:
 \tabular{rlll}{
 [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
 [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
 [, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
 [, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
 [, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
-[, 6]  \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
+[, 6]  \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+}
 \source{
 data directly provided by the authors of the following publication
 }

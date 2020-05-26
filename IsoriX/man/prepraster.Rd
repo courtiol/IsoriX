@@ -4,9 +4,15 @@
 \alias{prepraster}
 \title{Prepare the structural raster}
 \usage{
-prepraster(raster, isofit = NULL, margin_pct = 5,
-  aggregation_factor = 0L, aggregation_fn = mean, manual_crop = NULL,
-  verbose = interactive())
+prepraster(
+  raster,
+  isofit = NULL,
+  margin_pct = 5,
+  aggregation_factor = 0L,
+  aggregation_fn = mean,
+  manual_crop = NULL,
+  verbose = interactive()
+)
 }
 \arguments{
 \item{raster}{The structural raster (\var{RasterLayer})}

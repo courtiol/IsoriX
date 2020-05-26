@@ -4,7 +4,8 @@
 \name{CalibDataBat}
 \alias{CalibDataBat}
 \title{Calibration dataset for bat species}
-\format{A \var{dataframe} with 335 observations on 7 variables:
+\format{
+A \var{dataframe} with 335 observations on 7 variables:
 \tabular{rlll}{
 [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
 [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
@@ -12,7 +13,8 @@
 [, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
 [, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
 [, 6] \tab species \tab (\var{Factor}) \tab A code for the species\cr
-[, 7] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
+[, 7] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+}
 \description{
 This dataset contains hydrogen delta values of fur keratin from 6 sedentary
 bat species. It corresponds to the combination of several studies as detailed

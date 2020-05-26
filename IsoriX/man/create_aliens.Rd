@@ -4,9 +4,15 @@
 \alias{create_aliens}
 \title{Simulate datasets for calibrations or assignments}
 \usage{
-create_aliens(calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
-  isoscape = NULL, coordinates = NA, raster = NULL, n_sites = NA,
-  min_n_samples = 1, max_n_samples = 10)
+create_aliens(
+  calib_fn = list(intercept = 3, slope = 0.5, resid_var = 5),
+  isoscape = NULL,
+  coordinates = NA,
+  raster = NULL,
+  n_sites = NA,
+  min_n_samples = 1,
+  max_n_samples = 10
+)
 }
 \arguments{
 \item{calib_fn}{A \var{list} containing the parameter values describing the

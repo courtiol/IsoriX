@@ -5,7 +5,8 @@
 \alias{GNIPDataEUagg}
 \alias{GNIPDataALLagg}
 \title{Hydrogen delta values in precipitation water (aggregated per location)}
-\format{The \var{dataframe}s include many observations on the following
+\format{
+The \var{dataframe}s include many observations on the following
 variables: \tabular{rlll}{
 [, 1] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
 [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
@@ -13,7 +14,8 @@ variables: \tabular{rlll}{
 [, 4] \tab source_value \tab (\var{numeric}) \tab hydrogen delta value [per thousand]\cr
 [, 5] \tab year \tab (\var{numeric}) \tab Year of sampling\cr
 [, 6] \tab month \tab (\var{numeric}) \tab Month of sampling\cr
-[, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }}
+[, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
+}
 \source{
 Data provided by the IAEA and processed by us.
 }

@@ -6,8 +6,7 @@
 \alias{summary.ISOFIND}
 \title{Infer spatial origins}
 \usage{
-isofind(data, isoscape, calibfit = NULL, mask = NA,
-  verbose = interactive())
+isofind(data, isoscape, calibfit = NULL, mask = NA, verbose = interactive())
 }
 \arguments{
 \item{data}{A \var{dataframe} containing the assignment data (see

@@ -4,14 +4,16 @@
 \name{CalibDataAlien}
 \alias{CalibDataAlien}
 \title{Simulated calibration dataset}
-\format{A \var{dataframe} with x observations on 6 variables:
+\format{
+A \var{dataframe} with x observations on 6 variables:
 \tabular{rlll}{
 [, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
 [, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
 [, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
 [, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
 [, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
-[, 6] \tab tissue.value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }}
+[, 6] \tab tissue.value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+}
 \description{
 This dataset contains simulated hydrogen delta values for corresponding locations
 based on an assumed linear relationship between the animal tissue value and the 
