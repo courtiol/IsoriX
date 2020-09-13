@@ -30,6 +30,6 @@ remove:
 	R CMD REMOVE $(PKG)
 
 test:
-	R CMD BATCH --no-save tests.R
+	Rscript -e "setwd('./IsoriX'); devtools::test()"
 
 reinstall: remove install
