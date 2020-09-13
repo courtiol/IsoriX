@@ -4,7 +4,7 @@
 \alias{getprecip}
 \title{Download rasters of monthly precipitation from internet}
 \source{
-\url{http://worldclim.org/version2}
+\url{https://www.worldclim.org/data/worldclim21.html}
 }
 \usage{
 getprecip(path = NULL, overwrite = FALSE, verbose = interactive())

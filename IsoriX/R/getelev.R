@@ -80,7 +80,7 @@ getelev <- function(path = NULL,
 #' file again, specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
 #' @inheritParams getelev
-#' @source \url{http://worldclim.org/version2}
+#' @source \url{https://www.worldclim.org/data/worldclim21.html}
 #' @examples
 #' 
 #' ## To download the monthly precipitation

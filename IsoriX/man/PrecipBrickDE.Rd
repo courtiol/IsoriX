@@ -8,7 +8,7 @@
 A \var{RasterBrick}
 }
 \source{
-\url{http://worldclim.org/version2}
+\url{https://www.worldclim.org/data/worldclim21.html}
 }
 \description{
 This brick of rasters contains the monthly precipitation amounts (in mm) for

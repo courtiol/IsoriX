@@ -455,7 +455,7 @@ NULL
 #' @docType data
 #' @format A \var{RasterBrick}
 #' @seealso \code{\link{prepcipitate}} to prepare this raster
-#' @source \url{http://worldclim.org/version2}
+#' @source \url{https://www.worldclim.org/data/worldclim21.html}
 #' @keywords datasets
 #' @examples
 #' 
