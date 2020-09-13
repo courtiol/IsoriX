@@ -31,15 +31,15 @@ below to see their documentation.
 \describe{
   \item{grid}{\code{\link[grid]{gpar}}, \code{\link[grid]{grid.text}}}
 
-  \item{lattice}{\code{\link[lattice]{panel.points}}, \code{\link[lattice]{xyplot}}}
+  \item{lattice}{\code{\link[lattice:llines]{panel.points}}, \code{\link[lattice]{xyplot}}}
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
-  \item{raster}{\code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster]{extent<-}}, \code{\link[raster]{extract}}, \code{\link[raster]{projection<-}}, \code{\link[raster]{raster}}, \code{\link[raster]{shift}}, \code{\link[raster]{values}}}
+  \item{raster}{\code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster:setExtent]{extent<-}}, \code{\link[raster]{extract}}, \code{\link[raster:projection]{projection<-}}, \code{\link[raster]{raster}}, \code{\link[raster]{shift}}, \code{\link[raster:getValues]{values}}}
 
-  \item{rasterVis}{\code{\link[rasterVis]{RdBuTheme}}, \code{\link[rasterVis]{levelplot}}}
+  \item{rasterVis}{\code{\link[rasterVis:rasterTheme]{RdBuTheme}}, \code{\link[rasterVis:levelplot-methods]{levelplot}}}
 
-  \item{sp}{\code{\link[sp]{CRS}}, \code{\link[sp]{sp.points}}, \code{\link[sp]{sp.polygons}}}
+  \item{sp}{\code{\link[sp:CRS-class]{CRS}}, \code{\link[sp:panel]{sp.points}}, \code{\link[sp:panel]{sp.polygons}}}
 
   \item{spaMM}{\code{\link[spaMM]{get_ranPars}}}
 }}
