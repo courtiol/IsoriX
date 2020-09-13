@@ -809,6 +809,7 @@ plot.RasterLayer <- function(x, ...) {
   if (is.null(borders$borders)) {
     borders_layer <- latticeExtra::layer()
   }  else {
+    sp::proj4string(borders$borders) <- sp::CRS(as.character(NA)) ## to prevent warning in sp
     borders_layer <- latticeExtra::layer(sp::sp.polygons(b$borders,
                                                          lwd = b$lwd,
                                                          col = b$col,
@@ -824,6 +825,7 @@ plot.RasterLayer <- function(x, ...) {
   if (is.null(mask$mask)) {
     mask_layer <- latticeExtra::layer()
   } else {
+    sp::proj4string(mask$mask) <- sp::CRS(as.character(NA)) ## to prevent warning in sp
     mask_layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
                                                       fill = m$fill,
                                                       col = m$col,
@@ -838,6 +840,7 @@ plot.RasterLayer <- function(x, ...) {
   if (is.null(mask2$mask)) {
     mask2_layer <- latticeExtra::layer()
   } else {
+    sp::proj4string(mask2$mask) <- sp::CRS(as.character(NA)) ## to prevent warning in sp
     mask2_layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
                                                        fill = m$fill,
                                                        col = m$col,
