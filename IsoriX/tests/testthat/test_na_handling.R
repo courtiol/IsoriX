@@ -35,8 +35,8 @@ test_that("isofind() can handle NA", {
   AssignDataAlien[1, "sample_value"] <- NA
 
   expect_error(AssignmentDry <<- isofind(data = AssignDataAlien,
-                                        isoscape = GermanScape,
-                                        calibfit = CalibAlien), regexp = NA)
+                                         isoscape = GermanScape,
+                                         calibfit = CalibAlien), regexp = NA)
   
   expect_false(all(is.na(raster::values(AssignmentDry$group$pv$layer))))
   
