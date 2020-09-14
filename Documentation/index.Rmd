@@ -34,7 +34,7 @@ opts_chunk$set(cache = TRUE,
 This new documentation of the R package _IsoriX_ which aims at replacing the former vignettes and will ultimately provide much more information than before.
 The chapters 1 to 5 are almost complete but you will have to wait for the other chapters to follow.
 
-```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6}
+```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6, cache = FALSE}
 ## for the following to work several chapters must be compiled!
 if (file.exists("output/EuropeIsoscape.rda") &
     file.exists("output/CalibBats.rda") &
