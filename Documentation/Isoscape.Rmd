@@ -60,6 +60,8 @@ rawGNIP$Year        <- as.numeric(format(as.Date(rawGNIP$Date), "%Y"))
 rawGNIP$Month       <- as.numeric(format(as.Date(rawGNIP$Date), "%m"))
 ```
 
+Mind that WISER has recently renamed ```Begin.Of.Period``` to ```Begin.of.Period``` (small case for ```of```), so you may need to adjust that.
+
 Second, we identify the rows for which crucial information is missing. Because we are going to make an isoscape based on deuterium measurements, we only check for the availability of data for this isotope in particular. If you work on oxygen, you will have to adjust the script accordingly. We also check that the intervals during which precipitation water has been collected for each measurement correspond roughly to one month:
 
 ```{r GNIP_bad_rows}
