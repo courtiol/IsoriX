@@ -23,6 +23,7 @@
     \itemize{
       \item the SpatialPolygons CountryBorders and OceanMask have been rebuilt for possibly improving the compatibility with new sp & rgdal
       \item the website \url{worldclim.org} has now changed, so links have been updated
+      \item rgdal is now listed as a suggested package
       }
   }
 }
