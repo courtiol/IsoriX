@@ -19,10 +19,18 @@
       \item it is now possible to calibrate data containing missing isotopic values
       }
   }
+  \subsection{Geeky change}{
+    \itemize{
+      \item the SpatialPolygons CountryBorders and OceanMask have been rebuilt for possibly improving the compatibility with new sp & rgdal
+      \item the website \url{worldclim.org} has now changed, so links have been updated
+      }
+  }
+}
+
 \section{version 0.8.1}{
   \subsection{Solved BUGS}{
     \itemize{
-      \item Fix issue #113: the plotting function was not working for isoscapes not stored in memory due to a wrong use of the quantile function. Many thanks to Dr. Gary Roemer and Amy Withers for reporting it! 
+      \item fix issue #113: the plotting function was not working for isoscapes not stored in memory due to a wrong use of the quantile function. Many thanks to Dr. Gary Roemer and Amy Withers for reporting it! 
       }
   }
 }
