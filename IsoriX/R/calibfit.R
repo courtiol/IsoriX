@@ -155,7 +155,14 @@ calibfit <- function(data,
 
     ## store the mean prediction
     data$mean_source_value <- c(mean_calib)
-  
+    
+    ## warns if extrapolation occurs
+    too_small <- sum(min(data$mean_source_value, na.rm = TRUE) < min(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
+    too_large <- sum(max(data$mean_source_value, na.rm = TRUE) > max(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
+    if (too_small + too_large > 0) {
+      warning(paste(too_small + too_large, "of your calibration data are associated to predicted values more extreme than the ones present in the isoscape. This corresponds to extrapolation during the calibration step and should thus to be avoided to obtain reliable assignments. Perhaps revise your isoscape to avoid this problem."))
+    }
+    
     ## extract the prediction covariance matrix
     predcov_matrix_isofit_full <- attr(mean_calib, "predVar")
   
