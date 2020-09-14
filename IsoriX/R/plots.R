@@ -114,6 +114,7 @@
 #'    FALSE.
 #' @param xlab A \var{string} the x-axis label in plot.CALIBFIT
 #' @param ylab A \var{string} the y-axis label in plot.CALIBFIT
+#' @param ylim A range defining the extreme coordinates for the the y-axis in plot.CALIBFIT
 #' @param pch The argument pch as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
 #' @param col The argument col as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
 #' @param CI A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
@@ -655,12 +656,13 @@ plot.CALIBFIT <- function(x,
                           col = "black",
                           xlab = "Predicted isotopic value in the environment",
                           ylab = "Isotopic value in the calibration sample",
+                          ylim = NULL,
                           CI = list(show = TRUE, col = "blue"),
                           ...) {
   
   .complete_args(plot.CALIBFIT)
 
-  plotting_calibfit(x = x, pch = pch, col = col, CI = CI, xlab = xlab, ylab = ylab, points = FALSE, ...)
+  plotting_calibfit(x = x, pch = pch, col = col, CI = CI, xlab = xlab, ylab = ylab, ylim = ylim, points = FALSE, ...)
   return(invisible(NULL))
 }
 
@@ -679,7 +681,7 @@ points.CALIBFIT <- function(x,
   
 }
 
-plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, points = FALSE, ...) {
+plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, ylim = NULL, points = FALSE, ...) {
 
   if (!(any(class(x) %in% "CALIBFIT"))) {
     stop("This function must be called on an object of class CALIBFIT.")
@@ -696,11 +698,19 @@ plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, points = FALSE, ...) 
     X <- cbind(1, xs)
     fitted <- X %*% x$param
     fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
+    if (any(fixedVar < 0)) {
+      fixedVar[fixedVar < 0] <- 0
+      warning("Some negative estimates of variances are considered null. Negative estimates of variances are a sign that numerical problems occured during the fitting of the calibration.")
+    }
     lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
     upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
   } else {
-    lwr <- min(x$data$sample_value)
-    upr <- max(x$data$sample_value)
+    lwr <- min(x$data$sample_value, na.rm = TRUE)
+    upr <- max(x$data$sample_value, na.rm = TRUE)
+  }
+  
+  if(is.null(ylim)) {
+    ylim <- range(lwr, x$data$sample_value, upr, na.rm = TRUE)
   }
   
   if (! points) {
@@ -708,7 +718,7 @@ plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, points = FALSE, ...) 
        graphics::plot.default(sample_value ~ mean_source_value,
                               xlab = xlab,
                               ylab = ylab,
-                              ylim = range(lwr, sample_value, upr),
+                              ylim = ylim,
                               las = 1,
                               pch = pch,
                               col = col,

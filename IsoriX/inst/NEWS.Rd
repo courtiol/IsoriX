@@ -12,6 +12,13 @@
   }
 }
 
+\section{version 0.8.2}{
+  \subsection{New features}{
+    \itemize{
+      \item argument ylim for the plotting function for calibration fits
+      \item it is now possible to calibrate data containing missing isotopic values
+      }
+  }
 \section{version 0.8.1}{
   \subsection{Solved BUGS}{
     \itemize{

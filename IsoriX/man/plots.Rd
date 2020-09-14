@@ -48,6 +48,7 @@
   col = "black",
   xlab = "Predicted isotopic value in the environment",
   ylab = "Isotopic value in the calibration sample",
+  ylim = NULL,
   CI = list(show = TRUE, col = "blue"),
   ...
 )
@@ -115,6 +116,8 @@ the plots}
 \item{xlab}{A \var{string} the x-axis label in plot.CALIBFIT}
 
 \item{ylab}{A \var{string} the y-axis label in plot.CALIBFIT}
+
+\item{ylim}{A range defining the extreme coordinates for the the y-axis in plot.CALIBFIT}
 
 \item{CI}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
 and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the confidence interval}
