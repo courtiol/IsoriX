@@ -9,7 +9,7 @@ Authors@R: c(
     person("Stephanie", "Kramer-Schadt", role = "aut", comment = c(ORCID = "0000-0002-9269-4446"))
     )
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.5.0)
 Imports:
     graphics,
     grDevices,
