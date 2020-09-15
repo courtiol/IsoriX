@@ -17,6 +17,7 @@
     \itemize{
       \item argument ylim for the plotting function for calibration fits
       \item it is now possible to calibrate data containing missing isotopic values
+      \item it is now possible to assign data containing missing isotopic values
       }
   }
   \subsection{Geeky change}{

@@ -334,8 +334,8 @@ calibfit!")
   if (length(logpv) == 1) {
     return(exp(logpv))
   }
-  Fisher_stat <- -2*sum(logpv)
-  df <- 2*length(logpv)
+  Fisher_stat <- -2*sum(logpv, na.rm = TRUE)
+  df <- 2*length(logpv[!is.na(logpv)])
   pv <- stats::pchisq(q = Fisher_stat, df = df, lower.tail = FALSE)
   return(pv)
 }
