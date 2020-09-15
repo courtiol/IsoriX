@@ -409,7 +409,7 @@ plot.ISOFIND <- function(x,
 
     
     stack_noNAs <- raster::reclassify(x$sample[[what]][[who]], cbind(NA, NA, 0))
-    if (!identical(stack_noNAs, x$sample[[what]][[who]])) {
+    if (!identical(raster::values(stack_noNAs), raster::values(x$sample[[what]][[who]]))) {
       warning("The p-values for an assignment samples containing only missing values are considered as 0.")
     }
     
