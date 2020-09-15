@@ -13,6 +13,7 @@ r:
   - devel
 
 r_packages:
+  - rgdal
   - rgl
   - covr
   - magick
@@ -30,6 +31,8 @@ script:
 addons:
   apt:
     packages:
+      - libgdal-dev
+      - libproj-dev
       - ghostscript
       - libnlopt-dev
       - libmagick++-dev
