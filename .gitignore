@@ -22,7 +22,6 @@
 
 *.DS_Store
 
-
 # Temporary files
 
 .Rhistory
@@ -53,7 +52,12 @@ sources_for_vignettes/**/*.png
 sources_for_vignettes/**/species_14123/
 sources_for_vignettes/**/*.zip
 sources_for_vignettes/**/wc2.0_30s_prec/
-Documentation/output*
 
 # The GNIP data
+
 2016-10-31 Extract_ISORIX.csv
+
+# Bookdown files
+
+# -> do that in the specific .ignore file!
+

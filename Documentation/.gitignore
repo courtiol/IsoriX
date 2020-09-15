@@ -5,11 +5,13 @@ rsconnect
 
 #local folders
 
+_bookdown_files/
+libs/
 cache/
 data/
 output/
+output_v0.8.1/
 docs/
-_bookdown_files
 
 # local files
 
@@ -21,4 +23,3 @@ _bookdown_files
 *.css
 *.Rproj
 *.csl
-
