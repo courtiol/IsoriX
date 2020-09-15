@@ -407,8 +407,14 @@ plot.ISOFIND <- function(x,
                               n_labels   = palette$n_labels,
                               digits     = palette$digits)
 
-    map <- rasterVis::levelplot(x$sample[[what]][[who]], #x$sample[[what]][[who]] * (x$sample$pv[[who]] > cutoff$level)
-                                maxpixels = prod(dim(x$sample[[what]][[who]])[1:2]),
+    
+    stack_noNAs <- raster::reclassify(x$sample[[what]][[who]], cbind(NA, NA, 0))
+    if (!identical(stack_noNAs, x$sample[[what]][[who]])) {
+      warning("The p-values for an assignment samples containing only missing values are considered as 0.")
+    }
+    
+    map <- rasterVis::levelplot(stack_noNAs, #x$sample[[what]][[who]] * (x$sample$pv[[who]] > cutoff$level)
+                                maxpixels = prod(dim(stack_noNAs)[1:2]),
                                 margin = FALSE,
                                 col.regions = colours$all_cols,
                                 at = colours$at,
@@ -480,8 +486,9 @@ plot.ISOFIND <- function(x,
                          digits = 2) {
   
   var <- .summarize_values(var) ## converting rasters info into numerics if needed
-  max_var <- max(var, na.rm = TRUE)
-  min_var <- min(var, na.rm = TRUE)
+  var <- var[!is.na(var)]
+  max_var <- max(var)
+  min_var <- min(var)
 
   if (is.na(n_labels)) {
     warning("The argument n_labels of the palette was changed to 10 because it was not defined!")
