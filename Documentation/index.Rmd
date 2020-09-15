@@ -31,8 +31,8 @@ opts_chunk$set(cache = TRUE,
 
 # Work in progress! {-}
 
-This new documentation of the R package _IsoriX_ which aims at replacing the former vignettes and will ultimately provide much more information than before.
-The chapters 1 to 5 are almost complete but you will have to wait for the other chapters to follow.
+This documentation of the R package _IsoriX_ is a work in progress.
+So far, only the chapters 1 to 5 are close to completion.
 
 ```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6, cache = FALSE}
 ## for the following to work several chapters must be compiled!
