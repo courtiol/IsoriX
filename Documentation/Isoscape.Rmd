@@ -349,10 +349,12 @@ ElevEurope <- prepraster(raster = ElevWorld,
 ```{r build ElevEurope real, echo = FALSE, results = FALSE}
 if (file.exists("output/ElevEurope.rda")) {
   load("output/ElevEurope.rda") } else {
-ElevEurope <- prepraster(raster = ElevWorld,
-                         isofit = EuropeFit,
-                         aggregation_factor = 4)
-save(ElevEurope, file = "output/ElevEurope.rda", compress = "xz")
+  ElevEurope <- prepraster(raster = ElevWorld,
+                           isofit = EuropeFit,
+                           aggregation_factor = 4)
+  if (raster::inMemory(ElevEurope)) {
+    save(ElevEurope, file = "output/ElevEurope.rda", compress = "xz")
+  }
 }
 ```
 
@@ -388,7 +390,9 @@ if (file.exists("output/EuropeIsoscape.rda")) {
 } else {
   EuropeIsoscape <- isoscape(raster = ElevEurope,
                              isofit = EuropeFit)
-  save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
+  if (raster::inMemory(EuropeIsoscape$isoscapes)) {
+    save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
+  }
 }
 ```
 
