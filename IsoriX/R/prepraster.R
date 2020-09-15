@@ -131,9 +131,9 @@
 #' extent(PacificA) # note that the extent has changed!
 #' 
 #' ## We plot (note the use of the function shift()!)
-#' levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue")+
-#'   layer(sp.polygons(CountryBorders, fill = "black"))+
-#'   layer(sp.polygons(shift(CountryBorders, x = 360), fill = "black"))
+#' levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue") +
+#'   layer(sp.polygons(CountryBorders, fill = "black")) +
+#'   layer(sp.polygons(shift(CountryBorders, dx = 360), fill = "black"))
 #' 
 #' }
 #' 
@@ -190,8 +190,8 @@ prepraster <- function(raster,
                                                manual_crop[3],
                                                manual_crop[4]))
           raster <- raster::shift(raster::merge(crop1, raster::shift(crop2,
-                                                                     x = -360)),
-                                  x = 360)
+                                                                     dx = -360)),
+                                  dx = 360)
           warning("The first longitude is greater than the second one. You may want this to study something around the pacific. This feature is not fully supported... but... the function prepraster() tried to cope with this. That implies a change in the coordinate system (0:360 instead of -180:180). This should create no problem for ploting isoscapes but this can create troubles to add polygons or points on the maps. If that is the case, you need to add 360 degree to the longitudes... If all that sounds complicated, just stick to a first longitude SMALLER than the second one.")
         } else {
           raster <- raster::crop(raster, manual_crop)
