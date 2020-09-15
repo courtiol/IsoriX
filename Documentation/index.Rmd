@@ -27,7 +27,7 @@ opts_chunk$set(cache = FALSE,
                error = TRUE)
 ```
 
-# Work in progress! {-}
+# Welcome {-}
 
 This documentation of the R package _IsoriX_ is a work in progress.
 So far, only the chapters 1 to 5 are close to completion.
