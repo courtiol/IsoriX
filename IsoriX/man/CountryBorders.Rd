@@ -29,7 +29,7 @@ if(require(sp))
 #    worldmap <- map("world", fill = TRUE, plot = FALSE)
 #    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
 #    CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-#    proj4string(CountryBorders) <- CRS("+proj=longlat +datum=WGS84")
+#    proj4string(CountryBorders) <- CRS(as.character(NA))
 #    CountryBorders
 #    save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
 #}
