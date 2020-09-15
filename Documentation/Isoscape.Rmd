@@ -230,7 +230,7 @@ save(EuropeFit, file = "EuropeFit.rda", compress = "xz")
 save(EuropeFit12, file = "EuropeFit12.rda", compress = "xz")
 ```
 
-```{r saving models real, echo = FALSE}
+```{r saving models real, echo = FALSE, warning=FALSE}
 if (!file.exists("output/EuropeFit.rda"))
   save(EuropeFit, file = "output/EuropeFit.rda", compress = "xz")
 if (!file.exists("output/EuropeFit12.rda"))
