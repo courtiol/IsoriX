@@ -4,7 +4,7 @@
 \alias{getelev}
 \title{Download an elevation raster from internet}
 \source{
-\url{http://topotools.cr.usgs.gov/gmted_viewer/}
+\url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 }
 \usage{
 getelev(path = NULL, overwrite = FALSE, verbose = interactive())
@@ -27,7 +27,7 @@ greater than 1.}
 The function \code{getelev} allows for the download of an elevation raster
 from internet. It downloads the "Global Multi-resolution Terrain Elevation
 Data 2010" from our server. The file was originally downloaded from: \cr
-\url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted into a
+\url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm} \cr and converted into a
 \var{tif} file by us. The function \code{getelev} uses the generic function
 \code{downloadfile} that can also be used to download directly other files.
 This raster needs further processing with the function \code{\link{prepelev}}

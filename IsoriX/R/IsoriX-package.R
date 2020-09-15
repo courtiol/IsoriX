@@ -125,7 +125,7 @@
 #' edition. Academic Press, London.
 #' 
 #' Courtiol A, Rousset F (2017). "Modelling isoscapes using mixed models." bioRxiv.
-#' doi: 10.1101/207662, [link](https://www.biorxiv.org/content/early/2017/10/23/207662).
+#' doi: 10.1101/207662, [link](https://www.biorxiv.org/content/10.1101/207662v1).
 #'  
 #' @keywords package
 #' 

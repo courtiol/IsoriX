@@ -10,7 +10,7 @@ In early versions of IsoriX, the documentation was included as vignettes attache
 IsoriX is an R package that can be used for building isoscapes and inferring the geographic origin of organisms based on their isotopic signature [@IsoriX].
 This package employs a new statistical framework for doing all of this which is based on mixed models (GLMM).
 As most other packages dedicated to specific applications, IsoriX is essentially a simple interface to several other packages more general in scope.
-Specifically, it uses the package [_spaMM_](http://kimura.univ-montp2.fr/~rousset/spaMM.htm) for fitting and predicting isoscapes, and for performing the assignment.
+Specifically, it uses the package [_spaMM_](https://kimura.univ-montp2.fr/~rousset/spaMM.htm) for fitting and predicting isoscapes, and for performing the assignment.
 IsoriX also heavily relies on the package [_rasterVis_](https://oscarperpinan.github.io/rastervis/) for plotting the maps using the powerful [_lattice_](http://lattice.r-forge.r-project.org) visualization system.
 Knowing these packages is not necessary to handle IsoriX but it certainly helps for advance applications.
 

@@ -402,7 +402,7 @@ NULL
 #' cell.
 #' 
 #' We downloaded "Global Multi-resolution Terrain Elevation Data 2010" from:
-#' \cr \url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted it
+#' \cr \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm} \cr and converted it
 #' into a \var{tif} file. Because the original file is very large, we directly
 #' provide the url link of the \var{tif} file in the example below.
 #' 
@@ -410,7 +410,7 @@ NULL
 #' @docType data
 #' @format A \var{RasterLayer}
 #' @seealso \code{\link{prepraster}} to crop and/or aggregate this raster
-#' @source \url{http://topotools.cr.usgs.gov/gmted_viewer/}
+#' @source \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 #' @keywords datasets
 #' @examples
 #' 
@@ -514,7 +514,7 @@ NULL
 #' [, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
 #' @seealso \code{\link{prepsources}} to prepare the dataset for the analyses and
 #' to filter by time and location.
-#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
+#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #' 
 #' Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
 #' 
@@ -565,7 +565,7 @@ NULL
 #' [, 6] \tab month \tab (\var{numeric}) \tab Month of sampling\cr
 #' [, 7] \tab source_ID \tab (\var{Factor}) \tab The unique identifier of the weather station\cr }
 #' @seealso \code{\link{GNIPDataDE}} for a non-aggregated dataset.
-#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
+#' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #' @source Data provided by the IAEA and processed by us.
 #' @keywords datasets
 #' @examples

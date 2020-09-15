@@ -50,7 +50,7 @@ head(GNIPDataDE)
 
 }
 \references{
-GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
+GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 
 Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
 

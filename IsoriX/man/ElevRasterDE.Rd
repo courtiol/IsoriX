@@ -8,7 +8,7 @@
 A \var{RasterLayer}
 }
 \source{
-\url{http://topotools.cr.usgs.gov/gmted_viewer/}
+\url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 }
 \description{
 This raster contains the elevation of the surface of Germany (meters above sea
@@ -32,7 +32,7 @@ transformation of all elevations into a single value per aggregated raster
 cell.
 
 We downloaded "Global Multi-resolution Terrain Elevation Data 2010" from:
-\cr \url{http://topotools.cr.usgs.gov/gmted_viewer/} \cr and converted it
+\cr \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm} \cr and converted it
 into a \var{tif} file. Because the original file is very large, we directly
 provide the url link of the \var{tif} file in the example below.
 }

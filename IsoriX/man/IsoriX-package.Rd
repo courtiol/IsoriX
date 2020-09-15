@@ -125,7 +125,7 @@ Wassenaar LI (eds.), Tracking Animal Migration with Stable Isotopes, second
 edition. Academic Press, London.
 
 Courtiol A, Rousset F (2017). "Modelling isoscapes using mixed models." bioRxiv.
-doi: 10.1101/207662, \href{https://www.biorxiv.org/content/early/2017/10/23/207662}{link}.
+doi: 10.1101/207662, \href{https://www.biorxiv.org/content/10.1101/207662v1}{link}.
 }
 \author{
 Alexandre Courtiol \email{alexandre.courtiol@gmail.com},

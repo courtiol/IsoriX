@@ -169,7 +169,7 @@
 #'   \code{\link{prepsources}} for the function preparing the data for isofit
 #'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
-#'   models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
+#'   models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
 #'   
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
@@ -181,7 +181,7 @@
 #'  Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global application of
 #'  stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
 #'  143(3):337-348.
-#' @source \url{http://kimura.univ-montp2.fr/~rousset/spaMM.htm}
+#' @source \url{https://kimura.univ-montp2.fr/~rousset/spaMM.htm}
 #' @keywords models regression
 #' @examples
 #' 

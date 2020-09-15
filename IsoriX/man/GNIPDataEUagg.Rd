@@ -49,7 +49,7 @@ dim(GNIPDataEUagg)
 
 }
 \references{
-GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{http://www.iaea.org}
+GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 }
 \seealso{
 \code{\link{GNIPDataDE}} for a non-aggregated dataset.

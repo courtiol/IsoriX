@@ -280,7 +280,7 @@ EuropeFit
 
 The object `EuropeFit` created in section \@ref(isofit) is a list containing the two fits aforementioned: `mean_fit` and `disp_fit`.
 This is why you see information about those two corresponding fits.
-These summary tables are created behind the scenes by [_spaMM_](http://kimura.univ-montp2.fr/~rousset/spaMM.htm), so, learning a little about _spaMM_ and mixed models is useful to derive meanings from these outputs.
+These summary tables are created behind the scenes by [_spaMM_](https://kimura.univ-montp2.fr/~rousset/spaMM.htm), so, learning a little about _spaMM_ and mixed models is useful to derive meanings from these outputs.
 (We are also planning to write an extensive description of model outputs to guide you.)
 
 

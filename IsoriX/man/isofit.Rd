@@ -6,7 +6,7 @@
 \alias{summary.ISOFIT}
 \title{Fit the isoscape models}
 \source{
-\url{http://kimura.univ-montp2.fr/~rousset/spaMM.htm}
+\url{https://kimura.univ-montp2.fr/~rousset/spaMM.htm}
 }
 \usage{
 isofit(
@@ -228,7 +228,7 @@ AIC(GermanFit$disp_fit)
 }
 \references{
 Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
-models. \url{https://www.biorxiv.org/content/early/2017/10/23/207662}
+models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
 
 Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
 computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
