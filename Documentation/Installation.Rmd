@@ -35,7 +35,7 @@ The current _IsoriX_ version indirectly uses `r length(miniCRAN::pkgDep("IsoriX"
 
 ```{r mini_CRAN}
 library(miniCRAN) ## you need to install it beforehand!
-set.seed(8L) ## the seed controls the rotation
+set.seed(3L) ## the seed controls the rotation
 plot(makeDepGraph("IsoriX", suggests = FALSE), cex = 0.8, main = "")
 ```
 
