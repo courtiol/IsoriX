@@ -16,33 +16,6 @@
 \alias{RElevate}
 \alias{relevate}
 \title{Defunct and deprecated functions}
-\usage{
-Calibfit(...)
-
-GetElev(...)
-
-Isofit(...)
-
-Isorix(...)
-
-Isoscape(...)
-
-Isosim(...)
-
-QueryGNIP(...)
-
-queryGNIP(...)
-
-prepdata(...)
-
-prepelev(...)
-
-prepiso(...)
-
-RElevate(...)
-
-relevate(...)
-}
 \arguments{
 \item{...}{The call of the defunct or deprecated function}
 }
