@@ -6,6 +6,11 @@
 ## recreate all large objects create by the package to make sure everything does work. Finally,
 ## since the gif of the showcase shown in the starting page is based on the compilation of all other
 ## files, it is probably best to render twice the whole book.
+## Also, if a pandoc error shows up, make sure that pandoc is installed and that RStudio can find it.
+## I had to create links by hand on one computer:
+##  sudo ln -s -f /usr/bin/pandoc   /usr/lib/rstudio/bin/pandoc/pandoc
+## sudo ln -s -f /usr/bin/pandoc-citeproc   /usr/lib/rstudio/bin/pandoc/pandoc-citeproc
+
 
 bookdown::render_book('index.Rmd', output_format = 'bookdown::gitbook')
 bookdown::publish_book(name = "IsoriX")
