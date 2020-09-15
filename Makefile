@@ -31,5 +31,6 @@ remove:
 
 test:
 	Rscript -e "setwd('./IsoriX'); devtools::test()"
+	-rm testthat.Rout IsoriX/tests/testthat/Rplots.pdf> /dev/null
 
 reinstall: remove install
