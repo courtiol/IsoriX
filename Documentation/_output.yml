@@ -5,7 +5,7 @@ bookdown::gitbook:
     toc:
       collapse: section
       before: |
-        <li><a href="./">Documentation-for-IsoriX</a></li>
+        <li><a href="./">Documentation for IsoriX</a></li>
       after: |
         <li><a href="https://github.com/courtiol/IsoriX" target="blank">Click here for the R package</a></li>
   sharing:
