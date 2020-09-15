@@ -24,7 +24,9 @@ test_that("plot.ISOSCAPE() can handle NA", {
 
 test_that("calibfit() can handle NA", {
   CalibDataAlien[1, "sample_value"] <- NA
-  expect_error(CalibAlien <<- calibfit(data = CalibDataAlien, isofit = GermanFit, control_optim = list(maxit = 1)), regexp = NA)
+  expect_error(CalibAlien <<- calibfit(data = CalibDataAlien,
+                                       isofit = GermanFit,
+                                       control_optim = list(maxit = 15)), regexp = NA)
 })
 
 test_that("plot.CALIBFIT can handle NA", {
