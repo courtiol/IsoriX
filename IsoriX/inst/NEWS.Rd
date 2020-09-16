@@ -30,6 +30,7 @@
   \subsection{Minor change}{
     \itemize{
       \item several weblinks had changed and have been updated
+      \item all old defunct functions have been removed from the package
       }
   }
 }
