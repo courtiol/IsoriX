@@ -95,7 +95,7 @@
 \title[\url{https://github.com/courtiol/IsoriX}]{{\Huge IsoriX}\\ an R package for isoscape computation and inference of spatial origins using mixed models}
 \author[]{The IsoriX core team}
 
-\date[]{\small September 2018}%
+\date[]{\small September 2020}%
 
 \begin{document}
 <<initialization, echo=FALSE>>=
@@ -278,7 +278,7 @@ help(package = 'IsoriX')
 \pause
 Conclusion:
 \begin{itemize}
-\item A single method is unlikely to be best accross all situations
+\item A single method is unlikely to be best across all situations
 \item Run several methods on your data!
 \end{itemize}
 \pause
@@ -293,7 +293,7 @@ What to do?
 
 \section{Standard workflow}
 
-\begin{frame}[fragile]{Standard workflow in 6 main functions}
+\begin{frame}[fragile, label=workflow]{The standard workflow for an assignment involves 6 main steps and thus 6 functions}
 \begin{enumerate}
 \item Prepare the source data with \texttt{prepsources()}
 \item Fit the Isoscape model with \texttt{isofit()}
@@ -302,6 +302,9 @@ What to do?
 \item Fit the calibration function with \texttt{calibfit()}
 \item Perform the assignment with \texttt{isofind()}
 \end{enumerate}
+\vfill
+A complete assignment can be done in 6 lines of code \hyperlink{all_in_6}{\beamerskipbutton{proof}}
+, but it is important to understand well and check the details of each step to get the best out of your data. So we will add a few extra steps.
 \end{frame}
 
 
@@ -327,7 +330,7 @@ tail(GNIPDataDE)
 \vfill
 To avoid troubles:
 \begin{itemize}
-\item use a \verb+data.frame+ (and not a \verb+tibble+ or a matrix)
+\item use a \verb+data.frame+ (and not a \verb+tibble+)
 \item \verb+source_ID+ better be a factor
 \end{itemize}
 \end{frame}
@@ -362,7 +365,7 @@ head(GNIPDataDEagg)
 
 \begin{frame}[t,fragile]{Step 1. Prepare the source data}
 1c. Check your data (it is always a good idea to plot your data!)
-<<check source data, fig.show = "hold", out.width = "5cm", out.height = "5cm", size = "tiny">>=
+<<check source data, fig.show = "hold", out.width = "4cm", out.height = "5cm", size = "tiny">>=
 library(sp) ## for plotting polygons
 
 plot(CountryBorders, xlim = range(GNIPDataDEagg$long), ylim = range(GNIPDataDEagg$lat), col = "lightgrey", main = "Mean")
@@ -383,7 +386,7 @@ The most important questions you must answer:
 \item Which years?
 \item Which months?
 \item Which geographic area?
-\item Weighted by precipitation or not? If yes 2 possibilities, before or after fitting:
+\item Weighted by precipitation or not? If yes, you have 2 possibilities, before or after fitting:
 \begin{itemize}
 \item before: do the aggregation yourself (for now)\\ NB: don't forget to rise the weights to the square when averaging variances!
 \item after: using \texttt{split\_by} and later on \texttt{isomultifit} and \texttt{isomultiscape} (but not ready yet for calibration)
@@ -397,7 +400,7 @@ Issue:
 \end{itemize}
 \vfill
 \pause
-Examples:
+Trade-off:
 \begin{itemize}
 \item The isotopic signature in an environment at time $t$ is not solely influenced by the precipitation at time $t$.
 \item Too small area leads to extrapolation which is unreliable but too large leads to impose a single model over several regions that may differ in how the environment relates to isotopes.
@@ -540,7 +543,7 @@ Note:
 \begin{itemize}
 \item Use the conditional AIC (cAIC, which is different from AICc!) as it takes into account of the realization of the random effects.
 \pause
-\item If you compare models with different structures for the residual dispersion model, you must correct the cAIC of the mean model by adding to it twice the number of parameters of the residual dispersion model. Here this latter model has 5 parameters (1 intercept, 2 variances of random effects, 2 correlation parameters for the Matern). [Better always correct the cAIC value, even if residual dispersion models are the same to get unbiased estimates of the cAIC]
+\item If you compare models with different structures for the residual dispersion model, (for the time being) you must correct the cAIC of the mean model by adding to it twice the number of parameters of the residual dispersion model. Here this latter model has 5 parameters (1 intercept, 2 variances of random effects, 2 correlation parameters for the Matern). [Note: if residual dispersion models are the same then the correction won't change the ranking of the models]
 \end{itemize}
 \end{frame}
 
@@ -567,7 +570,7 @@ Note:
 \end{frame}
 
 
-\begin{frame}[t, fragile]{Step 2. Fit the isoscape}
+\begin{frame}[t, fragile, label=uncertainty_step2]{Step 2. Fit the isoscape}
 Uncertainty check list:
 \bigskip
 \begin{itemize}
@@ -593,6 +596,10 @@ Note:
 \item Most of these uncertainties are neglected from alternative approaches!
 \item Some of these uncertainties are huge!!
 \end{itemize}
+\vfill
+\begin{flushright}
+\hyperlink{uncertainty_step4}{\beamerskipbutton{Back to the future}}
+\end{flushright}
 \end{frame}
 
 
@@ -696,7 +703,7 @@ Recommendations:
 \begin{frame}[fragile]{Step 3. Prepare the structural raster}
 Uncertainty check list:
 \begin{itemize}
-\item[$\times$] uncertainty behind the raw raster\\ (as isoscapes, structural rasters are the results of some smoothing procedure which contains uncertainty)
+\item[$\times$] uncertainty behind the raw raster\\ (structural rasters are the results of some smoothing or interpolation procedure which contains uncertainty)
 \item[\checkmark] variation between the cells of the processed raster
 \item[$\times$] variation within the cells of the processed raster
 \end{itemize}
@@ -916,8 +923,8 @@ Note: you can also export other spatial objects included or created with IsoriX.
 \end{frame}
 
 
-\begin{frame}[fragile]{Step 4. Predict the isoscape}
-Uncertainty check list $\rightarrow$ same as for \texttt{isofit} (cf Step 2).\\
+\begin{frame}[fragile, label = uncertainty_step4]{Step 4. Predict the isoscape}
+Uncertainty check list $\rightarrow$ same as for \texttt{isofit} \hyperlink{uncertainty_step2}{\beamerskipbutton{Step 2}}.\\
 \vfill
 \pause
 The most important questions you must answer:
@@ -975,7 +982,7 @@ hist(IsoPredicted, nclass = 1000, main = "", xlab = "Deuterium")
 rug(IsoAtBats, col = "red", lwd = 2)
 legend("topleft", fill = c("red", "black"), legend = c("sampled locations", "predicted locations"))
 @
-Note: this is quite good but very few points are considered (only the German ones).
+Note: this is quite good but very few points are considered in this plot (only the German ones).
 \end{frame}
 
 
@@ -996,6 +1003,8 @@ plot(GermanScape, plot = FALSE) +
   xyplot(CalibDataBat$lat ~ CalibDataBat$long,
          pch = 13, col = "white", cex = 2, lwd = 2, panel = panel.points)
 @
+\vfill
+The coverage within Germany is quite good but all the location outside Germany will be considered too.
 \end{frame}
 
 
@@ -1052,7 +1061,7 @@ Note: this looks bad, but in fact it is incredibly good! Despite huge extrapolat
 The most important questions you must answer:
 \bigskip
 \begin{itemize}
-\item How to get the best possible calibration data?
+\item How to get the \underline{best possible calibration data}?
 \item Do they sample the full range of predicted source isoscape values?
 \item Are the samples of similar type than the ones you want to assign?
 \begin{itemize}
@@ -1131,9 +1140,9 @@ AssignedBats$sample
 Some important facts about the assignment test:
 \begin{itemize}[<+->]
 \item The test is performed at the level of each sample and each cell defined by the structural raster.
-\item The test statistics is provides the difference between the predicted isoscape value at the origin location and the predicted isoscape value at the location under consideration.
+\item The test statistics is the difference between the predicted isoscape value at the origin location (deduced from the calibration fit) and the predicted isoscape value at the location under consideration (read from the isoscape).
 \item The null hypothesis of the test is that the sample comes from the cell being examined.
-\item A large p-value (i.e. non significant) indicates \alert{support} for the null hypothesis.
+\item A large p-value (i.e. non significant) indicates \underline{support} for the null hypothesis.
 \item A small p-value (i.e. significant) indicates the rejection of the null hypothesis.
 \end{itemize}
 \vfill
@@ -1291,11 +1300,11 @@ Uncertainty check list:
 \againframe{workflow}
 
 
-\begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
-The whole workflow only takes a few line of code:
+\begin{frame}[t, fragile, label=all_in_6]{Where does the bat Nnoc\_15 comes from?}
+An entire workflow can takes as little as 6 lines of code:
 \bigskip
-<<all in one, eval = FALSE>>=
-# GNIPDataEUagg <- prepsources(data = GNIPData, long_min = -30, long_max = 60, lat_min = 30, lat_max = 70)
+<<all_in_one, eval=TRUE, message=FALSE, warning=FALSE, results="hide">>=
+GNIPDataDEagg   <- prepsources(data = GNIPDataDE)
 EuropeFit       <- isofit(data = GNIPDataEUagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 ElevEurope      <- prepraster(raster = ElevWorld, isofit = EuropeFit, aggregation_factor = 10)
 EuropeIsoscape  <- isoscape(raster = ElevEurope, isofit = EuropeFit)
@@ -1304,14 +1313,13 @@ Assigned15      <- isofind(data = subset(AssignDataBat, sample_ID == "Nnoc_15"),
                            isoscape = EuropeIsoscape, calibfit = CalibBatsEU)
 @
 \vfill
-Note:\\
-You should always check all intermediary outputs as we did for Germany.
+Note: you should always check all intermediary outputs as we did for Germany.  \hyperlink{workflow}{\beamerskipbutton{}}
 \end{frame}
 
 
-\begin{frame}[b, fragile]{Where does the bat Nnoc\_15 comes from?}
-<<all_in_one_plot, out.height = "10cm", out.width = "10cm", dpi = 2000>>=
-plot(Assigned15)
+\begin{frame}[t, fragile]{Where does the bat Nnoc\_15 comes from?}
+<<all_in_one_plot, out.height = "8.5cm", out.width = "8.5cm">>=
+plot(Assigned15, who = 1)
 @
 \end{frame}
 
@@ -1320,14 +1328,12 @@ plot(Assigned15)
 
 
 \begin{frame}{Future features}
-\begin{itemize}[<+->]
+\begin{itemize}
 \item Better documentation.
-\vfill
-\item Fixing little glitches.
 \vfill
 \item Easier functions for weighting by precipitation amount.
 \vfill
-\item More predictors (e.g. temperature).
+\item More predictors (e.g. temperature) with data download using \r\ packages.
 \vfill
 \item Additional plotting functions (e.g. to check calibration fit).
 \vfill
@@ -1339,8 +1345,9 @@ plot(Assigned15)
 \vfill
 \item 3D isoscapes? 4D isoscapes?
 \vfill
-\item Move to \texttt{ggplot2} \& \texttt{sf}?
+\item Move to \texttt{\{ggplot2\}} \& \texttt{\{sf\}}?
 \vfill
+\pause
 \item Anything else?
 \end{itemize}
 \end{frame}
