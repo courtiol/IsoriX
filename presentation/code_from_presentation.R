@@ -157,6 +157,6 @@ EuropeIsoscape  <- isoscape(raster = ElevEurope, isofit = EuropeFit)
 CalibBatsEU     <- calibfit(data = CalibDataBat, isofit = EuropeFit)
 Assigned15      <- isofind(data = subset(AssignDataBat, sample_ID == "Nnoc_15"),
                            isoscape = EuropeIsoscape, calibfit = CalibBats)
-plot(Assigned15)
+plot(Assigned15, who = 1)
 
                            
