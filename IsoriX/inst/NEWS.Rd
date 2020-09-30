@@ -12,6 +12,14 @@
   }
 }
 
+\section{version 0.9}{
+  \subsection{Minor change}{
+    \itemize{
+      \item plot.ISOFIND now detect sample of size 1 and adapt title accordingly
+         }
+  }
+}
+
 \section{version 0.8.2}{
   \subsection{New features}{
     \itemize{
@@ -31,7 +39,6 @@
     \itemize{
       \item several weblinks had changed and have been updated
       \item all old defunct functions have been removed from the package
-      \item plot.ISOFIND now detect sample of size 1 and adapt title accordingly     
       }
   }
 }
