@@ -12,7 +12,7 @@
   }
 }
 
-\section{version 0.9}{
+\section{version devel}{
   \subsection{Minor change}{
     \itemize{
       \item plot.ISOFIND now detect sample of size 1 and adapt title accordingly
@@ -220,4 +220,3 @@
       }
   }
 }
-
