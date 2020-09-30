@@ -371,6 +371,11 @@ plot.ISOFIND <- function(x,
   if (what != "pv" | !cutoff$draw) {
     cutoff$level <- 0
   }
+  
+  ## changing who when sample is size one
+  if ("group" %in% who && length(names(x$sample[[what]])) == 1) {
+    who <- names(x$sample[[what]])
+  }
 
   ## create the main plot(s)
   if ("group" %in% who) {
@@ -462,7 +467,7 @@ plot.ISOFIND <- function(x,
     ## send plot to graphic device
     print(complete_map)
   }
-  
+
   ## build the 3D-Sphere
   if (sphere$build) {
     .build_sphere(x[[who]][[what]], colours = colours, decor = decor)
