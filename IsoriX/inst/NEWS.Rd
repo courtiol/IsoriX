@@ -31,6 +31,7 @@
     \itemize{
       \item several weblinks had changed and have been updated
       \item all old defunct functions have been removed from the package
+      \item plot.ISOFIND now detect sample of size 1 and adapt title accordingly     
       }
   }
 }
