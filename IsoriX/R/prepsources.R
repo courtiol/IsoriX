@@ -148,7 +148,7 @@ prepsources <- function(data,
                         col_year = "year"
 ) {
 
-    ## Some checks
+  ## Some checks
   if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
     stop("Months must be provided as a vector of integers and should be between 1 and 12.")
   }
