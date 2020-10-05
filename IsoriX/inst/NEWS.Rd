@@ -12,10 +12,10 @@
   }
 }
 
-\section{version 0.9}{
+\section{version devel}{
   \subsection{Minor change}{
     \itemize{
-      \item plot.ISOFIND now detect sample of size 1 and adapt title accordingly
+      \item plot.ISOFIND now detects sample of size 1 and no longer displays "Group" in the title of the assignment plot even if `who` = "group"
       }
   }
 }
@@ -220,4 +220,3 @@
       }
   }
 }
-
