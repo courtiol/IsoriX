@@ -1,7 +1,7 @@
 
 test_that("The workfow works with tibble", {
   set.seed(123)
-  index<-sample(1:nrow(GNIPDataDE), 50)
+  index <- sample(1:nrow(GNIPDataDE), 50)
   test_df <- GNIPDataDE[index, ]
   test_tbl <- test_df
   
