@@ -13,7 +13,7 @@ test_that("The workfow works with tibble", {
   expect_equal(ref, job)
 
   
-  ## Test that SpaMM work correclty with tibble 
+  ## Test that spaMM works correctly with tibbles 
   ## Isofit
   
   ref_isofit <- isofit(ref)
