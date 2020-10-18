@@ -37,7 +37,7 @@ test_that("The workfow works with tibble", {
   job_calib <- calibfit(test_tbl2, ref_isofit) ## tbl and df
   job_3 <- job_calib$fixefCov
 
-  job_calib2<- calibfit(test_tbl2, job_isofit) ## tbl and tbl 
+  job_calib2 <- calibfit(test_tbl2, job_isofit) ## tbl and tbl 
   job_33 <- job_calib2$fixefCov  
   expect_equal(job_3, ref_3)
   expect_equal(job_33, ref_3)
