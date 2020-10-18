@@ -147,7 +147,7 @@ prepsources <- function(data,
                         col_month = "month",
                         col_year = "year"
 ) {
-  
+
   ## Some checks
   if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
     stop("Months must be provided as a vector of integers and should be between 1 and 12.")
@@ -158,24 +158,24 @@ prepsources <- function(data,
   }
   
   ## Handle missing data
-  if (missing("year")) year <- sort(unique(data[, col_year], na.rm = TRUE))
+  if (missing("year")) year <- sort(unique(data[, col_year, drop = TRUE], na.rm = TRUE))
   if (missing("long_min")) long_min <- -180
   if (missing("long_max")) long_max <- 180
   if (missing("lat_min")) lat_min <- -90
   if (missing("lat_max")) lat_max <- 90 
   
   ## Handle the month column and convert all months to numbers
-  data[, col_month] <- .converts_months_to_numbers(data[, col_month])
+  data[, col_month] <- .converts_months_to_numbers(data[, col_month, drop = TRUE])
   
   ## Prepare selection
-  month_select <- data[, col_month] %in% month 
-  year_select <- data[, col_year] %in% year
-  long_select <- data[, col_long] >= long_min & data[, col_long] <= long_max
-  lat_select  <- data[, col_lat]  >= lat_min  & data[, col_lat]  <= lat_max
+  month_select <- data[, col_month, drop = TRUE] %in% month 
+  year_select <- data[, col_year, drop = TRUE] %in% year
+  long_select <- data[, col_long, drop = TRUE] >= long_min & data[, col_long, drop = TRUE] <= long_max
+  lat_select  <- data[, col_lat, drop = TRUE]  >= lat_min  & data[, col_lat, drop = TRUE]  <= lat_max
   all_select <-  month_select & year_select & long_select & lat_select
   
   ## Apply selection
-  query_data <- data[all_select, ]
+  query_data <- data[all_select, ,drop = TRUE]
   
   ## Defining function returning unique values with test
   unique2 <- function(x, key) {
@@ -191,24 +191,24 @@ prepsources <- function(data,
     
     ## Create the variable used for the split
     if (is.null(split_by)) {
-      split <- d[, col_source_ID]
+      split <- d[, col_source_ID, drop = TRUE]
     } else if (split_by == "month") {
-      split <- paste(d[, col_source_ID], d[, col_month], sep = "_")
+      split <- paste(d[, col_source_ID, drop = TRUE], d[, col_month, drop = TRUE], sep = "_")
     } else if (split_by == "year") {
-      split <- paste(d[, col_source_ID], d[, col_year], sep = "_")
+      split <- paste(d[, col_source_ID, drop = TRUE], d[, col_year, drop = TRUE], sep = "_")
     } else {
       stop("The argument used for 'split_by' is unknown.")
     }
     
     ## Perform the aggregation
     df <- data.frame(split = factor(c(tapply(as.character(split), split, unique2, key = "split"))),
-                     source_ID = factor(c(tapply(as.character(d[, col_source_ID]), split, unique2, key = "source_ID"))),
-                     mean_source_value = c(tapply(d[, col_source_value], split, mean, na.rm = TRUE)),
-                     var_source_value = c(tapply(d[, col_source_value], split, stats::var, na.rm = TRUE)),
-                     n_source_value = c(tapply(d[, col_source_ID], split, length)),
-                     lat = c(tapply(d[, col_lat], split, unique2, key = "latitude")),
-                     long = c(tapply(d[, col_long], split, unique2, key = "longitude")),
-                     elev = c(tapply(d[, col_elev], split, unique2, key = "elevation"))
+                     source_ID = factor(c(tapply(as.character(d[, col_source_ID, drop = TRUE]), split, unique2, key = "source_ID"))),
+                     mean_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, mean, na.rm = TRUE)),
+                     var_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, stats::var, na.rm = TRUE)),
+                     n_source_value = c(tapply(d[, col_source_ID, drop = TRUE], split, length)),
+                     lat = c(tapply(d[, col_lat, drop = TRUE], split, unique2, key = "latitude")),
+                     long = c(tapply(d[, col_long, drop = TRUE], split, unique2, key = "longitude")),
+                     elev = c(tapply(d[, col_elev, drop = TRUE], split, unique2, key = "elevation"))
     )
     ## Note that above the c() prevent the creation of 1d arrays that are troublesome in spaMM
     
@@ -270,3 +270,4 @@ prepsources <- function(data,
   stop("The argument you chose for random_level is unknown.")
   
 }
+  

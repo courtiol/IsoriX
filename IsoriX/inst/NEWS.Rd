@@ -16,6 +16,7 @@
   \subsection{Minor change}{
     \itemize{
       \item plot.ISOFIND now detects sample of size 1 and no longer displays "Group" in the title of the assignment plot even if `who` = "group"
+      \item all functions accepting a `data.frame` as input should also now be compatible when provided with a `tibble`
       }
   }
 }
