@@ -91,10 +91,10 @@ load_data <- function(data,
    ## crop the data according to the user choice
    raster <- lapply(CRU_data, function(x) {
       raster::crop(x,
-      raster::extent(long_min,
-                     long_max,
-                     lat_min,
-                     lat_max))})
+        raster::extent(long_min,
+                       long_max,
+                       lat_min,
+                       lat_max))})
    
    ## summarise the brick into layer 
    location <- data[,c("long", "lat")]
@@ -141,4 +141,3 @@ load_data <- function(data,
   
 
   
-
