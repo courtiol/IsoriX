@@ -97,7 +97,7 @@ load_data <- function(data,
                        lat_max))})
    
    ## summarise the brick into layer 
-   location <- data[,c("long", "lat")]
+   location <- data[ ,c("long", "lat")]
    
    ## Case for extracting one value per location
    if(is.null(split_by) || split_by == "year") {
