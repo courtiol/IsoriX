@@ -46,7 +46,7 @@
 #'        
 #' @examples
 #' load_data(GNIPDataDE, 
-#'          data_needed = list(pre = TRUE, tmp = TRUE, elv = T), split_by = "month")  
+#'          data_needed = list(pre = TRUE, tmp = TRUE, elv = TRUE), split_by = "month")  
 load_data <- function(data,
                      data_needed = list(pre = TRUE,
                                         pre_cv = FALSE,
