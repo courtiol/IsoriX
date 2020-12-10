@@ -99,7 +99,7 @@ load_data <- function(data,
    ## summarise the brick into layer 
    location <- data[,c("long", "lat")]
    
-   ## first if one value per cell
+   ## Case for extracting one value per location
    if(is.null(split_by) || split_by == "year") {
      raster <- lapply(raster, function(x) raster::mean(x))
      data_points <- lapply(raster, function(x) raster::extract(x = x, y = location))
