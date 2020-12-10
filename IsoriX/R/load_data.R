@@ -6,7 +6,7 @@
 #' climatology data (see \url{\link{https://docs.ropensci.org/getCRUCLdata/}}).
 #' 
 #' @param data A \var{dataframe} containing raw isotopic measurements of sources
-#' @param data_to_add A \var{list} of \var{logical} indicating which variable to add. 
+#' @param data_needed A \var{list} of \var{logical} indicating which variable to add. 
 #'   The following data are available:
 #' \describe{
 #' \item{pre}{precipitation (millimetres/month)}
@@ -43,23 +43,23 @@
 #'   (\code{split_by = "year"}).
 #' @return This function returns a \var{list} of two elements: A \var{dataframe}
 #' containing the extended data and a \var{list} containing the raster.
-#'        
+#' @export
 #' @examples
-#' load_data(GNIPDataDE, 
-#'          data_needed = list(pre = TRUE, tmp = TRUE, elv = TRUE), split_by = "month")  
+#' load_data(data = GNIPDataDE, 
+#'           data_needed = list(pre = TRUE, tmp = TRUE, elv = FALSE), split_by = "year")  
 load_data <- function(data,
-                     data_needed = list(pre = TRUE,
+                     data_needed = list(pre = FALSE,
                                         pre_cv = FALSE,
-                                        rd0 = TRUE,
+                                        rd0 = FALSE,
                                         tmp = FALSE,
-                                        dtr = TRUE,
+                                        dtr = FALSE,
                                         reh = FALSE,
                                         tmn = FALSE,
                                         tmx = FALSE,
                                         sunp = FALSE,
                                         frs = FALSE,
                                         wnd = FALSE,
-                                        elv = TRUE),
+                                        elv = FALSE),
                      long_min,
                      long_max,
                      lat_min,
@@ -96,41 +96,41 @@ load_data <- function(data,
                        lat_min,
                        lat_max))})
    
-   ## summarise the brick into layer 
-   location <- data[ ,c("long", "lat")]
-   
    ## Case for extracting one value per location
+     ## first extract the value for each location 
    if(is.null(split_by) || split_by == "year") {
      raster <- lapply(raster, function(x) raster::mean(x))
-     data_points <- lapply(raster, function(x) raster::extract(x = x, y = location))
+     data_points <- lapply(raster, function(x) raster::extract(x = x, y = data[ ,c("long", "lat")]))
      
      ## save as a brick with each variable as a layer
      raster_out <- raster::brick(raster)
      
-    ## Case for extracting one value per month:location  
+   ## Case for extracting one value per month:location  
    } else if (split_by == "month") {
-     layer <- data$month
-
-     ## need different ways to extract data from rasterlayer and from raster brick
+      
+     ## Use raster extract directly for rasterlayer (elv) and a loop going along the different layers (month) of a rasterbrick.  
      data_points <- lapply(raster, function(x) {
-       if(raster::nlayers(x) < 2) {
-       raster::extract(x = x, y = location)
+       if(length(names(x)) == 1) { ## 
+       raster::extract(x = x, y = data[ ,c("long", "lat")])
        } else {
-         sapply(seq_len(layer), function(i) {
+         sapply(seq_len(nrow(data)), function(i) {
          raster::extract(x = x, y = data[i, c("long", "lat")], layer = data$month[i], nl = 1)
          })
        }
      })
-     ## save the raster and transpose it to a list of brick by month
-     elev <- raster[names(raster) == "elv"]
+     ## save the raster and shape it as a list of brick by month with each layer being a variable. 
+     if (data_needed$elv == TRUE) elvq <- raster[names(raster) == "elv"]
+     
      raster_list <- raster[names(raster) != "elv"]
-     
      raster_out <- vector(mode = "list", length = 12)
-     for(month in 1:12) {
-      raster_out[month] <-  raster::brick(lapply(raster_list, function(x) x[[month]]))
-     }
-      raster_out <- lapply(raster_out, function(x) raster::addLayer(x, elev))
+     names(raster_out) <- names(raster_list[[1]])
      
+     for(month in seq_along(raster_out)) {
+      raster_out[[month]] <- raster::brick(lapply(raster_list, function(x) x[[month]]))
+   
+     } 
+     if(data_needed$elv == TRUE) raster_out <- lapply(raster_out, function(x) raster::addLayer(x, elvq))
+      
    } else {
      stop("The argument you chose for split_by is unknown.")
    }
@@ -138,6 +138,6 @@ load_data <- function(data,
    ## aggregate the output into a list 
    data_out <- cbind(data, data_points)
    list(data_out, raster_out)
-  
+}
 
   
