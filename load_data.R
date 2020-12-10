@@ -117,7 +117,7 @@ load_data <- function(data,
        raster::extract(x = x, y = location)
        } else {
          sapply(seq_len(layer), function(i) {
-         raster::extract(x = x, y = location[i,], layer = layer[i], nl = 1)
+         raster::extract(x = x, y = data[i, c("long", "lat")], layer = data$month[i], nl = 1)
          })
        }
      })
