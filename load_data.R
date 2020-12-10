@@ -132,7 +132,7 @@ load_data <- function(data,
       raster_out <- lapply(raster_out, function(x) raster::addLayer(x, elev))
      
    } else {
-     stop("data cannot be split by this variable")
+     stop("The argument you chose for split_by is unknown.")
    }
    
    ## aggregate the output into a list 
