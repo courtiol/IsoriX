@@ -111,7 +111,7 @@ load_data <- function(data,
    } else if (split_by == "month") {
      layer <- data$month
 
-     ## need different way for rasterlayer and raster brick
+     ## need different ways to extract data from rasterlayer and from raster brick
      data_points <- lapply(raster, function(x) {
        if(raster::nlayers(x) < 2) {
        raster::extract(x = x, y = location)
