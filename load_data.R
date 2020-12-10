@@ -107,7 +107,7 @@ load_data <- function(data,
      ## save as a brick with each variable as a layer
      raster_out <- raster::brick(raster)
      
-    ## Second if one value per cell per month   
+    ## Case for extracting one value per month:location  
    } else if (split_by == "month") {
      layer <- data$month
 
