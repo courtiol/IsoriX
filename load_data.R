@@ -1,6 +1,6 @@
 #' Load data 
 #' 
-#' This function download and add climatic data to improve the fit. 
+#' This function downloads and adds climatic data to improve the fit. 
 #' 
 #' Data comes from the University of East Anglia Climate Research Unit (CRU)
 #' climatology data (see \url{\link{https://docs.ropensci.org/getCRUCLdata/}}).
