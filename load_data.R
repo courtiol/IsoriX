@@ -66,7 +66,7 @@ load_data <- function(data,
                      lat_max,
                      split_by = NULL) {
   
-   .complete_args(get_data)
+   .complete_args(load_data)
   
   ### add missing values not needed if inside a function already completing the args. 
   if (missing("long_min")) long_min <- -180
