@@ -116,7 +116,7 @@ load_data <- function(data,
        if(raster::nlayers(x) < 2) {
        raster::extract(x = x, y = location)
        } else {
-         sapply(1:length(layer), function(i) {
+         sapply(seq_len(layer), function(i) {
          raster::extract(x = x, y = location[i,], layer = layer[i], nl = 1)
          })
        }
