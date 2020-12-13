@@ -6,6 +6,9 @@
 \usage{
 prepsources(
   data,
+  data_needed = list(pre = FALSE, pre_cv = FALSE, rd0 = FALSE, tmp = FALSE, dtr =
+    FALSE, reh = FALSE, tmn = FALSE, tmx = FALSE, sunp = FALSE, frs = FALSE, wnd = FALSE,
+    elv = FALSE),
   month = 1:12,
   year,
   long_min,
@@ -26,6 +29,25 @@ prepsources(
 }
 \arguments{
 \item{data}{A \var{dataframe} containing raw isotopic measurements of sources}
+
+\item{data_needed}{A \var{list} of \var{logical} indicating which variable to add.
+The following data are available:
+\describe{
+\item{pre}{precipitation (millimetres/month)}
+\describe{
+\item{pre_cv}{cv of precipitation (percent)}
+}
+\item{rd0}{wet-days (number days with >0.1mm rain per month)}
+\item{tmp}{mean temperature (degrees Celsius)}
+\item{tmn}{minimum temperature (degrees Celsius)}
+\item{tmx}{maximum temperature (degrees Celsius)}
+\item{dtr}{mean diurnal temperature range (degrees Celsius)}
+\item{reh}{relative humidity (percent)}
+\item{sunp}{sunshine (percent of maximum possible (percent of day length))}
+\item{frs}{ground-frost (number of days with ground-frost per month)}
+\item{wnd}{10 metre windspeed (metres/second)}
+\item{elv}{elevation (automatically converted to metres)}
+}}
 
 \item{month}{A \var{numeric vector} indicating the months to select from.
 Should be a vector of round numbers between 1 and 12. The default is 1:12
@@ -126,8 +148,9 @@ be used as input to fit the isoscape (see \code{\link{isofit}} and
 \code{\link{isomultifit}}).
 }
 \examples{
-## Create a processed dataset for Germany
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+## Create a processed dataset for Germany with tmp and dtr
+GNIPDataDEagg <- prepsources(data = GNIPDataDE, 
+                             data_needed = list(tmp =TRUE, dtr = TRUE))
 
 head(GNIPDataDEagg)
 
@@ -137,24 +160,27 @@ GNIPDataDEmonthly <-prepsources(data = GNIPDataDE,
 
 head(GNIPDataDEmonthly)
 
-## Create a processed dataset for Germany per year
+## Create a processed dataset for Germany per year with tmp and dtr
 GNIPDataDEyearly <- prepsources(data = GNIPDataDE,
-                                split_by = "year")
+                                split_by = "year", 
+                                data_needed = list(tmp =TRUE, dtr = TRUE))
 
 head(GNIPDataDEyearly)
 
-## Create isoscape-dataset for warm months in germany between 1995 and 1996
+## Create isoscape-dataset for warm months in Germany between 1995 and 1996, with tmp and dtr
 GNIPDataDEwarm <- prepsources(data = GNIPDataDE,
                               month = 5:8,
-                              year = 1995:1996)
+                              year = 1995:1996, 
+                              data_needed = list(tmp =TRUE, dtr = TRUE))
 
 head(GNIPDataDEwarm)
 
 
-## Create a dataset with 90\% of obs
+## Create a dataset with 90\% of obs with tmp and dtr
 GNIPDataDE90pct <- prepsources(data = GNIPDataDE,
                                prop_random = 0.9,
-                               random_level = "obs")
+                               random_level = "obs", 
+                               data_needed = list(tmp =TRUE, dtr = TRUE))
 
 lapply(GNIPDataDE90pct, head) # show beginning of both datasets
 
@@ -166,11 +192,12 @@ GNIPDataDE50pctsources <- prepsources(data = GNIPDataDE,
 lapply(GNIPDataDE50pctsources, head)
 
 
-## Create a dataset with half the weather sources split per month
+## Create a dataset with half the weather sources split per month with tmp and dtr
 GNIPDataDE50pctsourcesMonthly <- prepsources(data = GNIPDataDE,
                                               split_by = "month",
                                               prop_random = 0.5,
-                                              random_level = "source")
+                                              random_level = "source", 
+                                              data_needed = list(tmp =TRUE, dtr = TRUE))
 
 lapply(GNIPDataDE50pctsourcesMonthly, head)
 

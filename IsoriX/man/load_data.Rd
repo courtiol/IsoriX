@@ -72,5 +72,5 @@ climatology data (see \url{\link{https://docs.ropensci.org/getCRUCLdata/}}).
 }
 \examples{
 load_data(data = GNIPDataDE, 
-          data_needed = list(pre = TRUE, tmp = TRUE, elv = FALSE), split_by = "year")  
+          data_needed = list(pre = TRUE, tmp = TRUE, elv = FALSE), split_by = "month")  
 }
