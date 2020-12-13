@@ -46,7 +46,7 @@
 #' @export
 #' @examples
 #' load_data(data = GNIPDataDE, 
-#'           data_needed = list(pre = TRUE, tmp = TRUE, elv = FALSE), split_by = "year")  
+#'           data_needed = list(pre = TRUE, tmp = TRUE, elv = FALSE), split_by = "month")  
 load_data <- function(data,
                      data_needed = list(pre = FALSE,
                                         pre_cv = FALSE,
@@ -98,9 +98,10 @@ load_data <- function(data,
    
    ## Case for extracting one value per location
      ## first extract the value for each location 
+
    if(is.null(split_by) || split_by == "year") {
      raster <- lapply(raster, function(x) raster::mean(x))
-     data_points <- lapply(raster, function(x) raster::extract(x = x, y = data[ ,c("long", "lat")]))
+     data_points <- lapply(raster, function(x) raster::extract(x = x, y = data[ ,c("long", "lat")],  method = "bilinear"))
      
      ## save as a brick with each variable as a layer
      raster_out <- raster::brick(raster)
@@ -111,7 +112,7 @@ load_data <- function(data,
      ## Use raster extract directly for rasterlayer (elv) and a loop going along the different layers (month) of a rasterbrick.  
      data_points <- lapply(raster, function(x) {
        if(length(names(x)) == 1) { ## 
-       raster::extract(x = x, y = data[ ,c("long", "lat")])
+       raster::extract(x = x, y = data[ ,c("long", "lat")],  method = "bilinear")
        } else {
          sapply(seq_len(nrow(data)), function(i) {
          raster::extract(x = x, y = data[i, c("long", "lat")], layer = data$month[i], nl = 1)
@@ -119,7 +120,7 @@ load_data <- function(data,
        }
      })
      ## save the raster and shape it as a list of brick by month with each layer being a variable. 
-     if (data_needed$elv == TRUE) elvq <- raster[names(raster) == "elv"]
+     if (data_needed$elv == TRUE) elv <- raster[names(raster) == "elv"]
      
      raster_list <- raster[names(raster) != "elv"]
      raster_out <- vector(mode = "list", length = 12)
@@ -129,7 +130,7 @@ load_data <- function(data,
       raster_out[[month]] <- raster::brick(lapply(raster_list, function(x) x[[month]]))
    
      } 
-     if(data_needed$elv == TRUE) raster_out <- lapply(raster_out, function(x) raster::addLayer(x, elvq))
+     if(data_needed$elv == TRUE) raster_out <- lapply(raster_out, function(x) raster::addLayer(x, elv))
       
    } else {
      stop("The argument you chose for split_by is unknown.")
