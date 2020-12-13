@@ -24,7 +24,8 @@ Imports:
     stats,
     tools,
     utils,
-    viridisLite
+    viridisLite, 
+    getCRUCLdata
 Description: Building isoscapes using mixed models and inferring the geographic
   origin of samples based on their isotopic ratios. This package is essentially a
   simplified interface to several other packages which implements a new
