@@ -161,7 +161,7 @@ calibfit <- function(data,
     too_large <- sum(max(data$mean_source_value, na.rm = TRUE) > max(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
     if (too_small + too_large > 0) {
       message(paste("Tip:", too_small + too_large, "out of your", nrow(data),
-                    "calibration samples are associated to predicted values more extreme than the ones present in the isoscape. This corresponds to extrapolation during the calibration step. If the the proportion becomes too large, it could imped the reliability of your assignments. In such cases, you should perhaps rethink the design of your isoscape and/or collect more callibration data within the expected range to avoid any problem."))
+                    "calibration samples are associated to predicted values more extreme than the ones present in the isoscape. This corresponds to extrapolation during the calibration step. If the proportion becomes too large, it could imped the reliability of your assignments. In such cases, you should perhaps rethink the design of your isoscape and/or collect more callibration data within the expected range to avoid any problem."))
     }
     
     ## extract the prediction covariance matrix
