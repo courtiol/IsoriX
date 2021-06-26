@@ -167,14 +167,12 @@ prepraster <- function(raster,
       }
       
       ## crop is performed:
-      margin_long <- (max(isofit$mean_fit$data$long) - min(isofit$mean_fit$data$long)) * margin_pct/100
-      margin_lat <- (max(isofit$mean_fit$data$lat) - min(isofit$mean_fit$data$lat)) * margin_pct/100
-      
-      raster <- raster::crop(raster,
-                               raster::extent(min(isofit$mean_fit$data$long) - margin_long,
-                                              max(isofit$mean_fit$data$long) + margin_long,
-                                              min(isofit$mean_fit$data$lat) - margin_lat,
-                                              max(isofit$mean_fit$data$lat) + margin_lat))
+      raster <- .crop_withmargin(raster,
+                                 xmin = min(isofit$mean_fit$data$long),
+                                 xmax = max(isofit$mean_fit$data$long),
+                                 ymin =  min(isofit$mean_fit$data$lat),
+                                 ymax = max(isofit$mean_fit$data$lat),
+                                 margin_pct = margin_pct)
     } else {
       if (length(manual_crop) == 4) {
         
