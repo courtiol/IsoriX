@@ -192,3 +192,17 @@
   }
   stop("'var' has an unknown class")
 }
+
+
+.crop_withmargin <- function(raster, xmin, xmax, ymin, ymax, margin_pct = 5) {
+  ## This function should not be called by the user.
+  ## It crops a raster using a safety margin
+  margin_long <- (xmax - xmin) * margin_pct/100
+  margin_lat  <- (ymax - ymin) * margin_pct/100
+  
+  raster::crop(raster, raster::extent(xmin - margin_long,
+                                      xmax + margin_long,
+                                      ymin - margin_lat,
+                                      ymax + margin_lat))
+
+}
