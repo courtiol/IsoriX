@@ -26,8 +26,7 @@ test_that("The workfow works with tibble", {
   expect_equal(ref_2, job_2)
 
   ## calibfit  // slow
-  index2 <- sample(1:nrow(CalibDataBat), 100)
-  test_df2 <- CalibDataBat[index2, ]
+  test_df2 <- CalibDataBat[1:10, ]
   test_tbl2 <- test_df2
   class(test_tbl2) <-  c("tbl_df", "tbl", "data.frame")
   
