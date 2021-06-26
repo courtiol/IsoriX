@@ -65,14 +65,13 @@ getelev <- function(path = NULL,
 #' 
 #' The function \code{getprecip} allows for the download of rasters of monthly
 #' precipitation from internet. It downloads the "precipitation (mm) WorldClim
-#' Version2" at a spatial resolution of 30 seconds (~1 km2). After download, the
+#' Version 2.1" at a spatial resolution of 30 seconds (~1 km2). After download, the
 #' function also unzip the file. The function
 #' \code{getprecip} uses the generic function \code{downloadfile} that can also be
 #' used to download directly other files. This raster needs further processing 
 #' with the function \code{\link{prepcipitate}}. It can then be used to predict 
 #' annual averages precipitation weighted isoscapes with the function \code{\link{isomultiscape}}.
 #' 
-#' precipitation weighted isoscapes
 #' In the argument "path" is not provided, the file will be stored in the 
 #' current working directory. The functions can create new directories, so you 
 #' can also indicate a new path. The integrity of the elevation raster is tested
@@ -80,7 +79,7 @@ getelev <- function(path = NULL,
 #' file again, specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
 #' @inheritParams getelev
-#' @source \url{https://www.worldclim.org/data/worldclim21.html}
+#' @source \url{https://worldclim.org/data/worldclim21.html}
 #' @examples
 #' 
 #' ## To download the monthly precipitation
@@ -95,12 +94,12 @@ getprecip <- function(path = NULL,
                       ) {
   
   ## Define web address and file name
-  address_precip <- "http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_30s_prec.zip"
-  filename_precip <- "wc2.0_30s_prec.zip"
+  address_precip <- "https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_30s_prec.zip"
+  filename_precip <- "wc2.1_30s_prec.zip"
   
   ## Define md5sum
-  ## (created with tools::md5sum("wc2.0_30s_prec.zip"))
-  md5sum_precip <- "afd435222a328efb4ab9487a3fe0b6d4"
+  ## (created with tools::md5sum("wc2.1_30s_prec.zip"))
+  md5sum_precip <- "cc100350d034883c9e925c903fb3c7c3"
   
   ## Download and check file
   path_to_zip <- downloadfile(address = address_precip,
@@ -115,7 +114,7 @@ getprecip <- function(path = NULL,
   if (verbose > 0) {
     print("unzipping in progress...", quote = FALSE)
   }
-  outpath <- paste0(path, "wc2.0_30s_prec")
+  outpath <- paste0(path, "wc2.1_30s_prec")
   utils::unzip(path_to_zip, exdir = outpath)
   
   if (verbose > 0) {

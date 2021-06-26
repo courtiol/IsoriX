@@ -34,17 +34,21 @@ extent as the structural raster. This function is designed to be used with
 #GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #
 #GermanFit <- isofit(data = GNIPDataDEagg,
-#                    mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
+#                     mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
 #
+### We prepare the structural raster:
 #StrRaster <- prepraster(raster = ElevRasterDE,
 #                        isofit = GermanFit,
 #                        aggregation_factor = 0)
 #
-#getprecip(path = "~/Desktop/")
+### We download the precipitation data:
+#getprecip(path = "~/Downloads/")
 #
-#PrecipitationBrick <- prepcipitate(path = "~/Desktop/",
-#                                   raster = StrRaster
-#                                   )
+### We prepare the raster brick with all the precipitation data:
+#PrecipitationBrick <- prepcipitate(path = "~/Downloads/",
+#                                   raster = StrRaster)
+#
+### We plot the precipitation data:
 #levelplot(PrecipitationBrick)
 
 }

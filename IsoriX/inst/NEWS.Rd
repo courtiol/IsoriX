@@ -13,6 +13,11 @@
 }
 
 \section{version devel}{
+  \subsection{Updated}{
+    \itemize{
+      \item the precipitation raster being downloaed is now the version 2.1 provided by WorldClim (#136; special thanks to Kristen Mancuso for reporting this issue)
+      }
+  }
   \subsection{Minor change}{
     \itemize{
       \item plot.ISOFIND now detects sample of size 1 and no longer displays "Group" in the title of the assignment plot even if `who` = "group"
