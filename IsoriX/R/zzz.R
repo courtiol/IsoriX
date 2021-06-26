@@ -23,6 +23,8 @@
                         "\n",
                         "\n    * news(package = 'IsoriX')",
                         "\n      for info on what has changed between the different versions of IsoriX",
+                        "\n",
+                        "\n Please also consider joinging the mailing list / google group: 'https://groups.google.com/g/IsoriX' for help, news and discussions about IsoriX!",
                         "\n"
                         )
   }
