@@ -142,7 +142,8 @@ isosim <- function(data,
 
   if (!requireNamespace("RandomFields", quietly = TRUE)) {
     stop("The package 'RandomFields' is needed for this function,
-    you can install it by typing install.packages('RandomFields')")
+    you could install it by typing install.packages('RandomFields'),
+    but the package is unfortunately currently retired...")
   }
   
   ## if data is a raster, we convert it as data.frame
