@@ -146,7 +146,7 @@ isosim <- function(data,
   }
   
   ## if data is a raster, we convert it as data.frame
-  if (class(data) == "RasterLayer") {
+  if (inherits(data, "RasterLayer")) {
     raster <- data
     coord <- sp::coordinates(raster)
     data <- data.frame(long = coord[, 1],

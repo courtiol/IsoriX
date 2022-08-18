@@ -169,7 +169,7 @@
 .summarize_values <- function(var, nb_quantiles = 1e4) {
   ## This function should not be called by the user.
   ## It extracts and summarizes the raster values using quantiles if needed.
-  if (!class(var) %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
+  if (!inherits(var, c("RasterLayer", "RasterStack", "RasterBrick"))) {
     return(var)
   } else if (raster::inMemory(var)) {
     return(as.numeric(raster::values(var)))
@@ -179,10 +179,10 @@
     print("extracting values from stored rasters...")
   }
   
-  if (class(var) %in% c("RasterLayer")) {
+  if (inherits(var, c("RasterLayer"))) {
     var <- raster::quantile(var, seq(0, 1, length = nb_quantiles))
     return(var)
-  } else if (class(var) %in% c("RasterStack", "RasterBrick")) {
+  } else if (inherits(var, c("RasterStack", "RasterBrick"))) {
     max_var <- max(raster::maxValue(var))
     min_var <- min(raster::minValue(var))
     var <- unique(c(min_var,

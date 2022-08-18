@@ -148,7 +148,7 @@ plot.ISOSCAPE <- function(x,
                           sphere  = list(build = FALSE, keep_image = FALSE),
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
-    if (!(any(class(x) %in% "ISOSCAPE"))) {
+    if (!inherits(x, "ISOSCAPE")) {
       stop("This function must be called on an object of class ISOSCAPE.")
     }
   
@@ -172,7 +172,7 @@ plot.ISOSCAPE <- function(x,
     }
 
     ## importing ocean if missing
-    if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
+    if (!is.null(mask$mask) && !inherits(mask$mask, "SpatialPolygons") && is.na(mask$mask)) {
       OceanMask <- NULL
       utils::data("OceanMask", envir = environment(), package = "IsoriX")
       mask$mask <- OceanMask
@@ -334,7 +334,7 @@ plot.ISOFIND <- function(x,
   
   what <- "pv" ## ToDo: implement other possibilities
   
-  if (!(any(class(x) %in% "ISOFIND"))) {
+  if (!inherits(x, "ISOFIND")) {
     stop("This function must be called on an object of class ISOFIND")
   }
   
@@ -356,14 +356,14 @@ plot.ISOFIND <- function(x,
   }
 
   ## importing ocean if missing
-  if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
+  if (!is.null(mask$mask) && !inherits(mask$mask, "SpatialPolygons") && is.na(mask$mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask$mask <- OceanMask
   }
 
   ## changing missing setting for mask2
-  if (!is.null(mask2$mask) && class(mask2$mask) != "SpatialPolygons" && is.na(mask2$mask)) {
+  if (!is.null(mask2$mask) && !inherits(mask2$mask, "SpatialPolygons") && is.na(mask2$mask)) {
     mask2$mask <- NULL
   }
 
@@ -559,14 +559,14 @@ plot.ISOFIND <- function(x,
 #' @export
 plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 
-  if (!(any(class(x) %in% "ISOFIT"))) {
+  if (!inherits(x, "ISOFIT")) {
     stop("This function must be called on an object of class ISOFIT.")
   }
   
   ## Test if RStudio is in use
   RStudio <- .Platform$GUI == "RStudio"
 
-  if (!any(class(x) %in% "MULTIISOFIT")) {
+  if (!inherits(x, "MULTIISOFIT")) {
     ## Determine number of plots in panel
     if (RStudio) {
       nplot <- 1
@@ -695,7 +695,7 @@ points.CALIBFIT <- function(x,
 
 plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, ylim = NULL, points = FALSE, ...) {
 
-  if (!(any(class(x) %in% "CALIBFIT"))) {
+  if (!inherits(x, "CALIBFIT")) {
     stop("This function must be called on an object of class CALIBFIT.")
   }
   

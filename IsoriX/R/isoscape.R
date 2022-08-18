@@ -129,7 +129,7 @@ isoscape <- function(raster,
                      isofit,
                      verbose = interactive()) {
   
-  if (any(class(isofit) %in% "MULTIISOFIT")) {
+  if (inherits(isofit, "MULTIISOFIT")) {
     stop("Object 'isofit' of class MULTIISOFIT; use isomultiscape instead!")
   }
   
@@ -294,7 +294,7 @@ isoscape <- function(raster,
   # It is not exported but may be put in use in a future version of IsoriX.
   # It does not compute the predictions into chunks.
     
-  if (any(class(isofit) %in% "MULTIISOFIT")) {
+  if (inherits(isofit, "MULTIISOFIT")) {
     stop("object 'isofit' of class MULTIISOFIT; use isomultiscape instead.")
   }
   
@@ -487,7 +487,7 @@ isomultiscape <- function(raster, ## change as method?
                           ) {
   
   ## In case the function is called on the output of isofit by mistake
-  if (!any(class(isofit) %in% "MULTIISOFIT")) {
+  if (!inherits(isofit, "MULTIISOFIT")) {
     return(isoscape(raster = raster,
                     isofit = isofit,
                     verbose = verbose
@@ -497,7 +497,7 @@ isomultiscape <- function(raster, ## change as method?
   
   ## Checking the inputs
   if (!is.null(weighting)) {
-    if (!any(class(weighting) %in% c("RasterStack", "RasterBrick"))) {
+    if (!inherits(weighting, c("RasterStack", "RasterBrick"))) {
       stop("the argument 'weighting' should be a RasterStack or a RasterBrick")
     }
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
@@ -582,7 +582,7 @@ print.ISOSCAPE <- function(x, ...) {
 
 
 summary.ISOSCAPE <- function(object, ...) {
-  if ("ISOSIM" %in% class(object)) {
+  if (inherits(object, "ISOSIM")) {
     cat("\n")
     cat("### Note: this isoscape has been simulated ###", "\n")
     cat("\n")

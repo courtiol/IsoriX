@@ -159,7 +159,7 @@ calibfit!")
   }
 
   ## importing ocean if missing
-  if (!is.null(mask) && class(mask) != "SpatialPolygons" && is.na(mask)) {
+  if (!is.null(mask) && !inherits(mask, "SpatialPolygons") && is.na(mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask <- OceanMask
