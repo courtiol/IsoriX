@@ -147,10 +147,10 @@ for the mean model; or the corresponding information for the residual
 dispersion variance model ("disp", "disp_predVar", "disp_residVar", or
 "disp_respVar").
 
-When used on a simulated isoscape produced with the function
-\code{\link{isosim}}, the user can choose between plotting the mean isotopic
-value (\code{which} = "mean") or the residual dispersion (\code{which} =
-"disp").
+When used on a simulated isoscape produced with the function \code{isosim}
+(currently dropped due to the package RandomFields being temporarily retired
+from CRAN), the user can choose between plotting the mean isotopic value
+(\code{which} = "mean") or the residual dispersion (\code{which} = "disp").
 
 When called upon an object of class \var{ISOFIND}, the plot function draws a
 fine-tuned plot of the assignment. You can use the argument \code{who} to

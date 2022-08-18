@@ -38,7 +38,6 @@ Suggests:
     magick,
     maps,
     maptools,
-    RandomFields,
     rgeos,
     rgdal,
     rgl,
