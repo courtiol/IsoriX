@@ -12,7 +12,7 @@
   }
 }
 
-\section{version devel}{
+\section{version 0.8.2.9999}{
   \subsection{Updated}{
     \itemize{
       \item the precipitation raster being downloaed is now the version 2.1 provided by WorldClim (#136; special thanks to Kristen Mancuso for reporting this issue)
