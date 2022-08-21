@@ -13,6 +13,14 @@
 }
 
 \section{version 0.8.2.9999}{
+  \subsection{New features}{
+    \itemize{
+      \item the function calibfit gains an argument called method that allows for selecting one of three calibration methods ("wild", "lab", or "desk"). This allows for users to use 1) calibration samples associated with unknown environmental isotopic values, 2) calibration samples associated with known environmental isotopic values, or 3) the intercept and slope of a calibration relationship computed by others (e.g. values found in a paper). Note: the third method allows for the consideration of a fractionaction factor too (i.e. slope = 0). See \code{calibfit} for details.
+      \item argument xlim for the plotting function for calibration fits
+      \item argument line for customising how to plot the regression line in calibration fits
+      \item the summary method for calibration fits now displays the residual variance
+      }
+  }
   \subsection{Updated}{
     \itemize{
       \item the precipitation raster being downloaed is now the version 2.1 provided by WorldClim (#136; special thanks to Kristen Mancuso for reporting this issue)
@@ -23,6 +31,7 @@
       \item plot.ISOFIND now detects sample of size 1 and no longer displays "Group" in the title of the assignment plot even if `who` = "group"
       \item all functions accepting a `data.frame` as input should also now be compatible when provided with a `tibble`
       \item correct typos (#130)
+      \item default y-axis title changed to "Isotopic value in the environment" when plotting calibration fits
       }
   }
 }

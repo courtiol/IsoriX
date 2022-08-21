@@ -4,9 +4,15 @@
 \alias{calibfit}
 \alias{print.CALIBFIT}
 \alias{summary.CALIBFIT}
-\title{Fit the calibration model}
+\title{Fit the calibration model (or load parameters from calibration done outside IsoriX)}
 \usage{
-calibfit(data, isofit, verbose = interactive(), control_optim = list())
+calibfit(
+  data,
+  isofit = NULL,
+  method = c("wild", "lab", "desk"),
+  verbose = interactive(),
+  control_optim = list()
+)
 }
 \arguments{
 \item{data}{A \var{dataframe} containing the calibration data (see note
@@ -14,59 +20,187 @@ below)}
 
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
+\item{method}{A \var{string} indicating the method used to generate the data
+used for the calibration. By default method is \var{"wild"}, but the
+other possible values are \var{"lab"} and \var{"desk"}. See \strong{Details} for
+the difference between these three methods.}
+
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
-running. By default verbose is \var{TRUE} if users use an interactive R
+running. By default verbose is \var{TRUE} if users run an interactive R
 session and \var{FALSE} otherwise.}
 
 \item{control_optim}{A \var{list} to pass information to the argument control
-of the optim call (for advanced users only).}
+in the call to \code{\link{optim}} (only effective when \code{method =
+  "wild"}; for advanced users only).}
 }
 \value{
 This function returns a \var{list} of class \var{CALIBFIT} containing
-the fixed-effect estimates of the calibration function, the covariance of
-the fixed effects, the residual variance of the calibration fit, the fitted
-calibration model, the original calibration data set with additional
-information added during the fit, and the location of the calibration
-points as spatial points.
+the name of the calibration method used, whether a species_ID random effect
+was estimated, whether a site_ID random effect was estimated, the
+fixed-effect estimates of the calibration function, the covariance of the
+fixed effects, the residual variance of the calibration fit, the fitted
+calibration model (if applicable), the original calibration data set with
+additional information added during the fit, and the location of the
+calibration points as spatial points.
 }
 \description{
-This function fits a model that establishes the relationship between the
-isotopic values of organisms (e.g. tissues such as hair, horn, ivory or
-feathers) and the isotopic values of their environment (e.g. precipitation).
+This function establishes the relationship between the isotopic values of
+organisms (e.g. tissues such as hair, horn, ivory or feathers; hereafter
+referred to as \emph{sample value} or similar) and the isotopic values of their
+environment (e.g. precipitation water; hereafter referred to as \emph{environment
+value} or similar). This function is only needed when the assignment of
+organisms has to be performed within an isoscape that was not built using the
+organims themselves, but that was instead built using another source of
+isotopic values (e.g., precipitation). If the isoscape had been fitted using
+isotopic ratios from sedentary animals directly, this calibration step is not
+needed (e.g. isocape fitted using sedentary butterflies and migratory
+butterflies to assign). In other cases, this calibration step is usually
+needed since organism may not directly reflect the isotopic values of their
+environment. Depending on the calibration data to be used (provided via the
+argument \code{data}), one of three possible calibration method must be
+selected (via the argument \code{method}). Each method considers a different
+statistical model and requires particular data that are organised in a
+specific way (see \strong{Details} for explanations and \strong{Examples} for use
+cases).
 }
 \details{
-The calibration model is a linear mixed-effects model (LMM) that fits the
-isotopic values of sedentary organisms as a linear function of the isotopic
-values in their environment (e.g. precipitation).
+Calibration can be performed according to one of three different methods and
+it is crucial for the users to select the method that is most appropriate for
+their workflow. The methods are labelled "wild", "lab" and "desk". One of
+this term must thus be used to define the argument \code{method}. If no term
+is used, the default that is selected is the method referred to as "wild".
+Importantly, the choice of the method can impact the most likely
+assignment locations during the assignment test performed in
+\code{\link{isofind}}.
+\subsection{Method "wild"}{
 
-This function considers that the isotopic values from the environment (e.g.
-from precipitation) at the locations at which organisms were sampled are not
-known. The function therefore predicts these isotopic values from the
-geostatistical model fitted by the function \code{\link{isofit}}, which is
-provided to \code{\link{calibfit}} using the argument \code{isofit}.
-
-The LMM used to fit the calibration function has a simple fixed-effect
-structure: an intercept and a slope. The random effect is more complex: it is
-normally distributed with mean zero, a certain variance between locations
-proportional to the squared fixed slope, and a covariance structure defined
-by the prediction covariance matrix of the isoscape model between the
-calibration locations. See appendix in Courtiol et al. 2019 for more details.
-
-This function is only needed in the case for which the assignment of
-organisms has to be performed within an isoscape that was built using another
-source of isotopic values (e.g., precipitation). This implies that if the
-isoscape had been fitted using isotopic ratios from sedentary animals, then
-this calibration step is not needed.
-
-If source isotopic values are known at the locations where sedentary
-organisms were sampled, users should calibrate their data directly using the
-function \code{\link[stats]{lm}} by fitting tissue isotopic values as a
-function of source isotopic values.
+This calibration method is the one to be used when the calibration data to be
+used correspond to isotopic values measured on sedentary organisms and when
+no direct measurement of isotopic values in the environment are available at
+the locations where sedentary organisms have been collected. In such a case,
+the isotopic values in the environment of sedentary organisms are predicted
+internally using an isoscape fitted with \code{\link{isofit}}. This
+calibration method thus aim at estimating and accounting for the uncertainty
+associated with these predicted values. Such uncertainty is accounted for
+when fitting the calibration fit so as to produce an unbiased estimation of
+the calibration relationship and it is also then accounted for by
+\code{\link{isofind}} when inferring the possible locations of origin. Before
+we added the argument \code{method} in \code{calibfit} (i.e. before releasing
+the version 0.9), this method was the only one available in IsoriX.
+\itemize{
+\item \strong{Statistical model}: in this case, the calibration model to be fitted is
+a linear mixed-effects model (LMM) that fits the isotopic values of sedentary
+organisms as a linear function of the isotopic values in their environment
+(e.g. precipitation). The function considers that the isotopic values from
+the environment (e.g. from precipitation) at the locations at which organisms
+were sampled are not known. The function therefore predicts these isotopic
+values from the geostatistical model fitted by the function
+\code{\link{isofit}}, which is provided to \code{calibfit} using the argument
+\code{isofit}. The LMM used to fit the calibration function has a simple
+fixed-effect structure: an intercept and a slope. The random effect is more
+complex: it is normally distributed with mean zero, a certain variance
+between locations proportional to the squared (fixed) slope, and a covariance
+structure defined by the prediction covariance matrix of the isoscape model
+between the calibration locations. See appendix in Courtiol et al. 2019 for
+more details.
+\item \strong{Required calibration data}: the calibration data to be used here must be
+a dataframe (or a tibble) containing at least the following columns:
+\itemize{
+\item \code{sample_value}: the isotopic value of the calibration sample
+\item \code{long}: the longitude coordinate (decimal degrees)
+\item \code{lat}: the latitude coordinate (decimal degrees)
+\item \code{site_ID}: the sample site
 }
-\note{
-See \code{\link{CalibDataAlien}} to know which variables are needed to
-perform the calibration fit and their names.
+
+The column name must be identical to those indicated here. Other columns
+can be present in the data but won't be used. Each row must correspond to
+a different calibration sample (i.e. a single isotopic measurement). See
+\code{\link{CalibDataAlien}}, \code{\link{CalibDataBat}}, or
+\code{\link{CalibDataBat2}} for examples of such a dataset.
+}
+}
+
+\subsection{Method "lab"}{
+
+This calibration method is the one to be used when the calibration data to be
+used correspond to isotopic values recorded for both organisms and their
+environment. This is the right method to be used when the data are generated
+by growing organisms in a controlled environment where they are fed and/or
+given water with a specific (known) isotopic value. This is also the method
+to be used if sedentary organisms are sampled in the wild together with a
+sample from their environment and that isotopic values have been measured for
+both.
+\itemize{
+\item \strong{Statistical model}: in this case, the calibration model to be fitted is
+a simple linear model (LM) or a simple linear mixed-effects model (LMM) that
+fits the isotopic values of sedentary organisms as a linear function of the
+isotopic values in their environment (e.g. precipitation). Whether it is a LM
+or a LMM depends on the presence of a column \code{site_ID} in the dataset as
+well as on the number of unique values for such a column. If the column is
+present and the number of unique values is larger than 4, a LMM is fitted.
+Otherwise, a LM is fitted. In both cases, the function considers that the
+isotopic values from the environment (e.g. from precipitation) at the
+locations at which organisms were sampled are known. Contrary to the method
+"wild", the environment values are thus observed and not predicted from an
+isoscape. The argument \code{isofit} should thus remain \code{NULL} in this
+case (since no isoscape is used, no isoscape fit is required to perform the
+calibration). The model used to fit the calibration function has a simple
+fixed effect structure: an intercept and a slope.
+\item \strong{Required calibration data}: the calibration data to be used here must be
+a dataframe (or a tibble) containing at least the following columns:
+\itemize{
+\item \code{sample_value}: the isotopic value of the calibration sample
+\item \code{envir_value}: the isotopic value of the environment
+\item \code{site_ID} (optional): the sample site
+}
+
+The column name must be identical to those indicated here. Other columns
+can be present in the data but won't be used. Each row must correspond to
+a different calibration sample (i.e. a single sample-environment pair of
+isotopic measurements).
+}
+}
+
+\subsection{Method "desk"}{
+
+This calibration method is the one to be used when no calibration data is
+available and that users want to rely on the slope and intercept (and, if
+available, on the standard errors associated to them, and/or the residual
+variance) of a calibration function they found elsewhere (e.g. in a
+publication). Note that if the slope is set to 0 and an intercept is
+considered, the calibration methods actually corresponds to the simple
+consideration of a fractionation factor.
+
+This calibration method must only be used as a last resource! It is unlikely
+to yield to robust inference during the assignment step. The more argument
+provided the better, but even if standard errors and the residual variance
+are defined, the function won't achieve anything close to a good job. This is
+because relying solely on the simple metrics reported in publications or by
+software implies to neglect various sources of uncertainty. In particular,
+even if 5 parameters listed below are provided, the assignment will still be
+forced to assume that documented uncertainties are independent from each
+others. Making these simplifying assumptions comes with a cost: it can bias
+the assignment or pretend that they are more accurate than they really are.
+For these reasons, we were tempted to use \code{method = "dirty"} instead of
+\code{method = "desk"}... but we chickened out since we predicted that users
+would then refrain from mentioning the method they used in publications...
+\itemize{
+\item \strong{Statistical model}: none!
+\item \strong{Required calibration data}: the calibration data to be used here must be
+a dataframe (or a tibble) containing a single row with the following columns:
+\itemize{
+\item \code{intercept}: the estimated slope of a fit of the form
+\code{lm(sample_value ~ source_value)}
+\item \code{slope}: the estimated slope of a fit of the form
+\code{lm(sample_value ~ source_value)}
+\item \code{intercept_se} (optional): the standard error around the intercept
+\item \code{slope_se} (optional): the standard error around the slope
+\item \code{resid_var} (optional): the residual variance (not SD) of a fit of
+the form \code{lm(sample_value ~ source_value)}
+}
+}
+}
 }
 \examples{
 
@@ -96,19 +230,11 @@ summary(CalibAlien)
 ## We plot the calibration function:
 plot(CalibAlien)
 
-## Add other calibrations on the same plot
-CalibDataAlien3 <- CalibDataAlien2 <- CalibDataAlien
-CalibDataAlien2$sample_value <- rnorm(nrow(CalibDataAlien2),
-  mean = CalibDataAlien2$sample_value, sd = 10)
-CalibDataAlien3$sample_value <- rnorm(nrow(CalibDataAlien3),
-  mean = CalibDataAlien3$sample_value, sd = 10)
-CalibAlien2 <- calibfit(data = CalibDataAlien2, isofit = GermanFit)
-CalibAlien3 <- calibfit(data = CalibDataAlien3, isofit = GermanFit)
-plot(CalibAlien3)
-points(CalibAlien)
-points(CalibAlien2, pch = 3, col = "green", CI = list(col = "green"))
-
-
+CalibBat1 <- calibfit(data = CalibDataBat, isofit = GermanFit)
+CalibBat2 <- calibfit(data = CalibDataBat2, isofit = GermanFit)
+plot(CalibBat1)
+points(CalibBat2, pch = 3, col = "red", CI = list(col = "green"))
+ 
 }
 
 }
@@ -118,6 +244,10 @@ Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape computation and
 inference of spatial origins with mixed models using the R package IsoriX.
 In Hobson KA, Wassenaar LI (eds.), Tracking Animal Migration with Stable
 Isotopes, second edition. Academic Press, London.
+}
+\seealso{
+see \code{\link{plot}} for the help on how to plot the calibration
+relationship.
 }
 \keyword{models}
 \keyword{regression}

@@ -46,14 +46,23 @@
   x,
   pch = 1,
   col = "black",
-  xlab = "Predicted isotopic value in the environment",
+  xlab = "Isotopic value in the environment",
   ylab = "Isotopic value in the calibration sample",
+  xlim = NULL,
   ylim = NULL,
+  line = list(show = TRUE, col = "blue"),
   CI = list(show = TRUE, col = "blue"),
   ...
 )
 
-\method{points}{CALIBFIT}(x, pch = 2, col = "red", CI = list(show = TRUE, col = "red"), ...)
+\method{points}{CALIBFIT}(
+  x,
+  pch = 2,
+  col = "red",
+  line = list(show = TRUE, col = "red"),
+  CI = list(show = TRUE, col = "red"),
+  ...
+)
 
 \method{plot}{RasterLayer}(x, ...)
 }
@@ -117,7 +126,12 @@ the plots}
 
 \item{ylab}{A \var{string} the y-axis label in plot.CALIBFIT}
 
+\item{xlim}{A range defining the extreme coordinates for the the x-axis in plot.CALIBFIT}
+
 \item{ylim}{A range defining the extreme coordinates for the the y-axis in plot.CALIBFIT}
+
+\item{line}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the regression line or not;
+and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the regression line}
 
 \item{CI}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
 and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the confidence interval}
