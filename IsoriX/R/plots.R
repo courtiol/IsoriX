@@ -705,13 +705,17 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
     stop("This function must be called on an object of class CALIBFIT.")
   }
   
-  if (x$method == "desk" && (is.null(xlim) || is.null(ylim))) {
-    stop("Since no calibration points have been loaded, xlim & ylimv must be defined to indicate the range of the x- and y-axes. Call again the plotting function again after adding e.g. xlim = c(-100, 0), ylim = c(-45, -15) in the function call.")
+  if (x$method == "desk" && !points && (is.null(xlim) || is.null(ylim))) {
+    stop("Since no calibration points have been loaded, xlim & ylim must be defined to indicate the range of the x- and y-axes. Call again the plotting function again after adding e.g. xlim = c(-100, 0), ylim = c(-45, -15) in the function call.")
+  }
+  
+  if (x$method == "desk" && points && is.null(xlim) && is.null(ylim)) {
+    xlim <- ylim <- c(-1e6, 1e6)
   }
   
   x_var <- switch(x$method,
                   wild = x$data$mean_source_value,
-                  lab = x$data$envir_value,
+                  lab = x$data$source_value,
                   desk = xlim)
   
   y_var <- switch(x$method,
