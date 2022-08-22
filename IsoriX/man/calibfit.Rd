@@ -198,6 +198,18 @@ a dataframe (or a tibble) containing a single row with the following columns:
 \item \code{resid_var} (optional): the residual variance (not SD) of a fit of
 the form \code{lm(sample_value ~ source_value)}
 }
+\item \strong{Important}: if the parameter values you have access to do not refer to a
+model of the form \code{lm(sample_value ~ source_value)} but to a model of
+the form \code{lm(source_value ~ sample_value)} (i.e. if the x-axis
+represents the isotopic values of the samples and not those of the
+environment), then you must transform your parameters to fit the scheme used
+here. Therefore, if we call your original intercept \var{i} and your original
+slope \var{s}, what is needed here is \code{intercept} = \var{-i/s} and
+\code{slope} = \var{1/s}. In such a case, make sure not to provide
+\code{intercept_se}, \code{slope_se} or \code{resid_var}. Unfortunately, it
+is not possible to establish a simple correspondence for these quantities
+between the two alternative model representations (\code{lm(sample_value ~
+source_value)} & \code{lm(source_value ~ sample_value)}).
 }
 }
 }
