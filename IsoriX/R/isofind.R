@@ -212,30 +212,34 @@ calibfit!")
       
       ## term 4 in eq. 9.18 from Courtiol et al. 2019
 
-      # Create design matrix for fixed effects
-      # note: the one stored in calibfit is defective given the use of offsets to fit the calibfit model
-      X.pv <- cbind(1, calibfit$calib_fit$data$mean_source_value)
-      
-      X_ginv <- spaMM::get_matrix(calibfit$calib_fit, which = "fixef_left_ginv", X.pv = X.pv) # with the non-default X.pv; dimensions are 2*(number of calibration locations)
-      ## which = "fixef_left_ginv" is not yet documented in spaMM
-      ## => this call replaces:
-      # phi <- spaMM::residVar(calibfit$calib_fit)
-      # X_ginv <- tcrossprod(solve(spaMM:::.ZtWZwrapper(X.pv, 1/phi)), spaMM:::.Dvec_times_m_Matrix(1/phi, X.pv))
-      
-      fix_X_ZAC.calib_positions <- spaMM::preprocess_fix_corr(calibfit$iso_fit$mean_fit, fixdata = calibfit$calib_fit$data)
-      covmat <- spaMM::get_predCov_var_fix(calibfit$iso_fit$mean_fit,
-                                           newdata = attr(isoscape, "xs"),
-                                           fix_X_ZAC.object = fix_X_ZAC.calib_positions)
-      
-      # account for the \beta factor in eq.19
-      covmat_scaled <- -calibfit$param[["slope"]] * covmat
-      
-      # matrix of row vectors of errors of the coefficients (eps_alpha, eps_beta)
-      eps_abs <- tcrossprod(covmat_scaled, X_ginv) # dimensions: ( # of putative origins ) * 2
-      hat_delta_o <- raster::extract(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
-      
-      # adding all components of term 4
-      var_term4_vec <- eps_abs[, 1L] + eps_abs[, 2L]*hat_delta_o
+      if (calibfit$method == "wild") {
+        # Create design matrix for fixed effects
+        # note: the one stored in calibfit is defective given the use of offsets to fit the calibfit model
+        X.pv <- cbind(1, calibfit$calib_fit$data$mean_source_value)
+        
+        X_ginv <- spaMM::get_matrix(calibfit$calib_fit, which = "fixef_left_ginv", X.pv = X.pv) # with the non-default X.pv; dimensions are 2*(number of calibration locations)
+        ## which = "fixef_left_ginv" is not yet documented in spaMM
+        ## => this call replaces:
+        # phi <- spaMM::residVar(calibfit$calib_fit)
+        # X_ginv <- tcrossprod(solve(spaMM:::.ZtWZwrapper(X.pv, 1/phi)), spaMM:::.Dvec_times_m_Matrix(1/phi, X.pv))
+        
+        fix_X_ZAC.calib_positions <- spaMM::preprocess_fix_corr(calibfit$iso_fit$mean_fit, fixdata = calibfit$calib_fit$data)
+        covmat <- spaMM::get_predCov_var_fix(calibfit$iso_fit$mean_fit,
+                                             newdata = attr(isoscape, "xs"),
+                                             fix_X_ZAC.object = fix_X_ZAC.calib_positions)
+        
+        # account for the \beta factor in eq.19
+        covmat_scaled <- -calibfit$param[["slope"]] * covmat
+        
+        # matrix of row vectors of errors of the coefficients (eps_alpha, eps_beta)
+        eps_abs <- tcrossprod(covmat_scaled, X_ginv) # dimensions: ( # of putative origins ) * 2
+        hat_delta_o <- raster::extract(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
+        
+        # adding all components of term 4
+        var_term4_vec <- eps_abs[, 1L] + eps_abs[, 2L]*hat_delta_o
+      } else {
+        var_term4_vec <- 0
+      }
       
       # format as raster for coordinates to match
       var_term4 <- .create_raster(long = raster::coordinates(isoscape$isoscapes)[, "x"],
@@ -247,12 +251,13 @@ calibfit!")
       ## we create individual rasters containing the variance of the test statistics
       ## by summing all the terms
       list_varstat_layers <- sapply(1:nrow(data), function(i) var_term1[[i]] + var_term2 + var_term3[i] + var_term4)
-        
+      
     } else {
       ## we create individual rasters containing the variance of the test statistics
       list_varstat_layers <- var_term1
     }
-
+    rm(var_term1, var_term2, var_term3, var_term4)
+    
     names(list_varstat_layers) <- names_layers
     varstat_brick <- raster::brick(list_varstat_layers)
     rm(list_varstat_layers)
