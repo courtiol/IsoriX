@@ -6,11 +6,17 @@
 \alias{summary.ISOFIND}
 \title{Infer spatial origins}
 \usage{
-isofind(data, isoscape, calibfit = NULL, mask = NA, verbose = interactive())
+isofind(
+  data,
+  isoscape,
+  calibfit = NULL,
+  mask = NA,
+  neglect_covPredCalib = TRUE,
+  verbose = interactive()
+)
 }
 \arguments{
-\item{data}{A \var{dataframe} containing the assignment data (see
-note below)}
+\item{data}{A \var{dataframe} containing the assignment data (see note below)}
 
 \item{isoscape}{The output of the function \code{\link{isoscape}}}
 
@@ -21,6 +27,11 @@ ratios from sedentary animals.)}
 \item{mask}{A \var{SpatialPolygons} of a mask to replace values on all
 rasters by NA inside polygons (see details)}
 
+\item{neglect_covPredCalib}{A \var{logical} indicating whether to neglect the
+covariance between the uncertainty of predictions from the isoscape mean
+fit and the uncertainty in predictions from the calibration fit (default =
+\var{TRUE}). See \strong{Details}.}
+
 \item{verbose}{A \var{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \var{TRUE} if users use an interactive R
@@ -30,13 +41,13 @@ session and \var{FALSE} otherwise.}
 This function returns a \var{list} of class \var{ISOFIND} containing
 itself three lists (\code{sample}, \code{group}, and \code{sp_points})
 storing all rasters built during assignment and the spatial points for
-sources, calibration and assignments. The \var{list} \code{sample} contains three set of
-raster layers: one storing the value of the test statistic ("stat"), one
-storing the value of the variance of the test statistic ("var") and one
-storing the p-value of the test ("pv"). The \var{list} \code{group} contains
-one raster storing the p-values of the assignment for the group. The
-\var{list} \code{sp_points} contains two spatial point objects:
-\code{sources} and \code{calibs}.
+sources, calibration and assignments. The \var{list} \code{sample} contains
+three set of raster layers: one storing the value of the test statistic
+("stat"), one storing the value of the variance of the test statistic
+("var") and one storing the p-value of the test ("pv"). The \var{list}
+\code{group} contains one raster storing the p-values of the assignment for
+the group. The \var{list} \code{sp_points} contains two spatial point
+objects: \code{sources} and \code{calibs}.
 }
 \description{
 This function performs the assignment of samples of unknown origins.
@@ -55,17 +66,30 @@ isoscape model fits and the calibration fit. The function
 dataframe \code{data}. The function also performs a single assignment for the
 entire group by combining the p-value maps of all samples using the Fisher's
 method (Fisher 1925). Significant p-values are strong evidence that the
-sample do NOT come from the candidate location (and not the opposite!).
+sample do NOT come from the candidate location (and not the opposite!). For
+statistical details about this procedure as well as a discussion of which
+uncertainties are captured and which are not, please refer to Courtiol et al.
+2019.
 
-For statistical details about this procedure as well as a discussion
-of which uncertainties are captured and which are not, please refer to
-Courtiol et al. 2019.
-
-A mask can be used so to remove all values falling in the mask. This can be
-useful for performing for example assignments on lands only and discard
-anything falling in large bodies of water (see example). By default our
-\code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows
+\strong{Details on parameters:}
+\itemize{
+\item \emph{neglect_covPredCalib}: as long as the calibration method used in
+\code{\link{calibfit}} is "wild", a covariance is expected between the
+uncertainty of predictions from the isoscape mean fit and the uncertainty in
+predictions from the calibration fit. This is because both the isoscape and
+the calibration use in part the same data. By default we omitted this term
+(i.e. the value for the argument \code{neglect_covPredCalib} is \var{TRUE})
+since in practice it seems to affect the results only negligibly in our
+trials and the computation of this term can be quite computer intensive. We
+nonetheless recommend to set \code{neglect_covPredCalib} to \var{FALSE} in
+your final analysis. If the calibration method used in
+\code{\link{calibfit}} is not "wild", this parameter has no effect.
+\item \emph{mask}: a mask can be used so to remove all values falling in the mask.
+This can be useful for performing for example assignments on lands only and
+discard anything falling in large bodies of water (see example). By default
+our \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows
 to prevent this automatic behaviour.
+}
 }
 \note{
 See \code{\link{AssignDataAlien}} to know which variables are needed to
