@@ -20,7 +20,7 @@ Imports:
     raster,
     rasterVis (>= 0.30),
     sp,
-    spaMM (>= 2.4),
+    spaMM (>= 3.12.45),
     stats,
     tools,
     utils,
