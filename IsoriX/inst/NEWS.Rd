@@ -15,7 +15,8 @@
 \section{version 0.8.2.9999}{
   \subsection{New features}{
     \itemize{
-      \item the function calibfit gains an argument called method that allows for selecting one of three calibration methods ("wild", "lab", or "desk"). This allows for users to use 1) calibration samples associated with unknown environmental isotopic values, 2) calibration samples associated with known environmental isotopic values, or 3) the intercept and slope of a calibration relationship computed by others (e.g. values found in a paper). Note: the third method allows for the consideration of a fractionaction factor too (i.e. slope = 0). See \code{calibfit} for details.
+      \item the function calibfit gains an argument method that allows for selecting one of three calibration methods ("wild", "lab", or "desk"). This allows for users to use 1) calibration samples associated with unknown environmental isotopic values, 2) calibration samples associated with known environmental isotopic values, or 3) the intercept and slope of a calibration relationship computed by others (e.g. values found in a paper). Note: the third method allows for the consideration of a fractionaction factor too (i.e. slope = 0). See \code{calibfit} for details.
+      \item the function isofind gains an argument neglect_covPredCalib that allows for the computation of the covariance term that was so far neglected in IsoriX. See ?isofind for details.
       \item argument xlim for the plotting function for calibration fits
       \item argument line for customising how to plot the regression line in calibration fits
       \item the summary method for calibration fits now displays the residual variance
