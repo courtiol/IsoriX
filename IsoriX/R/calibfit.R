@@ -180,9 +180,10 @@
 #'   was estimated, whether a site_ID random effect was estimated, the
 #'   fixed-effect estimates of the calibration function, the covariance of the
 #'   fixed effects, the residual variance of the calibration fit, the fitted
-#'   calibration model (if applicable), the original calibration data set with
-#'   additional information added during the fit, and the location of the
-#'   calibration points as spatial points.
+#'   calibration model (if applicable), the fitted isoscape model (if
+#'   applicable), the original calibration data set with additional information
+#'   added during the fit, and the location of the calibration points as spatial
+#'   points.
 #' @seealso see \code{\link{plot}} for the help on how to plot the calibration
 #' relationship.
 #' @keywords models regression
@@ -567,6 +568,7 @@ calibfit <- function(data,
               "fixefCov" = fixefCov_calibfit,
               "phi" = calib_fit$phi,
               "calib_fit" = calib_fit,
+              "iso_fit" = isofit,
               "data" = data,
               "sp_points" = list(calibs = calib_points)))
 }
@@ -641,6 +643,7 @@ calibfit <- function(data,
               "fixefCov" = fixefCov_calibfit,
               "phi" = calib_fit$phi,
               "calib_fit" = calib_fit,
+              "iso_fit" = list(),
               "data" = data,
               "sp_points" = list(calibs = calib_points)))
 }
@@ -677,6 +680,7 @@ calibfit <- function(data,
               "fixefCov" = fixefCov_calibfit,
               "phi" = phi_calibfit,
               "calib_fit" = list(),
+              "iso_fit" = list(),
               "data" = data,
               "sp_points" = list()))
   
