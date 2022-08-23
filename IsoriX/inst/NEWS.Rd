@@ -34,6 +34,17 @@
       \item default y-axis title changed to "Isotopic value in the environment" when plotting calibration fits
       }
   }
+  \subsection{Geeky change}{
+    \itemize{
+      \item the version of spaMM required by IsoriX has changed to benefit from a new extractor we rely on for the computation of the 4th variance term during assignment
+      \item the function depending on the package RandomFields are no longer available since that package has been (for now) retired by CRAN :-(
+    }
+  }
+  \subsection{Solved BUGS}{
+    \itemize{
+      \item the printing method for the object of class ISOSCAPE was somehow not exported and thus not used
+    }
+  }
 }
 
 \section{version 0.8.2}{
