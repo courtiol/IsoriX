@@ -262,9 +262,9 @@
 #' 
 #' ## 3.1 We format the information about the calibration function to be used
 #' ## as a dataframe:
-#' CalibDataAlien3 <- data.frame(intercept = 3.69, slope = 0.8,
-#'                               intercept_se = 0.4, slope_se = 0.05,
-#'                               resid_var = 4.2)
+#' CalibDataAlien3 <- data.frame(intercept = 1.67, slope = 0.48,
+#'                               intercept_se = 1.65, slope_se = 0.03,
+#'                               resid_var = 3.96)
 #' CalibDataAlien3
 #'                
 #' ## 3.2 We fit the calibration model using the method "desk":
@@ -633,7 +633,7 @@ calibfit <- function(data,
                                             lat = data$lat,
                                             proj = "+proj=longlat +datum=WGS84")
   } else {
-    calib_points <- list()
+    calib_points <- NULL
   }
   
   return(list("method" = "lab",
@@ -682,7 +682,7 @@ calibfit <- function(data,
               "calib_fit" = list(),
               "iso_fit" = list(),
               "data" = data,
-              "sp_points" = list()))
+              "sp_points" = NULL))
   
 }
 

@@ -283,9 +283,9 @@ plot(CalibAlien2)
 
 ## 3.1 We format the information about the calibration function to be used
 ## as a dataframe:
-CalibDataAlien3 <- data.frame(intercept = 3.69, slope = 0.8,
-                              intercept_se = 0.4, slope_se = 0.05,
-                              resid_var = 4.2)
+CalibDataAlien3 <- data.frame(intercept = 1.67, slope = 0.48,
+                              intercept_se = 1.65, slope_se = 0.03,
+                              resid_var = 3.96)
 CalibDataAlien3
                
 ## 3.2 We fit the calibration model using the method "desk":
