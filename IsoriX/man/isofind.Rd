@@ -77,13 +77,13 @@ uncertainties are captured and which are not, please refer to Courtiol et al.
 \code{\link{calibfit}} is "wild", a covariance is expected between the
 uncertainty of predictions from the isoscape mean fit and the uncertainty in
 predictions from the calibration fit. This is because both the isoscape and
-the calibration use in part the same data. By default we omitted this term
+the calibration use in part the same data. By default this term is omitted
 (i.e. the value for the argument \code{neglect_covPredCalib} is \var{TRUE})
 since in practice it seems to affect the results only negligibly in our
 trials and the computation of this term can be quite computer intensive. We
 nonetheless recommend to set \code{neglect_covPredCalib} to \var{FALSE} in
-your final analysis. If the calibration method used in
-\code{\link{calibfit}} is not "wild", this parameter has no effect.
+your final analysis. If the calibration method used in \code{\link{calibfit}}
+is not "wild", this parameter has no effect.
 \item \emph{mask}: a mask can be used so to remove all values falling in the mask.
 This can be useful for performing for example assignments on lands only and
 discard anything falling in large bodies of water (see example). By default
