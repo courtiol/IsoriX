@@ -574,13 +574,15 @@ isomultiscape <- function(raster, ## change as method?
   return(out)
   }
 
-
+#' @export
+#' @method print ISOSCAPE
 print.ISOSCAPE <- function(x, ...) {
   print(summary(x))
   return(invisible(NULL))
 }
 
-
+#' @export
+#' @method summary ISOSCAPE
 summary.ISOSCAPE <- function(object, ...) {
   if (inherits(object, "ISOSIM")) {
     cat("\n")
@@ -591,7 +593,7 @@ summary.ISOSCAPE <- function(object, ...) {
   print(object[[1]])
   cat("\n")
   if (length(object) > 1) {
-    cat("### first 5 locations of the dataset")
+    cat("### first 5 locations of the dataset", "\n")
     print(utils::head(object[[2]][[1]], 5L))
   }
   return(invisible(NULL))
