@@ -152,13 +152,7 @@
 #' the form \code{lm(source_value ~ sample_value)} (i.e. if the x-axis
 #' represents the isotopic values of the samples and not those of the
 #' environment), then you must transform your parameters to fit the scheme used
-#' here. Therefore, if we call your original intercept \var{i} and your original
-#' slope \var{s}, what is needed here is \code{intercept} = \var{-i/s} and
-#' \code{slope} = \var{1/s}. In such a case, make sure not to provide
-#' \code{intercept_se}, \code{slope_se} or \code{resid_var}. Unfortunately, it
-#' is not possible to establish a simple correspondence for these quantities
-#' between the two alternative model representations (\code{lm(sample_value ~
-#' source_value)} & \code{lm(source_value ~ sample_value)}).
+#' here. More details to come.
 #' 
 #' @aliases calibfit print.CALIBFIT summary.CALIBFIT
 #' @inheritParams isoscape
