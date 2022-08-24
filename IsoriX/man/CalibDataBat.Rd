@@ -24,12 +24,12 @@ function \code{\link{calibfit}}.
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-\var{dataframe} of similar structure than this one (only the column
-'species' can be dropped). The columns should possess the same names as the
-ones described above. If the elevation is unknown at the sampling sites,
-elevation information can be extracted from a high resolution elevation
-raster using the function \code{\link[raster]{extract}} as shown in the 
-example of \code{\link{CalibDataBat2}}.
+\var{dataframe} of similar structure than this one (only the column 'species'
+can be dropped). The columns should possess the same names as the ones
+described above. If the elevation is unknown at the sampling sites, elevation
+information can be extracted from a high resolution elevation raster using
+the function \code{\link[raster]{extract}} (see **Examples** in
+\code{\link{CalibDataBat2}}).
 }
 \examples{
 
