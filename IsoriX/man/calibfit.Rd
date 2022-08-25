@@ -66,12 +66,10 @@ model and requires particular data that are organised in a specific way (see
 \strong{Details} for explanations and \strong{Examples} for use cases).
 }
 \details{
-Calibration can be performed according to one of three different methods and
-it is crucial for you to select the method that is most appropriate for your
-workflow. The methods are labelled "wild", "lab", "desk" and "desk_inverse".
-One of these terms must thus be used to define the argument \code{method}. If
-no term is used, the default that is selected is the method referred to as
-"wild". Importantly, the choice of the method can impact the most likely
+The \code{method} argument can take one of the four values "wild" (default),
+"lab", "desk" and "desk_inverse" corresponding to the four calibration
+methods. It is crucial for you to select the method that is most appropriate
+for your workflow, as the choice of method can impact the most likely
 assignment locations during the assignment test performed in
 \code{\link{isofind}}.
 \subsection{Method "wild"}{
@@ -148,7 +146,9 @@ use case implies to neglect uncertainty in the isotopic values in the
 environment if those were initially predicted using an isoscape. It also
 neglects the covariances involving such predicted values. That being said, if
 you want to use someone else calibration relationship, using this method is
-generally preferable to using the method "desk" described below.
+generally preferable to using the method "desk" described below (less error
+prone and de facto accounting for all five parameters mentioned for the
+method "desk").
 \itemize{
 \item \strong{Statistical model}: in this case, the calibration model to be fitted is
 a simple linear model (LM) or a simple linear mixed-effects model (LMM) that
@@ -190,14 +190,15 @@ thus when you must rely solely on published metrics (including intercept and
 slope) to represent a calibration relationship. They work by making crude
 assumptions that various uncertainty components are null.
 
-The method "desk" is the one to be used when the calibration relationship you
-want to use is of the form \code{lm(sample_value ~ source_value)} and the
-method "deskinv" is the one to be used when the calibration relationship you
-want to use is of the form \code{lm(source_value ~ sample_value)}. Do make
+The method "desk" is the one to be used when the published calibration
+relationship is of the form \code{lm(sample_value ~ source_value)} and the
+method "desk_inverse" is the one to be used when the published calibration
+relationship is of the form \code{lm(source_value ~ sample_value)}. Do make
 sure you are using the correct alternative. Note that the model used for the
-calibration you want to use must be a linear regression (LM) or a linear
-mixed effect model (LMM) and not a reduced major axis regression (RMA). In
-the case of RMA, you are out of luck...
+published calibration must be a linear regression (LM) (or a linear mixed
+effect model) and not a reduced major axis regression (RMA). If you use
+parameter values stemming from a RMA, the assignment will most likely be
+biased.
 
 Both methods require five metrics to work at their best: the intercept and
 slope of a calibration relationship, the standard errors (SE) associated to
@@ -207,39 +208,47 @@ the sense of running, but the reliability of the assignments will get worse)
 if the SEs and/or the residual variance is not provided. For the method
 "desk_inverse" all metrics are unfortunately necessary.
 
-Don't expect miracles: even if the "desk" method is used together with its 5
-parameters, the assignment will still be forced to assume that documented
-uncertainties are independent from each other. Making these simplifying
-assumptions comes with a cost: it can bias the assignment or pretend that
-they are more accurate than they really are. For these reasons, we were
-tempted to use \code{method = "dirty"} instead of \code{method = "desk"}...
-but we chickened out since we predicted that users would then refrain from
-mentioning the method they used in publications...
+Don't expect miracles: even if the "desk" method is used together with its
+five parameters, the assignment will still suffer from the same limitations
+as those impacting the method "lab" usage number 3. If less than five
+parameters are provided, further assumptions are made and this comes with a
+cost: again, it can bias the assignment and bias the confidence region. For
+these reasons, we were tempted to use \code{method = "dirty"} instead of
+\code{method = "desk"}... but we chickened out since we predicted that users
+would then refrain from mentioning the method they used in publications...
 
 Note that if the provided slope is set to 0 and an intercept is considered,
 the calibration methods actually corresponds to the simple consideration of a
 fractionation factor.
 \itemize{
 \item \strong{Statistical model}: none!
-\item \strong{Required calibration data}: the calibration data to be used here must be
-a dataframe (or a tibble) containing a single row with the following columns:
+\item \strong{Required calibration data} for method "desk": the calibration data to be
+used here must be a dataframe (or a tibble) containing a single row with the
+following columns:
 \itemize{
 \item \code{intercept}: the estimated slope of a LM calibration fit
 \item \code{slope}: the estimated slope of a LM calibration fit
-\item \code{intercept_se} (optional for "desk"): the standard error around the
-intercept
-\item \code{slope_se} (optional for "desk"): the standard error around the
-slope
-\item \code{resid_var} (optional for "desk"): the residual variance (not SD)
-of a LM calibration fit
-\item \code{sign_mean_Y} (only for "desk_inverse"): a \var{numeric} indicating
-the sign of the mean value of the isotopes in the environment in the
-format return by \link{sign}; that is either \var{1} (if positive) or \var{-1}
-(if negative). This is required for pivoting the regression from
+\item \code{intercept_se} (optional): the standard error around the intercept
+\item \code{slope_se} (optional): the standard error around the slope
+\item \code{resid_var} (optional): the residual variance (not SD) of a LM
+calibration fit
+}
+\item \strong{Required calibration data} for method "desk_inverse": the calibration
+data to be used here must be a dataframe (or a tibble) containing a single
+row with the following columns:
+\itemize{
+\item \code{intercept}: the estimated slope of a LM calibration fit
+\item \code{slope}: the estimated slope of a LM calibration fit
+\item \code{intercept_se}: the standard error around the intercept
+\item \code{slope_se}: the standard error around the slope
+\item \code{resid_var}: the residual variance (not SD) of a LM calibration fit
+\item \code{sign_mean_Y}: a \var{numeric} indicating the sign of the mean
+value of the isotopes in the environment in the format return by \link{sign};
+that is either \var{1} (if positive) or \var{-1} (if negative). This is
+required for pivoting the regression from "desk_inverse" to "desk".
+\item \code{N}: a  \var{numeric} indicating the sample size of the data used
+for the calibration fit. This is required for pivoting the regression from
 "desk_inverse" to "desk".
-\item \code{N} (only for "desk_inverse"): a  \var{numeric} indicating the
-sample size of the data used for the calibration fit. This is required for
-pivoting the regression from "desk_inverse" to "desk".
 }
 }
 }
@@ -337,6 +346,25 @@ points(CalibAlien4, line = list(col = "orange"))
 ## confidence intervals since we provided no uncertainty measure in 
 ## CalibDataAlien4, which will make a difference during assignments...
 
+
+#############################################################
+## 4 Example of calibration using the method "desk_inverse" #
+#############################################################
+
+## 4.1 We format the information about the calibration function to be used
+## as a dataframe:
+CalibDataAlien4 <- data.frame(intercept = -16.98822, slope = 1.588885,
+                              intercept_se = 2.200435, slope_se = 0.08106032,
+                              resid_var = 13.15102, N = 125, sign_mean_Y = -1)
+CalibDataAlien4
+               
+## 4.2 We fit the calibration model using the method "desk_inverse":
+CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk_inverse")
+
+## 4.3 We explore the outcome of the calibration:
+CalibAlien4
+summary(CalibAlien4)
+plot(CalibAlien4, xlim = c(-100, 100), ylim = c(-50, 50))
 }
 
 }
