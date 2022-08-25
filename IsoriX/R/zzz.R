@@ -222,7 +222,7 @@
   Varx <- (MSExony*(slope^2 + Nminus2*VarSxony))/(Nminus1*VarSxony)
   o_slope <- Covxy/Varx
   
-  resid_MSE <-  (Vary - Varx*Covxy^2)*Nminus1/Nminus2 ## FIXME: sometimes this term is negative which breaks things down
+  resid_MSE <-  (Vary - Covxy^2/Varx)*Nminus1/Nminus2
   o_SE_S <- sqrt(resid_MSE/(Nminus1*Varx))
   
   Ey2 <- (SE_I/SE_S)^2 
@@ -241,29 +241,29 @@
        vcov = o_vcov)
 }
 # Example:
-# set.seed(7)
+# set.seed(123)
 # xy <- data.frame(x = x <- rnorm(20), y = rnorm(20, mean = 10) + 0.7*x)
 # input <- lm(x ~ y, data = xy)
 # output <- lm(y ~ x, data = xy)
 # 
 # foo <- .invert_reg(intercept = coef(input)[1],
-#                    slope = coef(input)[2],
-#                    SE_I = sqrt(vcov(input)[1, 1]),
-#                    SE_S = sqrt(vcov(input)[2, 2]),
-#                    phi = summary(input)$sigma^2,
-#                    sign_mean_Y = sign(mean(xy$y)),
-#                    N = 20)
+#                   slope = coef(input)[2],
+#                   SE_I = sqrt(vcov(input)[1, 1]),
+#                   SE_S = sqrt(vcov(input)[2, 2]),
+#                   phi = summary(input)$sigma^2,
+#                   sign_mean_Y = sign(mean(xy$y)),
+#                   N = 20)
 # 
-# d_output <- data.frame(intercept =  coef(output)[1], 
-#                        slope = coef(output)[2], 
-#                        SE_I = sqrt(vcov(output)[1, 1]), 
-#                        SE_S = sqrt(vcov(output)[2, 2]), 
-#                        phi = summary(output)$sigma^2)
+# d_output <- data.frame(intercept =  coef(output)[1],
+#                       slope = coef(output)[2],
+#                       SE_I = sqrt(vcov(output)[1, 1]),
+#                       SE_S = sqrt(vcov(output)[2, 2]),
+#                       phi = summary(output)$sigma^2)
 # 
-# d_foo <- data.frame(intercept =  foo$intercept, 
-#                     slope = foo$slope,
-#                     SE_I = foo$SE_I,
-#                     SE_S = foo$SE_S,
-#                     phi = foo$phi)
+# d_foo <- data.frame(intercept =  foo$intercept,
+#                    slope = foo$slope,
+#                    SE_I = foo$SE_I,
+#                    SE_S = foo$SE_S,
+#                    phi = foo$phi)
 # 
 # rbind(d_output, d_foo)
