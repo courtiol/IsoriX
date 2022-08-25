@@ -21,6 +21,7 @@
       \item argument xlim for the plotting function for calibration fits
       \item argument line for customising how to plot the regression line in calibration fits
       \item the summary method for calibration fits now displays the residual variance
+      \item new internal function \code{.invert_reg} to invert regression (used for method "desk_inverse" in \code{calibfit})
       }
   }
   \subsection{Minor change}{
