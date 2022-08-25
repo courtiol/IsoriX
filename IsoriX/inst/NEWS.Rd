@@ -26,6 +26,7 @@
   }
   \subsection{Minor change}{
     \itemize{
+      \item add description of what symbols mean in plots (#138)
       \item plot.ISOFIND now detects sample of size 1 and no longer displays "Group" in the title of the assignment plot even if `who` = "group"
       \item all functions accepting a `data.frame` as input should also now be compatible when provided with a `tibble` (#118)
       \item correct typos (#130)

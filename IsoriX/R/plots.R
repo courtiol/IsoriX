@@ -1,141 +1,168 @@
 #' Plotting functions for IsoriX
 #'
-#' These functions plot objects created by \pkg{\link{IsoriX}} (with the
-#' exception of plot method for RasterLayer created using \pkg{\link{raster}}).
+#' These functions plot objects created by IsoriX (with the exception of plot
+#' method for RasterLayer created using [raster].
 #'
-#' When called upon an object of class \var{ISOFIT}, the plot function draws
-#' diagnostic information for the fits of the isoscape geostatistical model.
 #'
-#' When called upon an object of class \var{CALIBFIT}, the plot function draws
-#' the fitted calibration function.
-#'
-#' When called upon an object of class \var{ISOSCAPE}, the plot function draws a
-#' fine-tuned plot of the isoscape.
+#' **General**
 #' 
-#' When called upon an object of class \var{RasterLayer}, the plot function 
-#' displays the raster (just for checking things fast and dirty).
+#' When called upon an object of class *ISOFIT*, the plot function
+#' draws diagnostic information for the fits of the isoscape geostatistical
+#' model.
 #'
+#' When called upon an object of class *CALIBFIT*, the plot function draws the
+#' fitted calibration function.
+#'
+#' When called upon an object of class *ISOSCAPE*, the plot function draws a
+#' fine-tuned plot of the isoscape.
+#'
+#' When called upon an object of class *RasterLayer*, the plot function displays
+#' the raster (just for checking things fast and dirty). In this case, the
+#' function is a simple shortcut to [rasterVis::levelplot].
+#'
+#'
+#' **Plotting isoscapes**
+#' 
 #' When used on a fitted isoscape, the user can choose between plotting the
-#' predictions (\code{which} = "mean"; default), the prediction variance
-#' (\code{which} = "mean_predVar"), the residual variance (\code{which} =
-#' "mean_residVar"), or the response variance (\code{which} = "mean_respVar")
-#' for the mean model; or the corresponding information for the residual
-#' dispersion variance model ("disp", "disp_predVar", "disp_residVar", or
-#' "disp_respVar").
+#' predictions (`which = "mean"`; default), the prediction variance (`which =
+#' "mean_predVar"`), the residual variance (`which = "mean_residVar"`), or the
+#' response variance (`which = "mean_respVar"`) for the mean model; or the
+#' corresponding information for the residual dispersion variance model
+#' (`"disp"`, `"disp_predVar"`, `"disp_residVar"`, or `"disp_respVar"`).
 #'
-#' When used on a simulated isoscape produced with the function \code{isosim}
+#' When used on a simulated isoscape produced with the function `isosim`
 #' (currently dropped due to the package RandomFields being temporarily retired
 #' from CRAN), the user can choose between plotting the mean isotopic value
-#' (\code{which} = "mean") or the residual dispersion (\code{which} = "disp").
+#' (`which = "mean"`) or the residual dispersion (`which = "disp"`).
 #'
-#' When called upon an object of class \var{ISOFIND}, the plot function draws a
-#' fine-tuned plot of the assignment. You can use the argument \code{who} to
-#' choose between plotting the assignment for the group or for some individuals
-#' (check the online tutorial for examples).
-#'
-#' The argument y_title can be used to customise the title of isoscapes. The
-#' element \code{which} is a logical indicating if the name of the layer should
-#' be displayed or not. The element \code{title} is a string or a call used to
-#' define the rest of the title. By default it draws the delta value for
-#' hydrogen. Check the syntax of this default before trying to modify it.
-#'
-#' The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{assigns}, \code{borders},
-#' \code{mask}, and \code{mask2} are used to fine-tune additional layers that
-#' can be added to the main plot to embellish it. These arguments must be lists
-#' that provide details on how to draw, respectively, the area outside the
-#' prediction interval (for assignment plots), the locations of sources (for
-#' both isoscape and assignment plots), the locations of the calibration
-#' samples (for assignment plots), the locations of the assignment
-#' samples (for assignment plots), the borders (for both types of plots),
-#' and the mask (again, for both). For assignment maps, an extra mask can be
-#' used (mask2), as one may want to add a mask covering the area outside the
-#' biological range of the species. Within these lists, the elements \code{lwd},
-#' \code{col}, \code{cex}, \code{pch} and \code{fill} influences their
-#' respective objects as in traditional R plotting functions (see
-#' \code{\link{par}} for details). The element \code{draw} should be a
-#' \var{logical} that indicates whether the layer must be created or not. The
-#' argument \code{borders} (within the list borders) expects an object of the
-#' class \var{SpatialPolygons} such as the object \code{\link{CountryBorders}}
-#' provided with this package. The argument \code{mask} (within the list maks)
-#' expects an object of the class \var{SpatialPolygons} such as the object
-#' \code{\link{OceanMask}} provided with this package (see examples).
-#'
-#' The argument \code{palette} is used to define how to colour the isoscape and
-#' assignment plot. Within this list, \code{step} defines the number of units on
-#' the z-scale that shares a given colour; \code{range} can be used to constrain
-#' the minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this
-#' latter argument is useful if one wants to create several plots with the same
-#' z-scale); \code{n_labels} allows for the user to approximatively define the
-#' maximum number of numbers plotted on the z-scale; \code{digits} defines the
-#' number of digits displayed for the numbers used as labels; and \code{fn} is
-#' used to specify the function that is used to sample the colours. If \code{fn}
-#' is NULL (default) the palette functions derived from
-#' \code{\link{isopalette1}} and \code{\link{isopalette2}} are used when plotting
-#' isoscape and assignments, respectivelly. If \code{fn} is NA the function used
-#' is the palette \code{\link[viridisLite]{viridis}}.
-#'
-#' When called upon an object of class \var{RasterLayer}, the plot function is a
-#' simple shortcut to \code{\link[rasterVis:levelplot-methods]{levelplot}}.
 #' 
+#' **Plotting assignments**
+#' 
+#' When called upon an object of class *ISOFIND*, the plot function draws a
+#' fine-tuned plot of the assignment. You can use the argument `who` to choose
+#' between plotting the assignment for the group or for some individuals (check
+#' the [online tutorial](https://bookdown.org/content/782/) for examples).
+#'
+#'
+#' **Info on parameters influencing the rendering of maps**
+#' 
+#' The argument `y_title` is a list that can be tweaked to customise the title
+#' of isoscapes. Within this list, the element `which` is a logical indicating
+#' if the name of the layer should be displayed or not. The element `title` is a
+#' string or a call used to define the rest of the title. By default it draws
+#' the delta value for hydrogen. Check the syntax of this default before trying
+#' to modify it.
+#'
+#' The arguments `cutoff`, `sources`, `calibs`, `assigns`, `borders`, `mask`,
+#' and `mask2` are used to fine-tune additional layers that can be added to the
+#' main plot to embellish it. These arguments must be lists that provide details
+#' on how to draw, respectively, the area outside the prediction interval (for
+#' assignment plots), the locations of sources (for both isoscape and assignment
+#' plots), the locations of the calibration samples (for assignment plots), the
+#' locations of the assignment samples (for assignment plots), the borders (for
+#' both types of plots), and the mask (again, for both). For assignment maps, an
+#' extra mask can be used (mask2), as one may want to add a mask covering the
+#' area outside the biological range of the species. Within these lists, the
+#' elements `lwd`, `col`, `cex`, `pch` and `fill` influences their respective
+#' objects as in traditional R plotting functions (see [par] for details). The
+#' element `draw` should be a *logical* that indicates whether the layer must be
+#' created or not. The argument `borders` (within the list borders) expects an
+#' object of the class *SpatialPolygons* such as the object [CountryBorders]
+#' provided with this package. The argument `mask` (within the list mask)
+#' expects an object of the class *SpatialPolygons* such as the object
+#' [OceanMask] provided with this package (see examples).
+#'
+#' The argument `palette` is used to define how to colour the isoscape and
+#' assignment plot. Within this list, `step` defines the number of units on the
+#' z-scale that shares a given colour; `range` can be used to constrain the
+#' minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
+#' argument is useful if one wants to create several plots with the same
+#' z-scale); `n_labels` allows for the user to approximatively define the
+#' maximum number of numbers plotted on the z-scale; `digits` defines the number
+#' of digits displayed for the numbers used as labels; and `fn` is used to
+#' specify the function that is used to sample the colours. If `fn` is NULL
+#' (default) the palette functions derived from [isopalette1] and [isopalette2]
+#' are used when plotting isoscape and assignments, respectively. If `fn` is NA
+#' the function used is the palette [viridisLite::viridis].
+#'
+#' **Default symbols used on maps**
+#' 
+#' Under the default settings, we chose to 
+#' represent:
+#'    - the source data by little red triangles.
+#'    - the calibration data by little blue crosses.
+#'    - the locations where the samples to assign were collected by white
+#'    diamonds.
+#'    
+#' These symbols can be changed as explained above.
+#'
 #' @name plots
-#' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND plot.RasterLayer plot
-#' @param x The return object of an \code{\link{isofit}},
-#'   \code{\link{isoscape}}, \code{\link{calibfit}}, \code{\link{isofind}}, or \code{\link[raster]{raster}}
-#'   call
-#' @param cex_scale A \var{numeric} giving a scaling factor for the points in
+#' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND
+#'   plot.RasterLayer plot
+#' @param x The return object of a call to [isofit], [isoscape], [calibfit],
+#'   [isofind], or [raster::raster]]
+#' @param cex_scale A *numeric* giving a scaling factor for the points in
 #'   the plots
-#' @param which A \var{string} indicating the name of the raster to be plotted
+#' @param which A *string* indicating the name of the raster to be plotted
 #'   (see details)
-#' @param y_title A \var{list} containing information for the display of the
+#' @param y_title A *list* containing information for the display of the
 #'   title (see details)
 #' @param who Either "group", or a vector of indices (e.g. 1:3) or names of the
 #'   individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots
-#' @param cutoff A \var{list} containing information for the display of the
+#' @param cutoff A *list* containing information for the display of the
 #'   region outside the prediction interval (see details)
-#' @param sources A \var{list} containing information for the display of the
+#' @param sources A *list* containing information for the display of the
 #'   location of the sources (see details)
-#' @param calibs A \var{list} containing information for the display of the
+#' @param calibs A *list* containing information for the display of the
 #'   location of the calibration sampling location (see details)
-#' @param assigns A \var{list} containing information for the display of the
+#' @param assigns A *list* containing information for the display of the
 #'   location of the assingment sampling location (see details)
-#' @param borders A \var{list} containing information for the display of borders
+#' @param borders A *list* containing information for the display of borders
 #'   (e.g. country borders) (see details)
-#' @param mask A \var{list} containing information for the display of a mask
+#' @param mask A *list* containing information for the display of a mask
 #'   (e.g. an ocean mask) (see details)
-#' @param mask2 A \var{list} containing information for the display of a mask
+#' @param mask2 A *list* containing information for the display of a mask
 #'   (e.g. a distribution mask) (see details)
-#' @param palette A \var{list} containing information for the display of the
+#' @param palette A *list* containing information for the display of the
 #'   colours for the isoscape (see details)
-#' @param plot A \var{logical} indicating whether the plot shall be plotted or
+#' @param plot A *logical* indicating whether the plot shall be plotted or
 #'   just returned
-#' @param sphere A \var{list} containing information whether the raster should be 
-#'   returned as a rotating sphere and if the image created during the process 
-#'   should be saved in your current working directory. The default settings are
-#'    FALSE.
-#' @param xlab A \var{string} the x-axis label in plot.CALIBFIT
-#' @param ylab A \var{string} the y-axis label in plot.CALIBFIT
-#' @param xlim A range defining the extreme coordinates for the the x-axis in plot.CALIBFIT
-#' @param ylim A range defining the extreme coordinates for the the y-axis in plot.CALIBFIT
-#' @param pch The argument pch as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
-#' @param col The argument col as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
-#' @param line A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the regression line or not;
-#' and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the regression line
-#' @param CI A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
-#' and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the confidence interval
-#' @param ... Additional arguments (only in use in plot.CALIBFIT and 
-#' plot.RasterLayer)
+#' @param sphere A *list* containing information whether the raster should
+#'   be returned as a rotating sphere and if the image created during the
+#'   process should be saved in your current working directory. The default
+#'   settings are FALSE.
+#' @param xlab A *string* the x-axis label in plot.CALIBFIT
+#' @param ylab A *string* the y-axis label in plot.CALIBFIT
+#' @param xlim A range defining the extreme coordinates for the the x-axis in
+#'   plot.CALIBFIT
+#' @param ylim A range defining the extreme coordinates for the the y-axis in
+#'   plot.CALIBFIT
+#' @param pch The argument pch as in [par] for plot.CALIBFIT and
+#'   points.CALIBFIT
+#' @param col The argument col as in [par] for plot.CALIBFIT and
+#'   points.CALIBFIT
+#' @param line A *list* containing two elements: `show`, a
+#'   *logical* indicating whether to show the regression line or not; and
+#'   `col`, a *string* or *integer* indicating the colour for
+#'   plotting the regression line
+#' @param CI A *list* containing two elements: `show`, a *logical*
+#'   indicating whether to show the confidence interval or not; and `col`,
+#'   a *string* or *integer* indicating the colour for plotting the
+#'   confidence interval
+#' @param ... Additional arguments (only in use in plot.CALIBFIT and
+#'   plot.RasterLayer)
 #'
-#' @seealso \code{\link{isofit}} for the function fitting the isoscape
+#' @seealso [isofit] for the function fitting the isoscape
 #'
-#'   \code{\link{isoscape}} for the function building the isoscape
+#'   [isoscape] for the function building the isoscape
 #'
-#'   \code{\link{calibfit}} for the function fitting the calibration function
+#'   [calibfit] for the function fitting the calibration function
 #'
-#'   \code{\link{isofind}} for the function performing the assignment
+#'   [isofind] for the function performing the assignment
 #'
 #' @keywords plot
 #' @examples ## See ?isoscape or ?isofind for examples
-#'
+#' 
 NULL
 
 #' @rdname plots
