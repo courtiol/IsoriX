@@ -500,7 +500,12 @@ plot.ISOFIND <- function(x,
 
   ## build the 3D-Sphere
   if (sphere$build) {
-    .build_sphere(x[[who]][[what]], colours = colours, decor = decor)
+    if (raster::nlayers(stack_noNAs) > 1) {
+      message("You requested a sphere but you requested several assignment maps.
+In this case, only the first assignment will be drawn on a sphere.
+If you want to build several spheres, build them one by one and do request a single assignment each time.")
+    }
+    .build_sphere(stack_noNAs[[1]], colours = colours, decor = decor)
     if (!sphere$keep_image) {
       file.remove("IsoriX_world_image.png")
     }
