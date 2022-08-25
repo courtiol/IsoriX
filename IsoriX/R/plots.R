@@ -661,22 +661,36 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 }
 
 
-.plot_Matern <- function(model, limit = 0.5, ...) {
+.plot_Matern <- function(model, limit = 0.01, ...) {
   ## This function should not be called by the user.
   ## It plots the Matern autocorrelation.
-  d_stop <- FALSE
-  d <- 0
-
   rho <- spaMM::get_ranPars(model, which = "corrPars")[[1]]$rho
   nu  <- spaMM::get_ranPars(model, which = "corrPars")[[1]]$nu
-  
+
+  d_stop <- FALSE
+  d <- 0
+    
   while ((d < 50000) & !d_stop) {
     d <- d + 10
     m <- spaMM::MaternCorr(d = d, rho = rho, nu = nu)
-    if (m < limit) d.stop <- TRUE
+    if (m < limit) d_stop <- TRUE
   }
   
   distances <- seq(0, d, 1)
+  
+  if (length(distances) < 30) {
+    
+    d_stop <- FALSE
+    d <- 0
+    
+    while ((d < 30) & !d_stop) {
+      d <- d + 1
+      m <- spaMM::MaternCorr(d = d, rho = rho, nu = nu)
+      if (m < limit) d_stop <- TRUE
+    }
+    
+    distances <- seq(0, d, 0.1)
+  }
   
   m <- spaMM::MaternCorr(d = distances, rho = rho, nu = nu)
 
