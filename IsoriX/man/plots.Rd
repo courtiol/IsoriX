@@ -46,14 +46,23 @@
   x,
   pch = 1,
   col = "black",
-  xlab = "Predicted isotopic value in the environment",
+  xlab = "Isotopic value in the environment",
   ylab = "Isotopic value in the calibration sample",
+  xlim = NULL,
   ylim = NULL,
+  line = list(show = TRUE, col = "blue"),
   CI = list(show = TRUE, col = "blue"),
   ...
 )
 
-\method{points}{CALIBFIT}(x, pch = 2, col = "red", CI = list(show = TRUE, col = "red"), ...)
+\method{points}{CALIBFIT}(
+  x,
+  pch = 2,
+  col = "red",
+  line = list(show = TRUE, col = "red"),
+  CI = list(show = TRUE, col = "red"),
+  ...
+)
 
 \method{plot}{RasterLayer}(x, ...)
 }
@@ -117,7 +126,12 @@ the plots}
 
 \item{ylab}{A \var{string} the y-axis label in plot.CALIBFIT}
 
+\item{xlim}{A range defining the extreme coordinates for the the x-axis in plot.CALIBFIT}
+
 \item{ylim}{A range defining the extreme coordinates for the the y-axis in plot.CALIBFIT}
+
+\item{line}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the regression line or not;
+and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the regression line}
 
 \item{CI}{A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
 and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the confidence interval}
@@ -147,10 +161,10 @@ for the mean model; or the corresponding information for the residual
 dispersion variance model ("disp", "disp_predVar", "disp_residVar", or
 "disp_respVar").
 
-When used on a simulated isoscape produced with the function
-\code{\link{isosim}}, the user can choose between plotting the mean isotopic
-value (\code{which} = "mean") or the residual dispersion (\code{which} =
-"disp").
+When used on a simulated isoscape produced with the function \code{isosim}
+(currently dropped due to the package RandomFields being temporarily retired
+from CRAN), the user can choose between plotting the mean isotopic value
+(\code{which} = "mean") or the residual dispersion (\code{which} = "disp").
 
 When called upon an object of class \var{ISOFIND}, the plot function draws a
 fine-tuned plot of the assignment. You can use the argument \code{who} to

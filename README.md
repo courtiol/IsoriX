@@ -2,7 +2,6 @@
 [![Build Status](https://travis-ci.org/courtiol/IsoriX.svg?branch=master)](https://travis-ci.org/courtiol/IsoriX)
 [![CRAN](http://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX)
-[![Rdoc](http://www.rdocumentation.org/badges/version/IsoriX)](http://www.rdocumentation.org/packages/IsoriX)
 [![codecov](https://codecov.io/gh/courtiol/IsoriX/branch/master/graph/badge.svg)](https://codecov.io/gh/courtiol/IsoriX)
 [![Dependencies](https://tinyverse.netlify.com/badge/IsoriX)](https://cran.r-project.org/package=IsoriX)
 
@@ -51,8 +50,10 @@ You can start by reading our [bookdown](https://bookdown.org/content/782/)!
 Then, if may not be a bad idea to also have a look at our papers:
 [here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
 
+Another great source of help is [our mailing list](https://groups.google.com/g/IsoriX).
+First register for free (using your Google account) and then feel free to send us questions.
 
-For more specific help on IsoriX functions and objects, simply type:
+For specific help on IsoriX functions and objects, you should also check the documentation embedded in the package:
 
 ```R
 help(package = "IsoriX")

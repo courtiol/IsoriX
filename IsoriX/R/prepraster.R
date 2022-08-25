@@ -149,7 +149,7 @@ prepraster <- function(raster,
 
   time <- system.time({
     if (!is.null(isofit)) {  ## test if cropping is needed
-      if (any(class(isofit) %in% "multiisofit")) {
+      if (inherits(isofit, "multiisofit")) {
         isofit <- isofit$multi.fits[[1]]
         }
       if (!is.null(manual_crop)) stop("cannot crop both according to sources and manually! Make up your choice.")

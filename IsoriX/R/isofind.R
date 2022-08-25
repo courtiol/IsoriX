@@ -15,43 +15,59 @@
 #' dataframe \code{data}. The function also performs a single assignment for the
 #' entire group by combining the p-value maps of all samples using the Fisher's
 #' method (Fisher 1925). Significant p-values are strong evidence that the
-#' sample do NOT come from the candidate location (and not the opposite!).
+#' sample do NOT come from the candidate location (and not the opposite!). For
+#' statistical details about this procedure as well as a discussion of which
+#' uncertainties are captured and which are not, please refer to Courtiol et al.
+#' 2019.
 #' 
-#' For statistical details about this procedure as well as a discussion
-#' of which uncertainties are captured and which are not, please refer to
-#' Courtiol et al. 2019.
+#' **Details on parameters:**
 #' 
-#' A mask can be used so to remove all values falling in the mask. This can be
-#' useful for performing for example assignments on lands only and discard
-#' anything falling in large bodies of water (see example). By default our
-#' \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows 
+#' - *neglect_covPredCalib*: as long as the calibration method used in
+#' \code{\link{calibfit}} is "wild", a covariance is expected between the
+#' uncertainty of predictions from the isoscape mean fit and the uncertainty in
+#' predictions from the calibration fit. This is because both the isoscape and
+#' the calibration use in part the same data. By default this term is omitted
+#' (i.e. the value for the argument \code{neglect_covPredCalib} is \var{TRUE})
+#' since in practice it seems to affect the results only negligibly in our
+#' trials and the computation of this term can be quite computer intensive. We
+#' nonetheless recommend to set \code{neglect_covPredCalib} to \var{FALSE} in
+#' your final analysis. If the calibration method used in \code{\link{calibfit}}
+#' is not "wild", this parameter has no effect.
+#' 
+#' - *mask*: a mask can be used so to remove all values falling in the mask.
+#' This can be useful for performing for example assignments on lands only and
+#' discard anything falling in large bodies of water (see example). By default
+#' our \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows
 #' to prevent this automatic behaviour.
 #' 
 #' @aliases isofind print.ISOFIND summary.ISOFIND
-#' @param data A \var{dataframe} containing the assignment data (see
-#' note below)
+#' @param data A \var{dataframe} containing the assignment data (see note below)
 #' @param isoscape The output of the function \code{\link{isoscape}}
-#' @param calibfit The output of the function \code{\link{calibfit}} (This 
-#' argument is not needed if the isoscape had been fitted using isotopic 
-#' ratios from sedentary animals.)
+#' @param calibfit The output of the function \code{\link{calibfit}} (This
+#'   argument is not needed if the isoscape had been fitted using isotopic
+#'   ratios from sedentary animals.)
 #' @param mask A \var{SpatialPolygons} of a mask to replace values on all
-#' rasters by NA inside polygons (see details)
+#'   rasters by NA inside polygons (see details)
+#' @param neglect_covPredCalib A \var{logical} indicating whether to neglect the
+#'   covariance between the uncertainty of predictions from the isoscape mean
+#'   fit and the uncertainty in predictions from the calibration fit (default =
+#'   \var{TRUE}). See **Details**.
 #' @param verbose A \var{logical} indicating whether information about the
-#' progress of the procedure should be displayed or not while the function is
-#' running. By default verbose is \var{TRUE} if users use an interactive R
-#' session and \var{FALSE} otherwise.
+#'   progress of the procedure should be displayed or not while the function is
+#'   running. By default verbose is \var{TRUE} if users use an interactive R
+#'   session and \var{FALSE} otherwise.
 #' @return This function returns a \var{list} of class \var{ISOFIND} containing
-#' itself three lists (\code{sample}, \code{group}, and \code{sp_points})
-#' storing all rasters built during assignment and the spatial points for
-#' sources, calibration and assignments. The \var{list} \code{sample} contains three set of
-#' raster layers: one storing the value of the test statistic ("stat"), one
-#' storing the value of the variance of the test statistic ("var") and one
-#' storing the p-value of the test ("pv"). The \var{list} \code{group} contains
-#' one raster storing the p-values of the assignment for the group. The
-#' \var{list} \code{sp_points} contains two spatial point objects:
-#' \code{sources} and \code{calibs}.
+#'   itself three lists (\code{sample}, \code{group}, and \code{sp_points})
+#'   storing all rasters built during assignment and the spatial points for
+#'   sources, calibration and assignments. The \var{list} \code{sample} contains
+#'   three set of raster layers: one storing the value of the test statistic
+#'   ("stat"), one storing the value of the variance of the test statistic
+#'   ("var") and one storing the p-value of the test ("pv"). The \var{list}
+#'   \code{group} contains one raster storing the p-values of the assignment for
+#'   the group. The \var{list} \code{sp_points} contains two spatial point
+#'   objects: \code{sources} and \code{calibs}.
 #' @note See \code{\link{AssignDataAlien}} to know which variables are needed to
-#' perform the assignment and their names.
+#'   perform the assignment and their names.
 #' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
 #' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
@@ -138,6 +154,7 @@ isofind <- function(data,
                     isoscape,
                     calibfit = NULL,
                     mask = NA,
+                    neglect_covPredCalib = TRUE,
                     verbose = interactive()
                     ) {
 
@@ -159,7 +176,7 @@ calibfit!")
   }
 
   ## importing ocean if missing
-  if (!is.null(mask) && class(mask) != "SpatialPolygons" && is.na(mask)) {
+  if (!is.null(mask) && !inherits(mask, "SpatialPolygons") && is.na(mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask <- OceanMask
@@ -197,28 +214,67 @@ calibfit!")
     
     ### WE COMPUTE THE VARIANCE OF THE TEST
 
+    ## term 1 in eq. 9.18 from Courtiol et al. 2019
+    var_term1 <- sapply(1:nrow(data), function(i) isoscape$isoscapes$mean_predVar)
+    
     if (!is.null(calibfit)) {
-      ## we compute fixedVar
+      
+      ## term 2 in eq. 9.18 from Courtiol et al. 2019
+      var_term2 <- calibfit$phi/calibfit$param[["slope"]]^2
+      
+      ## term 3 in eq. 9.18 from Courtiol et al. 2019
       X <- cbind(1, data$mean_origin)
       fixedVar <- rowSums(X * (X %*% calibfit$fixefCov)) ## = diag(X %*% calibfit$fixefCov %*% t(X))
+      var_term3 <- fixedVar/calibfit$param[["slope"]]^2
+      
+      ## term 4 in eq. 9.18 from Courtiol et al. 2019
+
+      if (calibfit$method == "wild" && !neglect_covPredCalib) {
+        # Create design matrix for fixed effects
+        # note: the one stored in calibfit is defective given the use of offsets to fit the calibfit model
+        X.pv <- cbind(1, calibfit$calib_fit$data$mean_source_value)
+        
+        X_ginv <- spaMM::get_matrix(calibfit$calib_fit, which = "fixef_left_ginv", X.pv = X.pv) # with the non-default X.pv; dimensions are 2*(number of calibration locations)
+        ## which = "fixef_left_ginv" is not yet documented in spaMM
+        ## => this call replaces:
+        # phi <- spaMM::residVar(calibfit$calib_fit)
+        # X_ginv <- tcrossprod(solve(spaMM:::.ZtWZwrapper(X.pv, 1/phi)), spaMM:::.Dvec_times_m_Matrix(1/phi, X.pv))
+        
+        fix_X_ZAC.calib_positions <- spaMM::preprocess_fix_corr(calibfit$iso_fit$mean_fit, fixdata = calibfit$calib_fit$data)
+        covmat <- spaMM::get_predCov_var_fix(calibfit$iso_fit$mean_fit,
+                                             newdata = attr(isoscape, "xs"),
+                                             fix_X_ZAC.object = fix_X_ZAC.calib_positions)
+        
+        # account for the \beta factor in eq.19
+        covmat_scaled <- -calibfit$param[["slope"]] * covmat
+        
+        # matrix of row vectors of errors of the coefficients (eps_alpha, eps_beta)
+        eps_abs <- tcrossprod(covmat_scaled, X_ginv) # dimensions: ( # of putative origins ) * 2
+        hat_delta_o <- raster::extract(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
+        
+        # adding all components of term 4
+        var_term4_vec <- eps_abs[, 1L] + eps_abs[, 2L]*hat_delta_o
+      } else {
+        var_term4_vec <- 0
+      }
+      
+      # format as raster for coordinates to match
+      var_term4 <- .create_raster(long = raster::coordinates(isoscape$isoscapes)[, "x"],
+                                  lat = raster::coordinates(isoscape$isoscapes)[, "y"],
+                                  values = var_term4_vec,
+                                  proj = "+proj=longlat +datum=WGS84"
+                                  )
+      
       ## we create individual rasters containing the variance of the test statistics
-      list_varstat_layers <- sapply(1:nrow(data),
-                                    function(i) {
-                                      isoscape$isoscapes$mean_predVar + 
-                                      calibfit$phi/calibfit$param["slope"]^2 +
-                                      fixedVar[i]/calibfit$param["slope"]^2 +
-                                      0 ## ToDo compute fourth variance term
-                                    }
-                                    )
+      ## by summing all the terms
+      list_varstat_layers <- sapply(1:nrow(data), function(i) var_term1[[i]] + var_term2 + var_term3[i] + var_term4)
+      
     } else {
       ## we create individual rasters containing the variance of the test statistics
-      list_varstat_layers <- sapply(1:nrow(data),
-                                    function(i) {
-                                      isoscape$isoscapes$mean_respVar
-                                    }
-                                    )
+      list_varstat_layers <- var_term1
     }
-
+    rm(var_term1, var_term2, var_term3, var_term4)
+    
     names(list_varstat_layers) <- names_layers
     varstat_brick <- raster::brick(list_varstat_layers)
     rm(list_varstat_layers)

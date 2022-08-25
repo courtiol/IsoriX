@@ -23,10 +23,10 @@
 #' dispersion variance model ("disp", "disp_predVar", "disp_residVar", or
 #' "disp_respVar").
 #'
-#' When used on a simulated isoscape produced with the function
-#' \code{\link{isosim}}, the user can choose between plotting the mean isotopic
-#' value (\code{which} = "mean") or the residual dispersion (\code{which} =
-#' "disp").
+#' When used on a simulated isoscape produced with the function \code{isosim}
+#' (currently dropped due to the package RandomFields being temporarily retired
+#' from CRAN), the user can choose between plotting the mean isotopic value
+#' (\code{which} = "mean") or the residual dispersion (\code{which} = "disp").
 #'
 #' When called upon an object of class \var{ISOFIND}, the plot function draws a
 #' fine-tuned plot of the assignment. You can use the argument \code{who} to
@@ -114,9 +114,12 @@
 #'    FALSE.
 #' @param xlab A \var{string} the x-axis label in plot.CALIBFIT
 #' @param ylab A \var{string} the y-axis label in plot.CALIBFIT
+#' @param xlim A range defining the extreme coordinates for the the x-axis in plot.CALIBFIT
 #' @param ylim A range defining the extreme coordinates for the the y-axis in plot.CALIBFIT
 #' @param pch The argument pch as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
 #' @param col The argument col as in \code{\link{par}} for plot.CALIBFIT and points.CALIBFIT
+#' @param line A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the regression line or not;
+#' and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the regression line
 #' @param CI A \var{list} containing two elements: \code{show}, a \var{logical} indicating whether to show the confidence interval or not;
 #' and \code{col}, a \var{string} or \var{integer} indicating the colour for plotting the confidence interval
 #' @param ... Additional arguments (only in use in plot.CALIBFIT and 
@@ -148,7 +151,7 @@ plot.ISOSCAPE <- function(x,
                           sphere  = list(build = FALSE, keep_image = FALSE),
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
-    if (!(any(class(x) %in% "ISOSCAPE"))) {
+    if (!inherits(x, "ISOSCAPE")) {
       stop("This function must be called on an object of class ISOSCAPE.")
     }
   
@@ -172,7 +175,7 @@ plot.ISOSCAPE <- function(x,
     }
 
     ## importing ocean if missing
-    if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
+    if (!is.null(mask$mask) && !inherits(mask$mask, "SpatialPolygons") && is.na(mask$mask)) {
       OceanMask <- NULL
       utils::data("OceanMask", envir = environment(), package = "IsoriX")
       mask$mask <- OceanMask
@@ -334,7 +337,7 @@ plot.ISOFIND <- function(x,
   
   what <- "pv" ## ToDo: implement other possibilities
   
-  if (!(any(class(x) %in% "ISOFIND"))) {
+  if (!inherits(x, "ISOFIND")) {
     stop("This function must be called on an object of class ISOFIND")
   }
   
@@ -356,14 +359,14 @@ plot.ISOFIND <- function(x,
   }
 
   ## importing ocean if missing
-  if (!is.null(mask$mask) && class(mask$mask) != "SpatialPolygons" && is.na(mask$mask)) {
+  if (!is.null(mask$mask) && !inherits(mask$mask, "SpatialPolygons") && is.na(mask$mask)) {
     OceanMask <- NULL
     utils::data("OceanMask", envir = environment(), package = "IsoriX")
     mask$mask <- OceanMask
   }
 
   ## changing missing setting for mask2
-  if (!is.null(mask2$mask) && class(mask2$mask) != "SpatialPolygons" && is.na(mask2$mask)) {
+  if (!is.null(mask2$mask) && !inherits(mask2$mask, "SpatialPolygons") && is.na(mask2$mask)) {
     mask2$mask <- NULL
   }
 
@@ -559,14 +562,14 @@ plot.ISOFIND <- function(x,
 #' @export
 plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 
-  if (!(any(class(x) %in% "ISOFIT"))) {
+  if (!inherits(x, "ISOFIT")) {
     stop("This function must be called on an object of class ISOFIT.")
   }
   
   ## Test if RStudio is in use
   RStudio <- .Platform$GUI == "RStudio"
 
-  if (!any(class(x) %in% "MULTIISOFIT")) {
+  if (!inherits(x, "MULTIISOFIT")) {
     ## Determine number of plots in panel
     if (RStudio) {
       nplot <- 1
@@ -666,15 +669,17 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 plot.CALIBFIT <- function(x,
                           pch = 1,
                           col = "black",
-                          xlab = "Predicted isotopic value in the environment",
+                          xlab = "Isotopic value in the environment",
                           ylab = "Isotopic value in the calibration sample",
+                          xlim = NULL,
                           ylim = NULL,
+                          line = list(show = TRUE, col = "blue"),
                           CI = list(show = TRUE, col = "blue"),
                           ...) {
-  
+
   .complete_args(plot.CALIBFIT)
 
-  plotting_calibfit(x = x, pch = pch, col = col, CI = CI, xlab = xlab, ylab = ylab, ylim = ylim, points = FALSE, ...)
+  plotting_calibfit(x = x, pch = pch, col = col, line = line, CI = CI, xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim, points = FALSE, ...)
   return(invisible(NULL))
 }
 
@@ -684,31 +689,54 @@ plot.CALIBFIT <- function(x,
 points.CALIBFIT <- function(x,
                             pch = 2,
                             col = "red",
+                            line = list(show = TRUE, col = "red"),
                             CI = list(show = TRUE, col = "red"),
                             ...) {
   .complete_args(points.CALIBFIT)
   
-  plotting_calibfit(x = x, pch = pch, col = col, CI = CI, xlab = NULL, ylab = NULL, points = TRUE, ...)
+  plotting_calibfit(x = x, pch = pch, col = col, line = line, CI = CI, xlab = NULL, ylab = NULL, points = TRUE, ...)
   return(invisible(NULL))
   
 }
 
-plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, ylim = NULL, points = FALSE, ...) {
+plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, ylim = NULL, points = FALSE, ...) {
 
-  if (!(any(class(x) %in% "CALIBFIT"))) {
+  if (!inherits(x, "CALIBFIT")) {
     stop("This function must be called on an object of class CALIBFIT.")
   }
   
-  if (CI$show) {
+  if (x$method == "desk" && !points && (is.null(xlim) || is.null(ylim))) {
+    stop("Since no calibration points have been loaded, xlim & ylim must be defined to indicate the range of the x- and y-axes. Call again the plotting function again after adding e.g. xlim = c(-100, 0), ylim = c(-45, -15) in the function call.")
+  }
+  
+  if (x$method == "desk" && points && is.null(xlim) && is.null(ylim)) {
+    xlim <- ylim <- c(-1e6, 1e6)
+  }
+  
+  x_var <- switch(x$method,
+                  wild = x$data$mean_source_value,
+                  lab = x$data$source_value,
+                  desk = xlim)
+  
+  y_var <- switch(x$method,
+                  wild = x$data$sample_value,
+                  lab = x$data$sample_value,
+                  desk = ylim)
+
+  ## prepare design matrix
+  if (line$show || CI$show) { 
     xs <- with(x$data,
-               seq(min(mean_source_value),
-                   max(mean_source_value),
+               seq(min(x_var),
+                   max(x_var),
                    length = 100
                )
     )
-    
     X <- cbind(1, xs)
     fitted <- X %*% x$param
+  }
+
+  ## compute CI
+  if (CI$show) {
     fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
     if (any(fixedVar < 0)) {
       fixedVar[fixedVar < 0] <- 0
@@ -717,19 +745,29 @@ plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, ylim = NULL, points =
     lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
     upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
   } else {
-    lwr <- min(x$data$sample_value, na.rm = TRUE)
-    upr <- max(x$data$sample_value, na.rm = TRUE)
+    lwr <- min(y_var, na.rm = TRUE)
+    upr <- max(y_var, na.rm = TRUE)
   }
   
-  if(is.null(ylim)) {
-    ylim <- range(lwr, x$data$sample_value, upr, na.rm = TRUE)
+  if (is.null(xlim)) {
+    xlim <- range(x_var, na.rm = TRUE)
   }
   
-  if (! points) {
+  if (is.null(ylim)) {
+    ylim <- range(lwr, y_var, upr, na.rm = TRUE)
+  }
+  
+  ## remove fake points used for the construction of the plot when using calibration method "desk"
+  if (x$method == "desk") {
+    col <- NULL
+  }
+  
+  if (!points) {
   with(x$data,
-       graphics::plot.default(sample_value ~ mean_source_value,
+       graphics::plot.default(y_var ~ x_var,
                               xlab = xlab,
                               ylab = ylab,
+                              xlim = xlim,
                               ylim = ylim,
                               las = 1,
                               pch = pch,
@@ -739,13 +777,17 @@ plotting_calibfit <- function(x, pch, col, CI, xlab, ylab, ylim = NULL, points =
   )
   } else {
     with(x$data,
-         graphics::points.default(sample_value ~ mean_source_value, pch = pch, col = col, ...)
+         graphics::points.default(y_var ~ x_var, pch = pch, col = col, ...)
     )
   }
   
+  ## plot regression line
+  if (line$show) {
+    graphics::points(fitted ~ xs, col = line$col, lwd = 2, type = "l")
+  }
   
+  ## plot CI
   if (CI$show) {
-    graphics::points(fitted ~ xs, type = "l", col = CI$col, lwd = 2)
     graphics::points(lwr ~ xs, col = CI$col, lty = 2, type = "l")
     graphics::points(upr ~ xs, col = CI$col, lty = 2, type = "l")
     ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)

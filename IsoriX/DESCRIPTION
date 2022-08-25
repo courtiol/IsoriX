@@ -11,6 +11,7 @@ Authors@R: c(
 Depends:
     R (>= 3.5.0)
 Imports:
+    elevatr,
     graphics,
     grDevices,
     grid,
@@ -20,7 +21,7 @@ Imports:
     raster,
     rasterVis (>= 0.30),
     sp,
-    spaMM (>= 2.4),
+    spaMM (>= 3.12.45),
     stats,
     tools,
     utils,
@@ -38,7 +39,6 @@ Suggests:
     magick,
     maps,
     maptools,
-    RandomFields,
     rgeos,
     rgdal,
     rgl,
@@ -46,5 +46,5 @@ Suggests:
 LazyData: true
 URL: https://github.com/courtiol/IsoriX/
 BugReports: https://github.com/courtiol/IsoriX/issues/
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)

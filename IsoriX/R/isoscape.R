@@ -129,7 +129,7 @@ isoscape <- function(raster,
                      isofit,
                      verbose = interactive()) {
   
-  if (any(class(isofit) %in% "MULTIISOFIT")) {
+  if (inherits(isofit, "MULTIISOFIT")) {
     stop("Object 'isofit' of class MULTIISOFIT; use isomultiscape instead!")
   }
   
@@ -170,40 +170,40 @@ isoscape <- function(raster,
       pb <- utils::txtProgressBar(style = 3)
     }
     
+    ## we build xs non-specifically using most complex model definition
+    ## (it may look ugly but it should not increase much the computation time
+    ## and it avoids a lot of uglier code)
+    xs <- data.frame(long = long_to_do,
+                     long_2 = long_to_do^2,
+                     lat = lat_to_do,
+                     lat_abs = abs(lat_to_do),
+                     lat_2 = lat_to_do^2,
+                     elev = raster::extract(raster, cbind(long_to_do, lat_to_do)),  ## ToDo: check that it is elev and not something else
+                     source_ID = as.factor(paste("new", seq_len(length(long_to_do)), sep = "_"))
+    )
+    
+    
     ## we loop on each chunk
     for (i in 1:(length(steps) - 1)) {
 
       ## compute indexes for covariate values matching the current chunk
       within_steps <-  (steps[i] + 1L):steps[i + 1L] 
-      
-      ## select coordinates for prediction within chunk
-      long <- long_to_do[within_steps]
-      lat <- lat_to_do[within_steps]
-      
-      ## we build xs non-specifically using most complex model definition
-      ## (it may look ugly but it should not increase much the computation time
-      ## and it avoids a lot of uglier code)
-      xs <- data.frame(long = long,
-                       long_2 = long^2,
-                       lat = lat,
-                       lat_abs = abs(lat),
-                       lat_2 = lat^2,
-                       elev = raster::extract(raster, cbind(long, lat)),  ## ToDo: check that it is elev and not something else
-                       source_ID = as.factor(paste("new", within_steps, sep = "_"))
-      )
+
+      ## we select the chunk of the design matrix required for the loop
+      xs_small <- xs[within_steps, ]
       
       ## predictions from disp_fit
       pred_dispfit <- spaMM::predict.HLfit(object = isofit$disp_fit,
-                                            newdata = xs,
+                                            newdata = xs_small,
                                             variances = list(respVar = TRUE)
       )
       
       ## transmission of phi to mean_fit
-      xs$pred_disp <- pred_dispfit[, 1]
+      xs_small$pred_disp <- pred_dispfit[, 1]
       
       ## predictions from mean_fit
       pred_meanfit <- spaMM::predict.HLfit(object = isofit$mean_fit,
-                                           newdata = xs,
+                                           newdata = xs_small,
                                            variances = list(respVar = TRUE)
       )
       
@@ -236,7 +236,7 @@ isoscape <- function(raster,
   }
   
   ## we store the predictions for mean isotopic values into a raster
-  save_raster <- function(x){
+  save_raster <- function(x) {
     .create_raster(long = long_to_do,
                   lat = lat_to_do,
                   values = x,
@@ -278,6 +278,9 @@ isoscape <- function(raster,
   out <- list(isoscapes = isoscapes,
               sp_points = list(sources = source_points)
   )
+
+  ## store design matrix as attribute
+  attr(out, "xs") <- xs
   
   ## we define a new class
   class(out) <- c("ISOSCAPE", "list")
@@ -294,7 +297,7 @@ isoscape <- function(raster,
   # It is not exported but may be put in use in a future version of IsoriX.
   # It does not compute the predictions into chunks.
     
-  if (any(class(isofit) %in% "MULTIISOFIT")) {
+  if (inherits(isofit, "MULTIISOFIT")) {
     stop("object 'isofit' of class MULTIISOFIT; use isomultiscape instead.")
   }
   
@@ -487,7 +490,7 @@ isomultiscape <- function(raster, ## change as method?
                           ) {
   
   ## In case the function is called on the output of isofit by mistake
-  if (!any(class(isofit) %in% "MULTIISOFIT")) {
+  if (!inherits(isofit, "MULTIISOFIT")) {
     return(isoscape(raster = raster,
                     isofit = isofit,
                     verbose = verbose
@@ -497,7 +500,7 @@ isomultiscape <- function(raster, ## change as method?
   
   ## Checking the inputs
   if (!is.null(weighting)) {
-    if (!any(class(weighting) %in% c("RasterStack", "RasterBrick"))) {
+    if (!inherits(weighting, c("RasterStack", "RasterBrick"))) {
       stop("the argument 'weighting' should be a RasterStack or a RasterBrick")
     }
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
@@ -574,15 +577,17 @@ isomultiscape <- function(raster, ## change as method?
   return(out)
   }
 
-
+#' @export
+#' @method print ISOSCAPE
 print.ISOSCAPE <- function(x, ...) {
   print(summary(x))
   return(invisible(NULL))
 }
 
-
+#' @export
+#' @method summary ISOSCAPE
 summary.ISOSCAPE <- function(object, ...) {
-  if ("ISOSIM" %in% class(object)) {
+  if (inherits(object, "ISOSIM")) {
     cat("\n")
     cat("### Note: this isoscape has been simulated ###", "\n")
     cat("\n")
@@ -591,7 +596,7 @@ summary.ISOSCAPE <- function(object, ...) {
   print(object[[1]])
   cat("\n")
   if (length(object) > 1) {
-    cat("### first 5 locations of the dataset")
+    cat("### first 5 locations of the dataset", "\n")
     print(utils::head(object[[2]][[1]], 5L))
   }
   return(invisible(NULL))

@@ -1,62 +1,232 @@
-#' Fit the calibration model
+#' Fit the calibration model (or load parameters from calibration done outside
+#' IsoriX)
+#'
+#' This function establishes the relationship between the isotopic values of
+#' organisms (e.g. tissues such as hair, horn, ivory or feathers; referred in
+#' code as \var{sample_value}) and the isotopic values of their environment
+#' (e.g. precipitation water; referred in code as \var{source_value}). This
+#' function is only needed when the assignment of organisms has to be performed
+#' within an isoscape that was not built using the organisms themselves, but
+#' that was instead built using another source of isotopic values (e.g.,
+#' precipitation). If the isoscape had been fitted using isotopic ratios from
+#' sedentary animals directly, this calibration step is not needed (e.g.
+#' isoscape fitted using sedentary butterflies and migratory butterflies to
+#' assign). In other cases, this calibration step is usually needed since
+#' organisms may not directly reflect the isotopic values of their environment.
+#' Depending on the calibration data to be used (provided via the argument
+#' \code{data}), one of four possible calibration methods must be selected (via
+#' the argument \code{method}). Each method considers a different statistical
+#' model and requires particular data that are organised in a specific way (see
+#' **Details** for explanations and **Examples** for use cases).
+#'
+#' The \code{method} argument can take one of the four values "wild" (default),
+#' "lab", "desk" and "desk_inverse" corresponding to the four calibration
+#' methods. It is crucial for you to select the method that is most appropriate
+#' for your workflow, as the choice of method can impact the most likely
+#' assignment locations during the assignment test performed in
+#' \code{\link{isofind}}.
+#'
+#' ## Method "wild"
+#'
+#' This calibration method is the one to be used when the calibration data to be
+#' used correspond to isotopic values measured on sedentary organisms and when
+#' no direct measurement of isotopic values in the environment are available at
+#' the locations where sedentary organisms have been collected. In such a case,
+#' the isotopic values in the environment of sedentary organisms are predicted
+#' internally using an isoscape fitted with \code{\link{isofit}}. This
+#' calibration method thus aims at estimating and accounting for the uncertainty
+#' associated with these predicted values. Such uncertainty is accounted for
+#' when fitting the calibration fit so as to produce an unbiased estimation of
+#' the calibration relationship and it is also then accounted for by
+#' \code{\link{isofind}} when inferring the possible locations of origin. Before
+#' we added the argument \code{method} in \code{calibfit} (i.e. before releasing
+#' the version 0.9), this method was the only one available in IsoriX.
+#'
+#' - **Statistical model**: in this case, the calibration model to be fitted is
+#' a linear mixed-effects model (LMM) that fits the isotopic values of sedentary
+#' organisms as a linear function of the isotopic values in their environment
+#' (e.g. precipitation). The function considers that the isotopic values from
+#' the environment (e.g. from precipitation) at the locations at which organisms
+#' were sampled are not known. The function therefore predicts these isotopic
+#' values from the geostatistical model fitted by the function
+#' \code{\link{isofit}}, which is provided to \code{calibfit} using the argument
+#' \code{isofit}. The LMM used to fit the calibration function has a simple
+#' fixed-effect structure: an intercept and a slope. The random effect is more
+#' complex: it is normally distributed with mean zero, a certain variance
+#' between locations proportional to the squared (fixed) slope, and a covariance
+#' structure defined by the prediction covariance matrix of the isoscape model
+#' between the calibration locations. See appendix in Courtiol et al. 2019 for
+#' more details.
+
+#' - **Required calibration data**: the calibration data to be used here must be
+#' a dataframe (or a tibble) containing at least the following columns:
+#'   - \code{sample_value}: the isotopic value of the calibration sample
+#'   - \code{long}: the longitude coordinate (decimal degrees)
+#'   - \code{lat}: the latitude coordinate (decimal degrees)
+#'   - \code{site_ID}: the sample site
+#'
+#'   The column name must be identical to those indicated here. Other columns
+#'   can be present in the data but won't be used. Each row must correspond to
+#'   a different calibration sample (i.e. a single isotopic measurement). See
+#'   \code{\link{CalibDataAlien}}, \code{\link{CalibDataBat}}, or
+#'   \code{\link{CalibDataBat2}} for examples of such a dataset.
 #' 
-#' This function fits a model that establishes the relationship between the 
-#' isotopic values of organisms (e.g. tissues such as hair, horn, ivory or 
-#' feathers) and the isotopic values of their environment (e.g. precipitation).
+#' ## Method "lab"
 #' 
-#' The calibration model is a linear mixed-effects model (LMM) that fits the 
-#' isotopic values of sedentary organisms as a linear function of the isotopic 
-#' values in their environment (e.g. precipitation).
+#' This calibration method is the one to be used when the calibration data to be
+#' used correspond to isotopic values recorded for both organisms and their
+#' environment. We can foresee three main situations in which the "lab" method
+#' is the one to be used:
+#'   1. the data are generated by growing organisms in a controlled
+#'   environment where they are fed and/or given water with a specific (known)
+#'   isotopic value.
+#'   2. sedentary organisms are sampled in the wild together with a sample
+#'   from their environment and that isotopic values have been measured for
+#'   both.
+#'   3. you want to use a calibration made by others based on a plot of that
+#'   calibration showing the datapoints. In such a case, you should use an R
+#'   package (e.g. metaDigitse or digitize) or software (e.g. graphClick or
+#'   dataThief) to extract the coordinates on the plots so as to obtain the
+#'   isotopic values of the sample and the environment behind each point.
+#'
+#' Note that the use cases 1 and 2 will allow for the propagation of all
+#' relevant sources of uncertainty during the assignment. In contrast, the third
+#' use case implies to neglect uncertainty in the isotopic values in the
+#' environment if those were initially predicted using an isoscape. It also
+#' neglects the covariances involving such predicted values. That being said, if
+#' you want to use someone else calibration relationship, using this method is
+#' generally preferable to using the method "desk" described below (less error
+#' prone and de facto accounting for all five parameters mentioned for the
+#' method "desk").
 #' 
-#' This function considers that the isotopic values from the environment (e.g.
-#' from precipitation) at the locations at which organisms were sampled are not
-#' known. The function therefore predicts these isotopic values from the
-#' geostatistical model fitted by the function \code{\link{isofit}}, which is
-#' provided to \code{\link{calibfit}} using the argument \code{isofit}.
+#' - **Statistical model**: in this case, the calibration model to be fitted is
+#' a simple linear model (LM) or a simple linear mixed-effects model (LMM) that
+#' fits the isotopic values of sedentary organisms as a linear function of the
+#' isotopic values in their environment (e.g. precipitation). Whether it is a LM
+#' or a LMM depends on the presence of a column \code{site_ID} in the dataset as
+#' well as on the number of unique values for such a column. If the column is
+#' present and the number of unique values is larger than 4, a LMM is fitted.
+#' Otherwise, a LM is fitted. In both cases, the function considers that the
+#' isotopic values from the environment (e.g. from precipitation) at the
+#' locations at which organisms were sampled are known. Contrary to the method
+#' "wild", the environment values are thus considered as observed and not
+#' predicted from an isoscape. The argument \code{isofit} should thus remain
+#' \code{NULL} in this case (since no isoscape is used, no isoscape fit is
+#' required to perform the calibration). The model used to fit the calibration
+#' function has a simple fixed effect structure: an intercept and a slope.
+#' 
+#' - **Required calibration data**: the calibration data to be used here must be
+#' a dataframe (or a tibble) containing at least the following columns:
+#'    - \code{sample_value}: the isotopic value of the calibration sample
+#'    - \code{source_value}: the isotopic value of the environment
+#'    - \code{site_ID} (optional): the sample site
 #'
-#' The LMM used to fit the calibration function has a simple fixed-effect
-#' structure: an intercept and a slope. The random effect is more complex: it is
-#' normally distributed with mean zero, a certain variance between locations
-#' proportional to the squared fixed slope, and a covariance structure defined
-#' by the prediction covariance matrix of the isoscape model between the
-#' calibration locations. See appendix in Courtiol et al. 2019 for more details.
+#'    The column name must be identical to those indicated here. Other columns
+#'    can be present in the data but won't be used. Each row must correspond to
+#'    a different calibration sample (i.e. a single sample-environment pair of
+#'    isotopic measurements).
 #'
-#' This function is only needed in the case for which the assignment of
-#' organisms has to be performed within an isoscape that was built using another
-#' source of isotopic values (e.g., precipitation). This implies that if the
-#' isoscape had been fitted using isotopic ratios from sedentary animals, then
-#' this calibration step is not needed.
+#' ## Methods "desk" and "desk_inverse"
 #'
-#' If source isotopic values are known at the locations where sedentary
-#' organisms were sampled, users should calibrate their data directly using the
-#' function \code{\link[stats]{lm}} by fitting tissue isotopic values as a
-#' function of source isotopic values.
+#' These calibration methods must only be used as a last resource! They are
+#' unlikely to yield robust inference during the assignment step. These
+#' calibration methods are the ones to be used when no calibration data is
+#' directly available, when you cannot either extract the data from a plot, and
+#' thus when you must rely solely on published metrics (including intercept and
+#' slope) to represent a calibration relationship. They work by making crude
+#' assumptions that various uncertainty components are null.
 #'
+#' The method "desk" is the one to be used when the published calibration
+#' relationship is of the form \code{lm(sample_value ~ source_value)} and the
+#' method "desk_inverse" is the one to be used when the published calibration
+#' relationship is of the form \code{lm(source_value ~ sample_value)}. Do make
+#' sure you are using the correct alternative. Note that the model used for the
+#' published calibration must be a linear regression (LM) and not a reduced
+#' major axis regression (RMA). If you use parameter values stemming from a RMA,
+#' the assignment will most likely be biased.
+#'
+#' Both methods require five metrics to work at their best: the intercept and
+#' slope of a calibration relationship, the standard errors (SE) associated to
+#' them, and the residual variance (not SD). For statistical reasons, the method
+#' "desk" is more flexible than the method "desk_inverse" and can still work (in
+#' the sense of running, but the reliability of the assignments will get worse)
+#' if the SEs and/or the residual variance is not provided. For the method
+#' "desk_inverse" all metrics are unfortunately necessary.
+#'
+#' Don't expect miracles: even if the "desk" method is used together with its
+#' five parameters, the assignment will still suffer from the same limitations
+#' as those impacting the method "lab" usage number 3. If less than five
+#' parameters are provided, further assumptions are made and this comes with a
+#' cost: again, it can bias the assignment and bias the confidence region. For
+#' these reasons, we were tempted to use \code{method = "dirty"} instead of
+#' \code{method = "desk"}... but we chickened out since we predicted that users
+#' would then refrain from mentioning the method they used in publications...
+#'
+#' Note that if the provided slope is set to 0 and an intercept is considered,
+#' the calibration methods actually corresponds to the simple consideration of a
+#' fractionation factor.
+#' 
+#' - **Statistical model**: none!
+#'
+#' - **Required calibration data** for method "desk": the calibration data to be
+#' used here must be a dataframe (or a tibble) containing a single row with the
+#' following columns:
+#'    - \code{intercept}: the estimated slope of a LM calibration fit
+#'    - \code{slope}: the estimated slope of a LM calibration fit
+#'    - \code{intercept_se} (optional): the standard error around the intercept
+#'    - \code{slope_se} (optional): the standard error around the slope
+#'    - \code{resid_var} (optional): the residual variance (not SD) of a LM
+#'    calibration fit
+#'    
+#' - **Required calibration data** for method "desk_inverse": the calibration
+#' data to be used here must be a dataframe (or a tibble) containing a single
+#' row with the following columns:
+#'    - \code{intercept}: the estimated slope of a LM calibration fit
+#'    - \code{slope}: the estimated slope of a LM calibration fit
+#'    - \code{intercept_se}: the standard error around the intercept
+#'    - \code{slope_se}: the standard error around the slope
+#'    - \code{resid_var}: the residual variance (not SD) of a LM calibration fit
+#'    - \code{sign_mean_Y}: a \var{numeric} indicating the sign of the mean
+#'    value of the isotopes in the environment in the format returned by [sign];
+#'    that is either \var{1} (if positive) or \var{-1} (if negative). This is
+#'    required for pivoting the regression from "desk_inverse" to "desk".
+#'    - \code{N}: a  \var{numeric} indicating the sample size of the data used
+#'    for the calibration fit. This is required for pivoting the regression from
+#'    "desk_inverse" to "desk".
+#' 
 #' @aliases calibfit print.CALIBFIT summary.CALIBFIT
 #' @inheritParams isoscape
 #' @param data A \var{dataframe} containing the calibration data (see note
 #'   below)
+#' @param method A \var{string} indicating the method used to generate the data
+#'   used for the calibration. By default method is \var{"wild"}, but the other
+#'   possible values are \var{"lab"}, \var{"desk"} and \var{"desk_inverse"} .
+#'   See **Details** for the difference between these three methods.
 #' @param verbose A \var{logical} indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
-#'   running. By default verbose is \var{TRUE} if users use an interactive R
+#'   running. By default verbose is \var{TRUE} if you run an interactive R
 #'   session and \var{FALSE} otherwise.
 #' @param control_optim A \var{list} to pass information to the argument control
-#'   of the optim call (for advanced users only).
+#'   in the call to \code{\link{optim}} (only effective when \code{method =
+#'   "wild"}; for advanced users only).
 #' @return This function returns a \var{list} of class \var{CALIBFIT} containing
-#'   the fixed-effect estimates of the calibration function, the covariance of
-#'   the fixed effects, the residual variance of the calibration fit, the fitted
-#'   calibration model, the original calibration data set with additional
-#'   information added during the fit, and the location of the calibration
-#'   points as spatial points.
-#' @note See \code{\link{CalibDataAlien}} to know which variables are needed to
-#'   perform the calibration fit and their names.
+#'   the name of the calibration method used, whether a species_ID random effect
+#'   was estimated, whether a site_ID random effect was estimated, the
+#'   fixed-effect estimates of the calibration function, the covariance of the
+#'   fixed effects, the residual variance of the calibration fit, the fitted
+#'   calibration model (if applicable), the fitted isoscape model (if
+#'   applicable), the original calibration data set with additional information
+#'   added during the fit, and the location of the calibration points as spatial
+#'   points.
+#' @seealso see \code{\link{plot}} for the help on how to plot the calibration
+#' relationship.
 #' @keywords models regression
 #' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC,
 #'   Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape computation and
 #'   inference of spatial origins with mixed models using the R package IsoriX.
 #'   In Hobson KA, Wassenaar LI (eds.), Tracking Animal Migration with Stable
 #'   Isotopes, second edition. Academic Press, London.
-#'   
+#'  
 #' @examples
 #' 
 #' ## The examples below will only be run if sufficient time is allowed
@@ -64,95 +234,295 @@
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
 #' 
-#' if(getOption_IsoriX("example_maxtime") > 30) {
+#' if (getOption_IsoriX("example_maxtime") > 30) {
 #' 
-#' ## We prepare the data:
+#' #####################################################
+#' ## 1 Example of calibration using the method "wild" #
+#' #####################################################
+#' 
+#' ## 1.1 We prepare the data to fit the isoscape:
 #' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #' 
-#' ## We fit the models for Germany:
+#' ## 1.2 We fit the isoscape models for Germany:
 #' GermanFit <- isofit(data = GNIPDataDEagg,
 #'                     mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 #' 
-#' ## We fit the calibration model:
+#' ## 1.3 We fit the calibration model using the method "wild" (the default):
 #' CalibAlien <- calibfit(data = CalibDataAlien, isofit = GermanFit)
 #' 
-#' ## We display minimal information:
+#' ## 1.4 We explore the outcome of the calibration:
 #' CalibAlien
-#' 
-#' ## We display more information:
 #' summary(CalibAlien)
-#' 
-#' ## We plot the calibration function:
 #' plot(CalibAlien)
 #' 
-#' ## Add other calibrations on the same plot
-#' CalibDataAlien3 <- CalibDataAlien2 <- CalibDataAlien
-#' CalibDataAlien2$sample_value <- rnorm(nrow(CalibDataAlien2),
-#'   mean = CalibDataAlien2$sample_value, sd = 10)
-#' CalibDataAlien3$sample_value <- rnorm(nrow(CalibDataAlien3),
-#'   mean = CalibDataAlien3$sample_value, sd = 10)
-#' CalibAlien2 <- calibfit(data = CalibDataAlien2, isofit = GermanFit)
-#' CalibAlien3 <- calibfit(data = CalibDataAlien3, isofit = GermanFit)
-#' plot(CalibAlien3)
-#' points(CalibAlien)
-#' points(CalibAlien2, pch = 3, col = "green", CI = list(col = "green"))
+#' ## Note: you can plot several calibrations at once (using bats this time):
+#' CalibBat1 <- calibfit(data = CalibDataBat, isofit = GermanFit)
+#' CalibBat2 <- calibfit(data = CalibDataBat2, isofit = GermanFit)
+#' plot(CalibBat1)
+#' points(CalibBat2, pch = 3, col = "red", CI = list(col = "green"))
+#'  
+#'
+#' ####################################################
+#' ## 2 Example of calibration using the method "lab" #
+#' ####################################################
+#' 
+#' ## 2.0 We create made up data here because we don't have yet a good dataset
+#' ## for this case, but you should use your own data instead:
+#' GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+#' set.seed(123)
+#' CalibDataAlien2 <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5,
+#'                                                  resid_var = 5),
+#'                                  isoscape = GermanScape,
+#'                                  raster = ElevRasterDE,
+#'                                  n_sites = 25,
+#'                                  min_n_samples = 5,
+#'                                  max_n_samples = 5)
+#' CalibDataAlien2 <- CalibDataAlien2[, c("site_ID", "sample_ID", "source_value", 
+#'                                        "sample_value")]
+#' head(CalibDataAlien2) ## your data should have this structure
+#' 
+#' ## 2.1 We fit the calibration model using the method "lab": 
+#' CalibAlien2 <- calibfit(data = CalibDataAlien2, method = "lab")
+#'                        
+#' ## 2.2 We explore the outcome of the calibration:
+#' CalibAlien2
+#' summary(CalibAlien2)
+#' plot(CalibAlien2)
 #' 
 #' 
+#' #####################################################
+#' ## 3 Example of calibration using the method "desk" #
+#' #####################################################
+#' 
+#' ## 3.1 We format the information about the calibration function to be used
+#' ## as a dataframe:
+#' CalibDataAlien3 <- data.frame(intercept = 1.67, slope = 0.48,
+#'                               intercept_se = 1.65, slope_se = 0.03,
+#'                               resid_var = 3.96)
+#' CalibDataAlien3
+#'                
+#' ## 3.2 We fit the calibration model using the method "desk":
+#' CalibAlien3 <- calibfit(data = CalibDataAlien3, method = "desk")
+#' 
+#' ## 3.3 We explore the outcome of the calibration:
+#' CalibAlien3
+#' summary(CalibAlien3)
+#' plot(CalibAlien3, xlim = c(-100, 100), ylim = c(-50, 50))
+#' 
+#' ## Note: the desk function also work with just intercept and slope:
+#' CalibDataAlien4 <- CalibDataAlien3[, c("intercept", "slope")]
+#' CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk")
+#' CalibAlien4
+#' summary(CalibAlien4)
+#' plot(CalibAlien3, xlim = c(-100, 100), ylim = c(-50, 50))
+#' points(CalibAlien4, line = list(col = "orange"))
+#' ## Regression lines are the same, but the new calibration does not have a
+#' ## confidence intervals since we provided no uncertainty measure in 
+#' ## CalibDataAlien4, which will make a difference during assignments...
+#' 
+#' 
+#' #############################################################
+#' ## 4 Example of calibration using the method "desk_inverse" #
+#' #############################################################
+#' 
+#' ## 4.1 We format the information about the calibration function to be used
+#' ## as a dataframe:
+#' CalibDataAlien4 <- data.frame(intercept = -16.98822, slope = 1.588885,
+#'                               intercept_se = 2.200435, slope_se = 0.08106032,
+#'                               resid_var = 13.15102, N = 125, sign_mean_Y = -1)
+#' CalibDataAlien4
+#'                
+#' ## 4.2 We fit the calibration model using the method "desk_inverse":
+#' CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk_inverse")
+#' 
+#' ## 4.3 We explore the outcome of the calibration:
+#' CalibAlien4
+#' summary(CalibAlien4)
+#' plot(CalibAlien4, xlim = c(-100, 100), ylim = c(-50, 50))
 #' }
 #' 
 #' @export
+
 calibfit <- function(data,
-                     isofit,
+                     isofit = NULL,
+                     method = c("wild", "lab", "desk", "desk_inverse"),
                      verbose = interactive(),
                      control_optim = list()
                      ) {
 
-  time <- system.time({
     ## checking inputs
-    if (any(class(isofit) %in% "MULTIISOFIT")) {
+    if (inherits(isofit, "MULTIISOFIT")) {
       stop("object 'isofit' of class MULTIISOFIT; calibration have not yet been implemented for this situation.")
     }
     
-    ## Note: all is prepared to use species_rand as an argument (with NULL = automatic selection)
+    method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
+    
+    ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
     ## That would allow to fit species as a random effect in the model
     ## However, it is not obvious that it would make sense to do that as it may
-    ## remove variance that should be captured during the assignment...
+    ## remove variance that should be captured during the assignment.
+    ## We thus disregard this term for now.
     species_rand <- FALSE
     
-    species_info <- any(colnames(data) %in% "species_ID")
+    species_info <- "species_ID" %in% colnames(data)
     if (!is.null(species_rand)) {
-      if (!species_info & species_rand) {
+      if (!species_info && species_rand) {
         stop("The random effect for species cannot be fit if data does not contain a column called species_ID")
       }
     }
     
     ## prepare the dataset
-    data <- .prepare_data_calib(data)
+    data <- .prepare_data_calib(data, method = method)
 
-    ## set species_rand
+    ## set species_rand (not used for now)
     if (!species_info) {
       species_rand <- FALSE
     } else {
       nb_species <- length(unique(data$species_ID))
-      if (is.null(species_rand) & nb_species > 4) {
-        species_rand <- TRUE
-      } else {
-        species_rand <- FALSE
-      }
+      species_rand <- ifelse(is.null(species_rand) && nb_species > 4, TRUE, FALSE)
     }
 
+  ## apply the calibration method
+  result_calib <- switch(method,
+                         wild = .calibfit_wild(data = data,
+                                               isofit = isofit,
+                                               species_rand = species_rand,
+                                               verbose = verbose,
+                                               control_optim = control_optim),
+                         lab = .calibfit_lab(data = data,
+                                             species_rand = species_rand,
+                                             verbose = verbose),
+                         desk = .calibfit_desk(data = data, verbose = verbose),
+                         desk_inverse = .calibfit_desk_inverse(data = data, verbose = verbose)
+                         )
+    
+  class(result_calib) <- c("CALIBFIT", "list")
+
+  return(invisible(result_calib))
+}
+
+.prepare_data_calib <- function(data, method, weighting = NULL) {
+  ## This function should not be called by the user.
+  ## It prepares data for the calibration procedure.
+  
+  if (method == "wild") {
+    
+    ## Checking the inputs
+    if (!all(c("lat", "long") %in% colnames(data))) {
+      stop("The dataset does not seem to contain the required variable(s) 'lat' and/or 'long'.")
+    } 
+    if (is.null(data$sample_value)) {
+      stop("The dataset does not seem to contain the required variable 'sample_value'.")
+    }
+    if (is.null(data$site_ID)) {
+      stop("The dataset does not seem to contain the required variable 'site_ID'.")
+    }
+    
+    ## Preparing the inputs
+    data$site_ID <- factor(data$site_ID)
+    data$lat_abs <- abs(data$lat)
+    data$lat_2 <- data$lat^2
+    data$long_2 <- data$long^2
+    data$source_ID <- as.factor(paste("new", data$site_ID, sep = "_"))
+  }
+  
+  else if (method == "lab") {
+    
+    ## Checking the inputs
+    if (is.null(data$sample_value)) {
+      stop("The dataset does not seem to contain the required variable 'sample_value'.")
+    }
+    if (is.null(data$source_value)) {
+      stop("The dataset does not seem to contain the required variable 'source_value'.")
+    }
+    
+    ## Preparing the inputs
+    if (!is.null(data$site_ID)) {
+      data$site_ID <- factor(data$site_ID)
+    }
+  }
+  
+  else if (method == "desk" || method == "desk_inverse") {
+    
+    ## Checking the inputs
+    if (is.null(data$intercept)) {
+      stop("The dataset does not seem to contain the required variable 'intercept'.")
+    }
+    if (is.null(data$slope)) {
+      stop("The dataset does not seem to contain the required variable 'slope'.")
+    }
+    if (nrow(data) > 1) {
+      stop("The selected calibration method requires that data contains only a single row.")
+    }
+
+    ## Preparing the inputs
+    ### No preparation needed
+  }
+  
+  else if (method == "desk_inverse") {
+    
+    ## Checking the inputs
+    if (is.null(data$intercept_se)) {
+      stop("The dataset does not seem to contain the required variable 'intercept_se'.")
+    }
+    if (is.null(data$slope_se)) {
+      stop("The dataset does not seem to contain the required variable 'slope_se'.")
+    }
+    if (is.null(data$resid_var)) {
+      stop("The dataset does not seem to contain the required variable 'resid_var'.")
+    }
+    if (is.null(data$sign_mean_Y)) {
+      stop("The dataset does not seem to contain the required variable 'sign_mean_Y'.")
+    }
+    if (is.null(data$N)) {
+      stop("The dataset does not seem to contain the required variable 'N'.")
+    }
+
+    ## Preparing the inputs
+    ### No preparation needed
+  }
+  
+  else {
+    stop("method argument not recognised")
+  }
+  
+  data <- droplevels(data)
+  
+  if (!is.null(weighting)) {
+    precipitations <- raster::extract(weighting, cbind(data$long, data$lat))
+    if (anyNA(precipitations)) {
+      message("NA values in precipitation cannot be handled and were thus replaced by 0.0001. If this does not make sense in your case, please contact the maintainer of this package.")
+      precipitations[is.na(precipitations)] <- 0.0001 ## remove NA to prevent crashes --> dangerous?
+    }
+    data <- cbind(data, precipitations)
+  }
+  return(data)
+}
+
+.calibfit_wild <- function(data,
+                           isofit,
+                           species_rand,
+                           verbose = interactive(),
+                           control_optim = list()) {
+  ## This function should not be called by the user.
+  ## It fits the calibration model according to the "wild" method.
+  
+  if (verbose) {
+    print("starting calibration method 'wild'")
+  }
+  
+  time <- system.time({
     ## predict isoscape and associated prediction
     ##   covariance matrix at animal locations
     
     if (verbose) {
       print("predicting the isoscape value in each calibration site...")
     }
-  
+    
     mean_calib <- spaMM::predict.HLfit(isofit[["mean_fit"]],
                                        newdata = data,
-                                       variances = list(predVar = TRUE, cov = TRUE)
-                                      )
-
+                                       variances = list(predVar = TRUE, cov = TRUE))
+    
     ## store the mean prediction
     data$mean_source_value <- c(mean_calib)
     
@@ -160,13 +530,16 @@ calibfit <- function(data,
     too_small <- sum(min(data$mean_source_value, na.rm = TRUE) < min(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
     too_large <- sum(max(data$mean_source_value, na.rm = TRUE) > max(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
     if (too_small + too_large > 0) {
-      message(paste("Tip:", too_small + too_large, "out of your", nrow(data),
-                    "calibration samples are associated to predicted values more extreme than the ones present in the isoscape. This corresponds to extrapolation during the calibration step. If the proportion becomes too large, it could imped the reliability of your assignments. In such cases, you should perhaps rethink the design of your isoscape and/or collect more callibration data within the expected range to avoid any problem."))
+      message(
+        paste("Tip:", too_small + too_large, "out of your", nrow(data),
+          "calibration samples are associated to predicted values more extreme than the ones present in the isoscape. This corresponds to extrapolation during the calibration step. If the proportion becomes too large, it could imped the reliability of your assignments. In such cases, you should perhaps rethink the design of your isoscape and/or collect more callibration data within the expected range to avoid any problem."
+        )
+      )
     }
     
     ## extract the prediction covariance matrix
     predcov_matrix_isofit_full <- attr(mean_calib, "predVar")
-  
+    
     ## extract the prediction variances
     data$mean_predVar_source <- diag(predcov_matrix_isofit_full)
     
@@ -175,130 +548,245 @@ calibfit <- function(data,
     predcov_isofit <- predcov_matrix_isofit_full[firstoccurences, firstoccurences]
     rownames(predcov_isofit) <- levels(data$site_ID)
     colnames(predcov_isofit) <- levels(data$site_ID)
-  
+    
     ### fitting the calibration function
     if (verbose) {
       print("fitting the calibration function...")
     }
-  
+    
     ## Defining the calibration function
-    objective_fn_calib <- function(param, data, predcov, species_rand, return_fit = FALSE, lik_method = "REML") {
-      ## This function computes the likelihood of a given calibration function
-      data$intercept <- param[1]
-      data$slope <- param[2]
-      lambda_list <- list(lambda = c(1e-6 + unique(data$slope)^2, NA))
-      calib_formula <- "sample_value ~ 0 + offset(intercept+slope*mean_source_value) +
-        corrMatrix(1|site_ID) + (1|site_ID)"
-      if (species_rand) {
-        lambda_list$lambda <- c(lambda_list$lambda, NA)
-        calib_formula <- paste(calib_formula, "+ (1|species_ID)")
+    objective_fn_calib <- function(param,
+                                   data,
+                                   predcov,
+                                   species_rand,
+                                   return_fit = FALSE,
+                                   lik_method = "REML") {
+        ## This function computes the likelihood of a given calibration function
+        data$intercept <- param[1]
+        data$slope <- param[2]
+        lambda_list <- list(lambda = c(1e-6 + unique(data$slope)^2, NA))
+        calib_formula <-
+          "sample_value ~ 0 + offset(intercept+slope*mean_source_value) + corrMatrix(1|site_ID) + (1|site_ID)"
+        if (species_rand) {
+          lambda_list$lambda <- c(lambda_list$lambda, NA)
+          calib_formula <- paste(calib_formula, "+ (1|species_ID)")
+        }
+        calib_fit <-
+          spaMM::HLCor(
+            formula = stats::formula(calib_formula),
+            corrMatrix = predcov,
+            ranPars = lambda_list,
+            data = data,
+            method = lik_method
+          )
+        if (return_fit)
+          return(calib_fit)
+        return(calib_fit$APHLs$p_v)
       }
-      calib_fit <- spaMM::HLCor(formula = stats::formula(calib_formula),
-                               corrMatrix = predcov,
-                               ranPars = lambda_list,
-                               data = data,
-                               method = lik_method
-      )
-      if (return_fit) return(calib_fit)
-      return(calib_fit$APHLs$p_v)
-    }
     
     ## estimation of intercept and slope of the calibration function
-    opt_res <- stats::optim(par = c(0, 1),
-                            fn = objective_fn_calib,
-                            control = c(list(fnscale = -1), control_optim),
-                            data = data,
-                            predcov = predcov_isofit,
-                            species_rand = species_rand,
-                            lik_method = "REML"
-                            )
-  
+    opt_res <- stats::optim(
+      par = c(0, 1),
+      fn = objective_fn_calib,
+      control = c(list(fnscale = -1), control_optim),
+      data = data,
+      predcov = predcov_isofit,
+      species_rand = species_rand,
+      lik_method = "REML"
+    )
+    
     param_calibfit <- opt_res$par
     names(param_calibfit) <- c("intercept", "slope")
-  
+    
     ## fit of the calibration function
-    calib_fit <- objective_fn_calib(param = param_calibfit,
-                                   data = data,
-                                   predcov = predcov_isofit,
-                                   species_rand = species_rand,
-                                   lik_method = "REML",
-                                   return_fit = TRUE
-                                   )
-  
+    calib_fit <- objective_fn_calib(
+      param = param_calibfit,
+      data = data,
+      predcov = predcov_isofit,
+      species_rand = species_rand,
+      lik_method = "REML",
+      return_fit = TRUE
+    )
+    
     ## computing the covariance matrix of fixed effects
     if (verbose) {
       print("computing the covariance matrix of fixed effects...")
     }
-  
-    fixefCov_calibfit <- solve(-numDeriv::hessian(objective_fn_calib,
-                                                  param_calibfit,
-                                                  data = data,
-                                                  predcov = predcov_isofit,
-                                                  species_rand = species_rand,
-                                                  lik_method = "ML"
-                                                  )
-                              )
-  
+    
+    fixefCov_calibfit <- solve(
+      -numDeriv::hessian(
+        objective_fn_calib,
+        param_calibfit,
+        data = data,
+        predcov = predcov_isofit,
+        species_rand = species_rand,
+        lik_method = "ML"
+      )
+    )
+    
     rownames(fixefCov_calibfit) <- names(param_calibfit)
     colnames(fixefCov_calibfit) <- names(param_calibfit)
     
   }) ## end of system.time
   
-  
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("the calibration procedure based on", nrow(data), "calibration samples have been computed in", time, "sec."))
+    print(paste("the calibration procedure based on", nrow(data), "calibration samples has been completed in", time, "sec."))
   }
   
   ## we create the spatial points for calibration points
   calib_points  <- .create_spatial_points(long = data$long,
                                           lat = data$lat,
-                                          proj = "+proj=longlat +datum=WGS84"
-                                          )
-
-  ## return
-  out <- list("param" = param_calibfit,
+                                          proj = "+proj=longlat +datum=WGS84")
+  
+  return(list("method" = "wild",
+              "species_rand" = species_rand,
+              "site_rand" = TRUE,
+              "param" = param_calibfit,
               "fixefCov" = fixefCov_calibfit,
               "phi" = calib_fit$phi,
               "calib_fit" = calib_fit,
+              "iso_fit" = isofit,
               "data" = data,
-              "sp_points" = list(calibs = calib_points)
-              )
+              "sp_points" = list(calibs = calib_points)))
+}
 
-  class(out) <- c("CALIBFIT", "list")
+.calibfit_lab <- function(data,
+                          species_rand,
+                          verbose = interactive()) {
+  ## This function should not be called by the user.
+  ## It fits the calibration model according to the "lab" method.
+  
+  if (verbose) {
+    print("starting calibration method 'lab'")
+  }
+  
+  time <- system.time({
 
-  return(invisible(out))
+    ## determine if site_ID random term needed
+    if (!"site_ID" %in% colnames(data)) {
+      site_rand <- FALSE
+    } else {
+      nb_sites <- length(unique(data$site_ID))
+      site_rand <- ifelse(nb_sites > 4, TRUE, FALSE)
+    }
+    
+    ### fitting the calibration function
+    calib_formula <- "sample_value ~ source_value"
+    
+    if (species_rand) {
+      calib_formula <- paste(calib_formula, "+ (1|species_ID)")
+    }
+    
+    if (site_rand) {
+      calib_formula <- paste(calib_formula, "+ (1|site_ID)")
+    }
+    
+    calib_fit <- spaMM::fitme(
+          formula = stats::formula(calib_formula),
+          data = data,
+          method = "REML")
+
+    param_calibfit <- spaMM::fixef(calib_fit)
+    names(param_calibfit) <- c("intercept", "slope")
+
+    ## extracting the covariance matrix of fixed effects
+
+    fixefCov_calibfit <- stats::vcov(calib_fit)
+    
+    rownames(fixefCov_calibfit) <- names(param_calibfit)
+    colnames(fixefCov_calibfit) <- names(param_calibfit)
+    
+  }) ## end of system.time
+  
+  ## display time
+  time <- round(as.numeric((time)[3]))
+  if (verbose) {
+    print(paste("the calibration procedure based on", nrow(data), "calibration samples has been completed in", time, "sec."))
+  }
+  
+  ## we create the spatial points for calibration points
+  if (all(c("long", "lat") %in% colnames(data))) {
+    calib_points  <- .create_spatial_points(long = data$long,
+                                            lat = data$lat,
+                                            proj = "+proj=longlat +datum=WGS84")
+  } else {
+    calib_points <- NULL
+  }
+  
+  return(list("method" = "lab",
+              "species_rand" = species_rand,
+              "site_rand" = site_rand,
+              "param" = param_calibfit,
+              "fixefCov" = fixefCov_calibfit,
+              "phi" = calib_fit$phi,
+              "calib_fit" = calib_fit,
+              "iso_fit" = list(),
+              "data" = data,
+              "sp_points" = list(calibs = calib_points)))
+}
+
+.calibfit_desk <- function(data,
+                           verbose = interactive()) {
+  ## This function should not be called by the user.
+  ## It fits the calibration model according to the "desk" method (aka "dirty").
+  
+  message("Note: this calibration method is not recommended since it does not account for the required covariance terms needed to perform reliable assignments. See ?calibfit for details.")
+  
+  phi_calibfit <- ifelse(!is.null(data$resid_var), data$resid_var, 0)
+  
+  fixefCov_calibfit <- matrix(0, nrow = 2, ncol = 2)
+  rownames(fixefCov_calibfit) <- c("intercept", "slope")
+  colnames(fixefCov_calibfit) <- c("intercept", "slope")
+  
+  if (!is.null(data$intercept_se)) {
+    fixefCov_calibfit[1, 1] <- data$intercept_se^2
+  }
+  
+  if (!is.null(data$slope_se)) {
+    fixefCov_calibfit[2, 2] <- data$slope_se^2
+  }
+  
+  if (verbose) {
+    print(paste("the calibration data have been loaded."))
+  }
+  
+  return(list("method" = "desk",
+              "species_rand" = FALSE,
+              "site_rand" = FALSE,
+              "param" = c(intercept = data$intercept, slope = data$slope),
+              "fixefCov" = fixefCov_calibfit,
+              "phi" = phi_calibfit,
+              "calib_fit" = list(),
+              "iso_fit" = list(),
+              "data" = data,
+              "sp_points" = NULL))
+  
 }
 
 
-
-.prepare_data_calib <- function(data, weighting = NULL) {
+.calibfit_desk_inverse <- function(data,
+                                   verbose = interactive()) {
   ## This function should not be called by the user.
-  ## It prepares data for the calibration procedure.
+  ## It fits the calibration model according to the "desk" method (aka "dirty").
+
+  inv_reg <- .invert_reg(intercept = data$intercept,
+                         slope = data$slope,
+                         SE_I = data$intercept_se,
+                         SE_S = data$slope_se,
+                         phi = data$resid_var,
+                         N = data$N,
+                         sign_mean_Y = data$sign_mean_Y
+                        )
   
-  ## Checking the inputs
-  if (!all(c("lat", "long") %in% colnames(data))) {
-  stop("The dataset does not seem to contain the required variable(s) 'lat' and/or 'long'.")
-  }
-  if (is.null(data$sample_value)) {
-    stop("The dataset does not seem to contain the required variable 'sample_value'.")
-  }
-  if (is.null(data$site_ID)) {
-    stop("The dataset does not seem to contain the required variable 'site_ID'.")
-  }
-  data$site_ID <- factor(data$site_ID)
-  data$lat_abs <- abs(data$lat)
-  data$lat_2 <- data$lat^2
-  data$long_2 <- data$long^2
-  data$source_ID <- as.factor(paste("new", data$site_ID, sep = "_"))
-  data <- droplevels(data)
-  if (!is.null(weighting)) {
-    precipitations <- raster::extract(weighting, cbind(data$long, data$lat))
-    precipitations[is.na(precipitations)] <- 0.0001 ## remove NA to prevent crashes --> dangerous?
-    data <- cbind(data, precipitations)
-  }
-  return(data)
+  data_transformed <- data.frame(intercept = inv_reg$intercept,
+                                 slope = inv_reg$slope,
+                                 intercept_se = inv_reg$SE_I,
+                                 slope_se = inv_reg$SE_S,
+                                 resid_var = inv_reg$phi)
+  
+  .calibfit_desk(data = data_transformed, verbose = verbose)
 }
 
 #' @export
@@ -306,10 +794,26 @@ calibfit <- function(data,
 print.CALIBFIT <- function(x, ...) {
   cat("\n")
   cat("Fixed effect estimates of the calibration fit", "\n")
-  if (length(x$calib_fit$lambda) == 2) {
-    cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + slope^2 * (1|site_ID) + Error", "\n")
+  if (x$method == "wild") {
+    if (x$species_rand) {
+      cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + slope^2 * (1|site_ID) + (1|species_ID) + Error", "\n")
+    } else {
+      cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + slope^2 * (1|site_ID) + Error", "\n")
+    }
+  } else if (x$method == "lab") {
+    if (x$species_rand && x$site_rand) {
+      cat("sample_value = intercept + slope * source_value + (1|species_ID) + (1|site_ID) + Error", "\n")
+    } else if (!x$species_rand && x$site_rand) {
+      cat("sample_value = intercept + slope * source_value + (1|site_ID) + Error", "\n")
+    }  else if (x$species_rand && !x$site_rand) {
+      cat("sample_value = intercept + slope * source_value + (1|species_ID) + Error", "\n")
+    } else if (!x$species_rand && !x$site_rand) {
+      cat("sample_value = intercept + slope * source_value + Error", "\n")
+    }
+  } else if (x$method == "desk") {
+    cat("Estimates of the loaded calibration fit", "\n")
   } else {
-    cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + slope^2 * (1|site_ID) + (1|species_ID) + Error", "\n")
+    stop("method unknown")
   }
   cat("\n")
   cat(paste("           intercept (+/- SE) =", .print_nice_and_round(x$param["intercept"], 2),
@@ -333,14 +837,19 @@ summary.CALIBFIT <- function(object, ...) {
   cat("Covariance matrix of fixed effect estimates:", "\n")
   print(.print_nice_and_round(object$fixefCov, 3), quote = FALSE)
   cat("\n")
-  cat("#########################################################", "\n")
-  cat("### spaMM summary of the fit of the calibration model ###", "\n")
-  cat("#########################################################", "\n")
+  cat("Residual variance of the calibration fit:", "\n")
+  print(.print_nice_and_round(c(phi = object$phi), 3), quote = FALSE)
   cat("\n")
-  print(spaMM::summary.HLfit(object$calib_fit)$summ)
-  cat("\n")
-  cat(paste("[model fitted with spaMM version ", object$calib_fit$spaMM.version, "]", sep = ""), "\n")
-  cat("\n")
+  if (object$method != "desk") {
+    cat("#########################################################", "\n")
+    cat("### spaMM summary of the fit of the calibration model ###", "\n")
+    cat("#########################################################", "\n")
+    cat("\n")
+    print(spaMM::summary.HLfit(object$calib_fit)$summ)
+    cat("\n")
+    cat(paste("[model fitted with spaMM version ", object$calib_fit$spaMM.version, "]", sep = ""), "\n")
+    cat("\n")
+  }
   return(invisible(NULL))
 }
 

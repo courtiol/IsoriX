@@ -70,12 +70,12 @@ NULL
 #' function \code{\link{calibfit}}.
 #' 
 #' Users who wish to use their own dataset for calibration should create a
-#' \var{dataframe} of similar structure than this one (only the column
-#' 'species' can be dropped). The columns should possess the same names as the
-#' ones described above. If the elevation is unknown at the sampling sites,
-#' elevation information can be extracted from a high resolution elevation
-#' raster using the function \code{\link[raster]{extract}} as shown in the 
-#' example of \code{\link{CalibDataBat2}}.
+#' \var{dataframe} of similar structure than this one (only the column 'species'
+#' can be dropped). The columns should possess the same names as the ones
+#' described above. If the elevation is unknown at the sampling sites, elevation
+#' information can be extracted from a high resolution elevation raster using
+#' the function \code{\link[raster]{extract}} (see **Examples** in
+#' \code{\link{CalibDataBat2}}).
 #' 
 #' @name CalibDataBat
 #' @docType data
@@ -121,10 +121,8 @@ NULL
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function \code{\link[raster]{extract}}. In this dataset, we
-#' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
-#' 2010. Note that the original study used a different source of elevation
-#' data.
+#' raster using the function \code{\link[raster]{extract}} (see **Examples**).
+#' Note that the original study used a different source of elevation data.
 #' 
 #' @name CalibDataBat2
 #' @docType data
@@ -153,22 +151,23 @@ NULL
 #' str(CalibDataBat2)
 #' 
 #' ## The following example require to have downloaded
-#' ## a large elevation raster with the function getelev()
+#' ## an elevation raster with the function getelev()
 #' ## and will therefore not run unless you uncomment it
 #' 
-#' #if(require(raster)){
+#' #if (require(raster)){
 #' #    ## We delete the elevation data
 #' #    CalibDataBat2$elev <- NULL
 #' #
 #' #    ## We reconstruct the elevation data using an elevation raster
-#' #    ## (see ?getelev for details on how to get the tif file)
-#' #    ElevationRasterBig <- raster("gmted2010_30mn.tif")
+#' #    getelev(filename = "elevBats.tif", z = 6,
+#' #            lat = range(CalibDataBat2$lat),
+#' #            long = range(CalibDataBat2$long))
+#' #    ElevationRasterBig <- raster("elevBats.tif")
 #' #    CalibDataBat2$elev <- extract(
 #' #        ElevationRasterBig,
 #' #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
 #' #    head(CalibDataBat2)
 #' #}
-#' 
 #' 
 NULL
 

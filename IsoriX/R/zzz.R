@@ -169,7 +169,7 @@
 .summarize_values <- function(var, nb_quantiles = 1e4) {
   ## This function should not be called by the user.
   ## It extracts and summarizes the raster values using quantiles if needed.
-  if (!class(var) %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
+  if (!inherits(var, c("RasterLayer", "RasterStack", "RasterBrick"))) {
     return(var)
   } else if (raster::inMemory(var)) {
     return(as.numeric(raster::values(var)))
@@ -179,10 +179,10 @@
     print("extracting values from stored rasters...")
   }
   
-  if (class(var) %in% c("RasterLayer")) {
+  if (inherits(var, c("RasterLayer"))) {
     var <- raster::quantile(var, seq(0, 1, length = nb_quantiles))
     return(var)
-  } else if (class(var) %in% c("RasterStack", "RasterBrick")) {
+  } else if (inherits(var, c("RasterStack", "RasterBrick"))) {
     max_var <- max(raster::maxValue(var))
     min_var <- min(raster::minValue(var))
     var <- unique(c(min_var,
@@ -206,3 +206,64 @@
                                       ymax + margin_lat))
 
 }
+
+.invert_reg <- function(intercept, slope, SE_I, SE_S, phi, N, sign_mean_Y) {
+  ## This function should not be called by the user.
+  ## It turns a regression x ~ y to a regression y ~ x
+  Nminus1 <- N - 1L
+  Nminus2 <- N - 2L
+  Nfac <- Nminus1/N
+  
+  MSExony <- phi
+  VarSxony <- SE_S^2
+
+  Vary <- MSExony/(Nminus1*VarSxony)
+  Covxy <- Vary*slope
+  Varx <- (MSExony*(slope^2 + Nminus2*VarSxony))/(Nminus1*VarSxony)
+  o_slope <- Covxy/Varx
+  
+  resid_MSE <-  (Vary - Covxy^2/Varx)*Nminus1/Nminus2
+  o_SE_S <- sqrt(resid_MSE/(Nminus1*Varx))
+  
+  Ey2 <- (SE_I/SE_S)^2 
+  Ey <- sign_mean_Y * sqrt(Ey2 - Vary*Nfac)
+  Ex <- intercept + slope*Ey
+  Ex2 <- Varx*Nfac + Ex^2
+  o_SE_I <- sqrt(resid_MSE*Ex2/(Nminus1*Varx))
+  vcov12 <- -resid_MSE*Ex/(Nminus1*Varx)
+  o_vcov <- matrix(c(o_SE_I^2, vcov12, vcov12, o_SE_S^2), ncol = 2)
+  
+  list(intercept = Ey - o_slope*Ex, 
+       slope = o_slope, 
+       SE_I = o_SE_I, 
+       SE_S = o_SE_S, 
+       phi = resid_MSE,
+       vcov = o_vcov)
+}
+# Example:
+# set.seed(123)
+# xy <- data.frame(x = x <- rnorm(20), y = rnorm(20, mean = 10) + 0.7*x)
+# input <- lm(x ~ y, data = xy)
+# output <- lm(y ~ x, data = xy)
+# 
+# foo <- .invert_reg(intercept = coef(input)[1],
+#                   slope = coef(input)[2],
+#                   SE_I = sqrt(vcov(input)[1, 1]),
+#                   SE_S = sqrt(vcov(input)[2, 2]),
+#                   phi = summary(input)$sigma^2,
+#                   sign_mean_Y = sign(mean(xy$y)),
+#                   N = 20)
+# 
+# d_output <- data.frame(intercept =  coef(output)[1],
+#                       slope = coef(output)[2],
+#                       SE_I = sqrt(vcov(output)[1, 1]),
+#                       SE_S = sqrt(vcov(output)[2, 2]),
+#                       phi = summary(output)$sigma^2)
+# 
+# d_foo <- data.frame(intercept =  foo$intercept,
+#                    slope = foo$slope,
+#                    SE_I = foo$SE_I,
+#                    SE_S = foo$SE_S,
+#                    phi = foo$phi)
+# 
+# rbind(d_output, d_foo)

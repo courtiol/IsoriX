@@ -563,7 +563,7 @@ print.ISOFIT <- function(x, ...) {
 #' @export
 #' @method summary ISOFIT
 summary.ISOFIT <- function(object, ...) {
-  if (!any(class(object) %in% "MULTIISOFIT")) {
+  if (!inherits(object, "MULTIISOFIT")) {
     cat("\n")
     cat("### spaMM summary of the fit of the mean model ###", "\n")
     cat("\n")
