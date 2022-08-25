@@ -25,10 +25,11 @@ test_that("The workfow works with tibble", {
   
   expect_equal(ref_2, job_2)
 
-  ## calibfit  // slow
+  ## calibfit
   test_df2 <- CalibDataBat[1:10, ]
   test_tbl2 <- test_df2
   class(test_tbl2) <-  c("tbl_df", "tbl", "data.frame")
+  test_tbl2$site_ID <- as.character(test_tbl2$site_ID)
   
   ref_calib <- calibfit(test_df2, ref_isofit)  ## df and df
   ref_3 <- ref_calib$fixefCov
