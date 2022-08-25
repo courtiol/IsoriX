@@ -195,10 +195,9 @@ relationship is of the form \code{lm(sample_value ~ source_value)} and the
 method "desk_inverse" is the one to be used when the published calibration
 relationship is of the form \code{lm(source_value ~ sample_value)}. Do make
 sure you are using the correct alternative. Note that the model used for the
-published calibration must be a linear regression (LM) (or a linear mixed
-effect model) and not a reduced major axis regression (RMA). If you use
-parameter values stemming from a RMA, the assignment will most likely be
-biased.
+published calibration must be a linear regression (LM) and not a reduced
+major axis regression (RMA). If you use parameter values stemming from a RMA,
+the assignment will most likely be biased.
 
 Both methods require five metrics to work at their best: the intercept and
 slope of a calibration relationship, the standard errors (SE) associated to
@@ -243,7 +242,7 @@ row with the following columns:
 \item \code{slope_se}: the standard error around the slope
 \item \code{resid_var}: the residual variance (not SD) of a LM calibration fit
 \item \code{sign_mean_Y}: a \var{numeric} indicating the sign of the mean
-value of the isotopes in the environment in the format return by \link{sign};
+value of the isotopes in the environment in the format returned by \link{sign};
 that is either \var{1} (if positive) or \var{-1} (if negative). This is
 required for pivoting the regression from "desk_inverse" to "desk".
 \item \code{N}: a  \var{numeric} indicating the sample size of the data used
