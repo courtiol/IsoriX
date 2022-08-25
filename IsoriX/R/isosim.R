@@ -5,7 +5,7 @@
 #' 
 #' This function takes as inputs the values for all covariates matching a
 #' series of locations (which can be provided as an structural raster or as a
-#' \var{data.frame}), as well as the parameters of the isoscape model. The
+#' *data.frame*), as well as the parameters of the isoscape model. The
 #' function is not required to fit an isoscape, nor to perform assignments. It
 #' is an additional function that can be useful to test the method, and to
 #' study the effect of different parameters on isoscapes. We chose default
@@ -16,39 +16,39 @@
 #' parameters present in the input lists will not make the function crash but
 #' won't be considered during computations either.
 #' 
-#' @param data A \var{data.frame} containing the covariates needed for the
-#' simulation, or alternatively a structural raster of class \var{RasterLayer}
-#' @param mean_model_fix_coef A \var{vector} of coefficients for fixed-effects
-#' @param disp_model_fix_coef A \var{vector} of coefficients for fixed-effects
-#' @param mean_model_matern_coef A \var{vector} of coefficients for the spatial
+#' @param data A *data.frame* containing the covariates needed for the
+#' simulation, or alternatively a structural raster of class *RasterLayer*
+#' @param mean_model_fix_coef A *vector* of coefficients for fixed-effects
+#' @param disp_model_fix_coef A *vector* of coefficients for fixed-effects
+#' @param mean_model_matern_coef A *vector* of coefficients for the spatial
 #' random effect
-#' @param disp_model_matern_coef A \var{vector} of coefficients for the spatial
+#' @param disp_model_matern_coef A *vector* of coefficients for the spatial
 #' random effect
-#' @param mean_model_uncorr_coef A \var{vector} of coefficients for the
+#' @param mean_model_uncorr_coef A *vector* of coefficients for the
 #' uncorrelated random effect
-#' @param disp_model_uncorr_coef A \var{vector} of coefficients for the
+#' @param disp_model_uncorr_coef A *vector* of coefficients for the
 #' uncorrelated random effect
-#' @param dist_method A \var{string} indicating the distance method
-#' @param seed An \var{integer} used to set the seed of the random generator
-#' @param save_dataframe A \var{logical} indicating whether the detailed
-#' \var{data.frame} containing the simulated data should be saved
-#' @param verbose A \var{logical} indicating whether information about the
+#' @param dist_method A *string* indicating the distance method
+#' @param seed An *integer* used to set the seed of the random generator
+#' @param save_dataframe A *logical* indicating whether the detailed
+#' *data.frame* containing the simulated data should be saved
+#' @param verbose A *logical* indicating whether information about the
 #' progress of the procedure should be displayed or not while the function is
-#' running. By default verbose is \var{TRUE} if users use an interactive R
-#' session and \var{FALSE} otherwise.
-#' @return This function returns a \var{list} of class \var{ISOSCAPE}
-#' containing a set of raster and an optional \var{data.frame}. The set
-#' contains the raster \code{mean_raster} storing the mean isotopic value, and
-#' the raster \cr \code{disp_raster} storing the residual dispersion variance.
-#' The optional \var{data.frame} contains the simulated data and details of the
-#' computation in an object called \code{data}.
+#' running. By default verbose is `TRUE` if users use an interactive R
+#' session and `FALSE` otherwise.
+#' @return This function returns a *list* of class *ISOSCAPE*
+#' containing a set of raster and an optional *data.frame*. The set
+#' contains the raster `mean_raster` storing the mean isotopic value, and
+#' the raster \cr `disp_raster` storing the residual dispersion variance.
+#' The optional *data.frame* contains the simulated data and details of the
+#' computation in an object called `data`.
 #' @note The spatial autocorrelation and the Nugget are computed by the
-#' functions \code{\link[RandomFields:RMmatern]{RMwhittle}} and
-#' \code{\link[RandomFields]{RMnugget}}, respectively. These two functions are
-#' part of the powerful package \pkg{\link[RandomFields]{RandomFields}}.
-#' @seealso \code{\link{isofit}} for the function fitting the isoscape model
+#' functions `RandomFields::RMwhittle` and
+#' `RandomFields::RMnugget`, respectively. These two functions are
+#' part of the powerful package \pkg{RandomFields} (currently retired from CRAN).
+#' @seealso [isofit] for the function fitting the isoscape model
 #' 
-#' \code{\link{IsoriX}} for the complete work-flow
+#' [IsoriX] for the complete work-flow
 #' @keywords simulate simulation
 #' @examples
 #' 

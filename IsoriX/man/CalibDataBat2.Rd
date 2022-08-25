@@ -5,14 +5,14 @@
 \alias{CalibDataBat2}
 \title{Calibration dataset for bat species}
 \format{
-A \var{dataframe} with 178 observations on 6 variables:
+A *dataframe* with 178 observations on 6 variables:
 \tabular{rlll}{
-[, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
-[, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
-[, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
-[, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
-[, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
-[, 6]  \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+[, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
+[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
+[, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
+[, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
+[, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
+[, 6]  \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
 }
 \source{
 data directly provided by the authors of the following publication
@@ -21,15 +21,15 @@ data directly provided by the authors of the following publication
 This dataset contains hydrogen delta values of fur keratin from sedentary
 bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
 The data can be used as an example to fit a calibration model using the
-function \code{\link{calibfit}}.
+function [calibfit].
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-\var{dataframe} of similar structure than this one (only the column
+*dataframe* of similar structure than this one (only the column
 'species' can be dropped). The columns should possess the same names as the
 ones described above. If the elevation is unknown at the sampling sites,
 elevation information can be extracted from a high resolution elevation
-raster using the function \code{\link[raster]{extract}} (see **Examples**).
+raster using the function [raster::extract] (see **Examples**).
 Note that the original study used a different source of elevation data.
 }
 \examples{
@@ -65,8 +65,8 @@ Voigt, C. C. (2012). A triple isotope approach to predict the breeding
 origins of European bats. PLoS ONE 7(1):e30388.
 }
 \seealso{
-\code{\link{CalibDataBat}} for another (related) calibration dataset
+[CalibDataBat] for another (related) calibration dataset
 
-\code{\link{calibfit}} to fit a calibration model
+[calibfit] to fit a calibration model
 }
 \keyword{datasets}

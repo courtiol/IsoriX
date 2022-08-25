@@ -7,20 +7,20 @@
 #' All shape files can be exported and loaded into any Geographic Information
 #' System (GIS) if needed (see online tutorials).
 #'
-#' This function computes the predictions (\code{mean}), prediction variances
-#' (\code{mean_predVar}), residual variances (\code{mean_residVar}) and response
-#' variances (\code{mean_respVar}) for the isotopic values at a resolution equal
+#' This function computes the predictions (`mean`), prediction variances
+#' (`mean_predVar`), residual variances (`mean_residVar`) and response
+#' variances (`mean_respVar`) for the isotopic values at a resolution equal
 #' to the one of the structural raster. It also computes the same information
-#' for the residual dispersion variance (\code{disp_pred}, \code{disp_predVar},
-#' \code{disp_residVar}, or \code{disp_respVar}).
+#' for the residual dispersion variance (`disp_pred`, `disp_predVar`,
+#' `disp_residVar`, or `disp_respVar`).
 #'
 #' The predictions of isotopic values across the landscape are performed by
-#' calling the function \code{\link[spaMM]{predict}} from the package
-#' \pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by
-#' \code{\link{isofit}}.
+#' calling the function [spaMM::predict] from the package
+#' \pkg{spaMM} on the fitted isoscape produced by
+#' [isofit].
 #'
-#' Let us summarize the meaning of \code{mean}, \code{mean_predVar},
-#' \code{mean_residVar} and \code{mean_respVar} (see Courtiol & Rousset 2017 and
+#' Let us summarize the meaning of `mean`, `mean_predVar`,
+#' `mean_residVar` and `mean_respVar` (see Courtiol & Rousset 2017 and
 #' Curtiol et al. 2019 for more details):
 #' 
 #' Our model assumes that that there is a single true unknown isoscape, which is
@@ -36,7 +36,7 @@
 #' difference between the true unknown value of the linear predictor and the
 #' mean prediction at a given location. The residual variance is simply the
 #' prediction of the variance in isotopic value at a given location. Its exact
-#' meaning depends on the aggregation scheme used in \code{\link{prepsources}},
+#' meaning depends on the aggregation scheme used in [prepsources],
 #' but by default, it would correspond to the temporal variation between months
 #' and across years. The response variance estimates the variance of new
 #' observations drawn from the true unknown isoscape at a given location. The
@@ -44,23 +44,23 @@
 #' the residual variance (note that the residual variance considered assume that
 #' a single observation is being observed per location).
 #'
-#' The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
+#' The isoscape can be plotted using the function [plot.ISOSCAPE]
 #' (see examples).
 #'
 #' @aliases isoscape print.isoscape summary.isoscape
-#' @param raster The structural raster (\var{RasterLayer}) such as an elevation
-#'   raster created using \code{\link{prepelev}}
-#' @param isofit The fitted isoscape created by \code{\link{isofit}}
-#' @param verbose A \var{logical} indicating whether information about the
+#' @param raster The structural raster (*RasterLayer*) such as an elevation
+#'   raster created using [prepelev]
+#' @param isofit The fitted isoscape created by [isofit]
+#' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
-#'   running. By default verbose is \var{TRUE} if users use an interactive R
-#'   session and \var{FALSE} otherwise.
-#' @return This function returns a \var{list} of class \var{ISOSCAPE} containing
+#'   running. By default verbose is `TRUE` if users use an interactive R
+#'   session and `FALSE` otherwise.
+#' @return This function returns a *list* of class *ISOSCAPE* containing
 #'   a set of all 8 raster layers mentioned above (all being of class
-#'   \var{RasterLayer}), and the location of the sources as spatial points.
-#' @seealso \code{\link{isofit}} for the function fitting the isoscape
+#'   *RasterLayer*), and the location of the sources as spatial points.
+#' @seealso [isofit] for the function fitting the isoscape
 #'
-#'   \code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
+#'   [plot.ISOSCAPE] for the function plotting the isoscape model
 #'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
@@ -415,27 +415,27 @@ isoscape <- function(raster,
 #' Predicts the average spatial distribution of isotopic values over months,
 #' years...
 #' 
-#' This function is the counterpart of \code{\link{isoscape}} for the objects
-#' created with \code{\link{isomultifit}}. It creates the isoscapes for each
-#' strata (e.g. month) defined by \code{split_by} during the call to
-#' \code{\link{isomultifit}} and the aggregate them. The function can handle
+#' This function is the counterpart of [isoscape] for the objects
+#' created with [isomultifit]. It creates the isoscapes for each
+#' strata (e.g. month) defined by `split_by` during the call to
+#' [isomultifit] and the aggregate them. The function can handle
 #' weighting for the aggregation process and can thus be used to predict annual
 #' averages precipitation weighted isoscapes.
 #' 
 #' @inheritParams isoscape
 #' @param weighting An optional RasterBrick containing the weights
-#' @return This function returns a \var{list} of class \var{isoscape}
+#' @return This function returns a *list* of class *ISOSCAPE*
 #' containing a set of all 8 raster layers mentioned above (all being of
-#' class \var{RasterLayer}), and the location of the sources as spatial points.
+#' class *RasterLayer*), and the location of the sources as spatial points.
 #' @seealso
 #' 
-#' \code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
+#' [isoscape] for details on the function used to compute the isoscapes for each strata
 
-#' \code{\link{isomultifit}} for the function fitting the isoscape
+#' [isomultifit] for the function fitting the isoscape
 #' 
-#' \code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
+#' [plot.ISOSCAPE] for the function plotting the isoscape model
 #' 
-#' \code{\link{IsoriX}} for the complete work-flow
+#' [IsoriX] for the complete work-flow
 #' 
 #' @keywords models regression prediction predict
 #' @examples

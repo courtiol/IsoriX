@@ -16,27 +16,26 @@ calibfit(
 )
 }
 \arguments{
-\item{data}{A \var{dataframe} containing the calibration data (see note
+\item{data}{A \emph{dataframe} containing the calibration data (see note
 below)}
 
-\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
+\item{isofit}{The fitted isoscape created by \link{isofit}}
 
-\item{method}{A \var{string} indicating the method used to generate the data
-used for the calibration. By default method is \var{"wild"}, but the other
-possible values are \var{"lab"}, \var{"desk"} and \var{"desk_inverse"} .
+\item{method}{A \emph{string} indicating the method used to generate the data
+used for the calibration. By default method is \code{"wild"}, but the other
+\code{"lab"}, \code{"desk"} and \code{"desk_inverse"}.
 See \strong{Details} for the difference between these three methods.}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
-running. By default verbose is \var{TRUE} if you run an interactive R
-session and \var{FALSE} otherwise.}
+running. By default verbose is \code{TRUE} if you run an interactive R
+session and \code{FALSE} otherwise.}
 
-\item{control_optim}{A \var{list} to pass information to the argument control
-in the call to \code{\link{optim}} (only effective when \code{method =
-  "wild"}; for advanced users only).}
+\item{control_optim}{A \emph{list} to pass information to the argument control
+in the call to \link{optim} (only effective when \code{method = "wild"}; for advanced users only).}
 }
 \value{
-This function returns a \var{list} of class \var{CALIBFIT} containing
+This function returns a \emph{list} of class \emph{CALIBFIT} containing
 the name of the calibration method used, whether a species_ID random effect
 was estimated, whether a site_ID random effect was estimated, the
 fixed-effect estimates of the calibration function, the covariance of the
@@ -49,21 +48,21 @@ points.
 \description{
 This function establishes the relationship between the isotopic values of
 organisms (e.g. tissues such as hair, horn, ivory or feathers; referred in
-code as \var{sample_value}) and the isotopic values of their environment
-(e.g. precipitation water; referred in code as \var{source_value}). This
-function is only needed when the assignment of organisms has to be performed
-within an isoscape that was not built using the organisms themselves, but
-that was instead built using another source of isotopic values (e.g.,
-precipitation). If the isoscape had been fitted using isotopic ratios from
-sedentary animals directly, this calibration step is not needed (e.g.
-isoscape fitted using sedentary butterflies and migratory butterflies to
-assign). In other cases, this calibration step is usually needed since
-organisms may not directly reflect the isotopic values of their environment.
-Depending on the calibration data to be used (provided via the argument
-\code{data}), one of four possible calibration methods must be selected (via
-the argument \code{method}). Each method considers a different statistical
-model and requires particular data that are organised in a specific way (see
-\strong{Details} for explanations and \strong{Examples} for use cases).
+code as \emph{sample_value}) and the isotopic values of their environment (e.g.
+precipitation water; referred in code as \emph{source_value}). This function is
+only needed when the assignment of organisms has to be performed within an
+isoscape that was not built using the organisms themselves, but that was
+instead built using another source of isotopic values (e.g., precipitation).
+If the isoscape had been fitted using isotopic ratios from sedentary animals
+directly, this calibration step is not needed (e.g. isoscape fitted using
+sedentary butterflies and migratory butterflies to assign). In other cases,
+this calibration step is usually needed since organisms may not directly
+reflect the isotopic values of their environment. Depending on the
+calibration data to be used (provided via the argument \code{data}), one of four
+possible calibration methods must be selected (via the argument \code{method}).
+Each method considers a different statistical model and requires particular
+data that are organised in a specific way (see \strong{Details} for explanations
+and \strong{Examples} for use cases).
 }
 \details{
 The \code{method} argument can take one of the four values "wild" (default),
@@ -71,7 +70,7 @@ The \code{method} argument can take one of the four values "wild" (default),
 methods. It is crucial for you to select the method that is most appropriate
 for your workflow, as the choice of method can impact the most likely
 assignment locations during the assignment test performed in
-\code{\link{isofind}}.
+\link{isofind}.
 \subsection{Method "wild"}{
 
 This calibration method is the one to be used when the calibration data to be
@@ -79,14 +78,14 @@ used correspond to isotopic values measured on sedentary organisms and when
 no direct measurement of isotopic values in the environment are available at
 the locations where sedentary organisms have been collected. In such a case,
 the isotopic values in the environment of sedentary organisms are predicted
-internally using an isoscape fitted with \code{\link{isofit}}. This
-calibration method thus aims at estimating and accounting for the uncertainty
-associated with these predicted values. Such uncertainty is accounted for
-when fitting the calibration fit so as to produce an unbiased estimation of
-the calibration relationship and it is also then accounted for by
-\code{\link{isofind}} when inferring the possible locations of origin. Before
-we added the argument \code{method} in \code{calibfit} (i.e. before releasing
-the version 0.9), this method was the only one available in IsoriX.
+internally using an isoscape fitted with \link{isofit}. This calibration method
+thus aims at estimating and accounting for the uncertainty associated with
+these predicted values. Such uncertainty is accounted for when fitting the
+calibration fit so as to produce an unbiased estimation of the calibration
+relationship and it is also then accounted for by \link{isofind} when inferring
+the possible locations of origin. Before we added the argument \code{method} in
+calibfit (i.e. before releasing the version 0.9), this method was the only
+one available in IsoriX.
 \itemize{
 \item \strong{Statistical model}: in this case, the calibration model to be fitted is
 a linear mixed-effects model (LMM) that fits the isotopic values of sedentary
@@ -94,15 +93,14 @@ organisms as a linear function of the isotopic values in their environment
 (e.g. precipitation). The function considers that the isotopic values from
 the environment (e.g. from precipitation) at the locations at which organisms
 were sampled are not known. The function therefore predicts these isotopic
-values from the geostatistical model fitted by the function
-\code{\link{isofit}}, which is provided to \code{calibfit} using the argument
-\code{isofit}. The LMM used to fit the calibration function has a simple
-fixed-effect structure: an intercept and a slope. The random effect is more
-complex: it is normally distributed with mean zero, a certain variance
-between locations proportional to the squared (fixed) slope, and a covariance
-structure defined by the prediction covariance matrix of the isoscape model
-between the calibration locations. See appendix in Courtiol et al. 2019 for
-more details.
+values from the geostatistical model fitted by the function \link{isofit}, which
+is provided to calibfit using the argument \code{isofit}. The LMM used to fit the
+calibration function has a simple fixed-effect structure: an intercept and a
+slope. The random effect is more complex: it is normally distributed with
+mean zero, a certain variance between locations proportional to the squared
+(fixed) slope, and a covariance structure defined by the prediction
+covariance matrix of the isoscape model between the calibration locations.
+See appendix in Courtiol et al. 2019 for more details.
 \item \strong{Required calibration data}: the calibration data to be used here must be
 a dataframe (or a tibble) containing at least the following columns:
 \itemize{
@@ -115,8 +113,8 @@ a dataframe (or a tibble) containing at least the following columns:
 The column name must be identical to those indicated here. Other columns
 can be present in the data but won't be used. Each row must correspond to
 a different calibration sample (i.e. a single isotopic measurement). See
-\code{\link{CalibDataAlien}}, \code{\link{CalibDataBat}}, or
-\code{\link{CalibDataBat2}} for examples of such a dataset.
+\link{CalibDataAlien}, \link{CalibDataBat}, or
+\link{CalibDataBat2} for examples of such a dataset.
 }
 }
 
@@ -241,11 +239,11 @@ row with the following columns:
 \item \code{intercept_se}: the standard error around the intercept
 \item \code{slope_se}: the standard error around the slope
 \item \code{resid_var}: the residual variance (not SD) of a LM calibration fit
-\item \code{sign_mean_Y}: a \var{numeric} indicating the sign of the mean
+\item \code{sign_mean_Y}: a \emph{numeric} indicating the sign of the mean
 value of the isotopes in the environment in the format returned by \link{sign};
-that is either \var{1} (if positive) or \var{-1} (if negative). This is
+that is either \code{1} (if positive) or \code{-1} (if negative). This is
 required for pivoting the regression from "desk_inverse" to "desk".
-\item \code{N}: a  \var{numeric} indicating the sample size of the data used
+\item \code{N}: a  \emph{numeric} indicating the sample size of the data used
 for the calibration fit. This is required for pivoting the regression from
 "desk_inverse" to "desk".
 }
@@ -375,7 +373,7 @@ In Hobson KA, Wassenaar LI (eds.), Tracking Animal Migration with Stable
 Isotopes, second edition. Academic Press, London.
 }
 \seealso{
-see \code{\link{plot}} for the help on how to plot the calibration
+see \link{plot} for the help on how to plot the calibration
 relationship.
 }
 \keyword{models}

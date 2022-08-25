@@ -5,12 +5,12 @@
 \alias{AssignDataBat}
 \title{Assignment dataset for bat species}
 \format{
-A \var{dataframe} with 14 observations on 4 variables:
+A *dataframe* with 14 observations on 4 variables:
 \tabular{rlll}{
-[, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
-[, 2] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
-[, 2] \tab lomg \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
-[, 4] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+[, 1] \tab sample_ID \tab (*factor*) \tab Identification of the animal\cr
+[, 2] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
+[, 2] \tab lomg \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
+[, 4] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
 }
 \source{
 data directly provided by the authors of the following publication
@@ -19,7 +19,7 @@ data directly provided by the authors of the following publication
 This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
 delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 killed at wind turbines in northern Germany. The data can be used as an
-example to perform assignments using the function \code{\link{isofind}}.
+example to perform assignments using the function [isofind].
 }
 \examples{
 
@@ -33,6 +33,6 @@ mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Anima
 Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
-\code{\link{isofind}} to perform assignments
+[isofind] to perform assignments
 }
 \keyword{datasets}

@@ -1,7 +1,7 @@
 #' Filter and aggregate the raw source dataset
 #'
 #' This function prepares the available dataset to be used for creating the
-#' isoscape (e.g. \var{GNIPDataDE}). This function allows the trimming of data
+#' isoscape (e.g. [GNIPDataDE]). This function allows the trimming of data
 #' by months, years and location, and for the aggregation of selected data per
 #' location, location:month combination or location:year combination. The
 #' function can also be used to randomly exclude some observations.
@@ -10,74 +10,74 @@
 #' aggregation schemes are possible for now. The most simple one, used as
 #' default, aggregates the data so to obtained a single row per sampling
 #' location. Datasets prepared in this way can be readily fitted with the
-#' function \code{\link{isofit}} to build an isoscape. It is also possible to
+#' function [isofit] to build an isoscape. It is also possible to
 #' aggregate data in a different way in order to build sub-isoscapes
 #' representing temporal variation in isotope composition, or in order to
 #' produce isoscapes weighted by the amount of precipitation (for isoscapes on
 #' precipitation data only). The two possible options are to either split the
 #' data from each location by month or to split them by year. This is set with
-#' the \code{split_by} argument of the function. Datasets prepared in this way
-#' should be fitted with the function \code{\link{isomultifit}}.
+#' the `split_by` argument of the function. Datasets prepared in this way
+#' should be fitted with the function [isomultifit].
 #'
 #' The function also allows the user to filter the sampling locations based on
 #' time (years and/ or months) and space (locations given in geographic
 #' coordinates, i.e. longitude and latitude) to calculate tailored isoscapes
 #' matching e.g. the time of sampling and speeding up the model fit by
 #' cropping/clipping a certain area. The dataframe produced by this function can
-#' be used as input to fit the isoscape (see \code{\link{isofit}} and
-#' \code{\link{isomultifit}}).
+#' be used as input to fit the isoscape (see [isofit] and
+#' [isomultifit]).
 #'
-#' @param data A \var{dataframe} containing raw isotopic measurements of sources
-#' @param month A \var{numeric vector} indicating the months to select from.
+#' @param data A *dataframe* containing raw isotopic measurements of sources
+#' @param month A *numeric vector* indicating the months to select from.
 #'   Should be a vector of round numbers between 1 and 12. The default is 1:12
 #'   selecting all months.
-#' @param year A \var{numeric vector} indicating the years to select from.
+#' @param year A *numeric vector* indicating the years to select from.
 #'   Should be a vector of round numbers. The default is to select all years
 #'   available.
-#' @param long_min A \var{numeric} indicating the minimum longitude to select
+#' @param long_min A *numeric* indicating the minimum longitude to select
 #'   from. Should be a number between -180 and 180. If not provided, -180 will
 #'   be considered.
-#' @param long_max A \var{numeric} indicating the maximal longitude to select
+#' @param long_max A *numeric* indicating the maximal longitude to select
 #'   from. Should be a number between -180 and 180. If not provided, 180 will be
 #'   considered.
-#' @param lat_min A \var{numeric} indicating the minimum latitude to select
+#' @param lat_min A *numeric* indicating the minimum latitude to select
 #'   from. Should be a number between -90 and 90. If not provided, -90 will be
 #'   considered.
-#' @param lat_max A \var{numeric} indicating the maximal latitude to select
+#' @param lat_max A *numeric* indicating the maximal latitude to select
 #'   from. Should be a number between -90 and 90. If not provided, 90 will be
 #'   considered.
-#' @param split_by A \var{string} indicating whether data should be aggregated
-#'   per location (\code{split_by = NULL}, the default), per location:month
-#'   combination (\code{split_by = "month"}), or per location:year combination
+#' @param split_by A *string* indicating whether data should be aggregated
+#'   per location (`split_by = NULL`, the default), per location:month
+#'   combination (`split_by = "month"`), or per location:year combination
 #'   (\code{split_by = "year"}).
-#' @param prop_random A \var{numeric} indicating the proportion of observations
-#'   or sampling locations (depending on the argument for \code{random_level})
-#'   that will be kept. If \code{prop_random} is greater than 0, then the
+#' @param prop_random A *numeric* indicating the proportion of observations
+#'   or sampling locations (depending on the argument for `random_level`)
+#'   that will be kept. If `prop_random` is greater than 0, then the
 #'   function will return a list containing two dataframes: one containing the
-#'   selected data, called \code{selected_data}, and one containing the
-#'   remaining data, called \code{remaining_data}.
-#' @param random_level A \var{string} indicating the level at which random draws
-#'   can be performed. The two possibilities are \code{"obs"}, which indicates
+#'   selected data, called `selected_data`, and one containing the
+#'   remaining data, called `remaining_data`.
+#' @param random_level A *string* indicating the level at which random draws
+#'   can be performed. The two possibilities are `"obs"`, which indicates
 #'   that observations are randomly drawn taken independently of their location,
 #'   or "source" (default), which indicates that observations are randomly drawn
 #'   at the level of sampling locations.
-#' @param col_source_value A \var{string} indicating the column containing the
+#' @param col_source_value A *string* indicating the column containing the
 #'   isotopic measurements
-#' @param col_source_ID A \var{string} indicating the column containing the ID of
+#' @param col_source_ID A *string* indicating the column containing the ID of
 #'   each sampling location
-#' @param col_lat A \var{string} indicating the column containing the latitude
+#' @param col_lat A *string* indicating the column containing the latitude
 #'   of each sampling location
-#' @param col_long A \var{string} indicating the column containing the longitude
+#' @param col_long A *string* indicating the column containing the longitude
 #'   of each sampling location
-#' @param col_elev A \var{string} indicating the column containing the elevation
+#' @param col_elev A *string* indicating the column containing the elevation
 #'   of each sampling location
-#' @param col_month A \var{string} indicating the column containing the month of
+#' @param col_month A *string* indicating the column containing the month of
 #'   sampling
-#' @param col_year A \var{string} indicating the column containing the year of
+#' @param col_year A *string* indicating the column containing the year of
 #'   sampling
-#' @return This function returns a \var{dataframe} containing the filtered data
-#'   aggregated by sampling location, or a \var{list}, see above argument
-#'   \code{prop_random}. For each sampling location the mean and variance sample
+#' @return This function returns a *dataframe* containing the filtered data
+#'   aggregated by sampling location, or a *list*, see above argument
+#'   `prop_random`. For each sampling location the mean and variance sample
 #'   estimates are computed.
 #' @examples
 #' ## Create a processed dataset for Germany

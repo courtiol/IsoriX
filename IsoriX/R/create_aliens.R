@@ -1,63 +1,63 @@
 #' Simulate datasets for calibrations or assignments
-#' 
+#'
 #' This function allows to simulate data so to provide examples for the
 #' calibration and for the assignment procedure. We name the simulated
-#' individuals 'Aliens' so to make it clear that the data we use to illustrate 
+#' individuals 'Aliens' so to make it clear that the data we use to illustrate
 #' our package are not real data.
-#' 
+#'
 #' The isostopic values for the organisms are assumed to be linearly related to
 #' the one from the environment. The linear function can be parametrized using
-#' the first argument of the function (\code{calib_fn}). With this function the
-#' user can simulate data for different sites.
-#' 
+#' the first argument of the function (`calib_fn`). With this function the user
+#' can simulate data for different sites.
+#'
 #' The number and locations of sites can be controlled in two ways. A first
-#' possibility is to use the argument \code{n_sites}. The sites will then be
-#' selected randomly among the locations present in the isoscape (argument
-#' \code{isoscape}) provided to this function. An alternative possibility is to
-#' provide a data frame containing three columns (\code{site_ID}, \code{long} and
-#' \code{lat}) to input the coordinate of the sampling site manually.
-#' 
+#' possibility is to use the argument `n_sites`. The sites will then be selected
+#' randomly among the locations present in the isoscape (argument `isoscape`)
+#' provided to this function. An alternative possibility is to provide a data
+#' frame containing three columns (`site_ID`, `long` and `lat`) to input the
+#' coordinate of the sampling site manually.
+#'
 #' Irrespectively of how locations are chosen, a random number of observations
-#' will be drawn, at each site, according to a uniform distribution bounded by 
-#' the values of the argument \code{min_n_samples} and \code{max_n_samples}.
-#' 
+#' will be drawn, at each site, according to a uniform distribution bounded by
+#' the values of the argument `min_n_samples` and `max_n_samples`.
+#'
 #' From the selected coordinates, the isotope values for the environment are
 #' directly extracted from the corresponding point predictions stored in the
 #' isoscape object. No uncertainty is considered during this process. Then the
 #' linear calibration defines the means of the isotope values for the simulated
 #' organisms. The actual values is then drawn from a Gaussian distribution
 #' centred around such mean and a variance defined by the residual variance
-#' (\code{resid_var}) input within the list \code{calib_fn}.
+#' (`resid_var`) input within the list `calib_fn`.
 #' 
-#' @param calib_fn A \var{list} containing the parameter values describing the 
+#' @param calib_fn A *list* containing the parameter values describing the 
 #'   relationship between the isotope values in the environment and those in the
 #'   simulated organisms. This list must contain three parameters: the
 #'   intercept, the slope, and the residual variance.
 #'   
-#' @param isoscape The output of the function \code{\link{isoscape}}
+#' @param isoscape The output of the function [isoscape]
 #' 
-#' @param coordinates An optional \var{data.frame} with columns \code{site_ID}, 
-#' \code{long} and \code{lat}
+#' @param coordinates An optional *data.frame* with columns `site_ID`, 
+#' `long` and `lat`
 #'   
-#' @param raster A \var{RasterLayer} containing an elevation raster
+#' @param raster A *RasterLayer* containing an elevation raster
 #'   
 #' @param n_sites The number of sites from which the simulated organisms
-#'   originate (\var{integer})
+#'   originate (*integer*)
 #'   
-#' @param min_n_samples The minimal number of observations (\var{integer}) per
+#' @param min_n_samples The minimal number of observations (*integer*) per
 #'   site
 #'   
-#' @param max_n_samples The maximal number of observations (\var{integer}) per
+#' @param max_n_samples The maximal number of observations (*integer*) per
 #'   site
 #'   
-#' @return This functions returns a \var{data.frame} (see example for column
+#' @return This functions returns a *data.frame* (see example for column
 #'   names)
 #'   
-#' @seealso \code{\link{calibfit}} for a calibration based on simulated data
+#' @seealso [calibfit] for a calibration based on simulated data
 #'   
-#'   \code{\link{isofind}} for an assignment based on simulated data
+#'   [isofind] for an assignment based on simulated data
 #'   
-#'   \code{\link{IsoriX}} for the complete work-flow of our package
+#'   [IsoriX] for the complete work-flow of our package
 #' @keywords simulate simulation
 #' @examples
 #' 

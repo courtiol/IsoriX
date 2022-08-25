@@ -1,6 +1,6 @@
 #' Download an elevation raster from internet
 #' 
-#' The function \code{getelev} downloads an elevation raster from internet. It
+#' The function `getelev` downloads an elevation raster from internet. It
 #' is a wrapper that 1) calls the function [elevatr::get_elev_raster] to
 #' download the data and 2) saves the downloaded raster on the hard drive (so
 #' that you don't have to keep downloading the same file over and over again).
@@ -8,16 +8,16 @@
 #' the function [raster::raster].
 #'
 #' By default (and to keep with the spirit of the former implementations of
-#' \code{getelev} in IsoriX, which did not rely on [elevatr::elevatr]), an
+#' `getelev` in IsoriX, which did not rely on [elevatr::elevatr]), an
 #' elevation raster of the whole world is downloaded with a resolution
 #' correspond to ca. 0.6 km2 per raster cell. You can increase the resolution by
-#' increasing the value of the argument \code{z}. You can also restrict the area
-#' to be downloaded using the arguments \code{lat} and \code{long}.
+#' increasing the value of the argument `z`. You can also restrict the area
+#' to be downloaded using the arguments `lat` and `long`.
 #' 
 #' Note that when using [prepraster] you will be able to reduce the resolution
 #' and restrict the boundaries of this elevation raster, but you won't be able
 #' to increase the resolution or expend the boundaries. As a consequence, it is
-#' probably a good idea to overshoot a little when using \code{getelev} and
+#' probably a good idea to overshoot a little when using `getelev` and
 #' download data at a resolution slightly higher than you need and for a extent
 #' larger than your data.
 #' 
@@ -28,24 +28,24 @@
 #' [elevatr::get_elev_raster] for information on the sources and follows link in
 #' there to know how to cite them.
 #' 
-#' @param path A \var{string} indicating where to store the file on the hard
+#' @param path A *string* indicating where to store the file on the hard
 #'   drive (without the file name!)
-#' @param filename A \var{string} indicating the name under which the file must
+#' @param filename A *string* indicating the name under which the file must
 #'   be stored (default = `elevation.tif`)
-#' @param z An \var{integer} between 1 and 14 indicating the resolution of the
+#' @param z An *integer* between 1 and 14 indicating the resolution of the
 #'   file do be downloaded (1 = lowest, 14 = highest; default = 5)
-#' @param long A \var{numeric vector} of length 2 indicating the minimum and
+#' @param long A *numeric vector* of length 2 indicating the minimum and
 #'   maximum WGS84 longitudes of the raster.
-#' @param lat A \var{numeric vector} of length 2 indicating the minimum and
+#' @param lat A *numeric vector* of length 2 indicating the minimum and
 #'   maximum WGS84 latitude of the raster.
-#' @param override_size_check A \var{logical} indicating whether or not to
-#'   override size checks (default = \var{FALSE})
-#' @param overwrite A \var{logical} indicating if an existing file should be
+#' @param override_size_check A *logical* indicating whether or not to
+#'   override size checks (default = `FALSE`)
+#' @param overwrite A *logical* indicating if an existing file should be
 #'   re-downloaded
-#' @param verbose A \var{logical} indicating whether information about the
+#' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
-#'   running. By default verbose is \code{TRUE} if users use an interactive R
-#'   session and \code{FALSE} otherwise.
+#'   running. By default verbose is `TRUE` if users use an interactive R
+#'   session and `FALSE` otherwise.
 #' @param ... Other parameters to be passed to the function
 #'   [elevatr::get_elev_raster]
 #'
@@ -118,27 +118,27 @@ getelev <- function(path = NULL,
 
 #' Download rasters of monthly precipitation from internet
 #' 
-#' The function \code{getprecip} allows for the download of rasters of monthly
+#' The function `getprecip` allows for the download of rasters of monthly
 #' precipitation from internet. It downloads the "precipitation (mm) WorldClim
 #' Version 2.1" at a spatial resolution of 30 seconds (~1 km2). After download,
-#' the function also unzip the file. The function \code{getprecip} uses the
-#' generic function \code{downloadfile} that can also be used to download
+#' the function also unzip the file. The function `getprecip` uses the
+#' generic function `downloadfile` that can also be used to download
 #' directly other files. This raster needs further processing with the function
-#' \code{\link{prepcipitate}}. It can then be used to predict annual averages
+#' [prepcipitate]. It can then be used to predict annual averages
 #' precipitation weighted isoscapes with the function
-#' \code{\link{isomultiscape}}.
+#' [isomultiscape].
 #' 
 #' In the argument "path" is not provided, the file will be stored in the 
 #' current working directory. The functions can create new directories, so you 
 #' can also indicate a new path. The integrity of the elevation raster is tested
-#' after a call to \code{getprecip}. In case of corruption, try downloading the
+#' after a call to `getprecip`. In case of corruption, try downloading the
 #' file again, specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
 #' @inheritParams getelev
-#' @param verbose A \var{logical} indicating whether information about the
+#' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
-#'   running. By default verbose is \code{TRUE} if users use an interactive R
-#'   session and \code{FALSE} otherwise. If a \var{numeric} is provided instead,
+#'   running. By default verbose is `TRUE` if users use an interactive R
+#'   session and `FALSE` otherwise. If a *numeric* is provided instead,
 #'   additional information about the download will be provided if the number is
 #'   greater than 1.
 #'
@@ -202,15 +202,15 @@ getprecip <- function(path = NULL,
 #'   [getprecip()].
 #'
 #' @inheritParams getelev
-#' @param address A \var{string} indicating the address of the file on internet
-#' @param filename A \var{string} indicating the name under which the file must
+#' @param address A *string* indicating the address of the file on internet
+#' @param filename A *string* indicating the name under which the file must
 #'   be stored
-#' @param md5sum A \var{string} indicating the md5 signature of the valid file
+#' @param md5sum A *string* indicating the md5 signature of the valid file
 #'   as created with [tools::md5sum()]
-#' @param verbose A \var{logical} indicating whether information about the
+#' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
-#'   running. By default verbose is \code{TRUE} if users use an interactive R
-#'   session and \code{FALSE} otherwise. If a \var{numeric} is provided instead,
+#'   running. By default verbose is `TRUE` if users use an interactive R
+#'   session and `FALSE` otherwise. If a *numeric* is provided instead,
 #'   additional information about the download will be provided if the number is
 #'   greater than 1.
 #'

@@ -5,14 +5,14 @@
 \alias{AssignDataAlien}
 \title{Simulated assignment dataset}
 \format{
-A \var{dataframe} with 10 observations on 2 variables:
+A *dataframe* with 10 observations on 2 variables:
 \tabular{rlll}{
-[, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sample\cr
-[, 2] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr}
+[, 1] \tab sample_ID \tab (*factor*) \tab Identification of the sample\cr
+[, 2] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr}
 }
 \description{
 This dataset contains simulated hydrogen delta values. 
-The data can be used as an example to perform assignments using the function \code{\link{isofind}}.
+The data can be used as an example to perform assignments using the function [isofind].
 }
 \examples{
 
@@ -57,6 +57,6 @@ AssignDataAlien <- Aliens[, c("sample_ID", "sample_value")]
 
 }
 \seealso{
-\code{\link{isofind}} to perform assignments
+[isofind] to perform assignments
 }
 \keyword{datasets}

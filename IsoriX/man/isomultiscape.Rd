@@ -8,28 +8,28 @@ years...}
 isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
 }
 \arguments{
-\item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
-raster created using \code{\link{prepelev}}}
+\item{raster}{The structural raster (\emph{RasterLayer}) such as an elevation
+raster created using \link{prepelev}}
 
-\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
+\item{isofit}{The fitted isoscape created by \link{isofit}}
 
 \item{weighting}{An optional RasterBrick containing the weights}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
-running. By default verbose is \var{TRUE} if users use an interactive R
-session and \var{FALSE} otherwise.}
+running. By default verbose is \code{TRUE} if users use an interactive R
+session and \code{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \var{isoscape}
+This function returns a \emph{list} of class \emph{ISOSCAPE}
 containing a set of all 8 raster layers mentioned above (all being of
-class \var{RasterLayer}), and the location of the sources as spatial points.
+class \emph{RasterLayer}), and the location of the sources as spatial points.
 }
 \description{
-This function is the counterpart of \code{\link{isoscape}} for the objects
-created with \code{\link{isomultifit}}. It creates the isoscapes for each
+This function is the counterpart of \link{isoscape} for the objects
+created with \link{isomultifit}. It creates the isoscapes for each
 strata (e.g. month) defined by \code{split_by} during the call to
-\code{\link{isomultifit}} and the aggregate them. The function can handle
+\link{isomultifit} and the aggregate them. The function can handle
 weighting for the aggregation process and can thus be used to predict annual
 averages precipitation weighted isoscapes.
 }
@@ -78,12 +78,12 @@ plot(x = GermanScapeJan, which = "mean")
 }
 }
 \seealso{
-\code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
-\code{\link{isomultifit}} for the function fitting the isoscape
+\link{isoscape} for details on the function used to compute the isoscapes for each strata
+\link{isomultifit} for the function fitting the isoscape
 
-\code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
+\link{plot.ISOSCAPE} for the function plotting the isoscape model
 
-\code{\link{IsoriX}} for the complete work-flow
+\link{IsoriX} for the complete work-flow
 }
 \keyword{models}
 \keyword{predict}

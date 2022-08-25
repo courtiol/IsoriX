@@ -5,31 +5,31 @@
 \alias{CalibDataBat}
 \title{Calibration dataset for bat species}
 \format{
-A \var{dataframe} with 335 observations on 7 variables:
+A *dataframe* with 335 observations on 7 variables:
 \tabular{rlll}{
-[, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
-[, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
-[, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
-[, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
-[, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
-[, 6] \tab species \tab (\var{Factor}) \tab A code for the species\cr
-[, 7] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+[, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
+[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
+[, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
+[, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
+[, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
+[, 6] \tab species \tab (*factor*) \tab A code for the species\cr
+[, 7] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
 }
 \description{
 This dataset contains hydrogen delta values of fur keratin from 6 sedentary
 bat species. It corresponds to the combination of several studies as detailed
 in Voigt & Lenhert 2019. This is the dataset used in Courtiol et al. 2019.
 The data can be used as an example to fit a calibration model using the
-function \code{\link{calibfit}}.
+function [calibfit].
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-\var{dataframe} of similar structure than this one (only the column 'species'
+*dataframe* of similar structure than this one (only the column 'species'
 can be dropped). The columns should possess the same names as the ones
 described above. If the elevation is unknown at the sampling sites, elevation
 information can be extracted from a high resolution elevation raster using
-the function \code{\link[raster]{extract}} (see **Examples** in
-\code{\link{CalibDataBat2}}).
+the function [raster::extract] (see **Examples** in
+[CalibDataBat2]).
 }
 \examples{
 
@@ -46,8 +46,8 @@ computation and inference of spatial origins with mixed models using the R packa
 Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
-\code{\link{CalibDataBat2}} for another (related) calibration dataset
+[CalibDataBat2] for another (related) calibration dataset
 
-\code{\link{calibfit}} to fit a calibration model
+[calibfit] to fit a calibration model
 }
 \keyword{datasets}

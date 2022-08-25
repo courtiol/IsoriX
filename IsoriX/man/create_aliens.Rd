@@ -15,29 +15,29 @@ create_aliens(
 )
 }
 \arguments{
-\item{calib_fn}{A \var{list} containing the parameter values describing the
+\item{calib_fn}{A \emph{list} containing the parameter values describing the
 relationship between the isotope values in the environment and those in the
 simulated organisms. This list must contain three parameters: the
 intercept, the slope, and the residual variance.}
 
-\item{isoscape}{The output of the function \code{\link{isoscape}}}
+\item{isoscape}{The output of the function \link{isoscape}}
 
-\item{coordinates}{An optional \var{data.frame} with columns \code{site_ID},
+\item{coordinates}{An optional \emph{data.frame} with columns \code{site_ID},
 \code{long} and \code{lat}}
 
-\item{raster}{A \var{RasterLayer} containing an elevation raster}
+\item{raster}{A \emph{RasterLayer} containing an elevation raster}
 
 \item{n_sites}{The number of sites from which the simulated organisms
-originate (\var{integer})}
+originate (\emph{integer})}
 
-\item{min_n_samples}{The minimal number of observations (\var{integer}) per
+\item{min_n_samples}{The minimal number of observations (\emph{integer}) per
 site}
 
-\item{max_n_samples}{The maximal number of observations (\var{integer}) per
+\item{max_n_samples}{The maximal number of observations (\emph{integer}) per
 site}
 }
 \value{
-This functions returns a \var{data.frame} (see example for column
+This functions returns a \emph{data.frame} (see example for column
 names)
 }
 \description{
@@ -49,15 +49,15 @@ our package are not real data.
 \details{
 The isostopic values for the organisms are assumed to be linearly related to
 the one from the environment. The linear function can be parametrized using
-the first argument of the function (\code{calib_fn}). With this function the
-user can simulate data for different sites.
+the first argument of the function (\code{calib_fn}). With this function the user
+can simulate data for different sites.
 
 The number and locations of sites can be controlled in two ways. A first
-possibility is to use the argument \code{n_sites}. The sites will then be
-selected randomly among the locations present in the isoscape (argument
-\code{isoscape}) provided to this function. An alternative possibility is to
-provide a data frame containing three columns (\code{site_ID}, \code{long} and
-\code{lat}) to input the coordinate of the sampling site manually.
+possibility is to use the argument \code{n_sites}. The sites will then be selected
+randomly among the locations present in the isoscape (argument \code{isoscape})
+provided to this function. An alternative possibility is to provide a data
+frame containing three columns (\code{site_ID}, \code{long} and \code{lat}) to input the
+coordinate of the sampling site manually.
 
 Irrespectively of how locations are chosen, a random number of observations
 will be drawn, at each site, according to a uniform distribution bounded by
@@ -120,11 +120,11 @@ Aliens2
 
 }
 \seealso{
-\code{\link{calibfit}} for a calibration based on simulated data
+\link{calibfit} for a calibration based on simulated data
 
-\code{\link{isofind}} for an assignment based on simulated data
+\link{isofind} for an assignment based on simulated data
 
-\code{\link{IsoriX}} for the complete work-flow of our package
+\link{IsoriX} for the complete work-flow of our package
 }
 \keyword{simulate}
 \keyword{simulation}

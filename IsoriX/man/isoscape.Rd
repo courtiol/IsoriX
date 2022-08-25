@@ -9,20 +9,20 @@
 isoscape(raster, isofit, verbose = interactive())
 }
 \arguments{
-\item{raster}{The structural raster (\var{RasterLayer}) such as an elevation
-raster created using \code{\link{prepelev}}}
+\item{raster}{The structural raster (\emph{RasterLayer}) such as an elevation
+raster created using \link{prepelev}}
 
-\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
+\item{isofit}{The fitted isoscape created by \link{isofit}}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
-running. By default verbose is \var{TRUE} if users use an interactive R
-session and \var{FALSE} otherwise.}
+running. By default verbose is \code{TRUE} if users use an interactive R
+session and \code{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \var{ISOSCAPE} containing
+This function returns a \emph{list} of class \emph{ISOSCAPE} containing
 a set of all 8 raster layers mentioned above (all being of class
-\var{RasterLayer}), and the location of the sources as spatial points.
+\emph{RasterLayer}), and the location of the sources as spatial points.
 }
 \description{
 This function produces the set of isoscapes, i.e. the spatial prediction
@@ -41,9 +41,9 @@ for the residual dispersion variance (\code{disp_pred}, \code{disp_predVar},
 \code{disp_residVar}, or \code{disp_respVar}).
 
 The predictions of isotopic values across the landscape are performed by
-calling the function \code{\link[spaMM]{predict}} from the package
-\pkg{\link[spaMM]{spaMM}} on the fitted isoscape produced by
-\code{\link{isofit}}.
+calling the function \link[spaMM:predict]{spaMM::predict} from the package
+\pkg{spaMM} on the fitted isoscape produced by
+\link{isofit}.
 
 Let us summarize the meaning of \code{mean}, \code{mean_predVar},
 \code{mean_residVar} and \code{mean_respVar} (see Courtiol & Rousset 2017 and
@@ -62,7 +62,7 @@ conditional distribution. The prediction variance is ideally the mean square
 difference between the true unknown value of the linear predictor and the
 mean prediction at a given location. The residual variance is simply the
 prediction of the variance in isotopic value at a given location. Its exact
-meaning depends on the aggregation scheme used in \code{\link{prepsources}},
+meaning depends on the aggregation scheme used in \link{prepsources},
 but by default, it would correspond to the temporal variation between months
 and across years. The response variance estimates the variance of new
 observations drawn from the true unknown isoscape at a given location. The
@@ -70,7 +70,7 @@ response variance is simply equal to the sum of the prediction variance and
 the residual variance (note that the residual variance considered assume that
 a single observation is being observed per location).
 
-The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
+The isoscape can be plotted using the function \link{plot.ISOSCAPE}
 (see examples).
 }
 \examples{
@@ -136,9 +136,9 @@ computation and inference of spatial origins with mixed models using the R packa
 Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
-\code{\link{isofit}} for the function fitting the isoscape
+\link{isofit} for the function fitting the isoscape
 
-\code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
+\link{plot.ISOSCAPE} for the function plotting the isoscape model
 }
 \keyword{models}
 \keyword{predict}

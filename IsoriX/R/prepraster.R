@@ -1,58 +1,57 @@
 #' Prepare the structural raster
-#' 
+#'
 #' This function prepares the structural raster for the follow-up analyses. The
 #' size and extent of the structural raster defines the resolution at which the
 #' isoscapes and the assignments are defined.
-#' 
-#' This functions allows the user to crop a raster according to
-#' either the extent of the isoscape or manually. If a fitted isoscape object
-#' is provided (see \code{\link{isofit}}), the function extracts the observed
-#' locations of isotopic sources from the model object and crops the structural
-#' raster accordingly. Alternatively, \code{manual_crop} allows you to crop the
-#' structural raster to a desired extent. If no model and no coordinates for
-#' manual cropping are provided, no crop will be performed. Importantly,
-#' cropping is recommended as it prevents extrapolations outside the
-#' latitude/longitude range of the source data. Predicting outside the range of
-#' the source data may lead to highly unreliable predictions.
-#' 
+#'
+#' This functions allows the user to crop a raster according to either the
+#' extent of the isoscape or manually. If a fitted isoscape object is provided
+#' (see [isofit]), the function extracts the observed locations of isotopic
+#' sources from the model object and crops the structural raster accordingly.
+#' Alternatively, `manual_crop` allows you to crop the structural raster to a
+#' desired extent. If no model and no coordinates for manual cropping are
+#' provided, no crop will be performed. Importantly, cropping is recommended as
+#' it prevents extrapolations outside the latitude/longitude range of the source
+#' data. Predicting outside the range of the source data may lead to highly
+#' unreliable predictions.
+#'
 #' Aggregation changes the spatial resolution of the raster, making computation
 #' faster and using less memory (this can affect the assignment; see note
 #' below). An aggregation factor of zero (or one) keeps the resolution constant
 #' (default).
-#' 
-#' This function relies on calls to the functions
-#' \code{\link[raster]{aggregate}} and \code{\link[raster]{crop}} from the
-#' package  \pkg{\link[raster]{raster}}. It thus share the limitations of these
-#' functions. In particular, \code{\link[raster]{crop}} expects extents with
+#'
+#' This function relies on calls to the functions [raster::aggregate] and
+#' [raster::crop] from the package \pkg{raster}. It thus share the limitations
+#' of these functions. In particular, [raster::crop] expects extents with
 #' increasing longitudes and latitudes. We have tried to partially relax this
 #' constrains for longitude and you can use the argument \code{manual_crop} to
 #' provide longitudes in decreasing order, which is useful to centre a isoscape
 #' around the pacific for instance. But this fix does not solve all the
 #' limitations as plotting polygons or points on top of that remains problematic
-#' (see example bellow). We will work on this on the future but we have other 
+#' (see example bellow). We will work on this on the future but we have other
 #' priorities for now (let us know if you really need this feature).
 #' 
-#' @param raster The structural raster (\var{RasterLayer})
+#' @param raster The structural raster (*RasterLayer*)
 #' @param isofit The fitted isoscape model returned by the function
-#' \code{\link{isofit}}
+#' [isofit]
 #' @param margin_pct The percentage representing by how much the space should 
 #' extend outside the range of the coordinates of the sources
 #' (default = 5). 
-#' @param aggregation_factor The number of neighbouring cells (\var{integer})
+#' @param aggregation_factor The number of neighbouring cells (*integer*)
 #' to merge during aggregation
-#' @param aggregation_fn The \var{function} used to aggregate cells
-#' @param manual_crop A vector of four coordinates (\var{numeric}) for manual
+#' @param aggregation_fn The *function* used to aggregate cells
+#' @param manual_crop A vector of four coordinates (*numeric*) for manual
 #' cropping, e.g. the spatial extent
-#' @param verbose A \var{logical} indicating whether information about the
+#' @param verbose A *logical* indicating whether information about the
 #' progress of the procedure should be displayed or not while the function is
-#' running. By default verbose is \var{TRUE} if users use an interactive R
-#' session, and \var{FALSE} otherwise.
-#' @return The prepared structural raster of class \var{RasterLayer}
+#' running. By default verbose is `TRUE` if users use an interactive R
+#' session, and `FALSE` otherwise.
+#' @return The prepared structural raster of class *RasterLayer*
 #' @note Aggregating the raster may lead to different results for the
 #' assignment, because the values of raster cells changes depending on the
 #' aggregation function (see example below), which in turn affects model
 #' predictions.
-#' @seealso \code{\link{ElevRasterDE}} for information on elevation rasters, which
+#' @seealso [ElevRasterDE] for information on elevation rasters, which
 #' can be used as structural rasters.
 #' 
 #' @keywords utilities

@@ -5,7 +5,7 @@
 \alias{PrecipBrickDE}
 \title{The precipitation monthly amounts for Germany}
 \format{
-A \var{RasterBrick}
+A \emph{RasterBrick}
 }
 \source{
 \url{https://www.worldclim.org/data/worldclim21.html}
@@ -16,7 +16,7 @@ Germany with a resolution of approximately 30 square-km.
 }
 \details{
 The data are derived from "precipitation (mm) WorldClim Version2" which can
-be downloaded using the function \code{\link{getprecip}}.
+be downloaded using the function \link{getprecip}.
 }
 \examples{
 
@@ -33,6 +33,6 @@ be downloaded using the function \code{\link{getprecip}}.
 
 }
 \seealso{
-\code{\link{prepcipitate}} to prepare this raster
+\link{prepcipitate} to prepare this raster
 }
 \keyword{datasets}

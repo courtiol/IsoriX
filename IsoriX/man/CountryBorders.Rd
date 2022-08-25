@@ -5,11 +5,11 @@
 \alias{CountryBorders}
 \title{Borders of world CountryBorders}
 \format{
-A \var{SpatialPolygons}
+A \emph{SpatialPolygons}
 }
 \source{
-This \var{SpatialPolygons} is derived from the
-\code{\link[maps]{world}} of the package \pkg{maps}. Please refer to this
+This \emph{SpatialPolygons} is derived from the
+\link[maps:world]{maps::world} of the package \pkg{maps}. Please refer to this
 other package for description and sources of this dataset. See example for
 details on how we created the dataset.
 }
@@ -36,7 +36,7 @@ if(require(sp))
 
 }
 \seealso{
-\code{\link{OceanMask}} for another polygon shapefile used to
+\link{OceanMask} for another polygon shapefile used to
 embellish the plots
 }
 \keyword{datasets}

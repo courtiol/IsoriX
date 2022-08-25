@@ -5,7 +5,7 @@
 \alias{ElevRasterDE}
 \title{The raster of elevation for Germany}
 \format{
-A \var{RasterLayer}
+A \emph{RasterLayer}
 }
 \source{
 \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
@@ -21,7 +21,7 @@ square-km. This is only for the purpose of having a small and easy-to-handle
 file to practice, but it should not be used to perform real assignments!
 
 In the example below, we show how we generated this small raster from a
-large original \var{DEM} (digital elevation model) of the entire world. The original raster has
+large original \emph{DEM} (digital elevation model) of the entire world. The original raster has
 a resolution of approximately one elevation value per square-km (cell size
 of 30 arcseconds, i.e. 0.0083 decimal degrees). Although working on large
 rasters is technically problematic (memory and CPU greedy), we highly
@@ -33,8 +33,8 @@ cell.
 
 We downloaded "Global Multi-resolution Terrain Elevation Data 2010" from:
 \cr \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm} \cr and converted it
-into a \var{tif} file. Because the original file is very large, we directly
-provide the url link of the \var{tif} file in the example below.
+into a \emph{tif} file. Because the original file is very large, we directly
+provide the url link of the \emph{tif} file in the example below.
 }
 \examples{
 
@@ -65,6 +65,6 @@ provide the url link of the \var{tif} file in the example below.
 
 }
 \seealso{
-\code{\link{prepraster}} to crop and/or aggregate this raster
+\link{prepraster} to crop and/or aggregate this raster
 }
 \keyword{datasets}

@@ -22,50 +22,50 @@ isomultifit(
 )
 }
 \arguments{
-\item{data}{The \var{dataframe} containing the data used for fitting the
+\item{data}{The \emph{dataframe} containing the data used for fitting the
 isoscape model}
 
-\item{split_by}{A \var{string} indicating the name of the column of
+\item{split_by}{A \emph{string} indicating the name of the column of
 \code{data} used to split the dataset. The function
-\code{\link{isofit}} will then be called on each of these sub-datasets. The
+\link{isofit} will then be called on each of these sub-datasets. The
 default behaviour is to consider that the dataset should be split per
 months (\code{split_by = "month"}).}
 
-\item{mean_model_fix}{A \var{list} of \var{logical} indicating which fixed
+\item{mean_model_fix}{A \emph{list} of \emph{logical} indicating which fixed
 effects to consider in mean_fit}
 
-\item{disp_model_fix}{A \var{list} of \var{logical} indicating which fixed
+\item{disp_model_fix}{A \emph{list} of \emph{logical} indicating which fixed
 effects to consider in disp_fit}
 
-\item{mean_model_rand}{A \var{list} of \var{logical} indicating which random
+\item{mean_model_rand}{A \emph{list} of \emph{logical} indicating which random
 effects to consider in mean_fit}
 
-\item{disp_model_rand}{A \var{list} of \var{logical} indicating which random
+\item{disp_model_rand}{A \emph{list} of \emph{logical} indicating which random
 effects to consider in disp_fit}
 
-\item{uncorr_terms}{A \var{list} of two strings defining the parametrization
+\item{uncorr_terms}{A \emph{list} of two strings defining the parametrization
 used to model the uncorrelated random effects for mean_fit and disp_fit}
 
-\item{spaMM_method}{A \var{list} of two strings defining the spaMM functions
+\item{spaMM_method}{A \emph{list} of two strings defining the spaMM functions
 used for mean_fit and disp_fit}
 
-\item{dist_method}{A \var{string} indicating the distance method}
+\item{dist_method}{A \emph{string} indicating the distance method}
 
-\item{control_mean}{A \var{list} of additional arguments to be passed to the
+\item{control_mean}{A \emph{list} of additional arguments to be passed to the
 call of mean_fit}
 
-\item{control_disp}{A \var{list} of additional arguments to be passed to the
+\item{control_disp}{A \emph{list} of additional arguments to be passed to the
 call of disp_fit}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \code{MULTIISOFIT}
+This function returns a \emph{list} of class \emph{MULTIISOFIT}
 containing all pairs of inter-related fits (stored under
-\code{multi_fits}). The returned \var{list} also contains the object
+\code{multi_fits}). The returned \emph{list} also contains the object
 \code{info_fit} that contains all the call arguments.
 }
 \description{
@@ -73,7 +73,7 @@ This function fits several set of isoscapes (e.g. one per strata). It can thus b
 used to predict annual averages precipitation weighted isoscapes.
 }
 \details{
-This function is a wrapper around the function \code{\link{isofit}}.
+This function is a wrapper around the function \link{isofit}.
 }
 \examples{
 
@@ -102,6 +102,6 @@ plot(GermanMonthlyFit)
 }
 }
 \seealso{
-\code{\link{isofit}} for information about the fitting procedure of
+\link{isofit} for information about the fitting procedure of
 each isoscape.
 }

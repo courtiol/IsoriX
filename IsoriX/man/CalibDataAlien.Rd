@@ -5,28 +5,28 @@
 \alias{CalibDataAlien}
 \title{Simulated calibration dataset}
 \format{
-A \var{dataframe} with x observations on 6 variables:
+A *dataframe* with x observations on 6 variables:
 \tabular{rlll}{
-[, 1] \tab site_ID \tab (\var{Factor}) \tab Identification of the sampling site\cr
-[, 2] \tab long \tab (\var{numeric}) \tab Longitude coordinate [decimal degrees]\cr
-[, 3] \tab lat \tab (\var{numeric}) \tab Latitude coordinate [decimal degrees]\cr
-[, 4] \tab elev \tab (\var{numeric}) \tab Elevation asl [m]\cr
-[, 5] \tab sample_ID \tab (\var{Factor}) \tab Identification of the sampled animal\cr
-[, 6] \tab tissue.value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+[, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
+[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
+[, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
+[, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
+[, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
+[, 6] \tab tissue.value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
 }
 \description{
 This dataset contains simulated hydrogen delta values for corresponding locations
 based on an assumed linear relationship between the animal tissue value and the 
 hydrogen delta values in the environment.
 The data can be used as an example to fit a calibration model using the
-function \code{\link{calibfit}}.
+function [calibfit].
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-\var{dataframe} of similar structure than this one. The columns should possess 
+*dataframe* of similar structure than this one. The columns should possess 
 the same names as the ones described above. If the elevation is unknown at the 
 sampling sites, elevation information can be extracted from a high resolution elevation
-raster using the function \code{\link[raster]{extract}}. In this dataset, we
+raster using the function [raster::extract]. In this dataset, we
 retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 2010.
 }
@@ -72,6 +72,6 @@ CalibDataAlien$source_value <- NULL
 
 }
 \seealso{
-\code{\link{calibfit}} to fit a calibration model
+[calibfit] to fit a calibration model
 }
 \keyword{datasets}

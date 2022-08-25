@@ -17,28 +17,28 @@ getelev(
 )
 }
 \arguments{
-\item{path}{A \var{string} indicating where to store the file on the hard
+\item{path}{A \emph{string} indicating where to store the file on the hard
 drive (without the file name!)}
 
-\item{filename}{A \var{string} indicating the name under which the file must
+\item{filename}{A \emph{string} indicating the name under which the file must
 be stored (default = \code{elevation.tif})}
 
-\item{z}{An \var{integer} between 1 and 14 indicating the resolution of the
+\item{z}{An \emph{integer} between 1 and 14 indicating the resolution of the
 file do be downloaded (1 = lowest, 14 = highest; default = 5)}
 
-\item{long}{A \var{numeric vector} of length 2 indicating the minimum and
+\item{long}{A \emph{numeric vector} of length 2 indicating the minimum and
 maximum WGS84 longitudes of the raster.}
 
-\item{lat}{A \var{numeric vector} of length 2 indicating the minimum and
+\item{lat}{A \emph{numeric vector} of length 2 indicating the minimum and
 maximum WGS84 latitude of the raster.}
 
-\item{override_size_check}{A \var{logical} indicating whether or not to
-override size checks (default = \var{FALSE})}
+\item{override_size_check}{A \emph{logical} indicating whether or not to
+override size checks (default = \code{FALSE})}
 
-\item{overwrite}{A \var{logical} indicating if an existing file should be
+\item{overwrite}{A \emph{logical} indicating if an existing file should be
 re-downloaded}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise.}

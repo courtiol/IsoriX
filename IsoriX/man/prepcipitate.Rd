@@ -7,23 +7,23 @@
 prepcipitate(path = NULL, raster, verbose = interactive())
 }
 \arguments{
-\item{path}{A \var{string} indicating the path where the WorldClim data have
+\item{path}{A \emph{string} indicating the path where the WorldClim data have
 been downloaded. If the path is null (the default) the function will assume
 that the folder containing the precipitation data is in the current
 directory}
 
-\item{raster}{A \var{raster} containing the structural raster}
+\item{raster}{A \emph{raster} containing the structural raster}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
-running. By default verbose is \var{TRUE} if users use an interactive R
-session, and \var{FALSE} otherwise.}
+running. By default verbose is \code{TRUE} if users use an interactive R
+session, and \code{FALSE} otherwise.}
 }
 \description{
 This functions turns the WorldClim data downloaded using the function
-\code{\link{getprecip}} into a \var{RasterBrick} of same resolution and
+\link{getprecip} into a \emph{RasterBrick} of same resolution and
 extent as the structural raster. This function is designed to be used with
-\code{\link{isomultiscape}}.
+\link{isomultiscape}.
 }
 \examples{
 
@@ -53,9 +53,9 @@ extent as the structural raster. This function is designed to be used with
 
 }
 \seealso{
-\code{\link{getprecip}} to download the relevant precipitation data
+\link{getprecip} to download the relevant precipitation data
 
-\code{\link{PrecipBrickDE}} for the stored precipitation data for Germany
+\link{PrecipBrickDE} for the stored precipitation data for Germany
 
-\code{\link{prepelev}} to prepare an elevation raster
+\link{prepelev} to prepare an elevation raster
 }

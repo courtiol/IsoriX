@@ -26,104 +26,102 @@ isofit(
 )
 }
 \arguments{
-\item{data}{The \var{dataframe} containing the data used for fitting the
+\item{data}{The \emph{dataframe} containing the data used for fitting the
 isoscape model}
 
-\item{mean_model_fix}{A \var{list} of \var{logical} indicating which fixed
+\item{mean_model_fix}{A \emph{list} of \emph{logical} indicating which fixed
 effects to consider in mean_fit}
 
-\item{disp_model_fix}{A \var{list} of \var{logical} indicating which fixed
+\item{disp_model_fix}{A \emph{list} of \emph{logical} indicating which fixed
 effects to consider in disp_fit}
 
-\item{mean_model_rand}{A \var{list} of \var{logical} indicating which random
+\item{mean_model_rand}{A \emph{list} of \emph{logical} indicating which random
 effects to consider in mean_fit}
 
-\item{disp_model_rand}{A \var{list} of \var{logical} indicating which random
+\item{disp_model_rand}{A \emph{list} of \emph{logical} indicating which random
 effects to consider in disp_fit}
 
-\item{uncorr_terms}{A \var{list} of two strings defining the parametrization
+\item{uncorr_terms}{A \emph{list} of two strings defining the parametrization
 used to model the uncorrelated random effects for mean_fit and disp_fit}
 
-\item{spaMM_method}{A \var{list} of two strings defining the spaMM functions
+\item{spaMM_method}{A \emph{list} of two strings defining the spaMM functions
 used for mean_fit and disp_fit}
 
-\item{dist_method}{A \var{string} indicating the distance method}
+\item{dist_method}{A \emph{string} indicating the distance method}
 
-\item{control_mean}{A \var{list} of additional arguments to be passed to the
+\item{control_mean}{A \emph{list} of additional arguments to be passed to the
 call of mean_fit}
 
-\item{control_disp}{A \var{list} of additional arguments to be passed to the
+\item{control_disp}{A \emph{list} of additional arguments to be passed to the
 call of disp_fit}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise.}
 }
 \value{
-This function returns a \var{list} of class \code{ISOFIT} containing
+This function returns a \emph{list} of class \emph{ISOFIT} containing
 two inter-related fits: \code{mean_fit} and \code{disp_fit}. The returned
-\var{list} also contains the object \code{info_fit} that contains all the
+\emph{list} also contains the object \code{info_fit} that contains all the
 call arguments.
 }
 \description{
 This function fits the aggregated source data using mixed models. The fitting
-procedures are done by the package \pkg{\link[spaMM]{spaMM}} which we use to
-jointly fit the mean isotopic values and their associated residual dispersion
-variance in a spatially explicit manner.
+procedures are done by the package \link[spaMM:spaMM]{spaMM::spaMM} which we use to jointly fit
+the mean isotopic values and their associated residual dispersion variance in
+a spatially explicit manner.
 }
 \details{
 The detailed statistical definition of the isoscape model is described in
 Courtiol & Rousset 2017 and summarized in Courtiol et al. 2019.
 
 Briefly, the fitting procedure of the isoscape model is divided into two
-fits: \code{mean_fit} and \code{disp_fit}. \code{mean_fit} corresponds to the
-fit of the "mean model", which we will use to predict the mean isotopic
-values at any location in other functions of the package. \code{disp_fit}
-corresponds to the fit of the "residual dispersion model", which we will use
-to predict the residual dispersion variance associated to the mean
-predictions. \code{mean_fit} is a linear mixed-effects model (LMM) with fixed
-effects, an optional spatial random effect with a Matérn correlation
-structure and an optional uncorrelated random effect accounting for variation
-between sources unrelated to their location. \code{disp_fit} is a Gamma
-Generalized LMM (Gamma GLMM) that also has fixed effects, an optional spatial
+fits: \code{mean_fit} and \code{disp_fit}. \code{mean_fit} corresponds to the fit of the
+"mean model", which we will use to predict the mean isotopic values at any
+location in other functions of the package. \code{disp_fit} corresponds to the fit
+of the "residual dispersion model", which we will use to predict the residual
+dispersion variance associated to the mean predictions. \code{mean_fit} is a
+linear mixed-effects model (LMM) with fixed effects, an optional spatial
 random effect with a Matérn correlation structure and an optional
-uncorrelated random effect. For the GLMM the residual variance is fixed to
-its theoretical expectation.
+uncorrelated random effect accounting for variation between sources unrelated
+to their location. \code{disp_fit} is a Gamma Generalized LMM (Gamma GLMM) that
+also has fixed effects, an optional spatial random effect with a Matérn
+correlation structure and an optional uncorrelated random effect. For the
+GLMM the residual variance is fixed to its theoretical expectation.
 
-The \var{dataframe} \code{data} must contain a single row per source location
-with the following columns: \code{mean_source_value} (the mean isotopic value),
-\code{var_source_value} (the unbiased variance estimate of the isotopic value
-at the location), \code{n_source_value} (the number of measurements performed
-at the location, could be 1) and \code{source_ID} (a factor defining the
-identity of the sources at a given location).
+The \emph{dataframe} \code{data} must contain a single row per source location with the
+following columns: \code{mean_source_value} (the mean isotopic value),
+\code{var_source_value} (the unbiased variance estimate of the isotopic value at
+the location), \code{n_source_value} (the number of measurements performed at the
+location, could be 1) and \code{source_ID} (a factor defining the identity of the
+sources at a given location).
 
-The arguments \code{mean_model_fix} and \code{disp_model_fix} allow the user
-to choose among different fixed-effect structures for each model. These
-arguments are lists of booleans (\code{TRUE} or \code{FALSE}), which define
-which of the following fixed effects must be considered: the elevation
-(\code{elev}), the absolute value of the latitude (\code{lat_abs}), the
-squared latitude (\code{lat_2}), the longitude (\code{long}) and the squared
-longitude (\code{long_2}). An intercept is always considered in both models.
+The arguments \code{mean_model_fix} and \code{disp_model_fix} allow the user to choose
+among different fixed-effect structures for each model. These arguments are
+lists of booleans (\code{TRUE} or \code{FALSE}), which define which of the following
+fixed effects must be considered: the elevation (\code{elev}), the absolute value
+of the latitude (\code{lat_abs}), the squared latitude (\code{lat_2}), the longitude
+(\code{long}) and the squared longitude (\code{long_2}). An intercept is always
+considered in both models.
 
 In the models, the mean (for the mean model) or the log residual variance
 (for the residual dispersion model) follow a Gaussian distribution around a
-constant value. The arguments \code{mean_model_rand} and
-\code{disp_model_rand} allow to choose among different random effects for
-each model influencing the realizations of these Gaussian random processes.
-For each model one can choose not to include random effects or to include an
-uncorrelated random effect, a spatial random effect, or both (default).
-Setting \code{"uncorr" = TRUE} implies that the realizations of the random
-effect differ between sources for reasons that have nothing to do with the
-relative geographic location (e.g. some micro-climate or some measurement
-errors trigger a shift in all measurements (mean model) or a shift in the
-variance between measurements (residual dispersion model) performed at a
-given source by the same amount). Setting \code{"spatial" = TRUE} (default)
-implies that the random realizations of the Gaussian process follow a Matérn
-correlation structure. Put simply, this implies that the closer two locations
-are, the more similar the means (or the log residual variance) in isotopic
-values are (e.g. because they are likely to be traversed by the same air
-masses).
+constant value. The arguments \code{mean_model_rand} and \code{disp_model_rand} allow
+to choose among different random effects for each model influencing the
+realizations of these Gaussian random processes. For each model one can
+choose not to include random effects or to include an uncorrelated random
+effect, a spatial random effect, or both (default). Setting \code{"uncorr" = TRUE}
+implies that the realizations of the random effect differ between sources for
+reasons that have nothing to do with the relative geographic location (e.g.
+some micro-climate or some measurement errors trigger a shift in all
+measurements (mean model) or a shift in the variance between measurements
+(residual dispersion model) performed at a given source by the same amount).
+Setting \code{"spatial" = TRUE} (default) implies that the random realizations of
+the Gaussian process follow a Matérn correlation structure. Put simply, this
+implies that the closer two locations are, the more similar the means (or the
+log residual variance) in isotopic values are (e.g. because they are likely
+to be traversed by the same air masses).
 
 The arguments \code{uncorr_terms} allow the choice between two alternative
 parametrizations for the uncorrelated random effect in the fits:
@@ -142,20 +140,20 @@ prediction variances, which is why we chose this alternative as the default.
 Depending on the data one parametrization may lead to faster fit than the
 other.
 
-The argument \code{spaMM_method} is also a list of two \var{strings} where
-the first element defines the spaMM functions used for fitting the mean model
-and the second element defines the spaMM method used for fitting the residual
-dispersion model. The possible options are "HLfit", "corrHLfit" and "fitme".
-Note that "HLfit" shall only be used in the absence of a Matérn correlation
-structure and "corrHLfit" shall only be used in the presence of it. In
-contrast, "fitme" should work in all situations. Which method is best remains
-to be determined and it is good practice to try different methods (if
-applicable) to check for the robustness of the results. If all is well one
-should obtain very similar results with the different methods. If this is not
-the case, carefully check the model output to see if one model fit did not
-get stuck at a local minimum during optimization (which would translate in a
-lower likelihood, or weird isoscapes looking flat with high peaks at very
-localised locations).
+The argument \code{spaMM_method} is also a list of two \emph{strings} where the first
+element defines the spaMM functions used for fitting the mean model and the
+second element defines the spaMM method used for fitting the residual
+dispersion model. The possible options are \code{"HLfit"}, \code{"corrHLfit"} and
+\code{"fitme"}. Note that \code{"HLfit"} shall only be used in the absence of a Matérn
+correlation structure and \code{"corrHLfit"} shall only be used in the presence of
+it. In contrast, \code{"fitme"} should work in all situations. Which method is
+best remains to be determined and it is good practice to try different
+methods (if applicable) to check for the robustness of the results. If all is
+well one should obtain very similar results with the different methods. If
+this is not the case, carefully check the model output to see if one model
+fit did not get stuck at a local minimum during optimization (which would
+translate in a lower likelihood, or weird isoscapes looking flat with high
+peaks at very localised locations).
 
 The argument \code{dist_method} allows modifying how the distance between
 locations is computed to estimate the spatial correlation structure. By
@@ -165,12 +163,12 @@ alternative "Euclidean" distances do not. For studies performed on a small
 geographic scale, both distance methods should lead to similar results.
 
 The arguments \code{control_mean} and \code{control_dist} are lists that are
-transmitted to the \pkg{\link[spaMM]{spaMM}} fitting functions (defined by
+transmitted to the \link[spaMM:spaMM]{spaMM::spaMM} fitting functions (defined by
 \code{spaMM_method}). These lists can be used to finely control the fitting
-procedure, so advanced knowledge of the package \pkg{\link[spaMM]{spaMM}} is
-required before messing around with these inputs.
+procedure, so advanced knowledge of the package \link[spaMM:spaMM]{spaMM::spaMM} is required
+before messing around with these inputs.
 
-We highly recommend users to examine the output produced by \code{isofit}.
+We highly recommend users to examine the output produced by isofit.
 Sometimes, poor fit may occur and such models should therefore not be used
 for building isoscapes or performing assignments.
 }
@@ -189,15 +187,14 @@ of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the
 fact that our package is more likely to be used for drawing inferences than
 null hypothesis testing. Users interested in model comparisons may rely on
 the conditional AIC values that can be extracted from fitted models using
-the function \code{\link[spaMM:extractors]{AIC}} from
-\pkg{\link[spaMM]{spaMM}}.
+the function \link[spaMM:AIC]{spaMM::AIC} from  \pkg{spaMM}.
 
-Variable names for \code{data} must be respected to ensure a correct
-utilization of this package. Alteration to the fixed effect structure is
-not implemented so far (beyond the different options proposed) to avoid
-misuse of the package. Users that would require more flexibility should
-consider using spaMM directly (see Courtiol & Rousset 2017) or let us know
-which other covariates would be useful to add in IsoriX.
+Variable names for \code{data} must be respected to ensure a correct utilization
+of this package. Alteration to the fixed effect structure is not
+implemented so far (beyond the different options proposed) to avoid misuse
+of the package. Users that would require more flexibility should consider
+using spaMM directly (see Courtiol & Rousset 2017) or let us know which
+other covariates would be useful to add in IsoriX.
 }
 \examples{
 
@@ -242,15 +239,15 @@ stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
 143(3):337-348.
 }
 \seealso{
-\pkg{\link[spaMM]{spaMM}} for an overview of the \pkg{spaMM} package
+\link[spaMM:spaMM]{spaMM::spaMM} for an overview of the \pkg{spaMM} package
 
-\code{\link[spaMM]{fitme}} and \code{\link[spaMM]{corrHLfit}} for
+\link[spaMM:fitme]{spaMM::fitme} and \link[spaMM:corrHLfit]{spaMM::corrHLfit} for
 information about the two possible fitting procedures that can be used here
 
-\code{\link[spaMM]{Matern.corr}} for information about the Matérn
+\link{spaMM}::atern.corr] for information about the Matérn
 correlation structure
 
-\code{\link{prepsources}} for the function preparing the data for isofit
+\link{prepsources} for the function preparing the data for isofit
 }
 \keyword{models}
 \keyword{regression}

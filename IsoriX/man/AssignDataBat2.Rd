@@ -5,11 +5,11 @@
 \alias{AssignDataBat2}
 \title{Assignment dataset for bat species}
 \format{
-A \var{dataframe} with 244 observations on 3 variables:
+A *dataframe* with 244 observations on 3 variables:
 \tabular{rlll}{
-[, 1] \tab sample_ID \tab (\var{Factor}) \tab Identification of the animal\cr
-[, 2] \tab species \tab (\var{Factor}) \tab Animal species name\cr
-[, 3] \tab sample_value \tab (\var{numeric}) \tab Hydrogen delta value of the tissue\cr }
+[, 1] \tab sample_ID \tab (*factor*) \tab Identification of the animal\cr
+[, 2] \tab species \tab (*factor*) \tab Animal species name\cr
+[, 3] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
 }
 \source{
 data directly provided by the authors of the following publication
@@ -19,7 +19,7 @@ This dataset contains data from Voigt, Lehmann and Greif (2015). It contains
 hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
 2013 from their roosting sites in Bulgaria. We only retained the bats of the
 genus Myotis from the original study. The data can be used as an example to
-perform assignments using the function \code{\link{isofind}}.
+perform assignments using the function [isofind].
 }
 \examples{
 
@@ -33,6 +33,6 @@ ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
 Methods in Ecology and Evolution 6(11).
 }
 \seealso{
-\code{\link{isofind}} to perform assignments
+[isofind] to perform assignments
 }
 \keyword{datasets}

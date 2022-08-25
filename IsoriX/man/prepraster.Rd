@@ -15,30 +15,30 @@ prepraster(
 )
 }
 \arguments{
-\item{raster}{The structural raster (\var{RasterLayer})}
+\item{raster}{The structural raster (\emph{RasterLayer})}
 
 \item{isofit}{The fitted isoscape model returned by the function
-\code{\link{isofit}}}
+\link{isofit}}
 
 \item{margin_pct}{The percentage representing by how much the space should
 extend outside the range of the coordinates of the sources
 (default = 5).}
 
-\item{aggregation_factor}{The number of neighbouring cells (\var{integer})
+\item{aggregation_factor}{The number of neighbouring cells (\emph{integer})
 to merge during aggregation}
 
-\item{aggregation_fn}{The \var{function} used to aggregate cells}
+\item{aggregation_fn}{The \emph{function} used to aggregate cells}
 
-\item{manual_crop}{A vector of four coordinates (\var{numeric}) for manual
+\item{manual_crop}{A vector of four coordinates (\emph{numeric}) for manual
 cropping, e.g. the spatial extent}
 
-\item{verbose}{A \var{logical} indicating whether information about the
+\item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
-running. By default verbose is \var{TRUE} if users use an interactive R
-session, and \var{FALSE} otherwise.}
+running. By default verbose is \code{TRUE} if users use an interactive R
+session, and \code{FALSE} otherwise.}
 }
 \value{
-The prepared structural raster of class \var{RasterLayer}
+The prepared structural raster of class \emph{RasterLayer}
 }
 \description{
 This function prepares the structural raster for the follow-up analyses. The
@@ -46,26 +46,25 @@ size and extent of the structural raster defines the resolution at which the
 isoscapes and the assignments are defined.
 }
 \details{
-This functions allows the user to crop a raster according to
-either the extent of the isoscape or manually. If a fitted isoscape object
-is provided (see \code{\link{isofit}}), the function extracts the observed
-locations of isotopic sources from the model object and crops the structural
-raster accordingly. Alternatively, \code{manual_crop} allows you to crop the
-structural raster to a desired extent. If no model and no coordinates for
-manual cropping are provided, no crop will be performed. Importantly,
-cropping is recommended as it prevents extrapolations outside the
-latitude/longitude range of the source data. Predicting outside the range of
-the source data may lead to highly unreliable predictions.
+This functions allows the user to crop a raster according to either the
+extent of the isoscape or manually. If a fitted isoscape object is provided
+(see \link{isofit}), the function extracts the observed locations of isotopic
+sources from the model object and crops the structural raster accordingly.
+Alternatively, \code{manual_crop} allows you to crop the structural raster to a
+desired extent. If no model and no coordinates for manual cropping are
+provided, no crop will be performed. Importantly, cropping is recommended as
+it prevents extrapolations outside the latitude/longitude range of the source
+data. Predicting outside the range of the source data may lead to highly
+unreliable predictions.
 
 Aggregation changes the spatial resolution of the raster, making computation
 faster and using less memory (this can affect the assignment; see note
 below). An aggregation factor of zero (or one) keeps the resolution constant
 (default).
 
-This function relies on calls to the functions
-\code{\link[raster]{aggregate}} and \code{\link[raster]{crop}} from the
-package  \pkg{\link[raster]{raster}}. It thus share the limitations of these
-functions. In particular, \code{\link[raster]{crop}} expects extents with
+This function relies on calls to the functions \link[raster:aggregate]{raster::aggregate} and
+\link[raster:crop]{raster::crop} from the package \pkg{raster}. It thus share the limitations
+of these functions. In particular, \link[raster:crop]{raster::crop} expects extents with
 increasing longitudes and latitudes. We have tried to partially relax this
 constrains for longitude and you can use the argument \code{manual_crop} to
 provide longitudes in decreasing order, which is useful to centre a isoscape
@@ -163,7 +162,7 @@ levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue") +
 
 }
 \seealso{
-\code{\link{ElevRasterDE}} for information on elevation rasters, which
+\link{ElevRasterDE} for information on elevation rasters, which
 can be used as structural rasters.
 }
 \keyword{utilities}

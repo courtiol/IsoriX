@@ -5,11 +5,11 @@
 \alias{OceanMask}
 \title{Mask of world oceans}
 \format{
-A \var{SpatialPolygons} object
+A \emph{SpatialPolygons} object
 }
 \source{
-This \var{SpatialPolygons} is derived from the
-\code{\link{CountryBorders}}. See example for details on how we created the
+This \emph{SpatialPolygons} is derived from the
+\link{CountryBorders}. See example for details on how we created the
 dataset.
 }
 \description{
@@ -36,7 +36,7 @@ if(require(sp)) {
 
 }
 \seealso{
-\code{\link{CountryBorders}} for another polygon shapefile used to
+\link{CountryBorders} for another polygon shapefile used to
 embellish the plots
 }
 \keyword{datasets}
