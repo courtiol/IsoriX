@@ -1,4 +1,5 @@
-#' Fit the calibration model (or load parameters from calibration done outside IsoriX)
+#' Fit the calibration model (or load parameters from calibration done outside
+#' IsoriX)
 #'
 #' This function establishes the relationship between the isotopic values of
 #' organisms (e.g. tissues such as hair, horn, ivory or feathers; referred in
@@ -11,20 +12,20 @@
 #' sedentary animals directly, this calibration step is not needed (e.g.
 #' isoscape fitted using sedentary butterflies and migratory butterflies to
 #' assign). In other cases, this calibration step is usually needed since
-#' organism may not directly reflect the isotopic values of their environment.
+#' organisms may not directly reflect the isotopic values of their environment.
 #' Depending on the calibration data to be used (provided via the argument
-#' \code{data}), one of three possible calibration method must be selected (via
+#' \code{data}), one of four possible calibration methods must be selected (via
 #' the argument \code{method}). Each method considers a different statistical
 #' model and requires particular data that are organised in a specific way (see
 #' **Details** for explanations and **Examples** for use cases).
 #'
 #' Calibration can be performed according to one of three different methods and
-#' it is crucial for the users to select the method that is most appropriate for
-#' their workflow. The methods are labelled "wild", "lab" and "desk". One of
-#' this term must thus be used to define the argument \code{method}. If no term
-#' is used, the default that is selected is the method referred to as "wild".
-#' Importantly, the choice of the method can impact the most likely
-#' assignment locations during the assignment test performed in 
+#' it is crucial for you to select the method that is most appropriate for your
+#' workflow. The methods are labelled "wild", "lab", "desk" and "desk_inverse".
+#' One of these terms must thus be used to define the argument \code{method}. If
+#' no term is used, the default that is selected is the method referred to as
+#' "wild". Importantly, the choice of the method can impact the most likely
+#' assignment locations during the assignment test performed in
 #' \code{\link{isofind}}.
 #'
 #' ## Method "wild"
@@ -35,7 +36,7 @@
 #' the locations where sedentary organisms have been collected. In such a case,
 #' the isotopic values in the environment of sedentary organisms are predicted
 #' internally using an isoscape fitted with \code{\link{isofit}}. This
-#' calibration method thus aim at estimating and accounting for the uncertainty
+#' calibration method thus aims at estimating and accounting for the uncertainty
 #' associated with these predicted values. Such uncertainty is accounted for
 #' when fitting the calibration fit so as to produce an unbiased estimation of
 #' the calibration relationship and it is also then accounted for by
@@ -61,27 +62,42 @@
 
 #' - **Required calibration data**: the calibration data to be used here must be
 #' a dataframe (or a tibble) containing at least the following columns:
-#'    - \code{sample_value}: the isotopic value of the calibration sample
-#'    - \code{long}: the longitude coordinate (decimal degrees)
-#'    - \code{lat}: the latitude coordinate (decimal degrees)
-#'    - \code{site_ID}: the sample site
+#'   - \code{sample_value}: the isotopic value of the calibration sample
+#'   - \code{long}: the longitude coordinate (decimal degrees)
+#'   - \code{lat}: the latitude coordinate (decimal degrees)
+#'   - \code{site_ID}: the sample site
 #'
-#'    The column name must be identical to those indicated here. Other columns
-#'    can be present in the data but won't be used. Each row must correspond to
-#'    a different calibration sample (i.e. a single isotopic measurement). See
-#'    \code{\link{CalibDataAlien}}, \code{\link{CalibDataBat}}, or
-#'    \code{\link{CalibDataBat2}} for examples of such a dataset.
+#'   The column name must be identical to those indicated here. Other columns
+#'   can be present in the data but won't be used. Each row must correspond to
+#'   a different calibration sample (i.e. a single isotopic measurement). See
+#'   \code{\link{CalibDataAlien}}, \code{\link{CalibDataBat}}, or
+#'   \code{\link{CalibDataBat2}} for examples of such a dataset.
 #' 
 #' ## Method "lab"
 #' 
 #' This calibration method is the one to be used when the calibration data to be
 #' used correspond to isotopic values recorded for both organisms and their
-#' environment. This is the right method to be used when the data are generated
-#' by growing organisms in a controlled environment where they are fed and/or
-#' given water with a specific (known) isotopic value. This is also the method
-#' to be used if sedentary organisms are sampled in the wild together with a
-#' sample from their environment and that isotopic values have been measured for
-#' both.
+#' environment. We can foresee three main situations in which the "lab" method
+#' is the one to be used:
+#'   1. the data are generated by growing organisms in a controlled
+#'   environment where they are fed and/or given water with a specific (known)
+#'   isotopic value.
+#'   2. sedentary organisms are sampled in the wild together with a sample
+#'   from their environment and that isotopic values have been measured for
+#'   both.
+#'   3. you want to use a calibration made by others based on a plot of that
+#'   calibration showing the datapoints. In such a case, you should use an R
+#'   package (e.g. metaDigitse or digitize) or software (e.g. graphClick or
+#'   dataThief) to extract the coordinates on the plots so as to obtain the
+#'   isotopic values of the sample and the environment behind each point.
+#'
+#' Note that the use cases 1 and 2 will allow for the propagation of all
+#' relevant sources of uncertainty during the assignment. In contrast, the third
+#' use case implies to neglect uncertainty in the isotopic values in the
+#' environment if those were initially predicted using an isoscape. It also
+#' neglects the covariances involving such predicted values. That being said, if
+#' you want to use someone else calibration relationship, using this method is
+#' generally preferable to using the method "desk" described below.
 #' 
 #' - **Statistical model**: in this case, the calibration model to be fitted is
 #' a simple linear model (LM) or a simple linear mixed-effects model (LMM) that
@@ -93,11 +109,11 @@
 #' Otherwise, a LM is fitted. In both cases, the function considers that the
 #' isotopic values from the environment (e.g. from precipitation) at the
 #' locations at which organisms were sampled are known. Contrary to the method
-#' "wild", the environment values are thus observed and not predicted from an
-#' isoscape. The argument \code{isofit} should thus remain \code{NULL} in this
-#' case (since no isoscape is used, no isoscape fit is required to perform the
-#' calibration). The model used to fit the calibration function has a simple
-#' fixed effect structure: an intercept and a slope.
+#' "wild", the environment values are thus considered as observed and not
+#' predicted from an isoscape. The argument \code{isofit} should thus remain
+#' \code{NULL} in this case (since no isoscape is used, no isoscape fit is
+#' required to perform the calibration). The model used to fit the calibration
+#' function has a simple fixed effect structure: an intercept and a slope.
 #' 
 #' - **Required calibration data**: the calibration data to be used here must be
 #' a dataframe (or a tibble) containing at least the following columns:
@@ -110,61 +126,78 @@
 #'    a different calibration sample (i.e. a single sample-environment pair of
 #'    isotopic measurements).
 #'
-#' ## Method "desk"
+#' ## Methods "desk" and "desk_inverse"
 #'
-#' This calibration method is the one to be used when no calibration data is
-#' available and that users want to rely on the slope and intercept (and, if
-#' available, on the standard errors associated to them, and/or the residual
-#' variance) of a calibration function they found elsewhere (e.g. in a
-#' publication). Note that if the slope is set to 0 and an intercept is
-#' considered, the calibration methods actually corresponds to the simple
-#' consideration of a fractionation factor.
+#' These calibration methods must only be used as a last resource! They are
+#' unlikely to yield robust inference during the assignment step. These
+#' calibration methods are the ones to be used when no calibration data is
+#' directly available, when you cannot either extract the data from a plot, and
+#' thus when you must rely solely on published metrics (including intercept and
+#' slope) to represent a calibration relationship. They work by making crude
+#' assumptions that various uncertainty components are null.
 #'
-#' This calibration method must only be used as a last resource! It is unlikely
-#' to yield to robust inference during the assignment step. The more argument
-#' provided the better, but even if standard errors and the residual variance
-#' are defined, the function won't achieve anything close to a good job. This is
-#' because relying solely on the simple metrics reported in publications or by
-#' software implies to neglect various sources of uncertainty. In particular,
-#' even if 5 parameters listed below are provided, the assignment will still be
-#' forced to assume that documented uncertainties are independent from each
-#' others. Making these simplifying assumptions comes with a cost: it can bias
-#' the assignment or pretend that they are more accurate than they really are.
-#' For these reasons, we were tempted to use \code{method = "dirty"} instead of
-#' \code{method = "desk"}... but we chickened out since we predicted that users
-#' would then refrain from mentioning the method they used in publications...
+#' The method "desk" is the one to be used when the calibration relationship you
+#' want to use is of the form \code{lm(sample_value ~ source_value)} and the
+#' method "deskinv" is the one to be used when the calibration relationship you
+#' want to use is of the form \code{lm(source_value ~ sample_value)}. Do make
+#' sure you are using the correct alternative. Note that the model used for the
+#' calibration you want to use must be a linear regression (LM) or a linear
+#' mixed effect model (LMM) and not a reduced major axis regression (RMA). In
+#' the case of RMA, you are out of luck...
+#'
+#' Both methods require five metrics to work at their best: the intercept and
+#' slope of a calibration relationship, the standard errors (SE) associated to
+#' them, and the residual variance (not SD). For statistical reasons, the method
+#' "desk" is more flexible than the method "desk_inverse" and can still work (in
+#' the sense of running, but the reliability of the assignments will get worse)
+#' if the SEs and/or the residual variance is not provided. For the method
+#' "desk_inverse" all metrics are unfortunately necessary.
+#'
+#' Don't expect miracles: even if the "desk" method is used together with its 5
+#' parameters, the assignment will still be forced to assume that documented
+#' uncertainties are independent from each other. Making these simplifying
+#' assumptions comes with a cost: it can bias the assignment or pretend that
+#' they are more accurate than they really are. For these reasons, we were
+#' tempted to use \code{method = "dirty"} instead of \code{method = "desk"}...
+#' but we chickened out since we predicted that users would then refrain from
+#' mentioning the method they used in publications...
+#'
+#' Note that if the provided slope is set to 0 and an intercept is considered,
+#' the calibration methods actually corresponds to the simple consideration of a
+#' fractionation factor.
 #' 
 #' - **Statistical model**: none!
 #' 
 #' - **Required calibration data**: the calibration data to be used here must be
 #' a dataframe (or a tibble) containing a single row with the following columns:
-#'    - \code{intercept}: the estimated slope of a fit of the form
-#'    \code{lm(sample_value ~ source_value)}
-#'    - \code{slope}: the estimated slope of a fit of the form
-#'    \code{lm(sample_value ~ source_value)}
-#'    - \code{intercept_se} (optional): the standard error around the intercept
-#'    - \code{slope_se} (optional): the standard error around the slope
-#'    - \code{resid_var} (optional): the residual variance (not SD) of a fit of 
-#'    the form \code{lm(sample_value ~ source_value)}
-#'    
-#' - **Important**: if the parameter values you have access to do not refer to a
-#' model of the form \code{lm(sample_value ~ source_value)} but to a model of
-#' the form \code{lm(source_value ~ sample_value)} (i.e. if the x-axis
-#' represents the isotopic values of the samples and not those of the
-#' environment), then you must transform your parameters to fit the scheme used
-#' here. More details to come.
+#'    - \code{intercept}: the estimated slope of a LM calibration fit
+#'    - \code{slope}: the estimated slope of a LM calibration fit
+#'    - \code{intercept_se} (optional for "desk"): the standard error around the
+#'    intercept
+#'    - \code{slope_se} (optional for "desk"): the standard error around the
+#'    slope
+#'    - \code{resid_var} (optional for "desk"): the residual variance (not SD)
+#'    of a LM calibration fit
+#'    - \code{sign_mean_Y} (only for "desk_inverse"): a \var{numeric} indicating
+#'    the sign of the mean value of the isotopes in the environment in the
+#'    format return by [sign]; that is either \var{1} (if positive) or \var{-1}
+#'    (if negative). This is required for pivoting the regression from
+#'    "desk_inverse" to "desk".
+#'    - \code{N} (only for "desk_inverse"): a  \var{numeric} indicating the
+#'    sample size of the data used for the calibration fit. This is required for
+#'    pivoting the regression from "desk_inverse" to "desk".
 #' 
 #' @aliases calibfit print.CALIBFIT summary.CALIBFIT
 #' @inheritParams isoscape
 #' @param data A \var{dataframe} containing the calibration data (see note
 #'   below)
 #' @param method A \var{string} indicating the method used to generate the data
-#'   used for the calibration. By default method is \var{"wild"}, but the
-#'   other possible values are \var{"lab"} and \var{"desk"}. See **Details** for
-#'   the difference between these three methods. 
+#'   used for the calibration. By default method is \var{"wild"}, but the other
+#'   possible values are \var{"lab"}, \var{"desk"} and \var{"desk_inverse"} .
+#'   See **Details** for the difference between these three methods.
 #' @param verbose A \var{logical} indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
-#'   running. By default verbose is \var{TRUE} if users run an interactive R
+#'   running. By default verbose is \var{TRUE} if you run an interactive R
 #'   session and \var{FALSE} otherwise.
 #' @param control_optim A \var{list} to pass information to the argument control
 #'   in the call to \code{\link{optim}} (only effective when \code{method =
@@ -186,7 +219,7 @@
 #'   inference of spatial origins with mixed models using the R package IsoriX.
 #'   In Hobson KA, Wassenaar LI (eds.), Tracking Animal Migration with Stable
 #'   Isotopes, second edition. Academic Press, London.
-#'   
+#'  
 #' @examples
 #' 
 #' ## The examples below will only be run if sufficient time is allowed
@@ -283,9 +316,10 @@
 #' }
 #' 
 #' @export
+
 calibfit <- function(data,
                      isofit = NULL,
-                     method = c("wild", "lab", "desk"),
+                     method = c("wild", "lab", "desk", "desk_inverse"),
                      verbose = interactive(),
                      control_optim = list()
                      ) {
@@ -295,7 +329,7 @@ calibfit <- function(data,
       stop("object 'isofit' of class MULTIISOFIT; calibration have not yet been implemented for this situation.")
     }
     
-    method <- match.arg(method, c("wild", "lab", "desk"))
+    method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
     
     ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
     ## That would allow to fit species as a random effect in the model
@@ -332,7 +366,9 @@ calibfit <- function(data,
                          lab = .calibfit_lab(data = data,
                                              species_rand = species_rand,
                                              verbose = verbose),
-                         desk = .calibfit_desk(data = data, verbose = verbose))
+                         desk = .calibfit_desk(data = data, verbose = verbose),
+                         desk_inverse = .calibfit_desk_inverse(data = data, verbose = verbose)
+                         )
     
   class(result_calib) <- c("CALIBFIT", "list")
 
@@ -362,7 +398,7 @@ calibfit <- function(data,
     data$lat_2 <- data$lat^2
     data$long_2 <- data$long^2
     data$source_ID <- as.factor(paste("new", data$site_ID, sep = "_"))
-    }
+  }
   
   else if (method == "lab") {
     
@@ -378,9 +414,9 @@ calibfit <- function(data,
     if (!is.null(data$site_ID)) {
       data$site_ID <- factor(data$site_ID)
     }
-    }
+  }
   
-  else if (method == "desk") {
+  else if (method == "desk" || method == "desk_inverse") {
     
     ## Checking the inputs
     if (is.null(data$intercept)) {
@@ -395,7 +431,30 @@ calibfit <- function(data,
 
     ## Preparing the inputs
     ### No preparation needed
+  }
+  
+  else if (method == "desk_inverse") {
+    
+    ## Checking the inputs
+    if (is.null(data$intercept_se)) {
+      stop("The dataset does not seem to contain the required variable 'intercept_se'.")
     }
+    if (is.null(data$slope_se)) {
+      stop("The dataset does not seem to contain the required variable 'slope_se'.")
+    }
+    if (is.null(data$resid_var)) {
+      stop("The dataset does not seem to contain the required variable 'resid_var'.")
+    }
+    if (is.null(data$sign_mean_Y)) {
+      stop("The dataset does not seem to contain the required variable 'sign_mean_Y'.")
+    }
+    if (is.null(data$N)) {
+      stop("The dataset does not seem to contain the required variable 'N'.")
+    }
+
+    ## Preparing the inputs
+    ### No preparation needed
+  }
   
   else {
     stop("method argument not recognised")
@@ -678,6 +737,30 @@ calibfit <- function(data,
               "data" = data,
               "sp_points" = NULL))
   
+}
+
+
+.calibfit_desk_inverse <- function(data,
+                                   verbose = interactive()) {
+  ## This function should not be called by the user.
+  ## It fits the calibration model according to the "desk" method (aka "dirty").
+
+  inv_reg <- .invert_reg(intercept = data$intercept,
+                         slope = data$slope,
+                         SE_I = data$intercept_se,
+                         SE_S = data$slope_se,
+                         phi = data$resid_var,
+                         N = data$N,
+                         sign_mean_Y = data$sign_mean_Y
+                        )
+  
+  data_transformed <- data.frame(intercept = inv_reg$intercept,
+                                 slope = inv_reg$slope,
+                                 intercept_se = inv_reg$SE_I,
+                                 slope_se = inv_reg$SE_S,
+                                 resid_var = inv_reg$phi)
+  
+  .calibfit_desk(data = data_transformed, verbose = verbose)
 }
 
 #' @export
