@@ -254,11 +254,21 @@
 #' summary(CalibAlien)
 #' plot(CalibAlien)
 #' 
-#' ## Note: you can plot several calibrations at once (using bats this time):
+#' ## Note 1: you can plot several calibrations at once (using bats this time):
 #' CalibBat1 <- calibfit(data = CalibDataBat, isofit = GermanFit)
 #' CalibBat2 <- calibfit(data = CalibDataBat2, isofit = GermanFit)
 #' plot(CalibBat1)
 #' points(CalibBat2, pch = 3, col = "red", CI = list(col = "green"))
+#' 
+#' ## Note 2: you can extract data created by plot() for plotting things yourself:
+#' dataplot <- plot(CalibAlien, plot = FALSE)
+#' plot(sample_fitted ~ source_value, data = dataplot,
+#'      xlim = range(dataplot$source_value),
+#'      ylim = range(dataplot$sample_lwr, dataplot$sample_upr), col = NULL)
+#' polygon(x = c(dataplot$source_value, rev(dataplot$source_value)),
+#'         y = c(dataplot$sample_lwr, rev(dataplot$sample_upr)),
+#'         col = 3)
+#' points(sample_fitted ~ source_value, dataplot, type = "l", lty = 2)
 #'  
 #'
 #' ####################################################

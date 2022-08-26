@@ -52,6 +52,7 @@
   ylim = NULL,
   line = list(show = TRUE, col = "blue"),
   CI = list(show = TRUE, col = "blue"),
+  plot = TRUE,
   ...
 )
 
@@ -61,6 +62,7 @@
   col = "red",
   line = list(show = TRUE, col = "red"),
   CI = list(show = TRUE, col = "red"),
+  plot = TRUE,
   ...
 )
 

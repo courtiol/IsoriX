@@ -721,12 +721,12 @@ plot.CALIBFIT <- function(x,
                           ylim = NULL,
                           line = list(show = TRUE, col = "blue"),
                           CI = list(show = TRUE, col = "blue"),
+                          plot = TRUE,
                           ...) {
 
   .complete_args(plot.CALIBFIT)
 
-  plotting_calibfit(x = x, pch = pch, col = col, line = line, CI = CI, xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim, points = FALSE, ...)
-  return(invisible(NULL))
+  plotting_calibfit(x = x, pch = pch, col = col, line = line, CI = CI, xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim, points = FALSE, plot = plot, ...)
 }
 
 
@@ -737,15 +737,14 @@ points.CALIBFIT <- function(x,
                             col = "red",
                             line = list(show = TRUE, col = "red"),
                             CI = list(show = TRUE, col = "red"),
+                            plot = TRUE,
                             ...) {
   .complete_args(points.CALIBFIT)
   
-  plotting_calibfit(x = x, pch = pch, col = col, line = line, CI = CI, xlab = NULL, ylab = NULL, points = TRUE, ...)
-  return(invisible(NULL))
-  
+  plotting_calibfit(x = x, pch = pch, col = col, line = line, CI = CI, xlab = NULL, ylab = NULL, points = TRUE, plot = plot, ...)
 }
 
-plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, ylim = NULL, points = FALSE, ...) {
+plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, ylim = NULL, points = FALSE, plot = TRUE, ...) {
 
   if (!inherits(x, "CALIBFIT")) {
     stop("This function must be called on an object of class CALIBFIT.")
@@ -770,37 +769,36 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
                   desk = ylim)
 
   ## prepare design matrix
-  if (line$show || CI$show) { 
-    xs <- with(x$data,
-               seq(min(x_var),
-                   max(x_var),
-                   length = 100
-               )
-    )
-    X <- cbind(1, xs)
-    fitted <- X %*% x$param
-  }
-
-  ## compute CI
-  if (CI$show) {
-    fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
-    if (any(fixedVar < 0)) {
-      fixedVar[fixedVar < 0] <- 0
-      warning("Some negative estimates of variances are considered null. Negative estimates of variances are a sign that numerical problems occured during the fitting of the calibration.")
-    }
-    lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
-    upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
-  } else {
-    lwr <- min(y_var, na.rm = TRUE)
-    upr <- max(y_var, na.rm = TRUE)
-  }
+  xs <- with(x$data,
+             seq(min(x_var),
+                 max(x_var),
+                 length = 100
+             )
+  )
+  X <- cbind(1, xs)
   
+  ## compute fitted values (in all case so as to return them even if not displayed)
+  fitted <- X %*% x$param
+
+  ## compute CI (in all case so as to return it even if not displayed)
+  fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
+  if (any(fixedVar < 0)) {
+    fixedVar[fixedVar < 0] <- 0
+    warning("Some negative estimates of variances are considered null. Negative estimates of variances are a sign that numerical problems occured during the fitting of the calibration.")
+  }
+  lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
+  upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)
+
   if (is.null(xlim)) {
     xlim <- range(x_var, na.rm = TRUE)
   }
   
   if (is.null(ylim)) {
-    ylim <- range(lwr, y_var, upr, na.rm = TRUE)
+    if (CI$show) {
+      ylim <- range(lwr, y_var, upr, na.rm = TRUE)
+    } else {
+      ylim <- range(y_var, na.rm = TRUE)
+    }
   }
   
   ## remove fake points used for the construction of the plot when using calibration method "desk"
@@ -808,7 +806,7 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
     col <- NULL
   }
   
-  if (!points) {
+  if (!points && plot) {
   with(x$data,
        graphics::plot.default(y_var ~ x_var,
                               xlab = xlab,
@@ -821,26 +819,30 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
                               ...
        )
   )
-  } else {
+  } else if (plot) {
     with(x$data,
          graphics::points.default(y_var ~ x_var, pch = pch, col = col, ...)
     )
   }
   
   ## plot regression line
-  if (line$show) {
+  if (line$show && plot) {
     graphics::points(fitted ~ xs, col = line$col, lwd = 2, type = "l")
   }
   
   ## plot CI
-  if (CI$show) {
+  if (CI$show && plot) {
     graphics::points(lwr ~ xs, col = CI$col, lty = 2, type = "l")
     graphics::points(upr ~ xs, col = CI$col, lty = 2, type = "l")
-    ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
-    rm(fitted, fixedVar)
   }
   
-  return(invisible(NULL))
+  ## return for plots outside IsoriX
+  out <- data.frame(source_value = xs, sample_fitted = fitted, sample_lwr = lwr, sample_upr = upr)
+  
+  ## tweak to please codetools::checkUsagePackage('IsoriX', skipWith = TRUE)
+  rm(fitted, fixedVar)
+  
+  return(invisible(out))
   }
 
 
