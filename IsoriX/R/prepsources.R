@@ -35,17 +35,13 @@
 #'   Should be a vector of round numbers. The default is to select all years
 #'   available.
 #' @param long_min A *numeric* indicating the minimum longitude to select
-#'   from. Should be a number between -180 and 180. If not provided, -180 will
-#'   be considered.
+#'   from. Should be a number between -180 and 180 (default = -180).
 #' @param long_max A *numeric* indicating the maximal longitude to select
-#'   from. Should be a number between -180 and 180. If not provided, 180 will be
-#'   considered.
+#'   from. Should be a number between -180 and 180 (default = 180).
 #' @param lat_min A *numeric* indicating the minimum latitude to select
-#'   from. Should be a number between -90 and 90. If not provided, -90 will be
-#'   considered.
+#'   from. Should be a number between -90 and 90 (default = -90).
 #' @param lat_max A *numeric* indicating the maximal latitude to select
-#'   from. Should be a number between -90 and 90. If not provided, 90 will be
-#'   considered.
+#'   from (default = 90).
 #' @param split_by A *string* indicating whether data should be aggregated
 #'   per location (`split_by = NULL`, the default), per location:month
 #'   combination (`split_by = "month"`), or per location:year combination
@@ -132,10 +128,10 @@
 prepsources <- function(data,
                         month = 1:12,
                         year,
-                        long_min,
-                        long_max,
-                        lat_min,
-                        lat_max,
+                        long_min = -180,
+                        long_max = 180,
+                        lat_min = -90,
+                        lat_max = 90,
                         split_by = NULL,
                         prop_random = 0,
                         random_level = "source",
@@ -159,11 +155,7 @@ prepsources <- function(data,
   
   ## Handle missing data
   if (missing("year")) year <- sort(unique(data[, col_year, drop = TRUE], na.rm = TRUE))
-  if (missing("long_min")) long_min <- -180
-  if (missing("long_max")) long_max <- 180
-  if (missing("lat_min")) lat_min <- -90
-  if (missing("lat_max")) lat_max <- 90 
-  
+
   ## Handle the month column and convert all months to numbers
   data[, col_month] <- .converts_months_to_numbers(data[, col_month, drop = TRUE])
   

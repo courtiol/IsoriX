@@ -8,10 +8,10 @@ prepsources(
   data,
   month = 1:12,
   year,
-  long_min,
-  long_max,
-  lat_min,
-  lat_max,
+  long_min = -180,
+  long_max = 180,
+  lat_min = -90,
+  lat_max = 90,
   split_by = NULL,
   prop_random = 0,
   random_level = "source",
@@ -36,20 +36,16 @@ Should be a vector of round numbers. The default is to select all years
 available.}
 
 \item{long_min}{A \emph{numeric} indicating the minimum longitude to select
-from. Should be a number between -180 and 180. If not provided, -180 will
-be considered.}
+from. Should be a number between -180 and 180 (default = -180).}
 
 \item{long_max}{A \emph{numeric} indicating the maximal longitude to select
-from. Should be a number between -180 and 180. If not provided, 180 will be
-considered.}
+from. Should be a number between -180 and 180 (default = 180).}
 
 \item{lat_min}{A \emph{numeric} indicating the minimum latitude to select
-from. Should be a number between -90 and 90. If not provided, -90 will be
-considered.}
+from. Should be a number between -90 and 90 (default = -90).}
 
 \item{lat_max}{A \emph{numeric} indicating the maximal latitude to select
-from. Should be a number between -90 and 90. If not provided, 90 will be
-considered.}
+from (default = 90).}
 
 \item{split_by}{A \emph{string} indicating whether data should be aggregated
 per location (\code{split_by = NULL}, the default), per location:month
