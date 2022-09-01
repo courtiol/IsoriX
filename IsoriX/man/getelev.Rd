@@ -13,6 +13,7 @@ getelev(
   lat_max = 90,
   override_size_check = FALSE,
   overwrite = FALSE,
+  Ncpu = getOption_IsoriX("Ncpu"),
   verbose = interactive(),
   ...
 )
@@ -41,6 +42,8 @@ override size checks (default = \code{FALSE})}
 
 \item{overwrite}{A \emph{logical} indicating if an existing file should be
 re-downloaded}
+
+\item{Ncpu}{An \emph{integer} specifying the number of CPU's to use when downloading AWS tiles (default set by global package options).}
 
 \item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is

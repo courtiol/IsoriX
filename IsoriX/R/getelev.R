@@ -38,6 +38,7 @@
 #'   override size checks (default = `FALSE`)
 #' @param overwrite A *logical* indicating if an existing file should be
 #'   re-downloaded
+#' @param Ncpu An *integer* specifying the number of CPU's to use when downloading AWS tiles (default set by global package options).
 #' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
 #'   running. By default verbose is `TRUE` if users use an interactive R
@@ -62,6 +63,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                     lat_max = 90,
                     override_size_check = FALSE,
                     overwrite = FALSE,
+                    Ncpu = getOption_IsoriX("Ncpu"),
                     verbose = interactive(),
                     ...
                     ) {
@@ -97,6 +99,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                                      prj = "+proj=longlat +datum=WGS84 +no_defs",
                                      clip = "bbox",
                                      override_size_check = override_size_check,
+                                     ncpu = Ncpu,
                                      verbose = verbose,
                                      ...)
     
