@@ -5,26 +5,17 @@
   ## This function should not be called by the user.
   ## It displays a message when the package is being loaded.
   packageStartupMessage(## display message
-                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is now loaded!",
+                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is now loaded",
                         "\n",
                         "\n Type:",
+                        "\n   * `?IsoriX` for a very short description",
+                        "\n   * `browseURL('https://bookdown.org/content/782/')` for a longer (online) documentation",
+                        "\n   * `help(package = 'IsoriX', help_type = 'html')` for a list of the package objects and help files",
+                        "\n   * `citation('IsoriX')` for how to cite IsoriX (i.e. the papers you should read)",
+                        "\n   * `news(package = 'IsoriX')` for info on changed between versions of IsoriX",
                         "\n",
-                        "\n    * ?IsoriX",
-                        "\n      for a very short description",
-                        "\n",
-                        "\n    * help(package = 'IsoriX', help_type = 'html')",
-                        "\n      for a list of the package objects and their help files",
-                        "\n",
-                        "\n    * browseURL('https://bookdown.org/content/782/')",
-                        "\n      for online tutorials & documentation",
-                        "\n",
-                        "\n    * citation('IsoriX')",
-                        "\n      for information on how to cite IsoriX (i.e. the papers you should read)",
-                        "\n",
-                        "\n    * news(package = 'IsoriX')",
-                        "\n      for info on what has changed between the different versions of IsoriX",
-                        "\n",
-                        "\n Please also consider joinging the mailing list / google group: 'https://groups.google.com/g/IsoriX' for help, news and discussions about IsoriX!",
+                        "\n Please join the mailing list 'https://groups.google.com/g/IsoriX'",
+                        "\n for help, news and discussions about IsoriX",
                         "\n"
                         )
   }
