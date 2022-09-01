@@ -12,7 +12,8 @@
 #' elevation raster of the whole world is downloaded with a resolution
 #' correspond to ca. 0.6 km2 per raster cell. You can increase the resolution by
 #' increasing the value of the argument `z`. You can also restrict the area
-#' to be downloaded using the arguments `lat` and `long`.
+#' to be downloaded using the arguments `long_min`, `long_max`, `lat_min` &
+#' `lat_max`.
 #' 
 #' Note that when using [prepraster] you will be able to reduce the resolution
 #' and restrict the boundaries of this elevation raster, but you won't be able
@@ -28,16 +29,11 @@
 #' [elevatr::get_elev_raster] for information on the sources and follows link in
 #' there to know how to cite them.
 #' 
-#' @param path A *string* indicating where to store the file on the hard
-#'   drive (without the file name!)
-#' @param filename A *string* indicating the name under which the file must
-#'   be stored (default = `elevation.tif`)
+#' @inheritParams prepsources
+#' @param file A *string* indicating where to store the file on the hard
+#'   drive (default = `~/elevation_world_z5.tif`)
 #' @param z An *integer* between 1 and 14 indicating the resolution of the
 #'   file do be downloaded (1 = lowest, 14 = highest; default = 5)
-#' @param long A *numeric vector* of length 2 indicating the minimum and
-#'   maximum WGS84 longitudes of the raster.
-#' @param lat A *numeric vector* of length 2 indicating the minimum and
-#'   maximum WGS84 latitude of the raster.
 #' @param override_size_check A *logical* indicating whether or not to
 #'   override size checks (default = `FALSE`)
 #' @param overwrite A *logical* indicating if an existing file should be
@@ -58,28 +54,28 @@
 #' ## getelev()
 #' 
 #' @export
-getelev <- function(path = NULL,
-                    filename = "elevWorld_z5.tif",
+getelev <- function(file = "~/elevation_world_z5.tif",
                     z = 5,
-                    long = c(-180, 180),
-                    lat = c(-90, 90),
+                    long_min = -180,
+                    long_max = 180,
+                    lat_min = -90,
+                    lat_max = 90,
                     override_size_check = FALSE,
                     overwrite = FALSE,
                     verbose = interactive(),
                     ...
                     ) {
 
-  ## Use current directory if path is missing
-  if (is.null(path)) {
-    path <- getwd()
-  }
-  
   ## Turning path into canonical form
-  ## (this avoids the problem of having terminal slash or not)
-  path <- normalizePath(path, mustWork = FALSE)
+  ## (this avoids the problem of using the wrong slashes and so on)
+  file <- normalizePath(file, mustWork = FALSE)
   
-  ## Create directory if missing
-  if (!dir.exists(path)) {
+  path <- dirname(file)
+  
+  if (path == ".") {
+    path <- getwd()
+  } else if (!dir.exists(path)) {
+    ## Create directory if missing
     if (verbose > 0) {
       print("(the folder you specified does not exist and will therefore be created)", quote = FALSE)
     }
@@ -87,16 +83,16 @@ getelev <- function(path = NULL,
   }
   
   ## Conditional file download
-  complete_path <- paste(path, filename, sep = "/")
-  if (file.exists(complete_path) & !overwrite) {
-    message(paste("the file", filename, "is already present in", path,
+  if (file.exists(file) & !overwrite) {
+    message(paste("the file", basename(file), "is already present in", path,
                   "so it won't be downloaded again unless you set the argument overwrite to TRUE\n"
     )
     )
   } else {
   
     if (verbose) print("Downloading and formating the elevation raster... (be patient)")
-    elev <- elevatr::get_elev_raster(location = data.frame(long = long, lat = lat),
+    elev <- elevatr::get_elev_raster(location = data.frame(long = c(long_min, long_max),
+                                                           lat = c(lat_min, lat_max)),
                                      z = z,
                                      prj = "+proj=longlat +datum=WGS84 +no_defs",
                                      clip = "bbox",
@@ -105,14 +101,14 @@ getelev <- function(path = NULL,
                                      ...)
     
     if (verbose) print("Writing the elevation raster on the disk...")
-    raster::writeRaster(elev, filename = complete_path, overwrite = overwrite)
+    raster::writeRaster(elev, filename = file, overwrite = overwrite)
     if (verbose) print("Done.")
   }
   
   message("you can load your elevation raster as follows:")
-  message(paste0("elev_raster <- raster::raster('", complete_path, "')"))
+  message(paste0("elev_raster <- raster::raster('", file, "')"))
   
-  return(invisible(complete_path))
+  return(invisible(file))
 }
 
 
@@ -135,6 +131,8 @@ getelev <- function(path = NULL,
 #' file again, specifying overwrite = TRUE to overwrite the corrupted file.
 #' 
 #' @inheritParams getelev
+#' @param path A *string* indicating where to store the file on the hard
+#'   drive (without the file name!)
 #' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
 #'   running. By default verbose is `TRUE` if users use an interactive R
@@ -202,6 +200,7 @@ getprecip <- function(path = NULL,
 #'   [getprecip()].
 #'
 #' @inheritParams getelev
+#' @inheritParams getprecip
 #' @param address A *string* indicating the address of the file on internet
 #' @param filename A *string* indicating the name under which the file must
 #'   be stored

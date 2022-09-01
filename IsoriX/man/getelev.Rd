@@ -5,11 +5,12 @@
 \title{Download an elevation raster from internet}
 \usage{
 getelev(
-  path = NULL,
-  filename = "elevWorld_z5.tif",
+  file = "~/elevation_world_z5.tif",
   z = 5,
-  long = c(-180, 180),
-  lat = c(-90, 90),
+  long_min = -180,
+  long_max = 180,
+  lat_min = -90,
+  lat_max = 90,
   override_size_check = FALSE,
   overwrite = FALSE,
   verbose = interactive(),
@@ -17,20 +18,23 @@ getelev(
 )
 }
 \arguments{
-\item{path}{A \emph{string} indicating where to store the file on the hard
-drive (without the file name!)}
-
-\item{filename}{A \emph{string} indicating the name under which the file must
-be stored (default = \code{elevation.tif})}
+\item{file}{A \emph{string} indicating where to store the file on the hard
+drive (default = \verb{~/elevation_world_z5.tif})}
 
 \item{z}{An \emph{integer} between 1 and 14 indicating the resolution of the
 file do be downloaded (1 = lowest, 14 = highest; default = 5)}
 
-\item{long}{A \emph{numeric vector} of length 2 indicating the minimum and
-maximum WGS84 longitudes of the raster.}
+\item{long_min}{A \emph{numeric} indicating the minimum longitude to select
+from. Should be a number between -180 and 180 (default = -180).}
 
-\item{lat}{A \emph{numeric vector} of length 2 indicating the minimum and
-maximum WGS84 latitude of the raster.}
+\item{long_max}{A \emph{numeric} indicating the maximal longitude to select
+from. Should be a number between -180 and 180 (default = 180).}
+
+\item{lat_min}{A \emph{numeric} indicating the minimum latitude to select
+from. Should be a number between -90 and 90 (default = -90).}
+
+\item{lat_max}{A \emph{numeric} indicating the maximal latitude to select
+from (default = 90).}
 
 \item{override_size_check}{A \emph{logical} indicating whether or not to
 override size checks (default = \code{FALSE})}
@@ -63,7 +67,8 @@ By default (and to keep with the spirit of the former implementations of
 elevation raster of the whole world is downloaded with a resolution
 correspond to ca. 0.6 km2 per raster cell. You can increase the resolution by
 increasing the value of the argument \code{z}. You can also restrict the area
-to be downloaded using the arguments \code{lat} and \code{long}.
+to be downloaded using the arguments \code{long_min}, \code{long_max}, \code{lat_min} &
+\code{lat_max}.
 
 Note that when using \link{prepraster} you will be able to reduce the resolution
 and restrict the boundaries of this elevation raster, but you won't be able
