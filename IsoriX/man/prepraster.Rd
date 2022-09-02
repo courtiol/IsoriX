@@ -11,31 +11,37 @@ prepraster(
   aggregation_factor = 0L,
   aggregation_fn = mean,
   manual_crop = NULL,
+  values_to_zero = c(-Inf, 0),
   verbose = interactive()
 )
 }
 \arguments{
 \item{raster}{The structural raster (\emph{RasterLayer})}
 
-\item{isofit}{The fitted isoscape model returned by the function
-\link{isofit}}
+\item{isofit}{The fitted isoscape model returned by the function \link{isofit}}
 
-\item{margin_pct}{The percentage representing by how much the space should
-extend outside the range of the coordinates of the sources
-(default = 5).}
+\item{margin_pct}{The percentage representing by how much the area should
+extend outside the area used for cropping (default = 5, corresponding to
+5\%). Set to 0 if you want exact cropping.}
 
-\item{aggregation_factor}{The number of neighbouring cells (\emph{integer})
-to merge during aggregation}
+\item{aggregation_factor}{The number of neighbouring cells (\emph{integer}) to
+merge during aggregation}
 
 \item{aggregation_fn}{The \emph{function} used to aggregate cells}
 
 \item{manual_crop}{A vector of four coordinates (\emph{numeric}) for manual
 cropping, e.g. the spatial extent}
 
-\item{verbose}{A \emph{logical} indicating whether information about the
-progress of the procedure should be displayed or not while the function is
-running. By default verbose is \code{TRUE} if users use an interactive R
-session, and \code{FALSE} otherwise.}
+\item{values_to_zero}{A \emph{numeric vector} of length two specifying the range
+of values for the structural raster that must be turned into 0. Default is
+\code{c(-Inf, 0)} which for an elevation raster brings all seas to an elevation
+of zero. For using IsoriX for marine organisms, you should use \code{c(0, Inf)}
+instead.}
+
+\item{verbose}{A \emph{logical} indicating whether information about the progress
+of the procedure should be displayed or not while the function is running.
+By default verbose is \code{TRUE} if users use an interactive R session, and
+\code{FALSE} otherwise.}
 }
 \value{
 The prepared structural raster of class \emph{RasterLayer}
@@ -154,7 +160,7 @@ PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
 extent(PacificA) # note that the extent has changed!
 
 ## We plot (note the use of the function shift()!)
-levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue") +
+levelplot(PacificA, margin = FALSE, colorkey = FALSE) +
   layer(sp.polygons(CountryBorders, fill = "black")) +
   layer(sp.polygons(shift(CountryBorders, dx = 360), fill = "black"))
 
@@ -162,7 +168,7 @@ levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue") +
 
 }
 \seealso{
-\link{ElevRasterDE} for information on elevation rasters, which
-can be used as structural rasters.
+\link{ElevRasterDE} for information on elevation rasters, which can be
+used as structural rasters.
 }
 \keyword{utilities}

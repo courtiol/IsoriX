@@ -31,28 +31,30 @@
 #' (see example bellow). We will work on this on the future but we have other
 #' priorities for now (let us know if you really need this feature).
 #' 
+#' @inheritParams getelev
 #' @param raster The structural raster (*RasterLayer*)
-#' @param isofit The fitted isoscape model returned by the function
-#' [isofit]
-#' @param margin_pct The percentage representing by how much the space should 
-#' extend outside the range of the coordinates of the sources
-#' (default = 5). 
-#' @param aggregation_factor The number of neighbouring cells (*integer*)
-#' to merge during aggregation
+#' @param isofit The fitted isoscape model returned by the function [isofit]
+#' @param aggregation_factor The number of neighbouring cells (*integer*) to
+#'   merge during aggregation
 #' @param aggregation_fn The *function* used to aggregate cells
 #' @param manual_crop A vector of four coordinates (*numeric*) for manual
-#' cropping, e.g. the spatial extent
-#' @param verbose A *logical* indicating whether information about the
-#' progress of the procedure should be displayed or not while the function is
-#' running. By default verbose is `TRUE` if users use an interactive R
-#' session, and `FALSE` otherwise.
+#'   cropping, e.g. the spatial extent
+#' @param values_to_zero A *numeric vector* of length two specifying the range
+#'   of values for the structural raster that must be turned into 0. Default is
+#'   `c(-Inf, 0)` which for an elevation raster brings all seas to an elevation
+#'   of zero. For using IsoriX for marine organisms, you should use `c(0, Inf)`
+#'   instead.
+#' @param verbose A *logical* indicating whether information about the progress
+#'   of the procedure should be displayed or not while the function is running.
+#'   By default verbose is `TRUE` if users use an interactive R session, and
+#'   `FALSE` otherwise.
 #' @return The prepared structural raster of class *RasterLayer*
 #' @note Aggregating the raster may lead to different results for the
-#' assignment, because the values of raster cells changes depending on the
-#' aggregation function (see example below), which in turn affects model
-#' predictions.
-#' @seealso [ElevRasterDE] for information on elevation rasters, which
-#' can be used as structural rasters.
+#'   assignment, because the values of raster cells changes depending on the
+#'   aggregation function (see example below), which in turn affects model
+#'   predictions.
+#' @seealso [ElevRasterDE] for information on elevation rasters, which can be
+#'   used as structural rasters.
 #' 
 #' @keywords utilities
 #' @examples
@@ -130,7 +132,7 @@
 #' extent(PacificA) # note that the extent has changed!
 #' 
 #' ## We plot (note the use of the function shift()!)
-#' levelplot(PacificA, margin = FALSE, colorkey = FALSE, col = "blue") +
+#' levelplot(PacificA, margin = FALSE, colorkey = FALSE) +
 #'   layer(sp.polygons(CountryBorders, fill = "black")) +
 #'   layer(sp.polygons(shift(CountryBorders, dx = 360), fill = "black"))
 #' 
@@ -143,6 +145,7 @@ prepraster <- function(raster,
                        aggregation_factor = 0L,
                        aggregation_fn = mean,
                        manual_crop = NULL,
+                       values_to_zero = c(-Inf, 0),
                        verbose = interactive()
                        ) {
 
@@ -161,6 +164,7 @@ prepraster <- function(raster,
           ) {
         warning("the cropping may not make sense (sources located outside structural raster)")
       }
+      if (length(values_to_zero) != 2) stop("the argument 'values_to_zero' must contain two values, use 'values_to_zero = c(0, 0)' if you want to prevent the transformation of any value to 0.")
       if (verbose) {
         print(paste("cropping..."))
       }
@@ -202,6 +206,9 @@ prepraster <- function(raster,
       raster <- raster::aggregate(raster, fact = aggregation_factor, fun = aggregation_fn)  ## aggregation
     }
   })
+
+  ## applies values_to_zero transformation
+  raster::values(raster) <- ifelse(raster::values(raster) < max(values_to_zero) & raster::values(raster) > min(values_to_zero), 0, raster::values(raster))
 
   ## store the raster in memory if possible
   if (raster::canProcessInMemory(raster)) {
