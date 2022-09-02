@@ -159,9 +159,11 @@ NULL
 #' #    CalibDataBat2$elev <- NULL
 #' #
 #' #    ## We reconstruct the elevation data using an elevation raster
-#' #    getelev(filename = "elevBats.tif", z = 6,
-#' #            lat = range(CalibDataBat2$lat),
-#' #            long = range(CalibDataBat2$long))
+#' #    getelev(file = "elevBats.tif", z = 6,
+#' #            lat_min = min(CalibDataBat2$lat),
+#' #            lat_max = max(CalibDataBat2$lat),
+#' #            long_min = min(CalibDataBat2$long),
+#' #            long_max = max(CalibDataBat2$long))
 #' #    ElevationRasterBig <- raster("elevBats.tif")
 #' #    CalibDataBat2$elev <- extract(
 #' #        ElevationRasterBig,
