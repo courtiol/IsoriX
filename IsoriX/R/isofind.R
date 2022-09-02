@@ -273,7 +273,10 @@ calibfit!")
       ## we create individual rasters containing the variance of the test statistics
       list_varstat_layers <- var_term1
     }
-    rm(var_term1, var_term2, var_term3, var_term4)
+    rm(var_term1) 
+    if (exists("var_term2")) rm(var_term2)
+    if (exists("var_term3")) rm(var_term3)
+    if (exists("var_term4")) rm(var_term4)
     
     names(list_varstat_layers) <- names_layers
     varstat_brick <- raster::brick(list_varstat_layers)
