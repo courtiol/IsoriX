@@ -34,6 +34,9 @@
 #'   drive (default = `~/elevation_world_z5.tif`)
 #' @param z An *integer* between 1 and 14 indicating the resolution of the
 #'   file do be downloaded (1 = lowest, 14 = highest; default = 5)
+#' @param margin_pct The percentage representing by how much the area should
+#'   extend outside the area used for cropping (default = 5, corresponding to
+#'   5%). Set to 0 if you want exact cropping.
 #' @param override_size_check A *logical* indicating whether or not to
 #'   override size checks (default = `FALSE`)
 #' @param overwrite A *logical* indicating if an existing file should be
@@ -61,6 +64,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                     long_max = 180,
                     lat_min = -90,
                     lat_max = 90,
+                    margin_pct = 5,
                     override_size_check = FALSE,
                     overwrite = FALSE,
                     Ncpu = getOption_IsoriX("Ncpu"),
@@ -82,6 +86,26 @@ getelev <- function(file = "~/elevation_world_z5.tif",
       print("(the folder you specified does not exist and will therefore be created)", quote = FALSE)
     }
     dir.create(path, recursive = TRUE)
+  }
+  
+  ## Applying margin_pct
+  if (margin_pct != 0) {
+    
+    margin_long_extra <- (long_max - long_min) * margin_pct/100
+    margin_lat_extra  <- (lat_max - lat_min) * margin_pct/100
+    
+    if (long_min > -180) {
+      long_min <- max(c(-180, long_min - margin_long_extra))
+    }
+    if (long_max < 180) {
+      long_max <- min(c(180, long_max + margin_long_extra))
+    }
+    if (lat_min > -90) {
+      lat_min <- max(c(-90, lat_min - margin_lat_extra))
+    }
+    if (lat_max < 90) {
+      lat_max <- min(c(90, lat_max + margin_lat_extra))
+    }
   }
   
   ## Conditional file download

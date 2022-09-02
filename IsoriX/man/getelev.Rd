@@ -11,6 +11,7 @@ getelev(
   long_max = 180,
   lat_min = -90,
   lat_max = 90,
+  margin_pct = 5,
   override_size_check = FALSE,
   overwrite = FALSE,
   Ncpu = getOption_IsoriX("Ncpu"),
@@ -36,6 +37,10 @@ from. Should be a number between -90 and 90 (default = -90).}
 
 \item{lat_max}{A \emph{numeric} indicating the maximal latitude to select
 from (default = 90).}
+
+\item{margin_pct}{The percentage representing by how much the area should
+extend outside the area used for cropping (default = 5, corresponding to
+5\%). Set to 0 if you want exact cropping.}
 
 \item{override_size_check}{A \emph{logical} indicating whether or not to
 override size checks (default = \code{FALSE})}
