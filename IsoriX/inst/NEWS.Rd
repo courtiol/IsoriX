@@ -40,7 +40,7 @@
   \subsection{Geeky change}{
     \itemize{
       \item the argument `long_min`, `long_max`, `lat_min` & `lat_max` function `prepsources()` now have explicit default values and should no longer be missing.
-      \item the version of spaMM required by IsoriX has changed to benefit from a new extractor we rely on for the computation of the 4th variance term during assignment (#143)
+      \item the version of spaMM required by IsoriX has changed to 3.13 so as to benefit from a new extractor we rely on for the computation of the 4th variance term during assignment (#143)
       \item the function depending on the package RandomFields are no longer available since that package has been (for now) retired by CRAN :-(
       \item IsoriX should now work with tibbles as inputs (#118)
     }

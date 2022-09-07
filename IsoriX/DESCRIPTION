@@ -1,5 +1,5 @@
 Package: IsoriX
-Version: 0.8.2.99991
+Version: 0.8.2.99992
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
 Authors@R: c(
@@ -21,7 +21,7 @@ Imports:
     raster,
     rasterVis (>= 0.30),
     sp,
-    spaMM (>= 3.12.45),
+    spaMM (>= 3.13),
     stats,
     tools,
     utils,
