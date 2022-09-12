@@ -49,8 +49,8 @@ opts_chunk$set(cache = FALSE,
 
 # Welcome {-}
 
-This documentation of the R package _IsoriX_ is a work in progress.
-So far, only the chapters 1 to 5 are close to completion.
+This bookdown (a particular form of R documentation) provides information on how to use the R package IsoriX.
+It is a work in progress, but it already contains plenty of material that should help you getting started with IsoriX.
 
 ```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6, cache = FALSE}
 ## for the following to work several chapters must be compiled!
