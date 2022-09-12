@@ -13,12 +13,11 @@
 
 
 ## Step 1: render the book
-
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 # you can check the output here: "/home/courtiol/main_current_projects/IsoriX_project/Documentation/docs/index.html"
 
 ## Step 1 (alternative): serve the book for live updating in Rstudio (requires servr package)
 bookdown::serve_book()
 
-## Step 2: upload the book
+## Step 2: upload the book (requires rsconnect package)
 bookdown::publish_book(name = "IsoriX")
