@@ -10,6 +10,23 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 
 ![isoscape](.github/image/image_intro-.gif)
 
+
+## Where to learn about IsoriX?
+You can start by reading our [bookdown](https://bookdown.org/content/782/)!
+
+Then, it may not be a bad idea to also have a look at our papers:
+[here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
+
+Another great source of help is [our mailing list](https://groups.google.com/g/IsoriX).
+First register for free (using your Google account) and then feel free to send us questions.
+
+For specific help on IsoriX functions and objects, you should also check the documentation embedded in the package after having installed and attached (= loaded) it:
+
+```R
+help(package = "IsoriX")
+```
+
+
 ## How to download and install IsoriX?
 You can download and install the stable version of IsoriX directly from within R by typing:
 
@@ -43,22 +60,6 @@ with_config(use_proxy("192.123.4.5:6789"), remotes::install_github("courtiol/Iso
 ```
 
 Off course, unless you are in the same institute than some of us, replace the numbers (`"192.123.4.5:6789"`) with those corresponding to your proxy settings!
-
-
-## Where to learn about IsoriX?
-You can start by reading our [bookdown](https://bookdown.org/content/782/)!
-
-Then, it may not be a bad idea to also have a look at our papers:
-[here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
-
-Another great source of help is [our mailing list](https://groups.google.com/g/IsoriX).
-First register for free (using your Google account) and then feel free to send us questions.
-
-For specific help on IsoriX functions and objects, you should also check the documentation embedded in the package after having installed and attached (= loaded) it:
-
-```R
-help(package = "IsoriX")
-```
 
 
 ## How can you contribute?
