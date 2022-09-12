@@ -31,27 +31,27 @@
 # local folder
 
 CRAN_releases/
-local_trials/
-biblio_nonshared/
-sources_for_datasets/
+material_for_maintainer/local_trials/
+material_for_maintainer/biblio_nonshared/
+material_for_maintainer/sources_for_datasets/
 IsoriX.Rcheck
 
 # Files in vignettes that can easily be generated locally
 
-sources_for_vignettes/**/cache_knitr/
-sources_for_vignettes/**/fig_knitr/
-sources_for_vignettes/**/*.tif
-sources_for_vignettes/**/*.rda
-sources_for_vignettes/**/*.dbf
-sources_for_vignettes/**/*.shp
-sources_for_vignettes/**/*.shx
-sources_for_vignettes/**/*.prj
-sources_for_vignettes/**/*.asc
-sources_for_vignettes/**/*.pdf
-sources_for_vignettes/**/*.png
-sources_for_vignettes/**/species_14123/
-sources_for_vignettes/**/*.zip
-sources_for_vignettes/**/wc2.0_30s_prec/
+material_for_maintainer/sources_for_vignettes/**/cache_knitr/
+material_for_maintainer/sources_for_vignettes/**/fig_knitr/
+material_for_maintainer/sources_for_vignettes/**/*.tif
+material_for_maintainer/sources_for_vignettes/**/*.rda
+material_for_maintainer/sources_for_vignettes/**/*.dbf
+material_for_maintainer/sources_for_vignettes/**/*.shp
+material_for_maintainer/sources_for_vignettes/**/*.shx
+material_for_maintainer/sources_for_vignettes/**/*.prj
+material_for_maintainer/sources_for_vignettes/**/*.asc
+material_for_maintainer/sources_for_vignettes/**/*.pdf
+material_for_maintainer/sources_for_vignettes/**/*.png
+material_for_maintainer/sources_for_vignettes/**/species_14123/
+material_for_maintainer/sources_for_vignettes/**/*.zip
+material_for_maintainer/sources_for_vignettes/**/wc2.0_30s_prec/
 
 # The GNIP data
 
