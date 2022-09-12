@@ -84,7 +84,7 @@ these predicted values. Such uncertainty is accounted for when fitting the
 calibration fit so as to produce an unbiased estimation of the calibration
 relationship and it is also then accounted for by \link{isofind} when inferring
 the possible locations of origin. Before we added the argument \code{method} in
-calibfit (i.e. before releasing the version 0.9), this method was the only
+calibfit (i.e. before releasing the version 0.8.3), this method was the only
 one available in IsoriX.
 \itemize{
 \item \strong{Statistical model}: in this case, the calibration model to be fitted is
