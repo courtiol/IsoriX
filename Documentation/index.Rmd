@@ -3,7 +3,27 @@ title: "IsoriX: Isoscape Computation and Inference of Spatial Origins using R"
 author: "The IsoriX core Team"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
-site: bookdown::bookdown_site
+site: "bookdown::bookdown_site"
+output: 
+  bookdown::gitbook:
+    split_by: chapter
+    split_bib: no
+    sharing:
+      facebook: true
+      github: true
+      twitter: true
+      linkedin: true
+      weibo: true
+      instapaper: true
+      vk: true
+      whatsapp: true
+    config:
+      toc:
+        collapse: section
+        before: |
+          <li><a href="./">Documentation for IsoriX</a></li>
+        after: |
+          <li><a href="https://github.com/courtiol/IsoriX" target="blank">Click here for the R package</a></li>
 documentclass: book
 github-repo: courtiol/IsoriX
 cover-image: images/isoscape.png
