@@ -80,6 +80,6 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 
 * about other R packages on which IsoriX strongly depends:
 
-[spaMM](http://kimura.univ-montp2.fr/~rousset/spaMM.htm)
+[spaMM](https://gitlab.mbb.univ-montp2.fr/francois/spamm-ref)
 
 [rasterVis](https://oscarperpinan.github.io/rastervis/)
