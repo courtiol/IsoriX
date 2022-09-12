@@ -13,6 +13,14 @@
 }
 
 \section{version 0.8.3}{
+  \subsection{Minor change}{
+    \itemize{
+      \item the base package 'colourspace' is now suggested to avoid a note in R CMD check.
+    }
+  }
+}
+
+\section{version 0.8.3}{
   \subsection{New features}{
     \itemize{
       \item the function `calibfit()` gains an argument method that allows for selecting one of four calibration methods ("wild", "lab", "desk", "desk_inverse"). This allows for users to use 1) calibration samples associated with unknown environmental isotopic values, 2) calibration samples associated with known environmental isotopic values, or 3 & 4) the intercept and slope of a calibration relationship computed by others (e.g. values found in a paper). Note: the desk* methods allow for the consideration of a fractionaction factor too (i.e. slope = 0). See \code{calibfit} for details. (#20 & #142)

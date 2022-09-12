@@ -35,6 +35,7 @@ Description: Building isoscapes using mixed models and inferring the geographic
   plotting the maps produced with 'raster' using 'lattice'.
 License: GPL (>= 2)
 Suggests:
+    colorspace,
     gmp,
     magick,
     maps,
