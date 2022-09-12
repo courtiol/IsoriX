@@ -3,7 +3,27 @@ title: "IsoriX: Isoscape Computation and Inference of Spatial Origins using R"
 author: "The IsoriX core Team"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
-site: bookdown::bookdown_site
+site: "bookdown::bookdown_site"
+output: 
+  bookdown::gitbook:
+    split_by: chapter
+    split_bib: no
+    sharing:
+      facebook: true
+      github: true
+      twitter: true
+      linkedin: true
+      weibo: true
+      instapaper: true
+      vk: true
+      whatsapp: true
+    config:
+      toc:
+        collapse: section
+        before: |
+          <li><a href="./">Documentation for IsoriX</a></li>
+        after: |
+          <li><a href="https://github.com/courtiol/IsoriX" target="blank">Click here for the R package</a></li>
 documentclass: book
 github-repo: courtiol/IsoriX
 cover-image: images/isoscape.png
@@ -29,8 +49,8 @@ opts_chunk$set(cache = FALSE,
 
 # Welcome {-}
 
-This documentation of the R package _IsoriX_ is a work in progress.
-So far, only the chapters 1 to 5 are close to completion.
+This bookdown (a particular form of R documentation) provides information on how to use the R package IsoriX.
+It is a work in progress, but it already contains plenty of material that should help you getting started with IsoriX.
 
 ```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6, cache = FALSE}
 ## for the following to work several chapters must be compiled!

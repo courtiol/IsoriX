@@ -1,0 +1,9 @@
+# About this book
+
+We wrote this documentation in R Markdown and built it using the R package [**bookdown**](https://github.com/rstudio/bookdown).
+
+All the R code used to compile this bookdown ran within the following R session:
+
+```{r R session}
+sessionInfo()
+```

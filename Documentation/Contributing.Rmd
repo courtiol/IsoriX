@@ -1,69 +1,23 @@
-# Contributing to IsoriX
+# Contributing to IsoriX {#contrib}
 
-In this chapter we will give you tips on how you can help us to make _IsoriX_ better.
+IsoriX was created with the goal to become a collective project.
+So far, it did not really pan out, but we are still hoping.
 
-[more to come]
+Indeed, irrespective of your level of experience in R, statistics, English, or isotope research, **we are convinced that you could help!**
 
-## Coding conventions
+Anything help, really: proposing new tutorial or documentation, fixing poor language, adding examples, fixing broken old stuff, creating new functions... the limit is only your creativity.
 
-This section is only intended to those who would like to contribute source code.
-It describes the conventions one should follow while coding for _IsoriX_.
-Note that we have not always followed such conventions but we will progressivelly reformat the code in such way.
+You could also tell us what new features you would like, what you hate, what you think is buggy or too hard to understand and so forth.
 
-### Object assignment
+To do all this, the best is to use the GitHub interface https://github.com/courtiol/IsoriX.
+On these GitHub pages you will be able to access all the code and to leave feedback in the page called "Issues".
+According to GitHub, new features are also considered as "issues" (for programmers it really makes sense actually).
 
-Object assignments are done using an arrow `<-`, not `=`.
-```{r object assignment, eval = FALSE}
-## Example:
-y <- 2
-```
+From our perspective, the easiest way for you to make IsoriX better is to create so-called *pull requests* on GitHub (check this [short tutorial](https://www.r-bloggers.com/2019/01/a-newbies-guide-to-making-a-pull-request-for-an-r-package/) for how to).
+If that seems too complicated and intimidating, feel free to directly send us code or text.
 
-### Notation and naming
+Feel free to send anything you think would benefit the package.
+We will check the content and if we think it is a good idea (it probably is), we will integrate and credit your changes.
+To send us stuff, just write to the email address provided when typing `maintainer(pkg = "IsoriX")` in your R console.
 
-* datasets should be named in the format `SomethingSomething`.
-
-* classes should have a name of the format `SOMETHING`.
-
-* internal functions should have a name of the format `dosomething_somethingelse`, where the input is `something_somethingelse` and the output for the global environment should be `my_something`.
-
-### Curly braces
-
-The opening curly braces are separated with one white space and the closing ones go on a new line and are aligned with the first command.
-The else statement is surrounded by curly braces on the same line.
-
-```{r curly, eval = FALSE}
-## Example for an if-condition:
-if (y == 0) {
-  log(y)
-} else {
-  y ^ 2
-}
-```
-
-The same goes for a function except we do not put a space before the left parentheses.
-
-```{r eval = FALSE}
-## Example for a function:
-function(x) {
-  x + x
-}
-```
-
-### Indentation and spacing
-
-We have 2 spaces indentation throughout the whole code.
-An exception is made when a line break occurs inside parentheses, then the wrapped line is aligned with the first character inside the parenthesis.
-```{r indentation, eval = FALSE}
-## Example:
-plot(x = sort(rnorm(47)),
-     type = "s",
-     main = "title")
-```
-
-Spaces go around all operators (```+```, ```=```, ```<-```, ```!=```, ```==```, etc.) for improved readability.
-
-### Commenting guidelines
-
-For comments providing explanation inside the code we use a double hash ```##``` in order to distinguish such comments from commented code which we comment using a single hash ```#```.
-
-[more to come]
+So please join us in this journey! Seeing the community getting involved also helps us to remain motivated :-)
