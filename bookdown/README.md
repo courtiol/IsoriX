@@ -1,4 +1,4 @@
-# Bookdown about IsoriX
+# Sources for the bookdown about IsoriX
 
 This is the development folder for the documentation about IsoriX.
 

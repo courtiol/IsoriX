@@ -44,7 +44,6 @@ Off course, unless you are in the same institute than some of us, replace the nu
 
 
 ## Where to learn about IsoriX?
-
 You can start by reading our [bookdown](https://bookdown.org/content/782/)!
 
 Then, if may not be a bad idea to also have a look at our papers:
@@ -62,24 +61,7 @@ in R after having installed and attached (= loaded) the package.
 
 
 ## How can you contribute?
-There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests.
+There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests (see our [bookdown](https://bookdown.org/content/782/) for details).
 
-## Some useful links
-
-* about making R packages:
-
-[Simple introduction to the making of R packages](http://r-pkgs.had.co.nz/)
-
-[Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
-
-[R coding standard](https://google.github.io/styleguide/Rguide.xml)
-
-* about the environment to develop IsoriX:
-
-[Using version control in RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
-
-* about other R packages on which IsoriX strongly depends:
-
-[spaMM](https://gitlab.mbb.univ-montp2.fr/francois/spamm-ref)
-
-[rasterVis](https://oscarperpinan.github.io/rastervis/)
+## Main packages behind IsoriX
+IsoriX heavily depends on two R packages: [spaMM](https://gitlab.mbb.univ-montp2.fr/francois/spamm-ref) & [rasterVis](https://oscarperpinan.github.io/rastervis/)
