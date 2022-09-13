@@ -12,6 +12,8 @@
 ## /usr/bin/pandoc-citeproc /usr/lib/rstudio/bin/pandoc/pandoc-citeproc
 
 
+setwd(dir = "bookdown/")
+
 ## Step 1: render the book
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 # you can check the output here: "/home/courtiol/main_current_projects/IsoriX_project/Documentation/docs/index.html"
