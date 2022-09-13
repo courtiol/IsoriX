@@ -94,7 +94,7 @@ One package that often causes problem is [**rgdal**](http://rgdal.r-forge.r-proj
 A work around is to simply not rely on the problematic package (rgdal or other).
 That is possible as long as the problematic package is one that IsoriX "suggests" (or one that is required by such suggested packages) and not one that IsoriX depends on.
 The list of such packages that are not crucial for IsoriX (but that offer additional functionalities) is this:
-`r setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE))`.
+*`r sort(setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE)))`*.
 
 Since IsoriX could live without them and still perform all essential tasks, to circumvent installation issues on your system you may try to install IsoriX again without them using:
 
