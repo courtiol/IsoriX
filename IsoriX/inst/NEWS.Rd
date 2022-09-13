@@ -56,7 +56,7 @@
   \subsection{Solved BUGS}{
     \itemize{
       \item the printing method for the object of class ISOSCAPE was somehow not exported and thus not used (unreported issue)
-      \item plotting on a sphere ISOFIND objects did not work in same cases (#126)
+      \item plotting on a sphere ISOFIND objects did not work in some cases (#126)
     }
   }
 }
