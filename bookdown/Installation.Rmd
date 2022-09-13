@@ -59,7 +59,7 @@ Indeed, much of the work performed by a given package in R is actually outsource
 Thus, if a single package that is needed by IsoriX or by the packages used by IsoriX cannot install, IsoriX will not install (or worse, it may install but not work).
 
 To avoid problems caused by dependencies, the only thing we can do on our side is to minimise dependencies and try not to use packages people have often problems with.
-That is why we have already stopped relying on _rgdal_ and _Cairo_ which are not so easy to install on some systems.
+That is why we have already stopped relying on packages (e.g. Cairo) which are not so easy to install on some systems.
 
 Despite these effort, for IsoriX to work we do rely on `r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE, recursive = FALSE)) - 1` packages, as illustrated here with the help of the package miniCRAN:
 
@@ -87,15 +87,22 @@ plot(miniCRAN::makeDepGraph("IsoriX", recursive = FALSE, suggests = TRUE))
 
 While the number of dependencies is reasonable, since each package depends on other packages, the current stable release of IsoriX indirectly uses `r length(miniCRAN::pkgDep("IsoriX", suggests = FALSE)) - 1` packages (on top of some R base packages) and `r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE)) - length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))` more packages can optionally be used to increase functionalities.
 
-All in all, this represents quite a lot of dependencies (although much less than many other packages wildly used), and problems can thus happen.
+All in all, this represents quite a lot of dependencies, and problems can thus happen.
 
-In case of problem(s), you should thus read carefully the error message and make sure that the problem is not caused by some other package. If that is the case, try to install the problematic package on its own (check the documentation of that other package, it may help). A work around is possible if the problematic package is one that IsoriX "suggests" but does not depend on (i.e. it could live without it and still perform all essential tasks without it); in that case, you may try to install IsoriX again using:
+In case of problem(s), you should thus read carefully the error message and make sure that the problem is not caused by some other package. If that is the case, try to install the problematic package on its own (check the documentation of that other package, it may help).
+One package that often causes problem is [**rgdal**](http://rgdal.r-forge.r-project.org/index.html), due to its dependencies on many system libraries.
+A work around is to simply not rely on the problematic package (rgdal or other).
+That is possible as long as the problematic package is one that IsoriX "suggests" (or one that is required by such suggested packages) and not one that IsoriX depends on.
+The list of such packages that are not crucial for IsoriX (but that offer additional functionalities) is this:
+`r setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE))`.
+
+Since IsoriX could live without them and still perform all essential tasks, to circumvent installation issues on your system you may try to install IsoriX again without them using:
 
 ```{r install2, eval = FALSE}
 install.packages("IsoriX")
 ```
 
-that is, without specifically asking to install the extra dependencies. If you are used to install the packages using the RStudio menu, there is a small box that you can tick or untick to do the same thing. 
+Note: if you are used to install the packages using the RStudio menu, there is a small box that you can tick or untick to do the same thing. 
 
 
 ## Loading IsoriX
