@@ -13,3 +13,5 @@ See [main page](https://github.com/courtiol/IsoriX) for description and installa
  - [R coding standard](https://google.github.io/styleguide/Rguide.xml)
 
  - [Using version control in RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
+ 
+ - [Preparing your package for a CRAN submission](https://github.com/ThinkR-open/prepare-for-cran)
