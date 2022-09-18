@@ -6,6 +6,7 @@ fig_knitr
 *.asc
 *.xml
 *.log
+*.out
 *.snm
 *.synctex.gz
 *.toc
