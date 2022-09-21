@@ -17,7 +17,6 @@ check:
 fullcheck:
 	R CMD check --as-cran --run-dontrun $(PKGFILE)
 
-
 clean:
 	-rm -r $(PKG)/src/*.{o,rds,so} $(PKG)_*.tar.gz $(PKG).Rcheck *.Rout .RData 2> /dev/null
 
