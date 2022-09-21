@@ -1417,6 +1417,8 @@ plot(Assigned15)
 \vfill
 \item Easier functions for weighting by precipitation amount.
 \vfill
+\item Adding clustering after assignment (with p-value against null model).
+\vfill
 \item Replacing \texttt{\{raster\}} by \texttt{\{terra\}} or \texttt{\{stars\}}.
 \vfill
 \item Alternative plots using \texttt{\{ggplot2\}}.
