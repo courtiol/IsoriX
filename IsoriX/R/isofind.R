@@ -214,10 +214,10 @@ calibfit!")
     
     ### WE COMPUTE THE VARIANCE OF THE TEST
 
-    ## term 1 in eq. 9.18 from Courtiol et al. 2019
-    var_term1 <- sapply(1:nrow(data), function(i) isoscape$isoscapes$mean_predVar)
-    
     if (!is.null(calibfit)) {
+      
+      ## term 1 in eq. 9.18 from Courtiol et al. 2019
+      var_term1 <- sapply(1:nrow(data), function(i) isoscape$isoscapes$mean_predVar)
       
       ## term 2 in eq. 9.18 from Courtiol et al. 2019
       var_term2 <- calibfit$phi/calibfit$param[["slope"]]^2
@@ -269,11 +269,13 @@ calibfit!")
       ## by summing all the terms
       list_varstat_layers <- sapply(1:nrow(data), function(i) var_term1[[i]] + var_term2 + var_term3[i] + var_term4)
       
-    } else {
-      ## we create individual rasters containing the variance of the test statistics
-      list_varstat_layers <- var_term1
+    } else { ## end of if (!is.null(calibfit))
+      
+      ## if no calibration, the variance of the test statistic is the response variance
+      list_varstat_layers <- sapply(1:nrow(data), function(i) isoscape$isoscapes$mean_respVar)
+      
     }
-    rm(var_term1) 
+    if (exists("var_term1")) rm(var_term2) 
     if (exists("var_term2")) rm(var_term2)
     if (exists("var_term3")) rm(var_term3)
     if (exists("var_term4")) rm(var_term4)
