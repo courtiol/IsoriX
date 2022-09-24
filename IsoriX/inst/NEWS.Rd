@@ -12,7 +12,7 @@
   }
 }
 
-\section{version 0.8.3}{
+\section{version 0.9}{
   \subsection{Solved BUGS}{
     \itemize{
       \item the previous released introduced an error in how the variance of the assignment test is computed in the absence of calibration (with important consequence in terms of assignments). This is now fixed (#151).
