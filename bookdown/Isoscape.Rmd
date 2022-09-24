@@ -1,18 +1,6 @@
 # Building Isoscapes {#isoscape}
-```{r setup_isoscape, echo=FALSE}
-suppressPackageStartupMessages({
-  library(IsoriX, warn.conflicts = FALSE)
-  library(knitr, warn.conflicts = FALSE)
-  library(kableExtra, warn.conflicts = FALSE)
-})
-options(width = 80)
-opts_chunk$set(cache = FALSE,
-               global.par = TRUE,
-               fig.align = "center",
-               error = TRUE)
-```
 
-## Preparing the raw data
+## Preparing the source data {#sourceprep}
 
 To get an isoscape, you need data capturing how the isotope composition varies in space.
 In this documentation, we will use data provided by the Global Networks of Isotopes in Precipitation (GNIP), but you can use whatever source of data you prefer, or have access to.
@@ -40,22 +28,19 @@ We are eagerly waiting for this to happen!
 
 ### A toy example: GNIPDataDE {#GNIPDataDE}
 
-Within IsoriX we have already included a small extract from GNIP for you to try out the functions of the package without having to worry about the data.
-This small dataset corresponds to $\delta^2H$ values for Germany.
-The dataset has kindly been provided by Christine Stumpp.
-Here is what the beginning of the dataset looks like:
+Within IsoriX we have already included a small extract from GNIP corresponds to $\delta^2H$ values for Germany.
+The dataset has kindly been provided by Christine Stumpp and you can use it to try out the functions of the package without having to worry about getting data.
+We won't use this dataset here but it illustrates the structure of the data needed to fit an isoscape.
+Here is what this dataset looks like:
 
-```{r GNIPDataDE, eval = FALSE}
-head(GNIPDataDE)
+```{r GNIPDataDE}
+GNIPDataDE
 ```
 
-```{r GNIPDataDE_bis, echo = FALSE}
-kable(head(GNIPDataDE)) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
-```
 
 ### A real example: GNIPDataEU {#GNIPDataEU}
 
-Here we are going to show you how to prepare a dataset for IsoriX from a raw extract from GNIP.
+We are going to show you how to prepare a dataset for IsoriX starting from a raw extract from GNIP.
 For this, we will use a file in which we have compiled the GNIP data for $\delta^2H$ values for the whole world.
 We are unfortunately not being able to share these data with you, but you can download these data yourself as explained in section \@ref(GNIP).
 
@@ -87,7 +72,7 @@ rawGNIP$Year        <- as.numeric(format(as.Date(rawGNIP$Date), "%Y"))
 rawGNIP$Month       <- as.numeric(format(as.Date(rawGNIP$Date), "%m"))
 ```
 
-Mind that since we downloaded that file WISER has renamed `Begin.Of.Period` to `Begin.of.Period` (small case for the "o" in `of`), so you may need to adjust that.
+Mind that, since we downloaded that file, WISER has renamed `Begin.Of.Period` to `Begin.of.Period` (small case for the "o" in `of`), so you may need to adjust that.
 Do pay attention to other possible change that may have also occurred in WISER.
 
 Second, we identify the rows for which crucial information is missing.
@@ -122,35 +107,30 @@ Last, we rename the columns to conform to the general IsoriX format and we check
 colnames(GNIPData) <- c("source_ID", "lat", "long", "elev", "year", "month", "source_value")
 ```
 
-This is what the beginning of `GNIPData` looks like:
+This is what the `GNIPData` looks like:
 
-```{r GNIP_show, eval = FALSE}
-head(GNIPData)
+```{r GNIP_show}
+GNIPData
 ```
 
-```{r GNIP_show_bis, echo = FALSE}
-kable(head(GNIPData))
-```
-
-As you can see, the format is the same as the one for `GNIPDataDE`, which is what we want.
+As you can see, the format is the same as the one for `GNIPDataDE`, which is precisely what we want.
 
 
-## Processing the raw data {#processing}
+## Processing the source data {#processing}
 
-In order to build your isoscape with IsoriX, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, and potentially over fixed periods of time.
+In order to build your isoscape with IsoriX, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, over a time period.
 
-The time interval considered corresponds to the interval for which single isoscapes will be build.
-For example, if the interval is the month you will end up with one set of isoscapes for each month of the year (even if those can later be aggregated to form a yearly isoscape as we shall see in section XX [to come]). 
+To aggregate the raw data, you can choose to aggregate your dataset on your own, or to use our function `prepsources()`.
+This function allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
 
-To aggregate the data, you can choose to aggregate your dataset on your own, or to use our function `prepsources()`.
-This function allows you to aggregate the data over different time intervals.
-It also allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
+The function `prepsources()` also allows you to aggregate the data separately for different time periods (see section \@ref(weighted)).
+Each time period define the temporal range of the data used to prepare a single set of isoscapes.
+Often, people are only interested in a single time period (e.g. data over all years they have been collected).
+But in some cases, it may be interested to aggregate data separately for different time periods.
+This can be useful, in particular, to build weighted isoscapes (see section \@ref(weighted)). 
 
-Here we will use the function `prepsources()` to select from the dataset `GNIPData` the observations available within an extent of latitude and longitude that covers roughly Europe.
-
-### Aggregation for a single set of isoscapes {#singleset}
-
-We will start by using the default aggregation scheme, which simply produces an overall average per location.
+Here we use the function `prepsources()` to select from the dataset `GNIPData` the observations available across all years (i.e. a single time period) within an extent of latitude and longitude that covers roughly Europe.
+This can be done as follows:
 
 ```{r GNIP_EU_build}
 GNIPDataEUagg <- prepsources(data = GNIPData,
@@ -159,65 +139,29 @@ GNIPDataEUagg <- prepsources(data = GNIPData,
 ```
 
 
-Let us now visualize the beginning of the dataset:
+Let us now visualize the dataset:
 
-```{r GNIPDataEU_view, eval = FALSE}
-head(GNIPDataEUagg)
+```{r GNIPDataEU_view}
+GNIPDataEUagg
 ```
 
-```{r GNIPDataEU_view_bis, echo = FALSE}
-kable(head(GNIPDataEUagg)) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
-```
-
-
-As you can see, we now have observation for each location.
+As you can see, we now have a single row of data per location.
 The column `mean_source_value` gives the average across months and years.
 The column `var_source_value` gives the variance between monthly measurements spanning across years.
 
 
-### Aggregation for multiple sets of isoscapes {#multiplesets}
-
-Depending on what you want to do, you may need to prepare the data for multiple sets of isoscapes.
-This is for example the case if you want to ultimately build a yearly isoscape by attributing different weights of the data from each month, as it is the case for the widely use annual precipitation-weighted isoscape.
-We will choose this specific  example and thus prepare the data in view of building 12 sets of isoscapes (one for each month).
-
-This can be done again with the use of the function  `prepsources()` using the argument `split_by = "month"`:
-
-```{r GNIP_EU_12_build}
-GNIPDataEU12agg <- prepsources(data = GNIPData,
-                               long_min = -30, long_max = 60,
-                               lat_min = 30, lat_max = 70,
-                               split_by = "month")
-```
-
-Let us visualize the first 15 lines of the dataset:
-
-```{r GNIPDataEU12_view, eval = FALSE}
-head(GNIPDataEU12agg, n = 15)
-```
-
-```{r GNIPDataEU12_view_bis, echo = FALSE}
-kable(head(GNIPDataEU12agg, n = 15)) %>% kable_styling(bootstrap_options = "striped", font_size = 14)
-```
-
-As you can see, we now have observation for each month.
-The column `mean_source_value` gives the average for each month across the years.
-The column `var_source_value` gives the between-year variance in monthly measurements.
-
-
-## Fitting the geostatistical models
+## Fitting the geostatistical models {#isofit}
 
 Isoscapes are predictions stemming from statistical models.
 In this section we will show you how to fit such models based on the dataset we prepared in section \@ref(processing).
 We refer to *set of isoscapes* because IsoriX does not create a single isoscape predicting the spatial distribution of isotopes (i.e. the main isoscape), but it also creates other isoscapes related to the main isoscape.
 For example, it also creates an isoscape indicating how reliable the predictions are in any particular locations.
-If a single dataset is being used (as in section \@ref(singleset)), then a single set of isoscapes need to be built.
-Instead, if several datasets have been prepared (as in section \@ref(multiplesets)), then you will have to accordingly build multiple sets of isoscapes.
+If a single dataset is being used (as in section \@ref(processing)), then a single set of isoscapes need to be built.
+Instead, if several datasets have been prepared, then you will have to accordingly build multiple sets of isoscapes (see section \@ref(weighted) in this case).
 
-### Fitting the models for a single set of isoscapes {#isofit}
 
-To fit the geostatisical model required to build a single set of isoscapes, you need to use the function `isofit()`.
-This function has several parameters that can be adjusted to fit different models (see `?isofit`).
+To fit the geostatisical model required to build a single set of isoscapes, you need to use the function `isofit()` (otherwise you need to use the function `isomultifit()` as shown in section \@ref(isomultifit)). 
+The function `isofit()` has several parameters that can be adjusted to fit different models (see `?isofit`).
 Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting:
 
 ```{r isofit fake, eval = FALSE}
@@ -234,28 +178,6 @@ if (file.exists("output/EuropeFit.rda")) {
 }
 ```
 
-### Fitting the models for a multiple set of isoscapes {#isomultifit}
-
-If you have created multiple sets of data, you need to use the function `isomultifit()` for fitting one set of isoscapes per set of data.
-As for `isofit()`, several parameters can be adjusted to fit different models, and we will use here the settings seen previously.
-
-```{r isomultifit fake, eval = FALSE}
-EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
-                           mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-```
-
-```{r isomultifit real, echo = FALSE, results = FALSE}
-if (file.exists("output/EuropeFit12.rda")) {
-  load("output/EuropeFit12.rda")
-} else {
-  EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
-                             mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-}
-```
-
-For the time being, the function isomultifit()` fits sequentially the sets of isoscapes.
-So for the example used here, it means that 12 sets of isoscapes are fitted sequentially, which thus takes more computing time than building a single set of isoscape.
-In the future our plan is to revise the internal structure of this function for it to be able to use several CPUs simultaneously and thus benefit from the IsoriX option used to define the number of CPUs to work with (see section \@ref(globaloptions)).
 
 ## Saving the fitted models
 
@@ -266,14 +188,11 @@ This can be done as follow:
 
 ```{r saving models fake, eval = FALSE}
 save(EuropeFit, file = "EuropeFit.rda", compress = "xz")
-save(EuropeFit12, file = "EuropeFit12.rda", compress = "xz")
 ```
 
 ```{r saving models real, echo = FALSE, warning=FALSE}
 if (!file.exists("output/EuropeFit.rda"))
   save(EuropeFit, file = "output/EuropeFit.rda", compress = "xz")
-if (!file.exists("output/EuropeFit12.rda"))
-  save(EuropeFit12, file = "output/EuropeFit12.rda", compress = "xz")
 ```
 
 The function `save()` will (by default) store your R object in a file that can be found in your working directory.
@@ -287,12 +206,12 @@ For loading a saved object (in a new session of R for example), just use the fun
 
 ```{r loading models, eval = FALSE}
 load(file = "EuropeFit.rda")
-load(file = "EuropeFit12.rda")
 ```
 
 _Be careful_, we do not recommend you to reuse saved object after updating either IsoriX, or spaMM, or both.
 After one of such update, the best practice to make sure that every thing is working properly is to refit all your models.
 By doing this you may also benefit from potentially new improvements we would have implemented. 
+
 
 ## Examining the fitted models
 
@@ -354,7 +273,7 @@ Note that we re-exported some spaMM functions for you to use without the need to
 
 ## Building the isoscapes
 
-### Prepare the structural raster
+### Prepare the structural raster {#structuralraster}
 
 To build the isoscape using the geostatistical models fitted above, you need to provide the function `isoscape()` with a structural raster.
 Such raster defines the locations at which we want to predict the isotopic values.
@@ -374,7 +293,7 @@ if (!file.exists("input/elevation_world_z5.tif")) {
 ```
 
 You may not need to pass any argument to `getelev()`, but here we opted to choose to define ourselves where to store the elevation raster and how to call such file using `file = "input/elevation_EU_z5.tif"`.
-We did not alter the resolution which is high enough under the default setting for our example, but doing so would be easy: one simply needs to define a value lower or larger than 5 for an argument called `z` (see `?getelev()` for details and [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution) for information on what `z` really implies).
+We did not alter the resolution which is high enough under the default setting for our example, but doing so would be easy: one simply needs to define a value lower or larger than 5 for an argument called `z` (see `?getelev()` for details and [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution) for information on what value for the zoom parameter `z` really implies).
 
 We then import the high resolution elevation raster and transform it into an R object of class `RasterLayer` object using the package raster:
 
@@ -460,6 +379,7 @@ Indeed, each cell of the raster only contains a single value which corresponds t
 Whatever you do, think carefully on the consequences of your choice upon how you are planning to use the isoscapes (e.g. for assigning species living only at the top of the mountains, using `aggregation_fn = max` may make more sense than the default).
 :::
 
+
 ### Predicting the isoscapes
 
 We will now build the isoscapes using the function `isoscape()`.
@@ -491,11 +411,6 @@ EuropeIsoscape$isoscapes
 ```
 
 
-### More complex isoscapes? The example of building the precipitation-weighted annual average isoscapes
-
-[to come]
-
-
 ## Plotting the isoscapes
 
 One particular strength of IsoriX is the ability to produce nice looking and highly customisable plots of the isoscapes and assignment maps.
@@ -507,8 +422,9 @@ For example, here you can obtain the main isoscape by typing:
 plot(EuropeIsoscape)
 ```
 
-
 This shows the prediction of the average isotope value in space (i.e. the point predictions).
+
+For more information about how to improve your plots, check the section \@ref(betterplots).
 
 
 ### Other isoscapes
@@ -537,153 +453,7 @@ Indeed, if you are very uncertain of what the average isotope value is in a loca
 It is unfortunate but an inescapable reality.
 
 
-### Fiddling with the plots {#plotisoscapes}
-
-If you want to change anything on the existing plot, have a look at `?plots`.
-The help file should provide you with all the details you need to customize your plots.
-Here is are a couples of example:
-
-```{r plot_EuropeIsoscape2, dev='CairoPNG'}
-plot(EuropeIsoscape,
-     sources = list(pch = 3, col = "orange"),
-     borders = list(col = "white"),
-     mask    = list(fill = "darkgrey"),
-     palette = list(range = c(-130, 10), step = 1, n_labels = 10, fn = "rainbow"))
-```
-
-```{r plot_EuropeIsoscape3, dev='CairoPNG'}
-plot(EuropeIsoscape,
-     title = "H Isoscape",
-     sources = list(draw = FALSE),
-     borders = list(borders = NULL),
-     mask    = list(fill = "black"),
-     palette = list(range = c(-130, 20), step = 30, fn = NULL))  
-```
-
-For example, you can see that it is possible to provide a function defining the colours using the argument `fn` from the list `palette`.
-Note that when it is set to `NULL`, the famous palette [**viridis**](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
-
-If you want to add things on top of the plots, you can do it as you would do it for any plot created using the R graphical package [**lattice**](http://lattice.r-forge.r-project.org/index.php).
-The package lattice is very powerful but not always very easy to use.
-We may also provide you with an implementation of IsoriX around the now widely used package [**ggplot2**](https://ggplot2.tidyverse.org) but that would imply a lot of work so we are still thinking about it...
-
-We will also add plotting tutorials to this bookdown.
-
-
-### Why you should save plots or how to export nice looking plots? {#Cairo}
-
-Displaying the plot directly using R is very inefficient when it comes to high resolution isoscapes.
-It may take a very long time and it may not fully work.
-
-It is better to directly plot the figures into files.
-
-::: {.rmdnote}
-**Geeky note**: Since the lattice system is not part of ggplot2, the function `ggsave()` should not be used.
-:::
-
-
-#### Using base R graphics devices functions
-
-A first option is to save your plot using one of the base R function such as `png()` or `tiff()`.
-
-
-For example, you could do:
-
-```{r png, results = FALSE, eval = FALSE, results = FALSE}
-png(filename = "output/Myisoscape.png",
-     width = 1920,
-     height = 1080,
-     res = 200)
-plot(EuropeIsoscape)
-dev.off()
-```
-
-or
-
-```{r tiff, results = FALSE, eval = FALSE, results = FALSE}
-tiff(filename = "output/Myisoscape.tiff",
-     width = 1920,
-     height = 1080,
-     res = 200)
-plot(EuropeIsoscape)
-dev.off()
-```
-
-As you can see, you first initialize the creation of the plot with the function `png()` or `tiff()`, then you call your plot, then you tell your computer that you are done with `dev.off()`.
-
-As arguments, you probably want to specify the dimensions and the resolution of the file.
-The height and width are here considered to be in pixels (default setting, you can choose other units if you want using the argument `units`). Here we chose the so-called Full-HD or 1080p resolution (1080x1920) because we wanted to observe the isoscape carefully on a monitor of that resolution.
-If your screen is Full-HD, try it and display the plot in full screen to get better results (if the plot does not match the definition of your screen, things can get ugly), if your screen is not, try another resolution.
-If you don't know what resolution your screen has, you can visit http://www.whatismyscreenresolution.com/.
-
-The parameter `res` is very useful as it rescales the line and fonts in the plot.
-So if everything is too small just increase the value and if everything looks too bold and ugly, decreases it.
-
-You also should specify the `filename`.
-If like us, you don't indicate the path in the `filename`, the file will be stored in your working directory which you can easily see by typing `getwd()`.
-So after running such code, simply go in your working directory and open the right file.
-
-We prefer the PNGs files since they are much lighter than their TIFF counterpart, but one format may lead to a better output for you.
-The nice thing about these functions is that there do not require you to install anything extra.
-They also allow you to set the resolution, which is sometimes asked by journals.
-So if that works for you do stick to that.
-
-Unfortunately, depending on your system, usual plotting functions provided with R may not always work well for high resolution rasters.
-For example, using `png()` or `tiff()` may lead to display artifacts showing some random white lines.
-Changing the value of the argument `res` is often enough to get rid of these lines.
-Another more effective way is to use the package Cairo.
-
-
-#### Using Cairo graphics devices functions
-
-One set of plotting functions that seem to never suffer from white line artifacts are those provided by the package [**Cairo**](http://www.rforge.net/Cairo/).
-
-To use such functions, you first must make sure Cairo is installed and can be loaded:
-
-```{r load Cairo}
-library(Cairo)
-```
-
-If it complains, try to see why.
-If you have not installed it, just install the package.
-One noticeable source of trouble comes with MacOS.
-On this operating system, the package Cairo does not always install/load successfully.
-Problems happen when the program [**xquartz**](https://www.xquartz.org/) is not present on the system.
-This program used to be shipped by defaults on old version of MacOS but it is no longer the case.
-So if you are in trouble, please start by installing xquartz (outside R).
-
-If Cairo is installed and loaded successfully, typing `?Cairo` will show you all possible file formats you can save your plots into (PNG, JPG, TIFF, PDF...).
-
-Here we will show how to save our isoscape both as a PNG and as a PDF.
-
-Let us start by creating a PNG file with the main isoscape:
-
-```{r Cairo PNG, results = FALSE, eval = FALSE, results = FALSE}
-CairoPNG(filename = "output/Myisoscape.png",
-         height = 1080,
-         width = 1920,
-         res = 200)
-plot(EuropeIsoscape)
-dev.off()
-```
-
-As you can see, once you have managed to install Cairo it becomes as simple as using the base R functions.
-
-PDFs derived from raster objects tend to be heavy and to be badly rendered by most viewing software, so we recommend you to stick to PNGs.
-Yet, if you must, here is how to create PDFs using Cairo:
-
-```{r Cairo PDF, results = FALSE, eval = FALSE, results = FALSE}
-CairoPDF(file = "output/Myisoscape.pdf",
-         height = 10,
-         width = 15)
-plot(EuropeIsoscape)
-dev.off()
-```
-
-The arguments slightly differ with the function creating PNGs.
-The argument setting the name of the file is now called `file` and not `filename`, the resolution has now to be provided in inches and the argument `res` does not exist for PDFs, but default results are usually fine.
-
 ## Next?
 
-If your goal was to produce isoscapes, you should be done by now.
-The following steps of this tutorial are for users interested in inferring the origin of organisms based on their isotopic signature.
+If your goal was to produce isoscapes, you may be done by now.
+The next two chapters of this tutorial are for users interested in inferring the origin of organisms based on their isotopic signature.

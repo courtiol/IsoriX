@@ -6,6 +6,7 @@ knit: "bookdown::render_book"
 site: "bookdown::bookdown_site"
 output: 
   bookdown::gitbook:
+    df_print: paged
     split_by: chapter
     split_bib: no
     sharing:
