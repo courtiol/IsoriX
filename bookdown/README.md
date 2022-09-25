@@ -22,16 +22,16 @@ For this, use:
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 ```
 
-Importantly, this job should not break even if you work on a remote computer and that your connection to RStudio server is not kept alive the whole time.
+Importantly, this job should not break even if you work on a remote computer and that your connection to RStudio Server is not kept alive the whole time.
 
-Once this is done, you can check the output by opening "IsoriX_project/Documentation/docs/index.html" if it did not open automatically.
+Once this is done, you can check the output by opening "IsoriX_project/Documentation/docs/index.html" (if it did not open automatically).
 
 Then, you should serve the book:
 ```r
 bookdown::serve_book()
 ```
 
-This will display the bookdown in RStudio and refresh on the fly an time you save your edits on a chapter.
+This will display the bookdown in RStudio and refresh on the fly any time you save your edits on a chapter.
 This is much more convenient than calling `render_book()` repeatedly, but it breaks as soon as the connection with RStudio Server is interrupted.
 
 Once you are satisfied with the results, you may want to delete once again the content of the folder "output" and render (not serve) the book again.
@@ -44,6 +44,19 @@ bookdown::publish_book(name = "IsoriX")
 
 Check the bookdown online.
 
+
+### Do not cash anything
+
+If some steps are particularly slow, instead of relying on knitr cashing, it is best to store the created objects in the folder "output" and to use code similar to this:
+
+```r
+if (file.exists("output/some_object_slow_to_create.rda")) {
+  load("output/some_object_slow_to_create.rda")
+} else {
+  some_object_slow_to_create <- slow_fn()
+  save(some_object_slow_to_create, file = "output/some_object_slow_to_create.rda", compress = "xz")
+}
+```
 
 ### Pandoc issues?
 
