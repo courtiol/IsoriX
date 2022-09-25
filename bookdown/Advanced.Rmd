@@ -353,7 +353,7 @@ levelplot(EuropeIsoscape_weighted$isoscapes$mean_residVar - EuropeIsoscape$isosc
   layer(sp.polygons(OceanMask, fill = "black"))
 ```
 
-As you can see the residual variance is quite different because it now only represents the weighted variation in isotopic values between months 
+As you can see the residual variance is quite different because it now only represents the yearly averaged weighted variation in isotopic values _between months_ and no longer the total variation combining both the variation across months and across years.
 
 
 You could then continue with the calibration and assignment steps exactly as described in the chapters \@ref(calibration) & \@ref(assignment).
