@@ -185,10 +185,10 @@ raster::writeRaster(EuropeIsoscape$isoscapes$mean,
 
 For several applications it is recommend to produce *weighted isoscapes*.
 We will consider here the case of *precipitation-weighted annual average isoscapes*, which is often recommended when isoscapes are derived from the isotopic composition measured in precipitation water.
-Yet, the instructions that follow could also be adapted to other type of isoscapes that must be weighed for other reasons.
+Yet, the instructions that follow could also be adapted to other type of isoscapes that must be weighted for other reasons.
 
 The rational for using such precipitation-weighted isoscape is that the amount of precipitation influences how much specific isotopologues of water molecules end up in the soil, with repercussion on the entire food web.
-Here the weights we will use are the monthly cumulative amount of precipitation water averaged over the years, but you could also adapt the procedure to use a different temporal resolution.
+Here the weights we will use are the monthly cumulative amount of precipitation water averaged over a year, but you could also adapt the procedure to use a different temporal resolution.
 
 You can follow two different approaches leading to weighted isoscapes.
 The two approaches differ according to when the weighting is being implemented in comparison to when the statistical models behind the isoscapes are being fitted:
@@ -244,7 +244,7 @@ We can now process the source data we just prepared.
 For now the function `prepsources()` does not handle the weighting. 
 We will add this feature soon, but we will prepare the source data by hand for the time being.
 We will use the package [**dplyr**](https://dplyr.tidyverse.org/) for that since it makes aggregation much more straightforward than otherwise.
-We start by aggregating and weighting the data per year:
+We start by aggregating and weighting the data over the different months per year:
 
 ```{r prepsource_precip, message=FALSE}
 library(dplyr) ## install this package beforehand if you don't have it
@@ -255,7 +255,7 @@ GNIPData_with_precip |>
   mutate(w = precip/sum(precip)) |>
   summarize(total_precip = sum(precip),
             mean_source_value = sum(w*source_value),
-            var_source_value = sum(w*(source_value - mean(source_value))^2),
+            var_source_value = (n()/(n() - 1)) * sum(w*(source_value - mean(source_value))^2),
             n_source_value = n(),
             lat = unique(lat),
             long = unique(long),
@@ -271,7 +271,8 @@ We can check the data we just created:
 GNIPData_with_precipEUagg_yearly
 ```
 
-We then use aggregate the data, for each location, by computing averages over the different months.
+We then aggregate the data further, for each location, by computing averages over the different years.
+That way, we attempt to represent the situation for an average year.
 We can again use dplyr to do this, as follows:
 
 ```{r weighting1}
@@ -321,7 +322,7 @@ if (file.exists("output/EuropeIsoscape_weighted.rda")) {
 }
 ```
 
-Let us now compare the mean isoscapes produced with and without weighing by precipitation amount:
+Let us now compare the mean isoscapes produced with and without weighting by precipitation amount:
 
 ```{r plot_weighted1_vs_not, dev='CairoPNG'}
 plot(EuropeIsoscape_weighted)
@@ -353,8 +354,7 @@ levelplot(EuropeIsoscape_weighted$isoscapes$mean_residVar - EuropeIsoscape$isosc
   layer(sp.polygons(OceanMask, fill = "black"))
 ```
 
-As you can see the residual variance is quite different because it now only represents the yearly averaged weighted variation in isotopic values _between months_ and no longer the total variation combining both the variation across months and across years.
-
+As you can see the residual variance is quite different because it now represents the (weighted) variation in isotopic values _between months_ for an average year and no longer the total variation combining both the variation across months and years.
 
 You could then continue with the calibration and assignment steps exactly as described in the chapters \@ref(calibration) & \@ref(assignment).
 For this you simply need to replace the object `EuropeIsoscape` used in these chapters by the object `EuropeIsoscape_weighted` just created.
