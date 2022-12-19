@@ -5,7 +5,7 @@ The goal of this chapter is to illustrate such possibilities.
 
 ## Working with plots {#betterplots}
 
-### Fiddling with the plotting fucntions {#plotisoscapes}
+### Fiddling with the plotting functions {#plotisoscapes}
 
 If you want to change anything on the existing plot, have a look at `?plots`.
 The help file should provide you with all the details you need to customize your plots.
