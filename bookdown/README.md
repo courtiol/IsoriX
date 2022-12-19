@@ -10,6 +10,7 @@ This bookdown follows the model merge and knit, rather than knit and merge.
 As a consequence, do not attempt to knit individual chapters, it won't work.
 Instead, you must render the whole thing at once.
 Before doing that, do make sure to upload all your packages and to delete the content of the folder "output"; otherwise the bookdown will use objects created with old versions of packages.
+Do make sure however that the folder "output" exists, otherwise objects won't be saved.
 
 ### Workflow for preparing an update
 
