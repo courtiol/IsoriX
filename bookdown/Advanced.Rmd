@@ -31,11 +31,62 @@ plot(EuropeIsoscape,
 You can see that it is possible to provide a function defining the colors using the argument `fn` from the list `palette`.
 Note that when it is set to `NULL`, the famous palette [**viridis**](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
 
-If you want to add things on top of the plots, you can do it as you would do it for any plot created using the R graphical package [**lattice**](http://lattice.r-forge.r-project.org/index.php).
-The package lattice is very powerful but not always very easy to use.
-We may also provide you with an implementation of IsoriX around the now widely used package [**ggplot2**](https://ggplot2.tidyverse.org) but that would imply a lot of work so we are still thinking about it...
+If you need to change things on the plots that are not covered by the plotting functions from IsoriX, you will have to learn how to use [**lattice**](http://lattice.r-forge.r-project.org/index.php).
+The package lattice is very powerful but not always very intuitive to use, so we are going to list here a few tips.
 
-We will also add plotting tutorials to this bookdown.
+The easiest way to modify a plot is to start saving the plot into an object:
+```{r plot_EuropeIsoscape4, dev='CairoPNG'}
+isoscape_plot <- plot(EuropeIsoscape)
+```
+
+Then, the (generic) function `update()` allows you to change many aspects of the plot whenever applied to your plot object (here `isoscape_plot`).
+For example, you can increase the size of the text in the previous plot as follows:
+
+```{r plot_EuropeIsoscape4_tweak1, dev='CairoPNG'}
+update(isoscape_plot, par.settings = list(fontsize = list(text = 20)))
+```
+
+As an entry point to see what can be changed in a lattice plot, you should consult the help page that shows up when typing `?lattice::xyplot` in your R console.
+
+Multipanel plots created after assignments can be modified using the same principle.
+For example, you can rename the title of each panel and modify the organisation of the panels as follows:
+
+```{r plot_AssignedBats_id_tweak0, dev = 'CairoPNG'}
+assignment_plot <- plot(AssignedBats,
+                        who = 1:14,
+                        sources = list(draw = FALSE),
+                        calibs = list(draw = FALSE),
+                        assigns = list(draw = FALSE)
+                        )
+```
+
+```{r plot_AssignedBats_id_tweak1, dev = 'CairoPNG'}
+update(assignment_plot,
+       par.settings = list(fontsize = list(text = 8)),
+       strip = lattice::strip.custom(factor.levels = paste("Bat ", 1:14)),
+       layout = c(col = 2, row = 7)
+       )
+```
+
+If you want to add things on top of the plots, you can do it as you would do it for any plot created using lattice.
+For example, consider you want to add the point that is the most compatible with the unknown origin of bats (see chapter \@ref(assignment)).
+The first step is to recover the coordinates for such a point:
+
+```{r maximum, message = FALSE}
+library(raster)
+coord <- coordinates(AssignedBats2$group$pv)
+MaxLocation <- coord[which.max(values(AssignedBats2$group$pv)), ]
+Maximum <- data.frame(long = MaxLocation[1], lat = MaxLocation[2])
+Maximum
+```
+
+We can then plot this information on top of the assignment plot by simply typing:
+
+```{r plot_maximum, message = FALSE, dev = 'CairoPNG'}
+plot(AssignedBats2, who = "group", plot = FALSE) + 
+  xyplot(Maximum$lat ~ Maximum$long,
+         pch = 13, col = "orange", cex = 5, lwd = 2, panel = panel.points)
+```
 
 
 ### Why you should save plots & how to export nice looking plots? {#Cairo}

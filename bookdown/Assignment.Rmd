@@ -206,33 +206,3 @@ Related to this arguments, you can also define another mask using the argument `
 For example, you may want to use it in order to hide areas outside the IUCN distribution map for your species.
 If more than two masks are necessary, just combine several masks into one and provide that one to this argument `mask2`.
 Otherwise, or if the masks need to be visually distinct, you can use the function `layer()`.
-
-
-## Fiddling with the assignment plots
-
-There are plenty options you can change and plenty functions from the packages _lattice_, _latticeExtra_ and _rasterVis_ that you can also use to produce the perfect plot.
-We will add here different examples.
-
-### Example: adding the maximum
-
-As a first example, we will show you how to add the point that is the most compatible with the unknown origin of these bats using the package _raster_.
-
-We start by recovering the coordinate of such a point:
-
-```{r maximum, message = FALSE}
-library(raster)
-coord <- coordinates(AssignedBats2$group$pv)
-MaxLocation <- coord[which.max(values(AssignedBats2$group$pv)), ]
-Maximum <- data.frame(long = MaxLocation[1], lat = MaxLocation[2])
-Maximum
-```
-
-You can then plot these information on top of the last plot we created by simply typing:
-
-```{r plot_maximum, message = FALSE, dev = 'CairoPNG'}
-plot(AssignedBats2, who = "group", plot = FALSE) + 
-  xyplot(Maximum$lat ~ Maximum$long,
-         pch = 13, col = "orange", cex = 5, lwd = 2, panel = panel.points)
-```
-
-[TODO: add more examples]
