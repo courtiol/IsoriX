@@ -44,7 +44,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 }
 
 ## install IsoriX devel
-remotes::install_github("courtiol/IsoriX/IsoriX")
+remotes::install_github("courtiol/IsoriX/IsoriX", dependencies = TRUE)
 ```
 
 ::: {.rmdnote}
@@ -61,8 +61,25 @@ Thus, if a single package that is needed by IsoriX or by the packages used by Is
 To avoid problems caused by dependencies, the only thing we can do on our side is to minimise dependencies and try not to use packages people have often problems with.
 That is why we have already stopped relying on packages (e.g. Cairo) which are not so easy to install on some systems.
 
-Despite these effort, for IsoriX to work we do rely on `r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE, recursive = FALSE)) - 1` packages, as illustrated here with the help of the package miniCRAN:
+Despite these effort, for IsoriX to work we do rely on `r length(sort(setdiff(tools::package_dependencies("IsoriX", which = c("Imports", "Suggests"), recursive = FALSE)$IsoriX, names(which(installed.packages()[, "Priority"] == "base"))))) - 1` packages. Here is the current list:
 
+```{r dependencies}
+pkg_IsoriX_Imports <- tools::package_dependencies("IsoriX",
+                                                  which = "Imports",
+                                                  recursive = FALSE)$IsoriX
+pkg_IsoriX_Suggests <- tools::package_dependencies("IsoriX",
+                                                   which = "Suggests",
+                                                   recursive = FALSE)$IsoriX
+pkg_base <- names(which(installed.packages()[, "Priority"] == "base"))
+
+## Packages required for key functionalities in IsoriX:
+data.frame(Imported_packages = sort(setdiff(pkg_IsoriX_Imports, pkg_base)))
+
+## Packages adding extra functionalities to IsoriX:
+data.frame(Suggested_packages = sort(setdiff(pkg_IsoriX_Suggests, pkg_base)))
+```
+
+We can use a modified version of **miniCRAN** to visualise dependencies among the core packages required by IsoriX:
 ```{r mini_CRAN}
 ## install remotes if missing
 if (!requireNamespace("remotes", quietly = TRUE)) {
@@ -78,7 +95,7 @@ if (!requireNamespace("miniCRAN", quietly = TRUE)) {
 set.seed(1)
 
 ## plotting dependencies
-plot(miniCRAN::makeDepGraph("IsoriX", recursive = FALSE, suggests = TRUE))
+plot(miniCRAN::makeDepGraph("IsoriX", recursive = FALSE, suggests = FALSE))
 ```
 
 ::: {.rmdnote}
