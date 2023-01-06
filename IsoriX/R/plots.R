@@ -319,7 +319,7 @@ plot.ISOSCAPE <- function(x,
   do.call(p$panel, pargs)
   grDevices::dev.off()
   
-  if (length(rgl::rgl.dev.list()) > 0) rgl::rgl.close() ## close all open rgl devices
+  if (length(rgl::rgl.dev.list()) > 0) rgl::close3d() ## close all open rgl devices
   makerglsphere <- function(x, y = NULL, z = NULL, ng = 50, radius = 1, color = "white", add = FALSE, ...) {
     ## code inspired from https://stackoverflow.com/questions/30627647/how-to-plot-a-perfectly-round-sphere-in-r-rgl-spheres
     lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
@@ -342,7 +342,7 @@ plot.ISOSCAPE <- function(x,
   
   rgl::par3d("windowRect" = c(0, 0, 500, 500))
   rgl::bg3d(sphere = TRUE, color = "darkgrey", lit = FALSE)
-  makerglsphere(0, texture = "IsoriX_world_image.png", lit = FALSE, color = "white") ## alternative to rgl::rgl.spheres()
+  makerglsphere(0, texture = "IsoriX_world_image.png", lit = FALSE, color = "white") ## alternative to rgl::spheres3d()
 }
 
 #' @rdname plots
