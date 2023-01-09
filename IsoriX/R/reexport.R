@@ -30,39 +30,35 @@ latticeExtra::layer
 
 
 
-# reexport from raster:
+# reexport from terra:
 
-#' @importFrom raster area
+#' @importFrom terra area
 #' @export
-raster::area
+terra::area
 
-#' @importFrom raster extent
+#' @importFrom terra ext
 #' @export
-raster::extent
+terra::ext
 
-#' @importFrom raster "extent<-"
+#' @importFrom terra extract
 #' @export
-raster::`extent<-`
+terra::extract
 
-#' @importFrom raster extract
+#' @importFrom terra crs
 #' @export
-raster::extract
+terra::crs
 
-#' @importFrom raster "projection<-"
+#' @importFrom terra rast
 #' @export
-raster::`projection<-`
+terra::rast
 
-#' @importFrom raster raster
+#' @importFrom terra shift
 #' @export
-raster::raster
+terra::shift
 
-#' @importFrom raster shift
+#' @importFrom terra values
 #' @export
-raster::shift
-
-#' @importFrom raster values
-#' @export
-raster::values
+terra::values
 
 
 
@@ -80,17 +76,17 @@ rasterVis::RdBuTheme
 
 # reexport from sp:
 
-#' @importFrom sp CRS
+#' @importFrom sf st_crs
 #' @export
-sp::CRS
+sf::st_crs
 
-#' @importFrom sp sp.points
+#' @importFrom sf st_point
 #' @export
-sp::sp.points
+sf::st_point
 
-#' @importFrom sp sp.polygons
+#' @importFrom sf st_polygon
 #' @export
-sp::sp.polygons
+sf::st_polygon
 
 
 
