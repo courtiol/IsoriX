@@ -165,7 +165,7 @@ NULL
 #' #            long_min = min(CalibDataBat2$long),
 #' #            long_max = max(CalibDataBat2$long))
 #' #    ElevationRasterBig <- terra::rast("elevBats.tif")
-#' #    CalibDataBat2$elev <- terra::ext(
+#' #    CalibDataBat2$elev <- terra::extract(
 #' #        ElevationRasterBig,
 #' #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
 #' #    head(CalibDataBat2)

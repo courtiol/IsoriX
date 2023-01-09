@@ -178,7 +178,7 @@ isoscape <- function(raster,
                      lat = lat_to_do,
                      lat_abs = abs(lat_to_do),
                      lat_2 = lat_to_do^2,
-                     elev = terra::ext(raster, cbind(long_to_do, lat_to_do)),  ## ToDo: check that it is elev and not something else
+                     elev = terra::extract(raster, cbind(long_to_do, lat_to_do)),  ## ToDo: check that it is elev and not something else
                      source_ID = as.factor(paste("new", seq_len(length(long_to_do)), sep = "_"))
     )
     
@@ -321,7 +321,7 @@ isoscape <- function(raster,
                      lat = coord[, 2],
                      lat_abs = abs(coord[, 2]),
                      lat_2 = coord[, 2]^2,
-                     elev = terra::ext(raster, coord), ## ToDo: check that it is elev
+                     elev = terra::extract(raster, coord), ## ToDo: check that it is elev
                      source_ID = as.factor(paste("new", 1:nrow(coord), sep = "_"))
     )
 
