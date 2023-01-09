@@ -21,25 +21,6 @@
   }
 
 
-.onLoad <- function(libname, pkgname) {
-  ## This function should not be called by the user.
-  ## It changes the default behaviour of sp concerning lat/long boundaries
-  ## and stores the all R options.
-  .data_IsoriX$sp_options$sp_ll_warn <- sp::get_ll_warn()
-  sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
-  .data_IsoriX$R_options <- .Options ## backup R options
-}
-
-
-.onUnload <- function(libpath) {
-  ## This function should not be called by the user.
-  ## It restores the original behaviour of sp
-  ## and the original R options.
-  sp::set_ll_warn(.data_IsoriX$sp_options$sp_ll_warn)
-  options(.data_IsoriX$R_options)  ## reset R options to their backed up values
-}
-
-
 .print_nice_and_round <- function(x, digits = 2) {
   if (digits < 0) {
     stop("digits must be positive")
@@ -64,11 +45,11 @@
   ## Returns:
   ##   The raster
   ##
-  data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~ long+lat  ## coordonates are being set for the raster
-  sp::proj4string(data) <- sp::CRS(proj)  ## projection is being set for the raster
-  sp::gridded(data) <- TRUE  ## a gridded structure is being set for the raster
-  raster::raster(data)  ## the raster is being created
+  data <- sf::st_as_sf(data.frame(long = long, lat = lat, values = values),
+                   coords = c("long","lat"), ## coordonates are being set for the raster
+                   crs = sf::st_crs(proj)$proj4string,  ## projection is being set for the raster
+                   sf_column_name = "geometry")
+  terra::rast(data)  ## the raster is being created
 }
 
 
@@ -85,9 +66,10 @@
   ## Returns:
   ##   The spatial points
   ##
-  data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~long+lat
-  sp::proj4string(data) <- sp::CRS(proj)
+  data <- sf::st_as_sf(data.frame(long = long, lat = lat, values = values),
+                   coords = c("long","lat"), ## coordonates are being set for the raster
+                   crs = sf::st_crs(proj)$proj4string,  ## projection is being set for the raster
+                   sf_column_name = "geometry")
   return(data)
 }
 
@@ -158,26 +140,27 @@
 }
 
 .summarize_values <- function(var, nb_quantiles = 1e4) {
+  
   ## This function should not be called by the user.
   ## It extracts and summarizes the raster values using quantiles if needed.
-  if (!inherits(var, c("RasterLayer", "RasterStack", "RasterBrick"))) {
+  if (!inherits(var, c("SpatRaster"))) {
     return(var)
-  } else if (raster::inMemory(var)) {
-    return(as.numeric(raster::values(var)))
+  } else if (terra::inMemory(var)) {
+    return(as.numeric(terra::values(var)))
   }
   
   if (interactive()) {
     print("extracting values from stored rasters...")
   }
   
-  if (inherits(var, c("RasterLayer"))) {
-    var <- raster::quantile(var, seq(0, 1, length = nb_quantiles))
+  if (inherits(var, terra::nlyr(var) == 1)) {
+    var <- terra::quantile(var, seq(0, 1, length = nb_quantiles))
     return(var)
-  } else if (inherits(var, c("RasterStack", "RasterBrick"))) {
-    max_var <- max(raster::maxValue(var))
-    min_var <- min(raster::minValue(var))
+  } else if (inherits(var, terra::nlyr(var) >= 1)) {
+    max_var <- max(terra::values(var, na.rm = TRUE))
+    min_var <- min(terra::values(var, na.rm = TRUE))
     var <- unique(c(min_var,
-                    apply(raster::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
+                    apply(terra::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
                     max_var))
     return(var)
   }
@@ -191,7 +174,7 @@
   margin_long <- (xmax - xmin) * margin_pct/100
   margin_lat  <- (ymax - ymin) * margin_pct/100
   
-  raster::crop(raster, raster::extent(xmin - margin_long,
+  terra::crop(raster, terra::ext(xmin - margin_long,
                                       xmax + margin_long,
                                       ymin - margin_lat,
                                       ymax + margin_lat))
