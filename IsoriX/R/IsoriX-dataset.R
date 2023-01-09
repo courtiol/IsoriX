@@ -74,7 +74,7 @@ NULL
 #' can be dropped). The columns should possess the same names as the ones
 #' described above. If the elevation is unknown at the sampling sites, elevation
 #' information can be extracted from a high resolution elevation raster using
-#' the function [raster::extract] (see **Examples** in
+#' the function [terra::extract] (see **Examples** in
 #' [CalibDataBat2]).
 #' 
 #' @name CalibDataBat
@@ -121,7 +121,7 @@ NULL
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function [raster::extract] (see **Examples**).
+#' raster using the function [terra::extract] (see **Examples**).
 #' Note that the original study used a different source of elevation data.
 #' 
 #' @name CalibDataBat2
@@ -154,7 +154,7 @@ NULL
 #' ## an elevation raster with the function getelev()
 #' ## and will therefore not run unless you uncomment it
 #' 
-#' #if (require(raster)){
+#' #if (require(terra)){
 #' #    ## We delete the elevation data
 #' #    CalibDataBat2$elev <- NULL
 #' #
@@ -164,8 +164,8 @@ NULL
 #' #            lat_max = max(CalibDataBat2$lat),
 #' #            long_min = min(CalibDataBat2$long),
 #' #            long_max = max(CalibDataBat2$long))
-#' #    ElevationRasterBig <- raster("elevBats.tif")
-#' #    CalibDataBat2$elev <- extract(
+#' #    ElevationRasterBig <- terra::rast("elevBats.tif")
+#' #    CalibDataBat2$elev <- terra::extract(
 #' #        ElevationRasterBig,
 #' #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
 #' #    head(CalibDataBat2)
@@ -246,7 +246,7 @@ NULL
 #' *dataframe* of similar structure than this one. The columns should possess 
 #' the same names as the ones described above. If the elevation is unknown at the 
 #' sampling sites, elevation information can be extracted from a high resolution elevation
-#' raster using the function [raster::extract]. In this dataset, we
+#' raster using the function [terra::extract]. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010.
 #' 
@@ -331,8 +331,8 @@ NULL
 #' ## How did we create this file?
 #' 
 #' ## Uncomment the following to create the file as we did
-#' #if(require(raster) & require(rgeos)){
-#' #    worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
+#' #if(require(terra) & require(rgeos)){
+#' #    worldlimit <- as(ext(CountryBorders), "SpatialPolygons")
 #' #    proj4string(worldlimit) <- crs(CountryBorders)
 #' #    OceanMask <- gDifference(worldlimit, CountryBorders)  
 #' #    OceanMask
@@ -409,7 +409,7 @@ NULL
 #' 
 #' @name ElevRasterDE
 #' @docType data
-#' @format A *RasterLayer*
+#' @format A *SpatRaster*
 #' @seealso [prepraster] to crop and/or aggregate this raster
 #' @source \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 #' @keywords datasets
@@ -426,7 +426,7 @@ NULL
 #' #getelev()
 #' #
 #' ### Convert the tif into R raster format
-#' #  ElevationRasterBig <- raster("gmted2010_30mn.tif")
+#' #  ElevationRasterBig <- tarra::rast("gmted2010_30mn.tif")
 #' #  
 #' #  ## Create the highly agregated elevation raster
 #' #  ElevRasterDE <- prepraster(ElevationRasterBig,
@@ -454,7 +454,7 @@ NULL
 #' 
 #' @name PrecipBrickDE
 #' @docType data
-#' @format A *RasterBrick*
+#' @format A *SpatRaster*
 #' @seealso [prepcipitate] to prepare this raster
 #' @source \url{https://www.worldclim.org/data/worldclim21.html}
 #' @keywords datasets
