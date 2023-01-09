@@ -1,7 +1,7 @@
 #' Plotting functions for IsoriX
 #'
 #' These functions plot objects created by IsoriX (with the exception of plot
-#' method for RasterLayer created using [raster].
+#' method for SpatRaster created using [terra].
 #'
 #'
 #' **General**
@@ -16,7 +16,7 @@
 #' When called upon an object of class *ISOSCAPE*, the plot function draws a
 #' fine-tuned plot of the isoscape.
 #'
-#' When called upon an object of class *RasterLayer*, the plot function displays
+#' When called upon an object of class *SpatRaster*, the plot function displays
 #' the raster (just for checking things fast and dirty). In this case, the
 #' function is a simple shortcut to [rasterVis::levelplot].
 #'
@@ -98,9 +98,9 @@
 #'
 #' @name plots
 #' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND
-#'   plot.RasterLayer plot
+#'   plot.SaptRaster plot
 #' @param x The return object of a call to [isofit], [isoscape], [calibfit],
-#'   [isofind], or [raster::raster]]
+#'   [isofind], or [terra::rast]]
 #' @param cex_scale A *numeric* giving a scaling factor for the points in
 #'   the plots
 #' @param which A *string* indicating the name of the raster to be plotted
@@ -150,7 +150,7 @@
 #'   a *string* or *integer* indicating the colour for plotting the
 #'   confidence interval
 #' @param ... Additional arguments (only in use in plot.CALIBFIT and
-#'   plot.RasterLayer)
+#'   plot.SpatRaster)
 #'
 #' @seealso [isofit] for the function fitting the isoscape
 #'
@@ -297,10 +297,10 @@ plot.ISOSCAPE <- function(x,
     print("(this may take a few seconds)", quote = FALSE)
   }
   ### check extent of the raster and extend to world if necessary
-  world_raster <- raster::raster()
-  raster::extent(world_raster) <- c(-180, 180, -90, 90)
-  if (raster::extent(x) < raster::extent(world_raster)) {
-    x <- raster::extend(x, raster::extent(world_raster))
+  world_raster <- terra::rast()
+  terra::ext(world_raster) <- c(-180, 180, -90, 90)
+  if (terra::ext(x) < terra::ext(world_raster)) {
+    x <- terra::extend(x, terra::ext(world_raster))
   }
   p <- rasterVis::levelplot(x,
                             col.regions = colours$all_cols,
@@ -443,8 +443,8 @@ plot.ISOFIND <- function(x,
                               digits     = palette$digits)
 
     
-    stack_noNAs <- raster::reclassify(x$sample[[what]][[who]], cbind(NA, NA, 0))
-    if (!identical(raster::values(stack_noNAs), raster::values(x$sample[[what]][[who]]))) {
+    stack_noNAs <- terra::classify(x$sample[[what]][[who]], cbind(NA, NA, 0))
+    if (!identical(terra::values(stack_noNAs), terra::values(x$sample[[what]][[who]]))) {
       warning("The p-values for an assignment samples containing only missing values are considered as 0.")
     }
     
@@ -500,7 +500,7 @@ plot.ISOFIND <- function(x,
 
   ## build the 3D-Sphere
   if (sphere$build) {
-    if (raster::nlayers(stack_noNAs) > 1) {
+    if (terra::nlyr(stack_noNAs) > 1) {
       message("You requested a sphere but you requested several assignment maps.
 In this case, only the first assignment will be drawn on a sphere.
 If you want to build several spheres, build them one by one and do request a single assignment each time.")
@@ -848,7 +848,7 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
 
 #' @rdname plots
 #' @export
-plot.RasterLayer <- function(x, ...) {
+plot.SpatRaster <- function(x, ...) {
   print(rasterVis::levelplot(x, margin = FALSE, ...))
   return(invisible(NULL))
 }
