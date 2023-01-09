@@ -48,7 +48,7 @@
 #' (see examples).
 #'
 #' @aliases isoscape print.isoscape summary.isoscape
-#' @param raster The structural raster (*RasterLayer*) such as an elevation
+#' @param raster The structural raster (*SpatRaster*) such as an elevation
 #'   raster created using [prepelev]
 #' @param isofit The fitted isoscape created by [isofit]
 #' @param verbose A *logical* indicating whether information about the
@@ -57,7 +57,7 @@
 #'   session and `FALSE` otherwise.
 #' @return This function returns a *list* of class *ISOSCAPE* containing
 #'   a set of all 8 raster layers mentioned above (all being of class
-#'   *RasterLayer*), and the location of the sources as spatial points.
+#'   *SpatRaster*), and the location of the sources as spatial points.
 #' @seealso [isofit] for the function fitting the isoscape
 #'
 #'   [plot.ISOSCAPE] for the function plotting the isoscape model
@@ -145,9 +145,9 @@ isoscape <- function(raster,
   time <- system.time({
     
     ## we extract lat/long from all cells of the raster
-    coord <- sp::coordinates(raster)
-    long_to_do <- coord[, 1]  # extract the longitude
-    lat_to_do <-  coord[, 2]  # extract the lattitude
+    coord <- terra::crds(raster)
+    long_to_do <- coord[, "x"]  # extract the longitude
+    lat_to_do <-  coord[, "y"]  # extract the lattitude
     rm(coord); gc()  ## remove coord as it can be a large object
     
     ## size of chunks to split the job into smaller ones
@@ -178,7 +178,7 @@ isoscape <- function(raster,
                      lat = lat_to_do,
                      lat_abs = abs(lat_to_do),
                      lat_2 = lat_to_do^2,
-                     elev = raster::extract(raster, cbind(long_to_do, lat_to_do)),  ## ToDo: check that it is elev and not something else
+                     elev = terra::ext(raster, cbind(long_to_do, lat_to_do)),  ## ToDo: check that it is elev and not something else
                      source_ID = as.factor(paste("new", seq_len(length(long_to_do)), sep = "_"))
     )
     
@@ -262,7 +262,7 @@ isoscape <- function(raster,
   )
   
   ## we put all rasters in a brick
-  isoscapes <- raster::brick(list("mean" = mean_raster,
+  isoscapes <- terra::rast(list("mean" = mean_raster,
                                  "mean_predVar" = mean_predVar_raster,
                                  "mean_residVar" = mean_residVar_raster,
                                  "mean_respVar" = mean_respVar_raster,
@@ -313,7 +313,7 @@ isoscape <- function(raster,
   time <- system.time({
     
     ## we extract lat/long from all cells of the raster
-    coord <- sp::coordinates(raster)
+    coord <- terra::crds(raster)
     
     ## we create the object for newdata
     xs <- data.frame(long = coord[, 1],
@@ -321,7 +321,7 @@ isoscape <- function(raster,
                      lat = coord[, 2],
                      lat_abs = abs(coord[, 2]),
                      lat_2 = coord[, 2]^2,
-                     elev = raster::extract(raster, coord), ## ToDo: check that it is elev
+                     elev = terra::ext(raster, coord), ## ToDo: check that it is elev
                      source_ID = as.factor(paste("new", 1:nrow(coord), sep = "_"))
     )
 
@@ -388,7 +388,7 @@ isoscape <- function(raster,
   )
   
   ## we put all rasters in a brick
-  isoscapes <- raster::brick(list("mean" = mean_raster,
+  isoscapes <- terra::rast(list("mean" = mean_raster,
                                  "mean_predVar" = mean_predVar_raster,
                                  "mean_residVar" = mean_residVar_raster,
                                  "mean_respVar" = mean_respVar_raster,
@@ -426,7 +426,7 @@ isoscape <- function(raster,
 #' @param weighting An optional RasterBrick containing the weights
 #' @return This function returns a *list* of class *ISOSCAPE*
 #' containing a set of all 8 raster layers mentioned above (all being of
-#' class *RasterLayer*), and the location of the sources as spatial points.
+#' class *SpatRaster*), and the location of the sources as spatial points.
 #' @seealso
 #' 
 #' [isoscape] for details on the function used to compute the isoscapes for each strata
@@ -506,10 +506,10 @@ isomultiscape <- function(raster, ## change as method?
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
-    if (raster::extent(weighting) != raster::extent(raster)) {
+    if (terra::ext(weighting) != terra::ext(raster)) {
       stop("the extent of the object 'weighting' and 'raster' differ")
     }
-    if (raster::ncell(weighting) != raster::ncell(raster)) {
+    if (terra::ncell(weighting) != terra::ncell(raster)) {
       stop("the resolution of the object 'weighting' and 'raster' differ")
     }
   }
@@ -531,27 +531,27 @@ isomultiscape <- function(raster, ## change as method?
   names(isoscapes) <- names(isofit$multi_fits)
   
   ## Combining mean isoscapes into RasterBricks
-  brick_mean <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean))
-  brick_mean_predVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean_predVar))
-  brick_mean_residVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean_residVar))
-  brick_mean_respVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean_respVar))
+  brick_mean <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean))
+  brick_mean_predVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean_predVar))
+  brick_mean_residVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean_residVar))
+  brick_mean_respVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean_respVar))
 
   ## Combining disp isoscapes into RasterBricks
-  brick_disp <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp))
-  brick_disp_predVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp_predVar))
-  brick_disp_residVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp_residVar))
-  brick_disp_respVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp_respVar))
+  brick_disp <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp))
+  brick_disp_predVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp_predVar))
+  brick_disp_residVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp_residVar))
+  brick_disp_respVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp_respVar))
   
   ## Compute the weights
   if (is.null(weighting)) {
-    weights <- raster::raster(raster)
-    weights <- raster::setValues(weights, 1/length(isoscapes))
+    weights <- terra::rast(raster)
+    weights <- terra::setValues(weights, 1/length(isoscapes))
   } else {
     weights <- weighting / sum(weighting)
   }
   
   ## Compute the weighted averages and store then in a list of RasterBricks
-  multiscape <- raster::brick(list("mean" = sum(brick_mean * weights),
+  multiscape <- terra::rast(list("mean" = sum(brick_mean * weights),
                                  "mean_predVar" = sum(brick_mean_predVar * weights^2),
                                  "mean_residVar" = sum(brick_mean_residVar * weights^2),
                                  "mean_respVar" = sum(brick_mean_respVar * weights^2),
