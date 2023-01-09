@@ -20,9 +20,9 @@
 #' below). An aggregation factor of zero (or one) keeps the resolution constant
 #' (default).
 #'
-#' This function relies on calls to the functions [raster::aggregate] and
-#' [raster::crop] from the package \pkg{raster}. It thus share the limitations
-#' of these functions. In particular, [raster::crop] expects extents with
+#' This function relies on calls to the functions [terra::aggregate] and
+#' [terra::crop] from the package \pkg{terra}. It thus share the limitations
+#' of these functions. In particular, [terra::crop] expects extents with
 #' increasing longitudes and latitudes. We have tried to partially relax this
 #' constrains for longitude and you can use the argument \code{manual_crop} to
 #' provide longitudes in decreasing order, which is useful to centre a isoscape
@@ -32,7 +32,7 @@
 #' priorities for now (let us know if you really need this feature).
 #' 
 #' @inheritParams getelev
-#' @param raster The structural raster (*RasterLayer*)
+#' @param raster The structural raster (*SpatRaster*)
 #' @param isofit The fitted isoscape model returned by the function [isofit]
 #' @param aggregation_factor The number of neighbouring cells (*integer*) to
 #'   merge during aggregation
@@ -48,7 +48,7 @@
 #'   of the procedure should be displayed or not while the function is running.
 #'   By default verbose is `TRUE` if users use an interactive R session, and
 #'   `FALSE` otherwise.
-#' @return The prepared structural raster of class *RasterLayer*
+#' @return The prepared structural raster of class *SpatRaster*
 #' @note Aggregating the raster may lead to different results for the
 #'   assignment, because the values of raster cells changes depending on the
 #'   aggregation function (see example below), which in turn affects model
@@ -123,13 +123,13 @@
 #' ### Let's create a raster centered around the pacific
 #' 
 #' ## We first create an empty raster
-#' EmptyRaster <- raster(matrix(0, ncol = 360, nrow = 180))
-#' extent(EmptyRaster) <- c(-180, 180, -90, 90)
+#' EmptyRaster <- rast(matrix(0, ncol = 360, nrow = 180))
+#' ext(EmptyRaster) <- c(-180, 180, -90, 90)
 #' projection(EmptyRaster) <- CRS("+proj=longlat +datum=WGS84")
 #' 
 #' ## We crop it around the pacific
 #' PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
-#' extent(PacificA) # note that the extent has changed!
+#' ext(PacificA) # note that the extent has changed!
 #' 
 #' ## We plot (note the use of the function shift()!)
 #' levelplot(PacificA, margin = FALSE, colorkey = FALSE) +
@@ -157,10 +157,10 @@ prepraster <- function(raster,
       if (!is.null(manual_crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
       if (## test if the raster is not smaller than the area covered by the sources.
           ## If yes crop will not proceed!
-          raster::xmin(raster) > min(isofit$mean_fit$data$long) |
-          raster::xmax(raster) < max(isofit$mean_fit$data$long) |
-          raster::ymin(raster) > min(isofit$mean_fit$data$lat) |
-          raster::ymax(raster) < max(isofit$mean_fit$data$lat)
+        terra::xmin(raster) > min(isofit$mean_fit$data$long) |
+        terra::xmax(raster) < max(isofit$mean_fit$data$long) |
+        terra::ymin(raster) > min(isofit$mean_fit$data$lat) |
+        terra::ymax(raster) < max(isofit$mean_fit$data$lat)
           ) {
         warning("the cropping may not make sense (sources located outside structural raster)")
       }
@@ -180,22 +180,22 @@ prepraster <- function(raster,
       if (length(manual_crop) == 4) {
         
         if ((manual_crop[1] > manual_crop[2]) && (manual_crop[3] < manual_crop[4])) {
-          crop1 <- raster::crop(raster,
-                                raster::extent(raster::xmin(raster::extent(raster)),
+          crop1 <- terra::crop(raster,
+                               terra::ext(terra::xmin(terra::ext(raster)),
                                                manual_crop[2],
                                                manual_crop[3],
                                                manual_crop[4]))
-          crop2 <- raster::crop(raster,
-                                raster::extent(manual_crop[1],
-                                               raster::xmax(raster::extent(raster)),
+          crop2 <- terra::crop(raster,
+                               terra::ext(manual_crop[1],
+                                             terra::xmax(terra::ext(raster)),
                                                manual_crop[3],
                                                manual_crop[4]))
-          raster <- raster::shift(raster::merge(crop1, raster::shift(crop2,
+          raster <- terra::shift(terra::merge(crop1, terra::shift(crop2,
                                                                      dx = -360)),
                                   dx = 360)
           warning("The first longitude is greater than the second one. You may want this to study something around the pacific. This feature is not fully supported... but... the function prepraster() tried to cope with this. That implies a change in the coordinate system (0:360 instead of -180:180). This should create no problem for ploting isoscapes but this can create troubles to add polygons or points on the maps. If that is the case, you need to add 360 degree to the longitudes... If all that sounds complicated, just stick to a first longitude SMALLER than the second one.")
         } else {
-          raster <- raster::crop(raster, manual_crop)
+          raster <- terra::crop(raster, manual_crop)
         }
       }
     }
@@ -203,19 +203,19 @@ prepraster <- function(raster,
       if (interactive()) {
         print(paste("aggregating..."))
       }
-      raster <- raster::aggregate(raster, fact = aggregation_factor, fun = aggregation_fn)  ## aggregation
+      raster <- terra::aggregate(raster, fact = aggregation_factor, fun = aggregation_fn)  ## aggregation
     }
   })
 
   ## applies values_to_zero transformation
-  raster::values(raster) <- ifelse(raster::values(raster) < max(values_to_zero) & raster::values(raster) > min(values_to_zero), 0, raster::values(raster))
+  terra::values(raster) <- ifelse(terra::values(raster) < max(values_to_zero) & terra::values(raster) > min(values_to_zero), 0, terra::values(raster))
 
   ## store the raster in memory if possible
-  if (raster::canProcessInMemory(raster)) {
+  
     raster_HD <- raster
-    raster <- raster::raster(raster_HD)
-    raster::values(raster) <- raster::values(raster_HD)
-  }
+    raster <- terra::rast(raster_HD)
+    terra::values(raster) <- terra::values(raster_HD)
+ 
   
   if (verbose) {
     print(paste("done!"))
