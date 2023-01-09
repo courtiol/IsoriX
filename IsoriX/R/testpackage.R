@@ -22,8 +22,8 @@ if (run) {
           lat_max = max(CalibDataBat2$lat),
           long_min = min(CalibDataBat2$long),
           long_max = max(CalibDataBat2$long))
-  ElevationRasterBig <- raster(foo)
-  CalibDataBat2$elev <- extract(
+  ElevationRasterBig <- terra::rast(foo)
+  CalibDataBat2$elev <- terra::ext(
     ElevationRasterBig,
     cbind(CalibDataBat2$long, CalibDataBat2$lat))
   head(CalibDataBat2)
@@ -32,8 +32,8 @@ if (run) {
   
   foo <- tempfile()
   getelev(file = foo, z = 1)
-  elev_raster <- raster::raster(foo)
-  plot(elev_raster)
+  elev_raster <- terra::rast(foo)
+  terra::plot(elev_raster)
   rm(elev_raster)
   
   foo <- tempdir()
@@ -47,7 +47,7 @@ if (run) {
                           aggregation_factor = 0)
   getprecip(path = "~/Downloads/", overwrite = TRUE)  ## SLOW & BUG
   PrecipitationBrick <- prepcipitate(path = "~/Downloads/", raster = StrRaster)
-  levelplot(PrecipitationBrick)
+  rasterVis::levelplot(PrecipitationBrick)
   
   # example(isosim) ## not activated for now
   
