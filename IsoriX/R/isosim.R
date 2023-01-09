@@ -155,7 +155,7 @@ isosim <- function(data,
                             lat = coord[, 2],
                             lat_2 = coord[, 2]^2,
                             lat_abs = abs(coord[, 2]),
-                            elev = terra::extract(raster, coord),
+                            elev = terra::ext(raster, coord),
                             n_source_value = rep(1e6, nrow(coord)),
                             source_ID = as.factor(paste("simu", 1:nrow(coord), sep = "_")))
     rm(coord); gc() ## remove coord as it can be a large object

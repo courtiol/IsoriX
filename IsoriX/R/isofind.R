@@ -250,7 +250,7 @@ calibfit!")
         
         # matrix of row vectors of errors of the coefficients (eps_alpha, eps_beta)
         eps_abs <- tcrossprod(covmat_scaled, X_ginv) # dimensions: ( # of putative origins ) * 2
-        hat_delta_o <- terra::extract(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
+        hat_delta_o <- terra::ext(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
         
         # adding all components of term 4
         var_term4_vec <- eps_abs[, 1L] + eps_abs[, 2L]*hat_delta_o
