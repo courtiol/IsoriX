@@ -5,7 +5,7 @@
 #' download the data and 2) saves the downloaded raster on the hard drive (so
 #' that you don't have to keep downloading the same file over and over again).
 #' The file saved on the disk is a *.tif file which you can directly read using
-#' the function [raster::raster].
+#' the function [terra::rast].
 #'
 #' By default (and to keep with the spirit of the former implementations of
 #' `getelev` in IsoriX, which did not rely on [elevatr::elevatr]), an
@@ -128,12 +128,12 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                                      ...)
     
     if (verbose) print("Writing the elevation raster on the disk...")
-    raster::writeRaster(elev, filename = file, overwrite = overwrite)
+    terra::writeRaster(elev, filename = file, overwrite = overwrite)
     if (verbose) print("Done.")
   }
   
   message("you can load your elevation raster as follows:")
-  message(paste0("elev_raster <- raster::raster('", file, "')"))
+  message(paste0("elev_raster <- terra::rast('", file, "')"))
   
   return(invisible(file))
 }
