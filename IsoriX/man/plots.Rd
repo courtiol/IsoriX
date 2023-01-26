@@ -7,7 +7,6 @@
 \alias{plot.CALIBFIT}
 \alias{plot.ISOFIND}
 \alias{plot.RasterLayer}
-\alias{plot}
 \alias{points.CALIBFIT}
 \title{Plotting functions for IsoriX}
 \usage{
