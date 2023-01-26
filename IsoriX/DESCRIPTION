@@ -23,6 +23,7 @@ Imports:
     sp,
     spaMM (>= 3.13),
     stats,
+    terra,
     tools,
     utils,
     viridisLite
