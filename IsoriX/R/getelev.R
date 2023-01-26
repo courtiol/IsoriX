@@ -53,8 +53,7 @@
 #' @examples
 #' 
 #' ## To download the high resolution
-#' ## raster in your current working
-#' ## directory, just type:
+#' ## raster at the default location, just type:
 #' ## getelev()
 #' 
 #' @export
