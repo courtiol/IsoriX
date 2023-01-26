@@ -47,5 +47,5 @@ Suggests:
 LazyData: true
 URL: https://github.com/courtiol/IsoriX/
 BugReports: https://github.com/courtiol/IsoriX/issues/
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
