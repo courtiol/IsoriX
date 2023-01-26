@@ -67,7 +67,7 @@ is a wrapper that 1) calls the function \link[elevatr:get_elev_raster]{elevatr::
 download the data and 2) saves the downloaded raster on the hard drive (so
 that you don't have to keep downloading the same file over and over again).
 The file saved on the disk is a *.tif file which you can directly read using
-the function \link[raster:raster]{raster::raster}.
+the function \link[terra:rast]{terra::rast}.
 }
 \details{
 By default (and to keep with the spirit of the former implementations of

@@ -5,7 +5,7 @@
 #' download the data and 2) saves the downloaded raster on the hard drive (so
 #' that you don't have to keep downloading the same file over and over again).
 #' The file saved on the disk is a *.tif file which you can directly read using
-#' the function [raster::raster].
+#' the function [terra::rast].
 #'
 #' By default (and to keep with the spirit of the former implementations of
 #' `getelev` in IsoriX, which did not rely on [elevatr::elevatr]), an
@@ -70,8 +70,8 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                     Ncpu = getOption_IsoriX("Ncpu"),
                     verbose = interactive(),
                     ...
-                    ) {
-
+) {
+  
   ## Turning path into canonical form
   ## (this avoids the problem of using the wrong slashes and so on)
   file <- normalizePath(file, mustWork = FALSE)
@@ -115,7 +115,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
     )
     )
   } else {
-  
+    
     if (verbose) print("Downloading and formating the elevation raster... (be patient)")
     elev <- elevatr::get_elev_raster(location = data.frame(long = c(long_min, long_max),
                                                            lat = c(lat_min, lat_max)),
@@ -128,12 +128,12 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                                      ...)
     
     if (verbose) print("Writing the elevation raster on the disk...")
-    raster::writeRaster(elev, filename = file, overwrite = overwrite)
+    terra::writeRaster(elev, filename = file, overwrite = overwrite)
     if (verbose) print("Done.")
   }
   
   message("you can load your elevation raster as follows:")
-  message(paste0("elev_raster <- raster::raster('", file, "')"))
+  message(paste0("elev_raster <- terra::rast('", file, "')"))
   
   return(invisible(file))
 }
@@ -179,7 +179,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
 getprecip <- function(path = NULL,
                       overwrite = FALSE,
                       verbose = interactive()
-                      ) {
+) {
   
   ## Define web address and file name
   address_precip <- "https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_30s_prec.zip"
@@ -196,7 +196,7 @@ getprecip <- function(path = NULL,
                               overwrite = overwrite,
                               md5sum = md5sum_precip,
                               verbose = verbose
-                              )
+  )
   
   ## Unzip the file
   if (verbose > 0) {
@@ -249,7 +249,7 @@ getprecip <- function(path = NULL,
 #' 
 downloadfile <- function(address = NULL, filename = NULL, path = NULL,
                          overwrite = FALSE, md5sum = NULL, verbose = interactive()
-                         ) {
+) {
   
   if (verbose > 0) {
     print(paste("the function attempts to download", filename, "from internet"), quote = FALSE)
@@ -271,7 +271,7 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   ## Create directory if missing
   if (!dir.exists(path)) {
     if (verbose > 0) {
-     print("(the folder you specified does not exist and will therefore be created)", quote = FALSE)
+      print("(the folder you specified does not exist and will therefore be created)", quote = FALSE)
     }
     dir.create(path, recursive = TRUE)
   }
@@ -281,8 +281,8 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
   if (file.exists(complete_path) & !overwrite) {
     message(paste("the file", filename, "is already present in", path,
                   "so it won't be downloaded again unless you set the argument overwrite to TRUE"
-                  )
-            )
+    )
+    )
   } else {
     utils::download.file(address, destfile = complete_path, mode = "wb")
   }

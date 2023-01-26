@@ -13,7 +13,7 @@ several other packages which implements the statistical framework proposed by
 Courtiol & Rousset 2017. It uses the package \pkg{spaMM} for fitting and
 predicting isoscapes, and for performing the assignment. \pkg{IsoriX} also
 heavily relies on the package \pkg{rasterVis} for plotting the maps produced
-with the package \pkg{raster} using the powerful package \pkg{lattice}
+with the package \pkg{terra} using the powerful package \pkg{lattice}
 visualization system.
 }
 \details{

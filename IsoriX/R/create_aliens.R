@@ -39,7 +39,7 @@
 #' @param coordinates An optional *data.frame* with columns `site_ID`, 
 #' `long` and `lat`
 #'   
-#' @param raster A *RasterLayer* containing an elevation raster
+#' @param raster A *SpatRaster* containing an elevation raster
 #'   
 #' @param n_sites The number of sites from which the simulated organisms
 #'   originate (*integer*)
@@ -120,8 +120,8 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
   
   ## Choose location for the aliens
   if (length(coordinates) == 1 && is.na(coordinates)) {
-    LocationData <- data.frame(site_ID = sample(1:raster::ncell(isoscape$isoscape$mean), n_sites, replace = FALSE))
-    xy <- raster::xyFromCell(isoscape$isoscape$mean, LocationData$site_ID)
+    LocationData <- data.frame(site_ID = sample(1:terra::ncell(isoscape$isoscape$mean), n_sites, replace = FALSE))
+    xy <- terra::xyFromCell(isoscape$isoscape$mean, LocationData$site_ID)
     LocationData$long <- xy[, "x"]
     LocationData$lat  <- xy[, "y"]
   } else {
@@ -135,12 +135,12 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
     xy <- coordinates[, c("long", "lat")]
     n_sites <- nrow(coordinates)
   }
-  LocationData$elev = raster::extract(x = raster, y = xy)
+  LocationData$elev = terra::extract(x = raster, y = xy)
   LocationData$n_samples <- round(stats::runif(n = n_sites, min = min_n_samples, max = max_n_samples))
   
   ## Predict environmental values at the locations
-  LocationData$source_value <- raster::extract(isoscape$isoscapes$mean, xy)
- 
+  LocationData$source_value <- terra::extract(isoscape$isoscapes$mean, xy)
+  
   ## Replicate the dataset per animal
   AlienData <- LocationData[rep(1:nrow(LocationData), times = LocationData$n_samples), ]
   AlienData$sample_ID <- factor(paste("Alien", 1:nrow(AlienData), sep = "_"))

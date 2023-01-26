@@ -357,40 +357,40 @@ calibfit <- function(data,
                      method = c("wild", "lab", "desk", "desk_inverse"),
                      verbose = interactive(),
                      control_optim = list()
-                     ) {
-
-    ## checking inputs
-    if (inherits(isofit, "MULTIISOFIT")) {
-      stop("object 'isofit' of class MULTIISOFIT; calibration have not yet been implemented for this situation.")
+) {
+  
+  ## checking inputs
+  if (inherits(isofit, "MULTIISOFIT")) {
+    stop("object 'isofit' of class MULTIISOFIT; calibration have not yet been implemented for this situation.")
+  }
+  
+  method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
+  
+  ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
+  ## That would allow to fit species as a random effect in the model
+  ## However, it is not obvious that it would make sense to do that as it may
+  ## remove variance that should be captured during the assignment.
+  ## We thus disregard this term for now.
+  species_rand <- FALSE
+  
+  species_info <- "species_ID" %in% colnames(data)
+  if (!is.null(species_rand)) {
+    if (!species_info && species_rand) {
+      stop("The random effect for species cannot be fit if data does not contain a column called species_ID")
     }
-    
-    method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
-    
-    ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
-    ## That would allow to fit species as a random effect in the model
-    ## However, it is not obvious that it would make sense to do that as it may
-    ## remove variance that should be captured during the assignment.
-    ## We thus disregard this term for now.
+  }
+  
+  ## prepare the dataset
+  data <- .prepare_data_calib(data, method = method)
+  
+  ## set species_rand (not used for now)
+  if (!species_info) {
     species_rand <- FALSE
-    
-    species_info <- "species_ID" %in% colnames(data)
-    if (!is.null(species_rand)) {
-      if (!species_info && species_rand) {
-        stop("The random effect for species cannot be fit if data does not contain a column called species_ID")
-      }
-    }
-    
-    ## prepare the dataset
-    data <- .prepare_data_calib(data, method = method)
-
-    ## set species_rand (not used for now)
-    if (!species_info) {
-      species_rand <- FALSE
-    } else {
-      nb_species <- length(unique(data$species_ID))
-      species_rand <- ifelse(is.null(species_rand) && nb_species > 4, TRUE, FALSE)
-    }
-
+  } else {
+    nb_species <- length(unique(data$species_ID))
+    species_rand <- ifelse(is.null(species_rand) && nb_species > 4, TRUE, FALSE)
+  }
+  
   ## apply the calibration method
   result_calib <- switch(method,
                          wild = .calibfit_wild(data = data,
@@ -403,10 +403,10 @@ calibfit <- function(data,
                                              verbose = verbose),
                          desk = .calibfit_desk(data = data, verbose = verbose),
                          desk_inverse = .calibfit_desk_inverse(data = data, verbose = verbose)
-                         )
-    
+  )
+  
   class(result_calib) <- c("CALIBFIT", "list")
-
+  
   return(invisible(result_calib))
 }
 
@@ -463,7 +463,7 @@ calibfit <- function(data,
     if (nrow(data) > 1) {
       stop("The selected calibration method requires that data contains only a single row.")
     }
-
+    
     ## Preparing the inputs
     ### No preparation needed
   }
@@ -486,7 +486,7 @@ calibfit <- function(data,
     if (is.null(data$N)) {
       stop("The dataset does not seem to contain the required variable 'N'.")
     }
-
+    
     ## Preparing the inputs
     ### No preparation needed
   }
@@ -498,7 +498,7 @@ calibfit <- function(data,
   data <- droplevels(data)
   
   if (!is.null(weighting)) {
-    precipitations <- raster::extract(weighting, cbind(data$long, data$lat))
+    precipitations <- terra::extract(weighting, cbind(data$long, data$lat))
     if (anyNA(precipitations)) {
       message("NA values in precipitation cannot be handled and were thus replaced by 0.0001. If this does not make sense in your case, please contact the maintainer of this package.")
       precipitations[is.na(precipitations)] <- 0.0001 ## remove NA to prevent crashes --> dangerous?
@@ -538,31 +538,31 @@ calibfit <- function(data,
     ## Test for extrapolation during calibration
     issues_extrapolations <- FALSE
     msg <- paste("Note: extrapolation issues\nOut of your", nrow(data), "calibration samples,\n")
-      
-      ### check if spatial extrapolation occurs
-      coord_points <- isofit$info_fit$data[, c("long", "lat")]
-      points_contour <- grDevices::chull(coord_points)
-      coord_contour <- coord_points[c(points_contour, points_contour[1]), ]
-      points_out <- sp::point.in.polygon(point.x = data$long, point.y = data$lat,
-                                         pol.x = coord_contour$long, pol.y = coord_contour$lat) == 0
-      if (sum(points_out) > 0) {
-        issues_extrapolations <- TRUE
-        msg <- paste(msg, "*", sum(points_out), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
-      }
-      
-      ### check if value extrapolation occurs
-      too_small <- sum(min(data$mean_source_value, na.rm = TRUE) < min(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
-      too_large <- sum(max(data$mean_source_value, na.rm = TRUE) > max(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
-      if (too_small + too_large > 0) {
-        issues_extrapolations <- TRUE
-        msg <- paste(msg, "*", too_small + too_large, "are associated to predicted values more extreme than the ones present in the isoscape.\n")
-      }
-      
-      ## display message if necessary
-      if (issues_extrapolations) {
-        message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could imped the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more callibration data within the expected range to avoid any problem."))
-      }
-
+    
+    ### check if spatial extrapolation occurs
+    coord_points <- isofit$info_fit$data[, c("long", "lat")]
+    points_contour <- grDevices::chull(coord_points)
+    coord_contour <- coord_points[c(points_contour, points_contour[1]), ]
+    points_out <- sp::point.in.polygon(point.x = data$long, point.y = data$lat,
+                                       pol.x = coord_contour$long, pol.y = coord_contour$lat) == 0
+    if (sum(points_out) > 0) {
+      issues_extrapolations <- TRUE
+      msg <- paste(msg, "*", sum(points_out), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
+    }
+    
+    ### check if value extrapolation occurs
+    too_small <- sum(min(data$mean_source_value, na.rm = TRUE) < min(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
+    too_large <- sum(max(data$mean_source_value, na.rm = TRUE) > max(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
+    if (too_small + too_large > 0) {
+      issues_extrapolations <- TRUE
+      msg <- paste(msg, "*", too_small + too_large, "are associated to predicted values more extreme than the ones present in the isoscape.\n")
+    }
+    
+    ## display message if necessary
+    if (issues_extrapolations) {
+      message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could imped the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more callibration data within the expected range to avoid any problem."))
+    }
+    
     ## extract the prediction covariance matrix
     predcov_matrix_isofit_full <- attr(mean_calib, "predVar")
     
@@ -587,28 +587,28 @@ calibfit <- function(data,
                                    species_rand,
                                    return_fit = FALSE,
                                    lik_method = "REML") {
-        ## This function computes the likelihood of a given calibration function
-        data$intercept <- param[1]
-        data$slope <- param[2]
-        lambda_list <- list(lambda = c(1e-6 + unique(data$slope)^2, NA))
-        calib_formula <-
-          "sample_value ~ 0 + offset(intercept+slope*mean_source_value) + corrMatrix(1|site_ID) + (1|site_ID)"
-        if (species_rand) {
-          lambda_list$lambda <- c(lambda_list$lambda, NA)
-          calib_formula <- paste(calib_formula, "+ (1|species_ID)")
-        }
-        calib_fit <-
-          spaMM::HLCor(
-            formula = stats::formula(calib_formula),
-            corrMatrix = predcov,
-            ranPars = lambda_list,
-            data = data,
-            method = lik_method
-          )
-        if (return_fit)
-          return(calib_fit)
-        return(calib_fit$APHLs$p_v)
+      ## This function computes the likelihood of a given calibration function
+      data$intercept <- param[1]
+      data$slope <- param[2]
+      lambda_list <- list(lambda = c(1e-6 + unique(data$slope)^2, NA))
+      calib_formula <-
+        "sample_value ~ 0 + offset(intercept+slope*mean_source_value) + corrMatrix(1|site_ID) + (1|site_ID)"
+      if (species_rand) {
+        lambda_list$lambda <- c(lambda_list$lambda, NA)
+        calib_formula <- paste(calib_formula, "+ (1|species_ID)")
       }
+      calib_fit <-
+        spaMM::HLCor(
+          formula = stats::formula(calib_formula),
+          corrMatrix = predcov,
+          ranPars = lambda_list,
+          data = data,
+          method = lik_method
+        )
+      if (return_fit)
+        return(calib_fit)
+      return(calib_fit$APHLs$p_v)
+    }
     
     ## estimation of intercept and slope of the calibration function
     opt_res <- stats::optim(
@@ -689,7 +689,7 @@ calibfit <- function(data,
   }
   
   time <- system.time({
-
+    
     ## determine if site_ID random term needed
     if (!"site_ID" %in% colnames(data)) {
       site_rand <- FALSE
@@ -710,15 +710,15 @@ calibfit <- function(data,
     }
     
     calib_fit <- spaMM::fitme(
-          formula = stats::formula(calib_formula),
-          data = data,
-          method = "REML")
-
+      formula = stats::formula(calib_formula),
+      data = data,
+      method = "REML")
+    
     param_calibfit <- spaMM::fixef(calib_fit)
     names(param_calibfit) <- c("intercept", "slope")
-
+    
     ## extracting the covariance matrix of fixed effects
-
+    
     fixefCov_calibfit <- stats::vcov(calib_fit)
     
     rownames(fixefCov_calibfit) <- names(param_calibfit)
@@ -796,7 +796,7 @@ calibfit <- function(data,
                                    verbose = interactive()) {
   ## This function should not be called by the user.
   ## It fits the calibration model according to the "desk" method (aka "dirty").
-
+  
   inv_reg <- .invert_reg(intercept = data$intercept,
                          slope = data$slope,
                          SE_I = data$intercept_se,
@@ -804,7 +804,7 @@ calibfit <- function(data,
                          phi = data$resid_var,
                          N = data$N,
                          sign_mean_Y = data$sign_mean_Y
-                        )
+  )
   
   data_transformed <- data.frame(intercept = inv_reg$intercept,
                                  slope = inv_reg$slope,
@@ -849,7 +849,7 @@ print.CALIBFIT <- function(x, ...) {
   cat("\n")
   cat("[for more information, use summary()]", "\n")
   cat("\n")
-
+  
   return(invisible(NULL))
 }
 
