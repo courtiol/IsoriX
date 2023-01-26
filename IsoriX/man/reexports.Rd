@@ -22,6 +22,14 @@
 \alias{sp.points}
 \alias{sp.polygons}
 \alias{get_ranPars}
+\alias{plot}
+\alias{points}
+\alias{polys}
+\alias{rast}
+\alias{crs}
+\alias{crs<-}
+\alias{ext}
+\alias{ext<-}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -42,5 +50,7 @@ below to see their documentation.
   \item{sp}{\code{\link[sp:CRS-class]{CRS}}, \code{\link[sp:panel]{sp.points}}, \code{\link[sp:panel]{sp.polygons}}}
 
   \item{spaMM}{\code{\link[spaMM]{get_ranPars}}}
+
+  \item{terra}{\code{\link[terra]{crs}}, \code{\link[terra:crs]{crs<-}}, \code{\link[terra]{ext}}, \code{\link[terra:ext]{ext<-}}, \code{\link[terra]{plot}}, \code{\link[terra:lines]{points}}, \code{\link[terra:lines]{polys}}, \code{\link[terra]{rast}}, \code{\link[terra]{shift}}}
 }}
 

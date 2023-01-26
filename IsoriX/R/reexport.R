@@ -99,3 +99,42 @@ sp::sp.polygons
 #' @importFrom spaMM get_ranPars
 #' @export
 spaMM::get_ranPars
+
+
+# reexport from terra:
+
+#' @importFrom terra plot
+#' @export
+terra::plot
+
+#' @importFrom terra points
+#' @export
+terra::points
+
+#' @importFrom terra polys
+#' @export
+terra::polys
+
+#' @importFrom terra rast
+#' @export
+terra::rast
+
+#' @importFrom terra crs
+#' @export
+terra::crs
+
+#' @importFrom terra "crs<-"
+#' @export
+terra::"crs<-"
+
+#' @importFrom terra ext
+#' @export
+terra::ext
+
+#' @importFrom terra "ext<-"
+#' @export
+terra::"ext<-"
+
+#' @importFrom terra shift
+#' @export
+terra::shift

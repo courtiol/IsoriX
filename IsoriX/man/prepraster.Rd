@@ -16,7 +16,7 @@ prepraster(
 )
 }
 \arguments{
-\item{raster}{The structural raster (\emph{RasterLayer})}
+\item{raster}{The structural raster (\emph{SpatRaster})}
 
 \item{isofit}{The fitted isoscape model returned by the function \link{isofit}}
 
@@ -44,7 +44,7 @@ By default verbose is \code{TRUE} if users use an interactive R session, and
 \code{FALSE} otherwise.}
 }
 \value{
-The prepared structural raster of class \emph{RasterLayer}
+The prepared structural raster of class \emph{SpatRaster}
 }
 \description{
 This function prepares the structural raster for the follow-up analyses. The
@@ -68,9 +68,9 @@ faster and using less memory (this can affect the assignment; see note
 below). An aggregation factor of zero (or one) keeps the resolution constant
 (default).
 
-This function relies on calls to the functions \link[raster:aggregate]{raster::aggregate} and
-\link[raster:crop]{raster::crop} from the package \pkg{raster}. It thus share the limitations
-of these functions. In particular, \link[raster:crop]{raster::crop} expects extents with
+This function relies on calls to the functions \link[terra:aggregate]{terra::aggregate} and
+\link[terra:crop]{terra::crop} from the package \pkg{terra}. It thus share the limitations
+of these functions. In particular, \link[terra:crop]{terra::crop} expects extents with
 increasing longitudes and latitudes. We have tried to partially relax this
 constrains for longitude and you can use the argument \code{manual_crop} to
 provide longitudes in decreasing order, which is useful to centre a isoscape
@@ -121,24 +121,26 @@ ElevationRaster3 <- prepraster(
     margin_pct = 10,
     aggregation_factor = 5, aggregation_fn = max)
 
-## We build the plots of the outcome of the 3 different aggregation schemes
-PlotAggregation1 <- levelplot(ElevationRaster1,
-        margin = FALSE, main = "Original small raster") + 
-    layer(sp.polygons(CountryBorders)) +
-    layer(sp.polygons(OceanMask, fill = "blue"))
-PlotAggregation2 <- levelplot(ElevationRaster2,
-        margin = FALSE, main = "Small raster aggregated (by mean)") + 
-    layer(sp.polygons(CountryBorders)) +
-    layer(sp.polygons(OceanMask, fill = "blue"))
-PlotAggregation3 <- levelplot(ElevationRaster3,
-        margin = FALSE, main = "Small raster aggregated (by max)") + 
-    layer(sp.polygons(CountryBorders)) +
-    layer(sp.polygons(OceanMask, fill = "blue"))  
+## We plot the outcome of the 3 different aggregation schemes using terra
 
-## We plot as a panel using lattice syntax:
-print(PlotAggregation1, split = c(1, 1, 3, 1), more = TRUE)
-print(PlotAggregation2, split = c(2, 1, 3, 1), more = TRUE)
-print(PlotAggregation3, split = c(3, 1, 3, 1))
+oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
+
+plot(ElevationRaster1, main = "Original small raster")
+
+CountryBorders <- terra::vect(system.file("extdata/CountryBorders.shp", package = "IsoriX"))
+OceanMask <- terra::vect(system.file("extdata/OceanMask.shp", package = "IsoriX"))
+polys(CountryBorders)
+polys(OceanMask, col = "blue")
+
+plot(ElevationRaster2, main = "Small raster aggregated (by mean)")
+polys(CountryBorders)
+polys(OceanMask, col = "blue")
+
+plot(ElevationRaster3, main = "Small raster aggregated (by max)")
+polys(CountryBorders)
+polys(OceanMask, col = "blue")
+
+par(oripar) ## restore graphical settings
 }
 
 ## The examples below will only be run if sufficient time is allowed
@@ -151,18 +153,18 @@ if(getOption_IsoriX("example_maxtime") > 10) {
 ### Let's create a raster centered around the pacific
 
 ## We first create an empty raster
-EmptyRaster <- raster(matrix(0, ncol = 360, nrow = 180))
-extent(EmptyRaster) <- c(-180, 180, -90, 90)
-projection(EmptyRaster) <- CRS("+proj=longlat +datum=WGS84")
+EmptyRaster <- rast(matrix(0, ncol = 360, nrow = 180))
+ext(EmptyRaster) <- c(-180, 180, -90, 90)
+crs(EmptyRaster) <- "+proj=longlat +datum=WGS84"
 
 ## We crop it around the pacific
 PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
-extent(PacificA) # note that the extent has changed!
+ext(PacificA) # note that the extent has changed!
 
 ## We plot (note the use of the function shift()!)
-levelplot(PacificA, margin = FALSE, colorkey = FALSE) +
-  layer(sp.polygons(CountryBorders, fill = "black")) +
-  layer(sp.polygons(shift(CountryBorders, dx = 360), fill = "black"))
+plot(PacificA, col = "blue", legend = FALSE)
+polys(CountryBorders, col = "black")
+polys(shift(CountryBorders, dx = 360), col = "black")
 
 }
 
