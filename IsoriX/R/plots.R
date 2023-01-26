@@ -98,7 +98,7 @@
 #'
 #' @name plots
 #' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND
-#'   plot.RasterLayer plot
+#'   plot.RasterLayer
 #' @param x The return object of a call to [isofit], [isoscape], [calibfit],
 #'   [isofind], or [raster::raster]]
 #' @param cex_scale A *numeric* giving a scaling factor for the points in
@@ -166,7 +166,8 @@
 NULL
 
 #' @rdname plots
-#' @export
+#' @method plot ISOSCAPE
+#' @exportS3Method plot ISOSCAPE
 plot.ISOSCAPE <- function(x,
                           which   = "mean",
                           y_title  = list(which = TRUE, title = bquote(delta**2*H)), ## bquote(italic("\u03B4")**2*H[p]) does not work on all system...
@@ -346,7 +347,8 @@ plot.ISOSCAPE <- function(x,
 }
 
 #' @rdname plots
-#' @export
+#' @method plot ISOFIND
+#' @exportS3Method plot ISOFIND
 plot.ISOFIND <- function(x,
                         who     = "group",
                         cutoff  = list(draw = TRUE, level = 0.05, col = "#909090"),
@@ -591,7 +593,8 @@ If you want to build several spheres, build them one by one and do request a sin
 }
 
 #' @rdname plots
-#' @export
+#' @method plot ISOFIT
+#' @exportS3Method plot ISOFIT
 plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 
   if (!inherits(x, "ISOFIT")) {
@@ -711,7 +714,8 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 
 
 #' @rdname plots
-#' @export
+#' @method  plot CALIBFIT
+#' @exportS3Method plot CALIBFIT
 plot.CALIBFIT <- function(x,
                           pch = 1,
                           col = "black",
@@ -731,7 +735,8 @@ plot.CALIBFIT <- function(x,
 
 
 #' @rdname plots
-#' @export
+#' @method points CALIBFIT
+#' @exportS3Method points CALIBFIT
 points.CALIBFIT <- function(x,
                             pch = 2,
                             col = "red",
@@ -847,7 +852,8 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
 
 
 #' @rdname plots
-#' @export
+#' @method plot RasterLayer
+#' @exportS3Method plot RasterLayer
 plot.RasterLayer <- function(x, ...) {
   print(rasterVis::levelplot(x, margin = FALSE, ...))
   return(invisible(NULL))
