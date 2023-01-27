@@ -15,7 +15,6 @@
 # Heavy files that can easily be generated locally
 
 *.tar.gz
-*.tif
 /*.html
 
 # MacOS files
