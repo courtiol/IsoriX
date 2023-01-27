@@ -192,18 +192,19 @@ isoscape <- function(raster,
       xs_small <- xs[within_steps, ]
       
       ## predictions from disp_fit
-      pred_dispfit <- spaMM::predict.HLfit(object = isofit$disp_fit,
-                                           newdata = xs_small,
-                                           variances = list(respVar = TRUE)
-      )
+      pred_dispfit <- .suppress_warning(spaMM::predict.HLfit(object = isofit$disp_fit,
+                                                             newdata = xs_small,
+                                                             variances = list(respVar = TRUE)),
+                              warn = "Prior weights are not taken in account in residVar computation.")
       
       ## transmission of phi to mean_fit
       xs_small$pred_disp <- pred_dispfit[, 1]
       
       ## predictions from mean_fit
-      pred_meanfit <- spaMM::predict.HLfit(object = isofit$mean_fit,
-                                           newdata = xs_small,
-                                           variances = list(respVar = TRUE)
+      pred_meanfit <- .suppress_warning(spaMM::predict.HLfit(object = isofit$mean_fit,
+                                                             newdata = xs_small,
+                                                             variances = list(respVar = TRUE),
+                               warn = "phi dispVar component not yet available for phi model != ~1.")
       )
       
       ## we save the predictions

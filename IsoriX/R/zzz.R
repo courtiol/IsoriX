@@ -274,4 +274,15 @@
   assign("OceanMask_terra", terra::vect(OceanMask), envir = as.environment("package:IsoriX"))
 }
 
+.suppress_warning <-  function(x, warn = "") {
+  ## This function should not be called by the user.
+  ## It hides expected warnings in some functions
+  withCallingHandlers(x, warning = function(w) {
+    if (!grepl(warn, x = w[[1]])) {
+      warning(w[[1]], call. = FALSE) 
+    }
+    invokeRestart("muffleWarning")
+  })
+}
+
 utils::globalVariables(c("CountryBorders", "OceanMask"))
