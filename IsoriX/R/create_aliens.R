@@ -135,11 +135,11 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
     xy <- coordinates[, c("long", "lat")]
     n_sites <- nrow(coordinates)
   }
-  LocationData$elev = terra::extract(x = raster, y = xy)
+  LocationData$elev = terra::extract(x = raster, y = xy)[[1]]
   LocationData$n_samples <- round(stats::runif(n = n_sites, min = min_n_samples, max = max_n_samples))
   
   ## Predict environmental values at the locations
-  LocationData$source_value <- terra::extract(isoscape$isoscapes$mean, xy)
+  LocationData$source_value <- terra::extract(isoscape$isoscapes$mean, xy)[[1]]
   
   ## Replicate the dataset per animal
   AlienData <- LocationData[rep(1:nrow(LocationData), times = LocationData$n_samples), ]

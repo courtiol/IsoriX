@@ -498,7 +498,7 @@ calibfit <- function(data,
   data <- droplevels(data)
   
   if (!is.null(weighting)) {
-    precipitations <- terra::extract(weighting, cbind(data$long, data$lat))
+    precipitations <- terra::extract(weighting, cbind(data$long, data$lat))[[1]]
     if (anyNA(precipitations)) {
       message("NA values in precipitation cannot be handled and were thus replaced by 0.0001. If this does not make sense in your case, please contact the maintainer of this package.")
       precipitations[is.na(precipitations)] <- 0.0001 ## remove NA to prevent crashes --> dangerous?
