@@ -32,7 +32,7 @@ if (run) {
   
   foo <- tempfile()
   getelev(file = foo, z = 1)
-  elev_raster <- raster::raster(foo)
+  elev_raster <- terra::rast(foo)
   plot(elev_raster)
   rm(elev_raster)
   

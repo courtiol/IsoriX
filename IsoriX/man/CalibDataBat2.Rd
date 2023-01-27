@@ -29,7 +29,7 @@ Users who wish to use their own dataset for calibration should create a
 'species' can be dropped). The columns should possess the same names as the
 ones described above. If the elevation is unknown at the sampling sites,
 elevation information can be extracted from a high resolution elevation
-raster using the function [raster::extract] (see **Examples**).
+raster using the function [terra::extract] (see **Examples**).
 Note that the original study used a different source of elevation data.
 }
 \examples{
@@ -41,7 +41,7 @@ str(CalibDataBat2)
 ## an elevation raster with the function getelev()
 ## and will therefore not run unless you uncomment it
 
-#if (require(raster)){
+#if (require(terra)){
 #    ## We delete the elevation data
 #    CalibDataBat2$elev <- NULL
 #
@@ -51,7 +51,7 @@ str(CalibDataBat2)
 #            lat_max = max(CalibDataBat2$lat),
 #            long_min = min(CalibDataBat2$long),
 #            long_max = max(CalibDataBat2$long))
-#    ElevationRasterBig <- raster("elevBats.tif")
+#    ElevationRasterBig <- rast("elevBats.tif")
 #    CalibDataBat2$elev <- extract(
 #        ElevationRasterBig,
 #        cbind(CalibDataBat2$long, CalibDataBat2$lat))

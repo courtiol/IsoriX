@@ -8,14 +8,6 @@
 \alias{panel.points}
 \alias{xyplot}
 \alias{layer}
-\alias{area}
-\alias{extent}
-\alias{extent<-}
-\alias{extract}
-\alias{projection<-}
-\alias{raster}
-\alias{shift}
-\alias{values}
 \alias{levelplot}
 \alias{RdBuTheme}
 \alias{CRS}
@@ -30,6 +22,8 @@
 \alias{crs<-}
 \alias{ext}
 \alias{ext<-}
+\alias{shift}
+\alias{values}
 \alias{cellSize}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -44,9 +38,7 @@ below to see their documentation.
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
-  \item{raster}{\code{\link[raster]{area}}, \code{\link[raster]{extent}}, \code{\link[raster:setExtent]{extent<-}}, \code{\link[raster]{extract}}, \code{\link[raster:projection]{projection<-}}, \code{\link[raster]{raster}}, \code{\link[raster]{shift}}, \code{\link[raster:getValues]{values}}}
-
-  \item{rasterVis}{\code{\link[rasterVis:rasterTheme]{RdBuTheme}}, \code{\link[rasterVis:levelplot-methods]{levelplot}}}
+  \item{rasterVis}{\code{\link[rasterVis:levelplot-methods]{levelplot}}, \code{\link[rasterVis:rasterTheme]{RdBuTheme}}}
 
   \item{sp}{\code{\link[sp:CRS-class]{CRS}}, \code{\link[sp:panel]{sp.points}}, \code{\link[sp:panel]{sp.polygons}}}
 

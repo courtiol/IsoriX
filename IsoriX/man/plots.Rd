@@ -6,7 +6,7 @@
 \alias{plot.ISOSCAPE}
 \alias{plot.CALIBFIT}
 \alias{plot.ISOFIND}
-\alias{plot.RasterLayer}
+\alias{plot.SpatRaster}
 \alias{points.CALIBFIT}
 \title{Plotting functions for IsoriX}
 \usage{
@@ -19,7 +19,7 @@
   mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
   palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
   plot = TRUE,
-  sphere = list(build = FALSE, keep_image = FALSE),
+  sphere = list(build = FALSE, keep_image = TRUE),
   ...
 )
 
@@ -35,7 +35,7 @@
   mask2 = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
   palette = list(step = NA, range = c(0, 1), n_labels = 11, digits = 2, fn = NA),
   plot = TRUE,
-  sphere = list(build = FALSE, keep_image = FALSE),
+  sphere = list(build = FALSE, keep_image = TRUE),
   ...
 )
 
@@ -65,11 +65,11 @@
   ...
 )
 
-\method{plot}{RasterLayer}(x, ...)
+\method{plot}{SpatRaster}(x, ...)
 }
 \arguments{
 \item{x}{The return object of a call to \link{isofit}, \link{isoscape}, \link{calibfit},
-\link{isofind}, or \link[raster:raster]{raster::raster}]}
+\link{isofind}, or \link[terra:rast]{terra::rast}]}
 
 \item{which}{A \emph{string} indicating the name of the raster to be plotted
 (see details)}
@@ -95,10 +95,10 @@ just returned}
 \item{sphere}{A \emph{list} containing information whether the raster should
 be returned as a rotating sphere and if the image created during the
 process should be saved in your current working directory. The default
-settings are FALSE.}
+settings are FALSE and TRUE, respectivelly.}
 
 \item{...}{Additional arguments (only in use in plot.CALIBFIT and
-plot.RasterLayer)}
+plot.SpatRaster)}
 
 \item{who}{Either "group", or a vector of indices (e.g. 1:3) or names of the
 individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots}
@@ -146,7 +146,7 @@ confidence interval}
 }
 \description{
 These functions plot objects created by IsoriX (with the exception of plot
-method for RasterLayer created using \link{raster}.
+method for SpatRaster created using \link{terra}.
 }
 \details{
 \strong{General}
@@ -161,7 +161,7 @@ fitted calibration function.
 When called upon an object of class \emph{ISOSCAPE}, the plot function draws a
 fine-tuned plot of the isoscape.
 
-When called upon an object of class \emph{RasterLayer}, the plot function displays
+When called upon an object of class \emph{SpatRaster}, the plot function displays
 the raster (just for checking things fast and dirty). In this case, the
 function is a simple shortcut to \link[rasterVis:levelplot-methods]{rasterVis::levelplot}.
 

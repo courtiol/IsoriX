@@ -8,7 +8,7 @@ years...}
 isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
 }
 \arguments{
-\item{raster}{The structural raster (\emph{RasterLayer}) such as an elevation
+\item{raster}{The structural raster (\emph{SpatRaster}) such as an elevation
 raster created using \link{prepelev}}
 
 \item{isofit}{The fitted isoscape created by \link{isofit}}
@@ -23,7 +23,7 @@ session and \code{FALSE} otherwise.}
 \value{
 This function returns a \emph{list} of class \emph{ISOSCAPE}
 containing a set of all 8 raster layers mentioned above (all being of
-class \emph{RasterLayer}), and the location of the sources as spatial points.
+class \emph{SpatRaster}), and the location of the sources as spatial points.
 }
 \description{
 This function is the counterpart of \link{isoscape} for the objects

@@ -74,7 +74,7 @@ NULL
 #' can be dropped). The columns should possess the same names as the ones
 #' described above. If the elevation is unknown at the sampling sites, elevation
 #' information can be extracted from a high resolution elevation raster using
-#' the function [raster::extract] (see **Examples** in
+#' the function [terra::extract] (see **Examples** in
 #' [CalibDataBat2]).
 #' 
 #' @name CalibDataBat
@@ -121,7 +121,7 @@ NULL
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function [raster::extract] (see **Examples**).
+#' raster using the function [terra::extract] (see **Examples**).
 #' Note that the original study used a different source of elevation data.
 #' 
 #' @name CalibDataBat2
@@ -154,7 +154,7 @@ NULL
 #' ## an elevation raster with the function getelev()
 #' ## and will therefore not run unless you uncomment it
 #' 
-#' #if (require(raster)){
+#' #if (require(terra)){
 #' #    ## We delete the elevation data
 #' #    CalibDataBat2$elev <- NULL
 #' #
@@ -164,7 +164,7 @@ NULL
 #' #            lat_max = max(CalibDataBat2$lat),
 #' #            long_min = min(CalibDataBat2$long),
 #' #            long_max = max(CalibDataBat2$long))
-#' #    ElevationRasterBig <- raster("elevBats.tif")
+#' #    ElevationRasterBig <- rast("elevBats.tif")
 #' #    CalibDataBat2$elev <- extract(
 #' #        ElevationRasterBig,
 #' #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
@@ -246,7 +246,7 @@ NULL
 #' *dataframe* of similar structure than this one. The columns should possess 
 #' the same names as the ones described above. If the elevation is unknown at the 
 #' sampling sites, elevation information can be extracted from a high resolution elevation
-#' raster using the function [raster::extract]. In this dataset, we
+#' raster using the function [terra::extract]. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010.
 #' 
@@ -307,7 +307,7 @@ NULL
 
 
 
-#' Mask of world oceans
+#' Mask of world oceans (sp format)
 #' 
 #' This dataset contains a polygon shapefile that can be used to mask large
 #' bodies of water.
@@ -316,35 +316,67 @@ NULL
 #' @name OceanMask
 #' @docType data
 #' @format A *SpatialPolygons* object
-#' @seealso [CountryBorders] for another polygon shapefile used to
-#' embellish the plots
+#' @seealso 
+#' - [OceanMask_terra] for the same file stored as a \pkg{terra} object
+#' - [CountryBorders] for another polygon shapefile used to embellish the plots
 #' @source This *SpatialPolygons* is derived from the
-#' [CountryBorders]. See example for details on how we created the
+#' [CountryBorders_terra]. See example for details on how we created the
 #' dataset.
 #' @keywords datasets
 #' @examples
 #' 
-#' if(require(sp)) {
-#'   plot(OceanMask, col='blue')
+#' if (require(sp)) {
+#'    plot(OceanMask, col='blue')
 #' }
 #' 
 #' ## How did we create this file?
 #' 
 #' ## Uncomment the following to create the file as we did
-#' #if(require(raster) & require(rgeos)){
-#' #    worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
-#' #    proj4string(worldlimit) <- crs(CountryBorders)
-#' #    OceanMask <- gDifference(worldlimit, CountryBorders)  
-#' #    OceanMask
-#' #    save(OceanMask, file = "OceanMask.rda", compress = "xz")
-#' #}
+#' # if (require(terra)) {
+#' #    worldlimit <- as.polygons(ext(CountryBorders_terra))
+#' #    crs(worldlimit) <- crs(CountryBorders_terra)
+#' #    OceanMask_terra <- worldlimit - CountryBorders_terra
+#' #    OceanMask <- as(OceanMask_terra, "Spatial")
+#' # }
 #' 
 #' 
 NULL
 
 
+#' Mask of world oceans (terra format)
+#' 
+#' This dataset contains a polygon shapefile that can be used to mask large
+#' bodies of water.
+#' 
+#' 
+#' @name OceanMask_terra
+#' @docType data
+#' @format A *SpatVector* object
+#' @seealso 
+#' - [OceanMask] for the same file stored as a \pkg{sp} object
+#' - [CountryBorders_terra] for another polygon shapefile used to embellish the plots
+#' @source This *SpatVector* is derived from the
+#' [CountryBorders_terra]. See example for details on how we created the
+#' dataset.
+#' @keywords datasets
+#' @examples
+#' 
+#' plot(OceanMask_terra, col='blue')
+#' 
+#' ## How did we create this file?
+#' 
+#' ## Uncomment the following to create the file as we did
+#' # if (require(terra)) {
+#' #    worldlimit <- as.polygons(ext(CountryBorders_terra))
+#' #    crs(worldlimit) <- crs(CountryBorders_terra)
+#' #    OceanMask_terra <- worldlimit - CountryBorders_terra
+#' # }
+#' 
+#' 
+NULL
 
-#' Borders of world CountryBorders
+
+#' Borders of world CountryBorders (sp format)
 #' 
 #' This dataset contains a polygon shapefile that can be used to plot the
 #' borders of CountryBorders.
@@ -353,33 +385,63 @@ NULL
 #' @name CountryBorders
 #' @docType data
 #' @format A *SpatialPolygons*
-#' @seealso [OceanMask] for another polygon shapefile used to
-#' embellish the plots
-#' @source This *SpatialPolygons* is derived from the
-#' [maps::world] of the package \pkg{maps}. Please refer to this
-#' other package for description and sources of this dataset. See example for
-#' details on how we created the dataset.
+#' @seealso 
+#' - [CountryBorders_terra] for the same file stored as a \pkg{terra} object
+#' - [OceanMask] for another polygon shapefile used to embellish the plots
+#' @source This *SpatialPolygons* is derived from the package
+#'   \pkg{rnaturalearth}. Please refer to this other package for description and
+#'   sources of this dataset. See example for details on how we created the
+#'   dataset.
 #' @keywords datasets
 #' @examples
 #' 
-#' if(require(sp))
-#'   plot(CountryBorders, border="red", col="darkgrey")
+#' if (require(sp)) {
+#'    plot(CountryBorders, border="red", col="darkgrey")
+#' }
 #' 
 #' ## How did we create this file?
 #' 
 #' ## Uncomment the following to create the file as we did
-#' #if(require(maps) & require(maptools) & require(rgeos)){
-#' #    worldmap <- map("world", fill = TRUE, plot = FALSE)
-#' #    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
-#' #    CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-#' #    proj4string(CountryBorders) <- CRS(as.character(NA))
-#' #    CountryBorders
-#' #    save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
-#' #}
-#' 
+#' # if (require(rnaturalearth)) {
+#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'large', returnclass = 'sp')
+#' # }
+#'
 NULL
 
 
+#' Borders of world CountryBorders (terra format)
+#' 
+#' This dataset contains a polygon shapefile that can be used to plot the
+#' borders of CountryBorders.
+#' 
+#' 
+#' @name CountryBorders_terra
+#' @docType data
+#' @format A *SpatialPolygons*
+#' @seealso 
+#' - [CountryBorders_terra] for the same file stored as a \pkg{terra} object
+#' - [OceanMask] for another polygon shapefile used to embellish the plots
+#' @source This *SpatialPolygons* is derived from the package
+#'   \pkg{rnaturalearth}. Please refer to this other package for description and
+#'   sources of this dataset. See example for details on how we created the
+#'   dataset.
+#' @keywords datasets
+#' @examples
+#' 
+#' if (require(sp)) {
+#'    plot(CountryBorders_terra, border="red", col="darkgrey")
+#' }
+#' 
+#' ## How did we create this file?
+#' 
+#' ## Uncomment the following to create the file as we did
+#' # if (require(rnaturalearth) && require(terra)) {
+#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sp')
+#' #    CountryBorders <- CountryBorders[0] # empty object
+#' #    CountryBorders_terra <- vect(CountryBorders)
+#' # }
+#' 
+NULL
 
 #' The raster of elevation for Germany
 #' 
@@ -399,6 +461,9 @@ NULL
 #' @keywords datasets
 #' @examples
 #' 
+#' ## Compute crudely the resolution (approximative size of cells in km2)
+#' median(values(cellSize(ElevRasterDE, unit = "km")))
+#' 
 #' ## How did we create this file (without IsoriX) ?
 #' 
 #' ## Uncomment the following to create the file as we did
@@ -409,7 +474,6 @@ NULL
 #' #                              clip = "bbox", z = 3)
 #' # 
 #' # ElevRasterDE <- terra::rast(ElevRasterDE)
-#' # save(ElevRasterDE, file = "./saved_rda/ElevRasterDE.rda", compress = "xz")
 #' 
 #' 
 #' ## How to create a similar file with IsoriX ?
@@ -422,8 +486,6 @@ NULL
 #' # ## Convert the tif into R raster format
 #' # ElevRasterDE <- rast('~/ElevRasterDE.tif')
 #' 
-#' #  ## Compute crudely the resolution:
-#' #  median(values(cellSize(ElevRasterDE, unit = "km")))  ## approximative size of cells in km2
 #' 
 NULL
 

@@ -26,7 +26,7 @@ Users who wish to use their own dataset for calibration should create a
 *dataframe* of similar structure than this one. The columns should possess 
 the same names as the ones described above. If the elevation is unknown at the 
 sampling sites, elevation information can be extracted from a high resolution elevation
-raster using the function [raster::extract]. In this dataset, we
+raster using the function [terra::extract]. In this dataset, we
 retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 2010.
 }

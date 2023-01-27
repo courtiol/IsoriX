@@ -155,7 +155,7 @@ isosim <- function(data,
                             lat = coord[, 2],
                             lat_2 = coord[, 2]^2,
                             lat_abs = abs(coord[, 2]),
-                            elev = raster::extract(raster, coord),
+                            elev = terra::extract(raster, coord),
                             n_source_value = rep(1e6, nrow(coord)),
                             source_ID = as.factor(paste("simu", 1:nrow(coord), sep = "_")))
     rm(coord); gc() ## remove coord as it can be a large object
@@ -259,8 +259,8 @@ isosim <- function(data,
   ### Buidling return object
   out <- list()
 
-  out$isoscapes <- raster::brick(list("mean" = mean_raster,
-                                      "disp" = disp_raster))
+  out$isoscapes <- terra::rast(list("mean" = mean_raster,
+                                    "disp" = disp_raster))
 
   if (!save_dataframe & interactive()) {
     message(paste("Note: simulated data not saved as data.frame (save_dataframe is set to FALSE). Saving the simulated data as data.frame would require", format(utils::object.size(data), units = "MB")))

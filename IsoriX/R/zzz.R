@@ -86,7 +86,11 @@
   ##   The spatial points
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  terra::vect(data, geom = c("long", "lat"), crs = proj)
+  #terra::vect(data, geom = c("long", "lat"), crs = proj)
+  # for now we stick to sp since plotting with terra does not work with rasterVis
+  sp::coordinates(data) <- ~long+lat
+  sp::proj4string(data) <- sp::CRS(proj)
+  return(data)
 }
 
 
@@ -108,7 +112,7 @@
   env <- parent.frame()
   args <- formals(fn)
   for (arg_name in names(args)) {
-    if (is.call(arg <- args[[arg_name]])) {
+    if (is.call(x = arg <- args[[arg_name]])) {
       if (arg[1] == "list()") {
         arg_input <- mget(names(args), envir = env)[[arg_name]]
         arg_full  <- eval(formals(fn)[[arg_name]])
@@ -158,27 +162,30 @@
 .summarize_values <- function(var, nb_quantiles = 1e4) {
   ## This function should not be called by the user.
   ## It extracts and summarizes the raster values using quantiles if needed.
-  if (!inherits(var, c("RasterLayer", "RasterStack", "RasterBrick"))) {
+  if (!inherits(var, "SpatRaster")) {
     return(var)
-  } else if (raster::inMemory(var)) {
-    return(as.numeric(raster::values(var)))
+  } else if (terra::inMemory(var)) {
+    return(as.numeric(terra::values(var)))
   }
   
   if (interactive()) {
     print("extracting values from stored rasters...")
   }
   
-  if (inherits(var, c("RasterLayer"))) {
-    var <- raster::quantile(var, seq(0, 1, length = nb_quantiles))
-    return(var)
-  } else if (inherits(var, c("RasterStack", "RasterBrick"))) {
-    max_var <- max(raster::maxValue(var))
-    min_var <- min(raster::minValue(var))
+  if (inherits(var, c("SpatRaster"))) {
+    if (terra::nlyr(var) == 1) {
+       var <- terra::quantile(var, seq(0, 1, length = nb_quantiles))
+       return(var)
+    } else if (terra::nlyr(var) > 1) {
+    max_var <- max(terra::values(max(var)))
+    min_var <- min(terra::values(min(var)))
     var <- unique(c(min_var,
-                    apply(raster::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
+                    apply(terra::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
                     max_var))
     return(var)
+    }
   }
+  
   stop("'var' has an unknown class")
 }
 
@@ -189,10 +196,10 @@
   margin_long <- (xmax - xmin) * margin_pct/100
   margin_lat  <- (ymax - ymin) * margin_pct/100
   
-  raster::crop(raster, raster::extent(xmin - margin_long,
-                                      xmax + margin_long,
-                                      ymin - margin_lat,
-                                      ymax + margin_lat))
+  terra::crop(raster, terra::ext(xmin - margin_long,
+                                 xmax + margin_long,
+                                 ymin - margin_lat,
+                                 ymax + margin_lat))
 
 }
 
@@ -261,7 +268,10 @@
 .load_internal_files <- function() {
   ## This function should not be called by the user.
   ## It performs the lazy loading of the data since terra cannot handle rda files
-  assign("CountryBorders", terra::vect(system.file("extdata/CountryBorders.shp", package = "IsoriX")), envir = as.environment("package:IsoriX"))
-  assign("OceanMask", terra::vect(system.file("extdata/OceanMask.shp", package = "IsoriX")), envir = as.environment("package:IsoriX"))
   assign("ElevRasterDE", terra::rast(system.file("extdata/ElevRasterDE.tif", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  
+  assign("CountryBorders_terra", terra::vect(CountryBorders), envir = as.environment("package:IsoriX"))
+  assign("OceanMask_terra", terra::vect(OceanMask), envir = as.environment("package:IsoriX"))
 }
+
+utils::globalVariables(c("CountryBorders", "OceanMask"))

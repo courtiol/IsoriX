@@ -40,12 +40,12 @@ test_that("isofind() can handle NA", {
                                          isoscape = GermanScape,
                                          calibfit = CalibAlien), regexp = NA)
   
-  expect_false(all(is.na(raster::values(AssignmentDry$group$pv$layer))))
+  expect_false(all(is.na(terra::values(AssignmentDry$group$pv$lyr.1))))
   
 })
 
 test_that("plot.ISOFIND() can handle NA", {
-  expect_error(plot(AssignmentDry, who = 2), regexp = NA)
+  expect_warning(plot(AssignmentDry, who = 2), regexp = "The p-values for an assignment samples containing only missing values are considered as 0.")
   expect_error(plot(AssignmentDry, who = "group"), regexp = NA)
 })
 

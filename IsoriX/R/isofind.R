@@ -182,7 +182,13 @@ calibfit!")
     mask <- OceanMask
   }
   
-  names_layers <- gsub(" ", "_", as.character(data$sample_ID))
+  original_names <- as.character(data$sample_ID)
+  names_layers <- gsub(" ", "_", original_names)
+  names_layers <- gsub("-", ".", names_layers)
+  
+  if (any(names_layers != original_names)) {
+    warning("Your sample_ID could not be used to name rasters (you may have used numbers, symbols or punctuations that is messing with the package terra), so they have been slightly modified by this package.")
+  }
   
   time <- system.time({
     if (!is.null(calibfit)) {
@@ -203,12 +209,15 @@ calibfit!")
                                  }
                                  )
     }
-    
     names(list_stat_layers) <- names_layers
-    stat_brick <- raster::brick(list_stat_layers)
+    stat_brick <- terra::rast(list_stat_layers)
+
+    if (terra::nlyr(stat_brick) == 1) {
+      names(stat_brick) <- names_layers ## workaround since terra does not consider names if only 1 layer
+    }
     rm(list_stat_layers)
     if (any(names_layers != names(stat_brick))) {
-      warning("Your sample_ID could not be used to name rasters (you may have used numbers, symbols or punctuations that is messing with the package raster), so they have been slightly modified by this package.")
+      warning("Your sample_ID could not be used to name rasters (you may have used numbers, symbols or punctuations that is messing with the package terra), so they have been slightly modified by this package.")
       names_layers <- names(stat_brick) ## trick to track the good names as they can change during stacking (if numbers)
     }
     
@@ -250,7 +259,7 @@ calibfit!")
         
         # matrix of row vectors of errors of the coefficients (eps_alpha, eps_beta)
         eps_abs <- tcrossprod(covmat_scaled, X_ginv) # dimensions: ( # of putative origins ) * 2
-        hat_delta_o <- raster::extract(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
+        hat_delta_o <- terra::extract(isoscape$isoscapes$mean, attr(isoscape, "xs")[, c("long", "lat")])
         
         # adding all components of term 4
         var_term4_vec <- eps_abs[, 1L] + eps_abs[, 2L]*hat_delta_o
@@ -259,8 +268,8 @@ calibfit!")
       }
       
       # format as raster for coordinates to match
-      var_term4 <- .create_raster(long = raster::coordinates(isoscape$isoscapes)[, "x"],
-                                  lat = raster::coordinates(isoscape$isoscapes)[, "y"],
+      var_term4 <- .create_raster(long = terra::crds(isoscape$isoscapes)[, "x"],
+                                  lat = terra::crds(isoscape$isoscapes)[, "y"],
                                   values = var_term4_vec,
                                   proj = "+proj=longlat +datum=WGS84"
                                   )
@@ -281,7 +290,12 @@ calibfit!")
     if (exists("var_term4")) rm(var_term4)
     
     names(list_varstat_layers) <- names_layers
-    varstat_brick <- raster::brick(list_varstat_layers)
+    varstat_brick <- terra::rast(list_varstat_layers)
+    
+    if (terra::nlyr(varstat_brick) == 1) {
+      names(varstat_brick) <- names_layers ## workaround since terra does not consider names if only 1 layer
+    }
+    
     rm(list_varstat_layers)
     
     ### WE COMPUTE THE INDIVIDUAL LOG P-VALUE SURFACES
@@ -289,24 +303,32 @@ calibfit!")
       print("running the assignment test...")
     }
 
-    ## we initialize the brick
-    logpv_brick <- raster::raster(varstat_brick)
-
     ## we create individual rasters containing the p-values of the test
-    for (sample_ID in names_layers) {
-      name_layer <- paste("logpv_brick$", sample_ID, sep = "")
-      expr_to_run <- paste(name_layer,
-                           "<- .assign_test(raster::values(stat_brick[[sample_ID]]), raster::values(varstat_brick[[sample_ID]]))"
-                           )
-      eval(parse(text = expr_to_run))
+    list_logpv_layers <- sapply(names_layers, function(sample_ID) {
+                                 logpv_raster <- terra::rast(varstat_brick[[sample_ID]])
+                                 terra::values(logpv_raster) <- .assign_test(terra::values(stat_brick[[sample_ID]]), terra::values(varstat_brick[[sample_ID]]))
+                                 return(logpv_raster)
+                               })
+    
+    ## we store the list as a brick
+    logpv_brick <- terra::rast(list_logpv_layers)
+    names(list_logpv_layers) <- names_layers
+    
+    rm(list_logpv_layers)
+    
+    if (terra::nlyr(logpv_brick) == 1) {
+      names(logpv_brick) <- names_layers ## workaround since terra does not consider names if only 1 layer
     }
-
+    
     ### WE COMBINE SAMPLE SURFACES USING FISHER'S METHOD
     if (verbose) {
       print("combining assignments across samples...")
     }
-
-    group_pv <- raster::calc(logpv_brick, .Fisher_method)
+    if (terra::nlyr(logpv_brick) > 1) {
+      group_pv <- terra::app(logpv_brick, .Fisher_method)
+    } else {
+      group_pv <- .Fisher_method(logpv_brick)
+    }
   })  ## end of system.time
 
   ## display time
@@ -330,7 +352,7 @@ calibfit!")
     }
 
     ## turn mask into raster with NA inside polygons
-    raster_mask <- is.na(raster::rasterize(mask, stat_brick))
+    raster_mask <- is.na(terra::rasterize(terra::vect(mask), stat_brick))
 
     ## multiplying rasters by the raster_mask    
     stat_brick <- stat_brick*raster_mask
@@ -342,7 +364,7 @@ calibfit!")
     pv_brick <- pv_brick*raster_mask
     names(pv_brick) <- names_layers ## we restore the names as they are not kept when computing
     
-    group_pv <- raster::overlay(group_pv, raster_mask, fun = prod)
+    group_pv <- group_pv * raster_mask
   }
 
   ### spatial points

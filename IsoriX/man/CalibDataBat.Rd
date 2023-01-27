@@ -28,7 +28,7 @@ Users who wish to use their own dataset for calibration should create a
 can be dropped). The columns should possess the same names as the ones
 described above. If the elevation is unknown at the sampling sites, elevation
 information can be extracted from a high resolution elevation raster using
-the function [raster::extract] (see **Examples** in
+the function [terra::extract] (see **Examples** in
 [CalibDataBat2]).
 }
 \examples{

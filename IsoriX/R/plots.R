@@ -1,7 +1,7 @@
 #' Plotting functions for IsoriX
 #'
 #' These functions plot objects created by IsoriX (with the exception of plot
-#' method for RasterLayer created using [raster].
+#' method for SpatRaster created using [terra].
 #'
 #'
 #' **General**
@@ -16,7 +16,7 @@
 #' When called upon an object of class *ISOSCAPE*, the plot function draws a
 #' fine-tuned plot of the isoscape.
 #'
-#' When called upon an object of class *RasterLayer*, the plot function displays
+#' When called upon an object of class *SpatRaster*, the plot function displays
 #' the raster (just for checking things fast and dirty). In this case, the
 #' function is a simple shortcut to [rasterVis::levelplot].
 #'
@@ -98,9 +98,9 @@
 #'
 #' @name plots
 #' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND
-#'   plot.RasterLayer
+#'   plot.SpatRaster
 #' @param x The return object of a call to [isofit], [isoscape], [calibfit],
-#'   [isofind], or [raster::raster]]
+#'   [isofind], or [terra::rast]]
 #' @param cex_scale A *numeric* giving a scaling factor for the points in
 #'   the plots
 #' @param which A *string* indicating the name of the raster to be plotted
@@ -130,7 +130,7 @@
 #' @param sphere A *list* containing information whether the raster should
 #'   be returned as a rotating sphere and if the image created during the
 #'   process should be saved in your current working directory. The default
-#'   settings are FALSE.
+#'   settings are FALSE and TRUE, respectivelly.
 #' @param xlab A *string* the x-axis label in plot.CALIBFIT
 #' @param ylab A *string* the y-axis label in plot.CALIBFIT
 #' @param xlim A range defining the extreme coordinates for the the x-axis in
@@ -150,7 +150,7 @@
 #'   a *string* or *integer* indicating the colour for plotting the
 #'   confidence interval
 #' @param ... Additional arguments (only in use in plot.CALIBFIT and
-#'   plot.RasterLayer)
+#'   plot.SpatRaster)
 #'
 #' @seealso [isofit] for the function fitting the isoscape
 #'
@@ -176,7 +176,7 @@ plot.ISOSCAPE <- function(x,
                           mask    = list(mask = NA, lwd = 0, col = "black", fill = "black"),
                           palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
                           plot    = TRUE,
-                          sphere  = list(build = FALSE, keep_image = FALSE),
+                          sphere  = list(build = FALSE, keep_image = TRUE),
                           ... ## we cannot remove the dots because of the S3 export...
                           ) {
     if (!inherits(x, "ISOSCAPE")) {
@@ -200,6 +200,7 @@ plot.ISOSCAPE <- function(x,
       CountryBorders <- NULL
       utils::data("CountryBorders", envir = environment(), package = "IsoriX")
       borders$borders <- CountryBorders
+      #borders$borders <- as(CountryBorders, "Spatial")  ## coercion terra -> sp (not needed for now)
     }
 
     ## importing ocean if missing
@@ -207,6 +208,7 @@ plot.ISOSCAPE <- function(x,
       OceanMask <- NULL
       utils::data("OceanMask", envir = environment(), package = "IsoriX")
       mask$mask <- OceanMask
+      #mask$mask <- as(OceanMask, "Spatial")  ## coercion terra -> sp (not needed for now)
     }
 
     if (simu) {
@@ -225,12 +227,12 @@ plot.ISOSCAPE <- function(x,
     }
 
     ## compute the colors
-    colours <- .cut_and_color(var     = x$isoscape[[which]], #@data@values,
-                           step     = palette$step,
-                           range    = palette$range,
-                           palette  = palette$fn,
-                           n_labels = palette$n_labels,
-                           digits   = palette$digits)
+    colours <- .cut_and_color(var      = x$isoscape[[which]], #@data@values,
+                              step     = palette$step,
+                              range    = palette$range,
+                              palette  = palette$fn,
+                              n_labels = palette$n_labels,
+                              digits   = palette$digits)
 
     ## define y title
     Title <- ""
@@ -278,8 +280,12 @@ plot.ISOSCAPE <- function(x,
     if (sphere$build) {
       .build_sphere(x$isoscape[[which]], colours = colours, decor = decor)
       if (!sphere$keep_image) {
-        file.remove("IsoriX_world_image.png")
+        message(paste("IsoriX no longer delete the image used to build the sphere since it prevents rgl to work on some system. \n",
+                "You can always delete manually the file created which is stored here: \n",
+                normalizePath(file.path("IsoriX_world_image.png"))))
+        #file.remove("IsoriX_world_image.png")
       }
+      message("If you do not see the sphere, run rgl::rglwidget()")
     }
     
     return(invisible(complete_map))
@@ -298,10 +304,9 @@ plot.ISOSCAPE <- function(x,
     print("(this may take a few seconds)", quote = FALSE)
   }
   ### check extent of the raster and extend to world if necessary
-  world_raster <- raster::raster()
-  raster::extent(world_raster) <- c(-180, 180, -90, 90)
-  if (raster::extent(x) < raster::extent(world_raster)) {
-    x <- raster::extend(x, raster::extent(world_raster))
+  world_raster <- terra::rast()
+  if (terra::ext(x) < terra::ext(world_raster)) {
+    terra::ext(x) <- terra::ext(world_raster)
   }
   p <- rasterVis::levelplot(x,
                             col.regions = colours$all_cols,
@@ -320,7 +325,7 @@ plot.ISOSCAPE <- function(x,
   do.call(p$panel, pargs)
   grDevices::dev.off()
   
-  if (length(rgl::rgl.dev.list()) > 0) rgl::close3d() ## close all open rgl devices
+  while (length(rgl::rgl.dev.list()) > 0) rgl::close3d() ## close all open rgl devices
   makerglsphere <- function(x, y = NULL, z = NULL, ng = 50, radius = 1, color = "white", add = FALSE, ...) {
     ## code inspired from https://stackoverflow.com/questions/30627647/how-to-plot-a-perfectly-round-sphere-in-r-rgl-spheres
     lat <- matrix(seq(90, -90, len = ng)*pi/180, ng, ng, byrow = TRUE)
@@ -360,7 +365,7 @@ plot.ISOFIND <- function(x,
                         mask2   = list(mask = NA, lwd = 0, col = "purple", fill = "purple"),
                         palette = list(step = NA, range = c(0, 1), n_labels = 11, digits = 2, fn = NA),
                         plot    = TRUE,
-                        sphere  = list(build = FALSE, keep_image = FALSE),
+                        sphere  = list(build = FALSE, keep_image = TRUE),
                         ... ## we cannot remove the dots because of the S3 export...
                         ) {
   
@@ -444,9 +449,8 @@ plot.ISOFIND <- function(x,
                               n_labels   = palette$n_labels,
                               digits     = palette$digits)
 
-    
-    stack_noNAs <- raster::reclassify(x$sample[[what]][[who]], cbind(NA, NA, 0))
-    if (!identical(raster::values(stack_noNAs), raster::values(x$sample[[what]][[who]]))) {
+     stack_noNAs <- terra::classify(x$sample[[what]][[who]], cbind(NA, NA, 0))
+    if (!identical(terra::values(stack_noNAs), terra::values(x$sample[[what]][[who]]))) {
       warning("The p-values for an assignment samples containing only missing values are considered as 0.")
     }
     
@@ -502,14 +506,17 @@ plot.ISOFIND <- function(x,
 
   ## build the 3D-Sphere
   if (sphere$build) {
-    if (raster::nlayers(stack_noNAs) > 1) {
+    if (terra::nlyr(stack_noNAs) > 1) {
       message("You requested a sphere but you requested several assignment maps.
 In this case, only the first assignment will be drawn on a sphere.
 If you want to build several spheres, build them one by one and do request a single assignment each time.")
     }
     .build_sphere(stack_noNAs[[1]], colours = colours, decor = decor)
     if (!sphere$keep_image) {
-      file.remove("IsoriX_world_image.png")
+      message(paste("IsoriX no longer delete the image used to build the sphere since it prevents rgl to work on some system. \n",
+                    "You can always delete manually the file created which is stored here: \n",
+                    normalizePath(file.path("IsoriX_world_image.png"))))
+      #file.remove("IsoriX_world_image.png")
     }
   }
 
@@ -852,9 +859,9 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
 
 
 #' @rdname plots
-#' @method plot RasterLayer
-#' @exportS3Method plot RasterLayer
-plot.RasterLayer <- function(x, ...) {
+#' @method plot SpatRaster
+#' @exportS3Method plot SpatRaster
+plot.SpatRaster <- function(x, ...) {
   print(rasterVis::levelplot(x, margin = FALSE, ...))
   return(invisible(NULL))
 }
@@ -874,7 +881,8 @@ plot.RasterLayer <- function(x, ...) {
                                                        pch = pt$pch,
                                                        lwd = pt$lwd
     ),
-    data = list(sources = x$sp_points$sources,
+    data = list(#sources = as(x$sp_points$sources, "Spatial"), ## coercion terra -> sp (not needed for now)
+                sources = x$sp_points$sources,
                 pt = sources,
                 sp.points = sp::sp.points
     )

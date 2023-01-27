@@ -33,7 +33,7 @@ You can download and install the stable version of IsoriX directly from within R
 install.packages("IsoriX", dependencies = TRUE)
 ```
 
-Note: if you get into troubles due to `gmp`, `magick`, `maps`, `maptools`, `rgeos`, `rgdal`, `rgl` or `testthat`, retry using simply:
+Note: if you get into troubles due to `gmp`, `magick`, `maps`, `rgl`, `testthat`, or `webshot2` retry using simply:
 
 ```R
 install.packages("IsoriX")

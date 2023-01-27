@@ -87,19 +87,19 @@ prepcipitate <- function(path = NULL,
     if (verbose) {
       print(paste("Preparing precipitation raster for month", month, "..."), quote = FALSE)
     }
-    tmp.raster <- raster::raster(getfilename(month))
+    tmp.raster <- terra::rast(getfilename(month))
     ## crop before resampling to save a lot of time
     tmp.raster <- .crop_withmargin(tmp.raster,
-                                   xmin = raster::xmin(raster),
-                                   xmax = raster::xmax(raster),
-                                   ymin = raster::ymin(raster),
-                                   ymax = raster::ymax(raster),
+                                   xmin = terra::xmin(raster),
+                                   xmax = terra::xmax(raster),
+                                   ymin = terra::ymin(raster),
+                                   ymax = terra::ymax(raster),
                                    margin_pct = 10) # 10% hardcoded, probably fine for most case
-    assign(paste0("month_", month), raster::resample(x = tmp.raster, y = raster))
+    assign(paste0("month_", month), terra::resample(x = tmp.raster, y = raster))
     rm(tmp.raster)
   }
   
   ## Put all rasters in a RasterBrick
-  precip <- raster::brick(mget(paste0("month_", 1:12)))
+  precip <- terra::rast(mget(paste0("month_", 1:12)))
   return(precip)
 }

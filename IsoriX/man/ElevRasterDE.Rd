@@ -22,6 +22,9 @@ file to practice, but it should not be used to perform real assignments!
 }
 \examples{
 
+## Compute crudely the resolution (approximative size of cells in km2)
+median(values(cellSize(ElevRasterDE, unit = "km")))
+
 ## How did we create this file (without IsoriX) ?
 
 ## Uncomment the following to create the file as we did
@@ -32,7 +35,6 @@ file to practice, but it should not be used to perform real assignments!
 #                              clip = "bbox", z = 3)
 # 
 # ElevRasterDE <- terra::rast(ElevRasterDE)
-# save(ElevRasterDE, file = "./saved_rda/ElevRasterDE.rda", compress = "xz")
 
 
 ## How to create a similar file with IsoriX ?
@@ -45,8 +47,6 @@ file to practice, but it should not be used to perform real assignments!
 # ## Convert the tif into R raster format
 # ElevRasterDE <- rast('~/ElevRasterDE.tif')
 
-#  ## Compute crudely the resolution:
-#  median(values(cellSize(ElevRasterDE, unit = "km")))  ## approximative size of cells in km2
 
 }
 \seealso{

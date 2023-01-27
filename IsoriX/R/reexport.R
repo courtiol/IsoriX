@@ -28,44 +28,6 @@ lattice::xyplot
 #' @export
 latticeExtra::layer
 
-
-
-# reexport from raster:
-
-#' @importFrom raster area
-#' @export
-raster::area
-
-#' @importFrom raster extent
-#' @export
-raster::extent
-
-#' @importFrom raster "extent<-"
-#' @export
-raster::`extent<-`
-
-#' @importFrom raster extract
-#' @export
-raster::extract
-
-#' @importFrom raster "projection<-"
-#' @export
-raster::`projection<-`
-
-#' @importFrom raster raster
-#' @export
-raster::raster
-
-#' @importFrom raster shift
-#' @export
-raster::shift
-
-#' @importFrom raster values
-#' @export
-raster::values
-
-
-
 # reexport from rasterVis:
 
 #' @importFrom rasterVis levelplot
