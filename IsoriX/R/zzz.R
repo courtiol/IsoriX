@@ -18,6 +18,9 @@
                         "\n for help, news and discussions about IsoriX",
                         "\n"
                         )
+  
+  .load_internal_files() ## lazy loading of the internal data
+  
   }
 
 
@@ -65,10 +68,7 @@
   ##   The raster
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~ long+lat  ## coordonates are being set for the raster
-  sp::proj4string(data) <- sp::CRS(proj)  ## projection is being set for the raster
-  sp::gridded(data) <- TRUE  ## a gridded structure is being set for the raster
-  raster::raster(data)  ## the raster is being created
+  terra::rast(data, crs = proj) ## the raster is being created
 }
 
 
@@ -86,9 +86,7 @@
   ##   The spatial points
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~long+lat
-  sp::proj4string(data) <- sp::CRS(proj)
-  return(data)
+  terra::vect(data, geom = c("long", "lat"), crs = proj)
 }
 
 
@@ -258,3 +256,12 @@
 #                    phi = foo$phi)
 # 
 # rbind(d_output, d_foo)
+
+
+.load_internal_files <- function() {
+  ## This function should not be called by the user.
+  ## It performs the lazy loading of the data since terra cannot handle rda files
+  assign("CountryBorders", terra::vect(system.file("extdata/CountryBorders.shp", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  assign("OceanMask", terra::vect(system.file("extdata/OceanMask.shp", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  assign("ElevRasterDE", terra::rast(system.file("extdata/ElevRasterDE.tif", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+}

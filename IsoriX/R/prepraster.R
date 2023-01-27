@@ -98,9 +98,6 @@
 #' oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
 #' 
 #' plot(ElevationRaster1, main = "Original small raster")
-#' 
-#' CountryBorders <- terra::vect(system.file("extdata/CountryBorders.shp", package = "IsoriX"))
-#' OceanMask <- terra::vect(system.file("extdata/OceanMask.shp", package = "IsoriX"))
 #' polys(CountryBorders)
 #' polys(OceanMask, col = "blue")
 #' 

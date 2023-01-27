@@ -12,56 +12,41 @@ A \emph{RasterLayer}
 }
 \description{
 This raster contains the elevation of the surface of Germany (meters above sea
-level) with a resolution of approximately 30 square-km.
+level) with a resolution of approximately 40 square-km.
 }
 \details{
 This raster contains elevation data of Germany in a highly aggregated form
-corresponding to a resolution of approximately one elevation value per 50
+corresponding to a resolution of approximately one elevation value per 40
 square-km. This is only for the purpose of having a small and easy-to-handle
 file to practice, but it should not be used to perform real assignments!
-
-In the example below, we show how we generated this small raster from a
-large original \emph{DEM} (digital elevation model) of the entire world. The original raster has
-a resolution of approximately one elevation value per square-km (cell size
-of 30 arcseconds, i.e. 0.0083 decimal degrees). Although working on large
-rasters is technically problematic (memory and CPU greedy), we highly
-recommend to rely on high-resolution rasters with small to moderate
-aggregation levels in order to perform reliable assignment analyses. Indeed,
-large aggregation of raster cells can bias assignments due to the
-transformation of all elevations into a single value per aggregated raster
-cell.
-
-We downloaded "Global Multi-resolution Terrain Elevation Data 2010" from:
-\cr \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm} \cr and converted it
-into a \emph{tif} file. Because the original file is very large, we directly
-provide the url link of the \emph{tif} file in the example below.
 }
 \examples{
 
-## The following example require to download
-## a large elevation raster with the function getelev()
-## and will therefore not run unless you uncomment it
+## How did we create this file (without IsoriX) ?
 
-#### Creating the object ElevRasterDE
+## Uncomment the following to create the file as we did
+
+# ElevRasterDE <- elevatr::get_elev_raster(location = data.frame(
+#                              long = c(5.5, 15.5),lat = c(47, 55.5)),
+#                              prj = "+proj=longlat +datum=WGS84 +no_defs",
+#                              clip = "bbox", z = 3)
+# 
+# ElevRasterDE <- terra::rast(ElevRasterDE)
+# save(ElevRasterDE, file = "./saved_rda/ElevRasterDE.rda", compress = "xz")
+
+
+## How to create a similar file with IsoriX ?
 #
-### Download the tif file (ca. 700 Mb)
-### (see ?getelev for details on how to get the tif file)
-#getelev()
-#
-### Convert the tif into R raster format
-#  ElevationRasterBig <- raster("gmted2010_30mn.tif")
-#  
-#  ## Create the highly agregated elevation raster
-#  ElevRasterDE <- prepraster(ElevationRasterBig,
-#                             aggregation_factor = 10,
-#                             manual_crop = c(5.5, 15.5, 47, 55.5))
-#                           
-#  ## Plot the elevation
-#  levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#    layer(sp.polygons(CountryBorders, col = "white"))
-#  
+# ## Download the tif file (see ?getelev)
+# getelev(file = "~/ElevRasterDE.tif",
+#         z = 3,
+#         long_min = 5.5, long_max = 15.5, lat_min = 47, lat_max = 55.5)
+        
+# ## Convert the tif into R raster format
+# ElevRasterDE <- rast('~/ElevRasterDE.tif')
+
 #  ## Compute crudely the resolution:
-#  median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
+#  median(values(cellSize(ElevRasterDE, unit = "km")))  ## approximative size of cells in km2
 
 }
 \seealso{
