@@ -138,3 +138,11 @@ terra::"ext<-"
 #' @importFrom terra shift
 #' @export
 terra::shift
+
+#' @importFrom terra values
+#' @export
+terra::values
+
+#' @importFrom terra cellSize
+#' @export
+terra::cellSize
