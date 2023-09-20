@@ -22,7 +22,7 @@ if (run) {
           lat_max = max(CalibDataBat2$lat),
           long_min = min(CalibDataBat2$long),
           long_max = max(CalibDataBat2$long))
-  ElevationRasterBig <- raster(foo)
+  ElevationRasterBig <- rast(foo)
   CalibDataBat2$elev <- extract(
     ElevationRasterBig,
     cbind(CalibDataBat2$long, CalibDataBat2$lat))
