@@ -38,11 +38,11 @@ below to see their documentation.
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
-  \item{rasterVis}{\code{\link[rasterVis:levelplot-methods]{levelplot}}, \code{\link[rasterVis:rasterTheme]{RdBuTheme}}}
+  \item{rasterVis}{\code{\link[rasterVis:rasterTheme]{RdBuTheme}}, \code{\link[rasterVis:levelplot-methods]{levelplot}}}
 
   \item{sp}{\code{\link[sp:CRS-class]{CRS}}, \code{\link[sp:panel]{sp.points}}, \code{\link[sp:panel]{sp.polygons}}}
 
-  \item{spaMM}{\code{\link[spaMM]{get_ranPars}}}
+  \item{spaMM}{\code{\link[spaMM:get_fittedPars]{get_ranPars}}}
 
   \item{terra}{\code{\link[terra]{cellSize}}, \code{\link[terra]{crs}}, \code{\link[terra:crs]{crs<-}}, \code{\link[terra]{ext}}, \code{\link[terra:ext]{ext<-}}, \code{\link[terra]{plot}}, \code{\link[terra:lines]{points}}, \code{\link[terra:lines]{polys}}, \code{\link[terra]{rast}}, \code{\link[terra]{shift}}, \code{\link[terra]{values}}}
 }}
