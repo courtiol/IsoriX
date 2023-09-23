@@ -116,8 +116,8 @@ getelev <- function(file = "~/elevation_world_z5.tif",
   } else {
     
     if (verbose) print("Downloading and formating the elevation raster... (be patient)")
-    elev <- elevatr::get_elev_raster(location = data.frame(long = c(long_min, long_max),
-                                                           lat = c(lat_min, lat_max)),
+    elev <- elevatr::get_elev_raster(locations = data.frame(x = c(long_min, long_max),
+                                                            y = c(lat_min, lat_max)),
                                      z = z,
                                      prj = "+proj=longlat +datum=WGS84 +no_defs",
                                      clip = "bbox",
@@ -165,6 +165,9 @@ getelev <- function(file = "~/elevation_world_z5.tif",
 #'   session and `FALSE` otherwise. If a *numeric* is provided instead,
 #'   additional information about the download will be provided if the number is
 #'   greater than 1.
+#'   
+#' @return This function returns the path of the folder where the files have
+#'   been stored
 #'
 #' @source \url{https://worldclim.org/data/worldclim21.html}
 #' @examples
@@ -179,6 +182,9 @@ getprecip <- function(path = NULL,
                       overwrite = FALSE,
                       verbose = interactive()
 ) {
+  
+  ## Normalise path the remove last slash
+  path <- base::normalizePath(path, mustWork = FALSE)
   
   ## Define web address and file name
   address_precip <- "https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_30s_prec.zip"
@@ -201,7 +207,7 @@ getprecip <- function(path = NULL,
   if (verbose > 0) {
     print("unzipping in progress...", quote = FALSE)
   }
-  outpath <- paste0(path, "wc2.1_30s_prec")
+  outpath <- paste0(path, "/wc2.1_30s_prec")
   utils::unzip(path_to_zip, exdir = outpath)
   
   if (verbose > 0) {
@@ -209,7 +215,7 @@ getprecip <- function(path = NULL,
     print(paste("The files can be found in the folder", outpath), quote = FALSE)
   }
   
-  return(invisible(NULL))
+  return(invisible(outpath))
 }
 
 

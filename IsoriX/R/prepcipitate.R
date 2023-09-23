@@ -56,13 +56,15 @@ prepcipitate <- function(path = NULL,
                         ) {
   
   ## Prepare path
+  path <- normalizePath(path, mustWork = FALSE)
+  
   if (is.null(path)) {
     path <- paste0(getwd(), "/wc2.1_30s_prec")
   } else {
-    path <- paste0(path, "/wc2.1_30s_prec")
+    if (!grepl(pattern = "wc2.1_30s_prec", x = path)) { ## add subfolder if missing
+      path <- paste0(path, "/wc2.1_30s_prec")
+    }
   }
-  
-  path <- normalizePath(path, mustWork = FALSE)
   
   ## List the tif files
   list_tif <- list.files(path = path, pattern = "\\.tif$")
