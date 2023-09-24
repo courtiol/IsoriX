@@ -56,7 +56,9 @@ prepcipitate <- function(path = NULL,
                         ) {
   
   ## Prepare path
-  path <- normalizePath(path, mustWork = FALSE)
+  if (!is.null(path)) {
+    path <- normalizePath(path, mustWork = FALSE)
+  }
   
   if (is.null(path)) {
     path <- paste0(getwd(), "/wc2.1_30s_prec")
