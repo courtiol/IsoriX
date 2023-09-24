@@ -11,7 +11,7 @@ getprecip(path = NULL, overwrite = FALSE, verbose = interactive())
 }
 \arguments{
 \item{path}{A \emph{string} indicating where to store the file on the hard
-drive (without the file name!)}
+drive (without the file name!). Default = current directory.}
 
 \item{overwrite}{A \emph{logical} indicating if an existing file should be
 re-downloaded}

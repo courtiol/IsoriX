@@ -158,7 +158,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
 #' 
 #' @inheritParams getelev
 #' @param path A *string* indicating where to store the file on the hard
-#'   drive (without the file name!)
+#'   drive (without the file name!). Default = current directory.
 #' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
 #'   running. By default verbose is `TRUE` if users use an interactive R

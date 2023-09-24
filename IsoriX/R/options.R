@@ -75,5 +75,5 @@ getOption_IsoriX <- function(x = NULL) {
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
 .data_IsoriX$IsoriX_options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE)  ## put example_maxtime = 500 to check all examples
-                                                                                  ## otherwise put 5
+                                                                                       ## otherwise put 5
 
