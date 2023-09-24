@@ -397,8 +397,8 @@ NULL
 #' 
 #' ## Uncomment the following to create the file as we did
 #' 
-#' # ElevRasterDE <- elevatr::get_elev_raster(location = data.frame(
-#' #                              long = c(5.5, 15.5),lat = c(47, 55.5)),
+#' # ElevRasterDE <- elevatr::get_elev_raster(locations = data.frame(
+#' #                              x = c(5.5, 15.5), y = c(47, 55.5)),
 #' #                              prj = "+proj=longlat +datum=WGS84 +no_defs",
 #' #                              clip = "bbox", z = 3)
 #' # 
