@@ -38,24 +38,6 @@ rasterVis::levelplot
 #' @export
 rasterVis::RdBuTheme
 
-
-
-# reexport from sp:
-
-#' @importFrom sp CRS
-#' @export
-sp::CRS
-
-#' @importFrom sp sp.points
-#' @export
-sp::sp.points
-
-#' @importFrom sp sp.polygons
-#' @export
-sp::sp.polygons
-
-
-
 # reexport from spaMM:
 
 #' @importFrom spaMM get_ranPars

@@ -26,19 +26,13 @@
 
 .onLoad <- function(libname, pkgname) {
   ## This function should not be called by the user.
-  ## It changes the default behaviour of sp concerning lat/long boundaries
-  ## and stores the all R options.
-  .data_IsoriX$sp_options$sp_ll_warn <- sp::get_ll_warn()
-  sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
   .data_IsoriX$R_options <- .Options ## backup R options
 }
 
 
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
-  ## It restores the original behaviour of sp
-  ## and the original R options.
-  sp::set_ll_warn(.data_IsoriX$sp_options$sp_ll_warn)
+  ## It restores the original R options.
   options(.data_IsoriX$R_options)  ## reset R options to their backed up values
 }
 
@@ -49,7 +43,7 @@
   }
   ## This function should not be called by the user.
   ## It displays a rounded number keeping the number of decimals constant.
-  ## digits is the number of decimals beeing displayed.
+  ## digits is the number of decimals being displayed.
   formatC(x, digits = digits, format = "f")
 }
 
@@ -86,11 +80,7 @@
   ##   The spatial points
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  #terra::vect(data, geom = c("long", "lat"), crs = proj)
-  # for now we stick to sp since plotting with terra does not work with rasterVis
-  sp::coordinates(data) <- ~long+lat
-  sp::proj4string(data) <- sp::CRS(proj)
-  return(data)
+  terra::vect(data, geom = c("long", "lat"), crs = proj)
 }
 
 
@@ -269,9 +259,8 @@
   ## This function should not be called by the user.
   ## It performs the lazy loading of the data since terra cannot handle rda files
   assign("ElevRasterDE", terra::rast(system.file("extdata/ElevRasterDE.tif", package = "IsoriX")), envir = as.environment("package:IsoriX"))
-  
-  assign("CountryBorders_terra", terra::vect(CountryBorders), envir = as.environment("package:IsoriX"))
-  assign("OceanMask_terra", terra::vect(OceanMask), envir = as.environment("package:IsoriX"))
+  assign("CountryBorders", terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  assign("OceanMask", terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
 }
 
 .suppress_warning <-  function(x, warn = "") {
@@ -279,7 +268,7 @@
   ## It hides expected warnings in some functions
   withCallingHandlers(x, warning = function(w) {
     if (!grepl(warn, x = w[[1]])) {
-      warning(w[[1]], call. = FALSE) 
+      warning(w[[1]], call. = FALSE)
     }
     invokeRestart("muffleWarning")
   })

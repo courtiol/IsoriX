@@ -865,16 +865,15 @@ plot.SpatRaster <- function(x, ...) {
   if (!sources$draw) {
     sources_layer <- latticeExtra::layer()
   } else {
-    sources_layer <- latticeExtra::layer(sp::sp.points(sources,
-                                                       col = pt$col,
-                                                       cex = pt$cex,
-                                                       pch = pt$pch,
-                                                       lwd = pt$lwd
+    sources_layer <- latticeExtra::layer(lpoints.SpatVector(sources,
+                                                            col = pt$col,
+                                                            cex = pt$cex,
+                                                            pch = pt$pch,
+                                                            lwd = pt$lwd
     ),
-    data = list(#sources = as(x$sp_points$sources, "Spatial"), ## coercion terra -> sp (not needed for now)
-                sources = x$sp_points$sources,
+    data = list(sources = x$sp_points$sources,
                 pt = sources,
-                sp.points = sp::sp.points
+                lpoints.SpatVector = lpoints.SpatVector ## TODO: figure out how to pass generic instead of method
     )
     )
   }
@@ -886,15 +885,15 @@ plot.SpatRaster <- function(x, ...) {
     if (!calibs$draw) {
       calibs_layer <- latticeExtra::layer()
     } else {
-      calibs_layer <- latticeExtra::layer(sp::sp.points(calibs,
-                                                        col = pt$col,
-                                                        cex = pt$cex,
-                                                        pch = pt$pch,
-                                                        lwd = pt$lwd
+      calibs_layer <- latticeExtra::layer(lpoints.SpatVector(calibs,
+                                                             col = pt$col,
+                                                             cex = pt$cex,
+                                                             pch = pt$pch,
+                                                             lwd = pt$lwd
       ),
       data = list(calibs = x$sp_points$calibs,
                   pt = calibs,
-                  sp.points = sp::sp.points
+                  lpoints.SpatVector = lpoints.SpatVector ## TODO: figure out how to pass generic instead of method
       )
       )
     }
@@ -907,15 +906,15 @@ plot.SpatRaster <- function(x, ...) {
     if (!assigns$draw) {
       assigns_layer <- latticeExtra::layer()
     } else {
-      assigns_layer <- latticeExtra::layer(sp::sp.points(assigns,
-                                                        col = pt$col,
-                                                        cex = pt$cex,
-                                                        pch = pt$pch,
-                                                        lwd = pt$lwd
+      assigns_layer <- latticeExtra::layer(lpoints.SpatVector(assigns,
+                                                              col = pt$col,
+                                                              cex = pt$cex,
+                                                              pch = pt$pch,
+                                                              lwd = pt$lwd
       ),
       data = list(assigns = x$sp_points$assigns,
                   pt = assigns,
-                  sp.points = sp::sp.points
+                  lpoints.SpatVector = lpoints.SpatVector ## TODO: figure out how to pass generic instead of method
       )
       )
     }
@@ -925,13 +924,12 @@ plot.SpatRaster <- function(x, ...) {
   if (is.null(borders$borders)) {
     borders_layer <- latticeExtra::layer()
   }  else {
-    borders_layer <- latticeExtra::layer(sp::sp.polygons(b$borders,
-                                                         lwd = b$lwd,
-                                                         col = b$col,
-                                                         fill = "transparent"
+    borders_layer <- latticeExtra::layer(lpolygon.SpatVector(b$borders,
+                                                             lwd = b$lwd,
+                                                             border = b$col
     ),
     data = list(b = borders,
-                sp.polygons = sp::sp.polygons
+                lpolygon.SpatVector = lpolygon.SpatVector ## TODO: figure out how to pass generic instead of method
     )
     )
   }
@@ -940,13 +938,13 @@ plot.SpatRaster <- function(x, ...) {
   if (is.null(mask$mask)) {
     mask_layer <- latticeExtra::layer()
   } else {
-    mask_layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
-                                                      fill = m$fill,
-                                                      col = m$col,
-                                                      lwd = m$lwd
+    mask_layer <- latticeExtra::layer(lpolygon.SpatVector(m$mask,
+                                                          col = m$fill,
+                                                          border = m$col,
+                                                          lwd = m$lwd
     ),
     data = list(m = mask,
-                sp.polygons = sp::sp.polygons
+                lpolygon.SpatVector = lpolygon.SpatVector ## TODO: figure out how to pass generic instead of method
     )
     )
   }
@@ -954,13 +952,13 @@ plot.SpatRaster <- function(x, ...) {
   if (is.null(mask2$mask)) {
     mask2_layer <- latticeExtra::layer()
   } else {
-    mask2_layer <- latticeExtra::layer(sp::sp.polygons(m$mask,
-                                                       fill = m$fill,
-                                                       col = m$col,
-                                                       lwd = m$lwd
+    mask2_layer <- latticeExtra::layer(lpolygon.SpatVector(m$mask,
+                                                           col = m$fill,
+                                                           border = m$col,
+                                                           lwd = m$lwd
     ),
     data = list(m = mask2,
-                sp.polygons = sp::sp.polygons
+                lpolygon.SpatVector = lpolygon.SpatVector ## TODO: figure out how to pass generic instead of method
     )
     )
   }

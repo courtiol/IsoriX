@@ -10,9 +10,6 @@
 \alias{layer}
 \alias{levelplot}
 \alias{RdBuTheme}
-\alias{CRS}
-\alias{sp.points}
-\alias{sp.polygons}
 \alias{get_ranPars}
 \alias{plot}
 \alias{points}
@@ -39,8 +36,6 @@ below to see their documentation.
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
   \item{rasterVis}{\code{\link[rasterVis:rasterTheme]{RdBuTheme}}, \code{\link[rasterVis:levelplot-methods]{levelplot}}}
-
-  \item{sp}{\code{\link[sp:CRS-class]{CRS}}, \code{\link[sp:panel]{sp.points}}, \code{\link[sp:panel]{sp.polygons}}}
 
   \item{spaMM}{\code{\link[spaMM:get_fittedPars]{get_ranPars}}}
 

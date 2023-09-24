@@ -24,7 +24,7 @@ isofind(
 argument is not needed if the isoscape had been fitted using isotopic
 ratios from sedentary animals.)}
 
-\item{mask}{A \emph{SpatialPolygons} of a mask to replace values on all
+\item{mask}{A polygon of class \emph{SpatVector} representing a mask to replace values on all
 rasters by NA inside polygons (see details)}
 
 \item{neglect_covPredCalib}{A \emph{logical} indicating whether to neglect the

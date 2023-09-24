@@ -543,8 +543,10 @@ calibfit <- function(data,
     coord_points <- isofit$info_fit$data[, c("long", "lat")]
     points_contour <- grDevices::chull(coord_points)
     coord_contour <- coord_points[c(points_contour, points_contour[1]), ]
-    points_out <- sp::point.in.polygon(point.x = data$long, point.y = data$lat,
-                                       pol.x = coord_contour$long, pol.y = coord_contour$lat) == 0
+    points_obj <- terra::vect(x = data[, c("long", "lat")], geom = c("long", "lat"), crs = "+proj=longlat +datum=WGS84")
+    contour_obj <- terra::vect(x = as.matrix(coord_contour[, c("long", "lat")]), type = "polygons", crs = "+proj=longlat +datum=WGS84")
+    points_out <- !terra::is.related(points_obj, contour_obj, "within")
+
     if (sum(points_out) > 0) {
       issues_extrapolations <- TRUE
       msg <- paste(msg, "*", sum(points_out), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")

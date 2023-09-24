@@ -20,7 +20,6 @@ Imports:
     methods,
     numDeriv,
     rasterVis (>= 0.30),
-    sp,
     spaMM (>= 3.13),
     stats,
     terra,
@@ -39,7 +38,6 @@ Suggests:
     colorspace,
     gmp,
     magick,
-    maps,
     rgl,
     testthat,
     webshot2
