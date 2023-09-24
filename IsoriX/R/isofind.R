@@ -46,7 +46,7 @@
 #' @param calibfit The output of the function [calibfit] (This
 #'   argument is not needed if the isoscape had been fitted using isotopic
 #'   ratios from sedentary animals.)
-#' @param mask A *SpatialPolygons* of a mask to replace values on all
+#' @param mask A polygon of class *SpatVector* representing a mask to replace values on all
 #'   rasters by NA inside polygons (see details)
 #' @param neglect_covPredCalib A *logical* indicating whether to neglect the
 #'   covariance between the uncertainty of predictions from the isoscape mean
@@ -176,10 +176,8 @@ calibfit!")
   }
 
   ## importing ocean if missing
-  if (!is.null(mask) && !inherits(mask, "SpatialPolygons") && is.na(mask)) {
-    OceanMask <- NULL
-    utils::data("OceanMask", envir = environment(), package = "IsoriX")
-    mask <- OceanMask
+  if (!is.null(mask) && !inherits(mask, "SpatVector") && is.na(mask)) {
+    mask <- terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX"))
   }
   
   original_names <- as.character(data$sample_ID)
@@ -352,7 +350,7 @@ calibfit!")
     }
 
     ## turn mask into raster with NA inside polygons
-    raster_mask <- is.na(terra::rasterize(terra::vect(mask), stat_brick))
+    raster_mask <- is.na(terra::rasterize(mask, stat_brick))
 
     ## multiplying rasters by the raster_mask    
     stat_brick <- stat_brick*raster_mask

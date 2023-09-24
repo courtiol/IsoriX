@@ -3,41 +3,36 @@
 \docType{data}
 \name{OceanMask}
 \alias{OceanMask}
-\title{Mask of world oceans (sp format)}
+\title{Mask of world oceans}
 \format{
-A \emph{SpatialPolygons} object
+A \emph{SpatVector} object
 }
 \source{
-This \emph{SpatialPolygons} is derived from the
-\link{CountryBorders_terra}. See example for details on how we created the
-dataset.
+See example for details on how we created the dataset.
 }
 \description{
-This dataset contains a polygon shapefile that can be used to mask large
-bodies of water.
+This dataset contains a polygon SpatVector (from \pkg{terra}).
+It can be used to mask large bodies of water.
 }
 \examples{
 
-if (require(sp)) {
-   plot(OceanMask, col='blue')
-}
+plot(OceanMask, col='blue')
 
 ## How did we create this file?
 
 ## Uncomment the following to create the file as we did
 # if (require(terra)) {
-#    worldlimit <- as.polygons(ext(CountryBorders_terra))
-#    crs(worldlimit) <- crs(CountryBorders_terra)
-#    OceanMask_terra <- worldlimit - CountryBorders_terra
-#    OceanMask <- as(OceanMask_terra, "Spatial")
+#   worldlimit <- vect(ext(CountryBorders))
+#   crs(worldlimit) <- crs(CountryBorders)
+#   OceanMask <- worldlimit - CountryBorders
+#   #saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
 # }
 
 
 }
 \seealso{
 \itemize{
-\item \link{OceanMask_terra} for the same file stored as a \pkg{terra} object
-\item \link{CountryBorders} for another polygon shapefile used to embellish the plots
+\item \link{CountryBorders} for another polygon used to embellish the plots
 }
 }
 \keyword{datasets}

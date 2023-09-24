@@ -67,9 +67,9 @@
 #' objects as in traditional R plotting functions (see [par] for details). The
 #' element `draw` should be a *logical* that indicates whether the layer must be
 #' created or not. The argument `borders` (within the list borders) expects an
-#' object of the class *SpatialPolygons* such as the object [CountryBorders]
+#' object of the class *SpatVector*, such as the object [CountryBorders]
 #' provided with this package. The argument `mask` (within the list mask)
-#' expects an object of the class *SpatialPolygons* such as the object
+#' also expects an object of the class *SpatVector*, such as the object
 #' [OceanMask] provided with this package (see examples).
 #'
 #' The argument `palette` is used to define how to colour the isoscape and
@@ -197,18 +197,12 @@ plot.ISOSCAPE <- function(x,
 
     ## importing country borders if missing
     if (!is.null(borders$borders) && is.na(borders$borders)) {
-      CountryBorders <- NULL
-      utils::data("CountryBorders", envir = environment(), package = "IsoriX")
-      borders$borders <- CountryBorders
-      #borders$borders <- as(CountryBorders, "Spatial")  ## coercion terra -> sp (not needed for now)
+      borders$borders <- terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX"))
     }
 
     ## importing ocean if missing
-    if (!is.null(mask$mask) && !inherits(mask$mask, "SpatialPolygons") && is.na(mask$mask)) {
-      OceanMask <- NULL
-      utils::data("OceanMask", envir = environment(), package = "IsoriX")
-      mask$mask <- OceanMask
-      #mask$mask <- as(OceanMask, "Spatial")  ## coercion terra -> sp (not needed for now)
+    if (!is.null(mask$mask) && !inherits(mask$mask, "SpatVector") && is.na(mask$mask)) {
+      mask$mask <- terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX"))
     }
 
     if (simu) {
@@ -387,20 +381,16 @@ plot.ISOFIND <- function(x,
 
   ## importing country borders if missing
   if (!is.null(borders$borders) && is.na(borders$borders)) {
-    CountryBorders <- NULL
-    utils::data("CountryBorders", envir = environment(), package = "IsoriX")
-    borders$borders <- CountryBorders
+    borders$borders <- terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX"))
   }
-
+  
   ## importing ocean if missing
-  if (!is.null(mask$mask) && !inherits(mask$mask, "SpatialPolygons") && is.na(mask$mask)) {
-    OceanMask <- NULL
-    utils::data("OceanMask", envir = environment(), package = "IsoriX")
-    mask$mask <- OceanMask
+  if (!is.null(mask$mask) && !inherits(mask$mask, "SpatVector") && is.na(mask$mask)) {
+    mask$mask <- terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX"))
   }
 
   ## changing missing setting for mask2
-  if (!is.null(mask2$mask) && !inherits(mask2$mask, "SpatialPolygons") && is.na(mask2$mask)) {
+  if (!is.null(mask2$mask) && !inherits(mask2$mask, "SpatVector") && is.na(mask2$mask)) {
     mask2$mask <- NULL
   }
 

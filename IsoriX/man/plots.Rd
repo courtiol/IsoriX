@@ -208,9 +208,9 @@ elements \code{lwd}, \code{col}, \code{cex}, \code{pch} and \code{fill} influenc
 objects as in traditional R plotting functions (see \link{par} for details). The
 element \code{draw} should be a \emph{logical} that indicates whether the layer must be
 created or not. The argument \code{borders} (within the list borders) expects an
-object of the class \emph{SpatialPolygons} such as the object \link{CountryBorders}
+object of the class \emph{SpatVector}, such as the object \link{CountryBorders}
 provided with this package. The argument \code{mask} (within the list mask)
-expects an object of the class \emph{SpatialPolygons} such as the object
+also expects an object of the class \emph{SpatVector}, such as the object
 \link{OceanMask} provided with this package (see examples).
 
 The argument \code{palette} is used to define how to colour the isoscape and

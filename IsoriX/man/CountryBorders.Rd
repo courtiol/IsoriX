@@ -3,38 +3,37 @@
 \docType{data}
 \name{CountryBorders}
 \alias{CountryBorders}
-\title{Borders of world CountryBorders (sp format)}
+\title{Borders of world CountryBorders}
 \format{
-A \emph{SpatialPolygons}
+A \emph{SpatVector} object
 }
 \source{
-This \emph{SpatialPolygons} is derived from the package
+This \emph{SpatVector} is derived from the package
 \pkg{rnaturalearth}. Please refer to this other package for description and
 sources of this dataset. See example for details on how we created the
 dataset.
 }
 \description{
-This dataset contains a polygon shapefile that can be used to plot the
-borders of CountryBorders.
+This dataset contains a polygon polygon SpatVector (from \pkg{terra}).
+It can be used to draw the borders of world countries.
 }
 \examples{
 
-if (require(sp)) {
-   plot(CountryBorders, border="red", col="darkgrey")
-}
+plot(CountryBorders, border="red", col="darkgrey")
 
 ## How did we create this file?
 
 ## Uncomment the following to create the file as we did
-# if (require(rnaturalearth)) {
-#    CountryBorders <- rnaturalearth::ne_countries(scale = 'large', returnclass = 'sp')
+# if (require(rnaturalearth) && require(terra)) {
+#    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sf')
+#    CountryBorders <- vect(CountryBorders[, 0])
+#    #saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
 # }
 
 }
 \seealso{
 \itemize{
-\item \link{CountryBorders_terra} for the same file stored as a \pkg{terra} object
-\item \link{OceanMask} for another polygon shapefile used to embellish the plots
+\item \link{OceanMask} for another polygon used to embellish the plots
 }
 }
 \keyword{datasets}

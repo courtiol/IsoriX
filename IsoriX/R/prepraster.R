@@ -98,16 +98,16 @@
 #' oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
 #' 
 #' plot(ElevationRaster1, main = "Original small raster")
-#' polys(CountryBorders_terra)
-#' polys(OceanMask_terra, col = "blue")
+#' polys(CountryBorders)
+#' polys(OceanMask, col = "blue")
 #' 
 #' plot(ElevationRaster2, main = "Small raster aggregated (by mean)")
-#' polys(CountryBorders_terra)
-#' polys(OceanMask_terra, col = "blue")
+#' polys(CountryBorders)
+#' polys(OceanMask, col = "blue")
 #' 
 #' plot(ElevationRaster3, main = "Small raster aggregated (by max)")
-#' polys(CountryBorders_terra)
-#' polys(OceanMask_terra, col = "blue")
+#' polys(CountryBorders)
+#' polys(OceanMask, col = "blue")
 #' 
 #' par(oripar) ## restore graphical settings
 #' }
@@ -132,8 +132,8 @@
 #' 
 #' ## We plot (note the use of the function shift()!)
 #' plot(PacificA, col = "blue", legend = FALSE)
-#' polys(CountryBorders_terra, col = "black")
-#' polys(shift(CountryBorders_terra, dx = 360), col = "black")
+#' polys(CountryBorders, col = "black")
+#' polys(shift(CountryBorders, dx = 360), col = "black")
 #' 
 #' }
 #' 

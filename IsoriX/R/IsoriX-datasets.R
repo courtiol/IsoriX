@@ -307,141 +307,70 @@ NULL
 
 
 
-#' Mask of world oceans (sp format)
+#' Borders of world CountryBorders
 #' 
-#' This dataset contains a polygon shapefile that can be used to mask large
-#' bodies of water.
-#' 
-#' 
-#' @name OceanMask
-#' @docType data
-#' @format A *SpatialPolygons* object
-#' @seealso 
-#' - [OceanMask_terra] for the same file stored as a \pkg{terra} object
-#' - [CountryBorders] for another polygon shapefile used to embellish the plots
-#' @source This *SpatialPolygons* is derived from the
-#' [CountryBorders_terra]. See example for details on how we created the
-#' dataset.
-#' @keywords datasets
-#' @examples
-#' 
-#' if (require(sp)) {
-#'    plot(OceanMask, col='blue')
-#' }
-#' 
-#' ## How did we create this file?
-#' 
-#' ## Uncomment the following to create the file as we did
-#' # if (require(terra)) {
-#' #    worldlimit <- as.polygons(ext(CountryBorders_terra))
-#' #    crs(worldlimit) <- crs(CountryBorders_terra)
-#' #    OceanMask_terra <- worldlimit - CountryBorders_terra
-#' #    OceanMask <- as(OceanMask_terra, "Spatial")
-#' # }
-#' 
-#' 
-NULL
-
-
-#' Mask of world oceans (terra format)
-#' 
-#' This dataset contains a polygon shapefile that can be used to mask large
-#' bodies of water.
-#' 
-#' 
-#' @name OceanMask_terra
-#' @docType data
-#' @format A *SpatVector* object
-#' @seealso 
-#' - [OceanMask] for the same file stored as a \pkg{sp} object
-#' - [CountryBorders_terra] for another polygon shapefile used to embellish the plots
-#' @source This *SpatVector* is derived from the
-#' [CountryBorders_terra]. See example for details on how we created the
-#' dataset.
-#' @keywords datasets
-#' @examples
-#' 
-#' plot(OceanMask_terra, col='blue')
-#' 
-#' ## How did we create this file?
-#' 
-#' ## Uncomment the following to create the file as we did
-#' # if (require(terra)) {
-#' #    worldlimit <- as.polygons(ext(CountryBorders_terra))
-#' #    crs(worldlimit) <- crs(CountryBorders_terra)
-#' #    OceanMask_terra <- worldlimit - CountryBorders_terra
-#' # }
-#' 
-#' 
-NULL
-
-
-#' Borders of world CountryBorders (sp format)
-#' 
-#' This dataset contains a polygon shapefile that can be used to plot the
-#' borders of CountryBorders.
+#' This dataset contains a polygon polygon SpatVector (from \pkg{terra}).
+#' It can be used to draw the borders of world countries.
 #' 
 #' 
 #' @name CountryBorders
 #' @docType data
-#' @format A *SpatialPolygons*
+#' @format A *SpatVector* object
 #' @seealso 
-#' - [CountryBorders_terra] for the same file stored as a \pkg{terra} object
-#' - [OceanMask] for another polygon shapefile used to embellish the plots
-#' @source This *SpatialPolygons* is derived from the package
+#' - [OceanMask] for another polygon used to embellish the plots
+#' @source This *SpatVector* is derived from the package
 #'   \pkg{rnaturalearth}. Please refer to this other package for description and
 #'   sources of this dataset. See example for details on how we created the
 #'   dataset.
 #' @keywords datasets
 #' @examples
 #' 
-#' if (require(sp)) {
-#'    plot(CountryBorders, border="red", col="darkgrey")
-#' }
-#' 
-#' ## How did we create this file?
-#' 
-#' ## Uncomment the following to create the file as we did
-#' # if (require(rnaturalearth)) {
-#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'large', returnclass = 'sp')
-#' # }
-#'
-NULL
-
-
-#' Borders of world CountryBorders (terra format)
-#' 
-#' This dataset contains a polygon shapefile that can be used to plot the
-#' borders of CountryBorders.
-#' 
-#' 
-#' @name CountryBorders_terra
-#' @docType data
-#' @format A *SpatialPolygons*
-#' @seealso 
-#' - [CountryBorders_terra] for the same file stored as a \pkg{terra} object
-#' - [OceanMask] for another polygon shapefile used to embellish the plots
-#' @source This *SpatialPolygons* is derived from the package
-#'   \pkg{rnaturalearth}. Please refer to this other package for description and
-#'   sources of this dataset. See example for details on how we created the
-#'   dataset.
-#' @keywords datasets
-#' @examples
-#' 
-#' if (require(sp)) {
-#'    plot(CountryBorders_terra, border="red", col="darkgrey")
-#' }
+#' plot(CountryBorders, border="red", col="darkgrey")
 #' 
 #' ## How did we create this file?
 #' 
 #' ## Uncomment the following to create the file as we did
 #' # if (require(rnaturalearth) && require(terra)) {
-#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sp')
-#' #    CountryBorders <- CountryBorders[0] # empty object
-#' #    CountryBorders_terra <- vect(CountryBorders)
+#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sf')
+#' #    CountryBorders <- vect(CountryBorders[, 0])
+#' #    #saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
 #' # }
 #' 
 NULL
+
+
+
+#' Mask of world oceans
+#' 
+#' This dataset contains a polygon SpatVector (from \pkg{terra}).
+#' It can be used to mask large bodies of water.
+#' 
+#' 
+#' @name OceanMask
+#' @docType data
+#' @format A *SpatVector* object
+#' @seealso 
+#' - [CountryBorders] for another polygon used to embellish the plots
+#' @source See example for details on how we created the dataset.
+#' @keywords datasets
+#' @examples
+#' 
+#' plot(OceanMask, col='blue')
+#' 
+#' ## How did we create this file?
+#' 
+#' ## Uncomment the following to create the file as we did
+#' # if (require(terra)) {
+#' #   worldlimit <- vect(ext(CountryBorders))
+#' #   crs(worldlimit) <- crs(CountryBorders)
+#' #   OceanMask <- worldlimit - CountryBorders
+#' #   #saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+#' # }
+#' 
+#' 
+NULL
+
+
 
 #' The raster of elevation for Germany
 #' 
@@ -455,7 +384,7 @@ NULL
 #' 
 #' @name ElevRasterDE
 #' @docType data
-#' @format A *RasterLayer*
+#' @format A *SpatRaster* object
 #' @seealso [prepraster] to crop and/or aggregate this raster
 #' @source \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 #' @keywords datasets
