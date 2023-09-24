@@ -562,7 +562,7 @@ calibfit <- function(data,
     
     ## display message if necessary
     if (issues_extrapolations) {
-      message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could imped the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more calibration data within the expected range to avoid any problem."))
+      message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could impede the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more calibration data within the expected range to avoid any problem."))
     }
     
     ## extract the prediction covariance matrix
