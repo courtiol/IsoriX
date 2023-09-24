@@ -16,7 +16,7 @@ if (run) {
   example(CalibDataBat)
   example(CalibDataBat2)
   CalibDataBat2$elev <- NULL
-  foo <- tempfile()
+  foo <- paste(tempfile(), ".tif")
   getelev(file = foo, z = 1,
           lat_min = min(CalibDataBat2$lat),
           lat_max = max(CalibDataBat2$lat),
@@ -30,14 +30,15 @@ if (run) {
   example(AssignDataAlien)
   example(CalibDataAlien)
   
-  foo <- tempfile()
-  getelev(file = foo, z = 1)
+  foo <- paste(tempfile(), ".tif")
+  getelev(file = foo, z = 1, overwrite = TRUE)
   elev_raster <- terra::rast(foo)
   plot(elev_raster)
   rm(elev_raster)
   
   foo <- tempdir()
-  #getprecip(path = foo) ## SLOW & BUG
+  options(timeout = 500)
+  outpath <- getprecip(path = foo, overwrite = TRUE)
   
   GNIPDataDEagg <- prepsources(data = GNIPDataDE)
   GermanFit <- isofit(data = GNIPDataDEagg,
@@ -45,8 +46,7 @@ if (run) {
   StrRaster <- prepraster(raster = ElevRasterDE,
                           isofit = GermanFit,
                           aggregation_factor = 0)
-  getprecip(path = "~/Downloads/", overwrite = TRUE)  ## SLOW & BUG
-  PrecipitationBrick <- prepcipitate(path = "~/Downloads/", raster = StrRaster)
+  PrecipitationBrick <- prepcipitate(path = outpath, raster = StrRaster) # path = foo also works!
   levelplot(PrecipitationBrick)
   
   # example(isosim) ## not activated for now
