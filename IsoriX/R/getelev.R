@@ -183,6 +183,16 @@ getprecip <- function(path = NULL,
                       verbose = interactive()
 ) {
   
+  ## check options
+  if (options()$timeout == 60) {
+    message("You are using R default settings of a maximum of 60s per download, this is likely to be unsufficient and lead the downloading operation to crash. You may want to run `options(timeout = 600)` or similar to allow for more time (here 600s or 10 min) before reruning `getprecip()`.")
+  }
+  
+  ## Use current directory if path is missing
+  if (is.null(path)) {
+    path <- getwd()
+  }
+  
   ## Normalise path the remove last slash
   path <- base::normalizePath(path, mustWork = FALSE)
   
