@@ -160,7 +160,7 @@
 #'   [spaMM::fitme] and [spaMM::corrHLfit] for
 #'   information about the two possible fitting procedures that can be used here
 #'
-#'   [spaMM]::atern.corr] for information about the Matérn
+#'   [spaMM::MaternCorr] for information about the Matérn
 #'   correlation structure
 #'
 #'   [prepsources] for the function preparing the data for isofit
