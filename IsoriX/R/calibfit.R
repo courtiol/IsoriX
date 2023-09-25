@@ -543,7 +543,7 @@ calibfit <- function(data,
     coord_points <- isofit$info_fit$data[, c("long", "lat")]
     points_contour <- grDevices::chull(coord_points)
     coord_contour <- coord_points[c(points_contour, points_contour[1]), ]
-    points_obj <- terra::vect(x = as.data.frame(data[, c("long", "lat")]), geom = c("long", "lat"), crs = "+proj=longlat +datum=WGS84")
+    points_obj <- terra::vect(x = as.data.frame(data[, c("long", "lat")]), geom = c("long", "lat"), crs = "+proj=longlat +datum=WGS84") ## note: coercion to df only needed for tests since we don't have tibble in DESCRIPTION
     contour_obj <- terra::vect(x = as.matrix(coord_contour[, c("long", "lat")]), type = "polygons", crs = "+proj=longlat +datum=WGS84")
     points_out <- !terra::is.related(points_obj, contour_obj, "within")
 
