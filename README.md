@@ -1,5 +1,4 @@
 # Welcome to IsoriX
-[![Build Status](https://travis-ci.org/courtiol/IsoriX.svg?branch=master)](https://travis-ci.org/courtiol/IsoriX)
 [![CRAN](http://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX)
 [![Dependencies](https://tinyverse.netlify.com/badge/IsoriX)](https://cran.r-project.org/package=IsoriX)
@@ -47,7 +46,7 @@ If you want the development version of IsoriX, you can download and install it b
 remotes::install_github("courtiol/IsoriX/IsoriX")
 ```
 
-Mind that you need the R package `remotes` to be installed for that to work. Mind also that the development version, being under development, can sometimes be broken. So before downloading it make sure that the current build status is ![build passing](.github/image/build_passing.png). The current built status is provided at the top of this readme document.
+Mind that you need the R package `remotes` to be installed for that to work. Mind also that the development version, being under development, can sometimes contain code that is partly broken.
 
 ### Installation behind a proxy?
 
