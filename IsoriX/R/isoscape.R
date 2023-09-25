@@ -231,8 +231,8 @@ isoscape <- function(raster,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("predictions for all", length(long_to_do),
-                "locations have been computed in", time, "sec."), quote = FALSE)
+    print(paste0("predictions for all ", length(long_to_do),
+                " locations have been computed in ", time, "s."), quote = FALSE)
   }
   
   ## we store the predictions for mean isotopic values into a raster
@@ -357,8 +357,8 @@ isoscape <- function(raster,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("predictions for all", nrow(xs),
-                "locations have been computed in", time, "sec."), quote = FALSE)
+    print(paste0("predictions for all ", nrow(xs),
+                " locations have been computed in ", time, "s."), quote = FALSE)
   }
   
   ## we store the predictions for mean isotopic values into a raster

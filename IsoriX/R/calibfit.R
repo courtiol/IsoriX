@@ -652,7 +652,7 @@ calibfit <- function(data,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("the calibration procedure based on", nrow(data), "calibration samples has been completed in", time, "sec."))
+    print(paste0("the calibration procedure based on ", nrow(data), " calibration samples has been completed in ", time, "s."))
   }
   
   ## we create the spatial points for calibration points
@@ -723,7 +723,7 @@ calibfit <- function(data,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("the calibration procedure based on", nrow(data), "calibration samples has been completed in", time, "sec."))
+    print(paste0("the calibration procedure based on ", nrow(data), "calibration samples has been completed in ", time, "s."))
   }
   
   ## we create the spatial points for calibration points

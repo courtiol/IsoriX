@@ -332,7 +332,7 @@ calibfit!")
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("assignments for all", nrow(data), "organisms have been computed in", time, "sec."))
+    print(paste0("assignments for all ", nrow(data), " organisms have been computed in ", time, "s."))
   }
 
   ## remove log scale
