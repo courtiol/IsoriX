@@ -461,7 +461,7 @@ NULL
 #' reuse provided the relevant citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
 #' provide larger GNIP dataset in the package as those are not free to reuse (but
-#' we do provide aggregated verisons of it; see [GNIPDataEUagg]).
+#' we do provide aggregated versions of it; see [GNIPDataEUagg]).
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
 #' interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
@@ -511,15 +511,15 @@ NULL
 #'
 #' These datasets contain the mean and variance of hydrogen delta value from
 #' precipitation water sampled at weather stations between 1953 and 2015 in
-#' Europe (`GNIPDataEUagg`) and in the entire world
-#' (`GNIPDataALLagg`). These data have been extracted from the
-#' International Atomic Energy Agency IAEA in Vienna (GNIP Project: Global
-#' Network of Isotopes in Precipitation) and processed by us using the function
-#' [prepsources]. The data are aggregated per location. We no longer
-#' provide the full non-aggregate GNIP dataset in the package as it is not free
-#' to reuse. You can still download the complete GNIP dataset for free, but you
-#' will have to proceed to a registration process with GNIP and use their
-#' downloading interface WISER
+#' Europe (`GNIPDataEUagg`) and in the entire world (`GNIPDataALLagg`). These
+#' data have been extracted from the International Atomic Energy Agency IAEA in
+#' Vienna (GNIP Project: Global Network of Isotopes in Precipitation) and
+#' processed by us using the function [prepsources]. The data are aggregated per
+#' location (across all month-year combinations). We no longer provide the full
+#' non-aggregate GNIP dataset in the package as it is not free to reuse. You can
+#' still download the complete GNIP dataset for free, but you will have to
+#' proceed to a registration process with GNIP and use their downloading
+#' interface WISER
 #' (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
 #'
 #' These datasets have been aggregated and can thus be directly used for fitting
@@ -534,13 +534,13 @@ NULL
 #' @noMd
 #' @format The *dataframe*s include many observations on the following
 #' variables: \tabular{rlll}{
-#' [, 1] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 3] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-#' [, 4] \tab source_value \tab (*numeric*) \tab hydrogen delta value (per thousand)\cr
-#' [, 5] \tab year \tab (*numeric*) \tab Year of sampling\cr
-#' [, 6] \tab month \tab (*numeric*) \tab Month of sampling\cr
-#' [, 7] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr }
+#' [, 1] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr
+#' [, 2] \tab mean_source_value \tab (*numeric*) \tab Average of the aggregate of hydrogen delta values (per thousand)\cr
+#' [, 3] \tab var_source_value \tab (*numeric*) \tab Variance of the aggregate of hydrogen delta values (per thousand^2)\cr
+#' [, 4] \tab n_source_value \tab (*numeric*) \tab Number of hydrogen delta values aggregated\cr
+#' [, 5] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
+#' [, 6] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
+#' [, 7] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr}
 #' @seealso [GNIPDataDE] for a non-aggregated dataset.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #' @source Data provided by the IAEA and processed by us.

@@ -27,7 +27,7 @@ Project: Global Network of Isotopes in Precipitation). These data are free to
 reuse provided the relevant citations (see references). These data represent
 a small sample of the much larger dataset compiled by the GNIP. We no longer
 provide larger GNIP dataset in the package as those are not free to reuse (but
-we do provide aggregated verisons of it; see [GNIPDataEUagg]).
+we do provide aggregated versions of it; see [GNIPDataEUagg]).
 You can still download the complete GNIP dataset for free, but you will have
 to proceed to a registration process with GNIP and use their downloading
 interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
