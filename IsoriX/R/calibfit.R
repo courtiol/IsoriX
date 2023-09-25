@@ -552,14 +552,6 @@ calibfit <- function(data,
       msg <- paste(msg, "*", sum(points_out), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
     }
     
-    ### check if value extrapolation occurs
-    too_small <- sum(min(data$mean_source_value, na.rm = TRUE) < min(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
-    too_large <- sum(max(data$mean_source_value, na.rm = TRUE) > max(isofit$info_fit$data$mean_source_value, na.rm = TRUE))
-    if (too_small + too_large > 0) {
-      issues_extrapolations <- TRUE
-      msg <- paste(msg, "*", too_small + too_large, "are associated to predicted values more extreme than the ones present in the isoscape.\n")
-    }
-    
     ## display message if necessary
     if (issues_extrapolations) {
       message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could impede the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more calibration data within the expected range to avoid any problem."))
