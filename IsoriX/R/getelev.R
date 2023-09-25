@@ -71,6 +71,11 @@ getelev <- function(file = "~/elevation_world_z5.tif",
                     ...
 ) {
   
+  ## Checking that elevatr is installed
+  if (!requireNamespace("elevatr", quietly = TRUE)) {
+    stop("You must install the package elevatr for this function to run: `install.packages('elevatr')`")
+  }
+  
   ## Turning path into canonical form
   ## (this avoids the problem of using the wrong slashes and so on)
   file <- normalizePath(file, mustWork = FALSE)

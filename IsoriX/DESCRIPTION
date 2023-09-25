@@ -11,7 +11,6 @@ Authors@R: c(
 Depends:
     R (>= 3.5.0)
 Imports:
-    elevatr,
     graphics,
     grDevices,
     grid,
@@ -35,6 +34,7 @@ Description: Building isoscapes using mixed models and inferring the geographic
   plotting the maps produced with 'terra' using 'lattice'.
 License: GPL (>= 2)
 Suggests:
+    elevatr,
     colorspace,
     gmp,
     magick,

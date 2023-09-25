@@ -35,6 +35,7 @@
   \subsection{Geeky change}{
     \itemize{
       \item \code{OceanMask} and \code{CountryBorders} are no longer stored as RDA files in \code{/data}, but as RDS files in \code{/extata} since objects created with \pkg{terra} cannot be saved as RDA files. These files are automatically loaded when the package is attached.
+      \item \pkg{elevatr} moved from Imports to Suggests (#157)
     }
   }
 }
