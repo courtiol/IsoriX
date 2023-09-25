@@ -600,10 +600,10 @@ calibfit <- function(data,
         calib_formula <- paste(calib_formula, "+ (1|species_ID)")
       }
       calib_fit <-
-        spaMM::HLCor(
+        spaMM::fitme(
           formula = stats::formula(calib_formula),
           corrMatrix = predcov,
-          ranPars = lambda_list,
+          fixed = lambda_list,
           data = data,
           method = lik_method
         )
