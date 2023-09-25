@@ -189,9 +189,14 @@ getprecip <- function(path = NULL,
 ) {
   
   ## check options
+  old_opts <- options()
   if (options()$timeout == 60) {
-    message("You are using R default settings of a maximum of 60s per download, this is likely to be unsufficient and lead the downloading operation to crash. You may want to run `options(timeout = 600)` or similar to allow for more time (here 600s or 10 min) before reruning `getprecip()`.")
+    options(timeout = 600)
+    message("You were using R default settings of a maximum of 60s per download, this is unsufficient for downloading the large file. IsoriX temporarily increased this limit to 600s. If this is not sufficient, please call `options(timeout = XX)` with XX the number of seconds you want to allow R waiting for the download to be completed before crashing. After this, rerun `getprecip()`.")
+  } else if (options()$timeout < 600) {
+    message("You are using a custom value of timeout lower than 600s. This could be unsufficient for downloading the large file. If the download crashes as a result, please call `options(timeout = XX)` with XX the number of seconds you want to allow R waiting for the download to be completed before crashing. After this, rerun `getprecip()`.")
   }
+  on.exit(options(old_opts))
   
   ## Use current directory if path is missing
   if (is.null(path)) {
@@ -304,7 +309,8 @@ downloadfile <- function(address = NULL, filename = NULL, path = NULL,
     )
     )
   } else {
-    utils::download.file(address, destfile = complete_path, mode = "wb")
+    time <- system.time(utils::download.file(address, destfile = complete_path, mode = "wb"))
+    message(paste0("The download lasted ", time[["elapsed"]], "s"))
   }
   
   ## Checking MD5sum

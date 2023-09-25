@@ -29,7 +29,7 @@
     \itemize{
       \item \code{getprecip()} now normalises the input file and returns the path where the precipitation rasters are stored.
       \item \code{prepcipitate()} can now handle as input for \code{path =} either the full path to the files returned by \code{getprecip()} -- which contains the folder inputed in \code{path} when calling \code{getprecip()} in addition to \code{"/wc2.1_30s_prec"} -- or the reduced path which only contains the folder inputed in \code{path} when calling \code{getprecip()}.
-      \item \code{getprecip()} now provide more information on why the download may fail (timeout too short).
+      \item \code{getprecip()} now changes the timeout R options temporarily so as to avoid the download to fail because the default timeout setting is too short (#148).
     }
   }
   \subsection{Geeky change}{
