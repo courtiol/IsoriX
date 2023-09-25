@@ -13,14 +13,11 @@ r:
   - devel
 
 r_packages:
-  - rgdal
   - rgl
   - covr
   - magick
   - lattice
   - maps
-  - maptools
-  - rgeos
   - testthat
 
 script: 

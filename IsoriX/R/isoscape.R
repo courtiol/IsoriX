@@ -48,7 +48,7 @@
 #' (see examples).
 #'
 #' @aliases isoscape print.isoscape summary.isoscape
-#' @param raster The structural raster (*RasterLayer*) such as an elevation
+#' @param raster The structural raster (*SpatRaster*) such as an elevation
 #'   raster created using [prepelev]
 #' @param isofit The fitted isoscape created by [isofit]
 #' @param verbose A *logical* indicating whether information about the
@@ -57,7 +57,7 @@
 #'   session and `FALSE` otherwise.
 #' @return This function returns a *list* of class *ISOSCAPE* containing
 #'   a set of all 8 raster layers mentioned above (all being of class
-#'   *RasterLayer*), and the location of the sources as spatial points.
+#'   *SpatRaster*), and the location of the sources as spatial points.
 #' @seealso [isofit] for the function fitting the isoscape
 #'
 #'   [plot.ISOSCAPE] for the function plotting the isoscape model
@@ -116,8 +116,8 @@
 #' ## and that you have both the packages 'rgl' and 'magick' installed.
 #' ## The building of the .gif implies to create temporarily many .png
 #' ## but those will be removed automatically once the .gif is done.
-#' ## Uncomment to proceed (after making sure you have rgl and magick installed)
-#' #if(require("rgl") & require("magick")) {
+#' ## Uncomment to proceed (after making sure you have rgl, magick & webshot2 installed)
+#' #if(require("rgl") && require("magick") && require("webshot2")) {
 #' #   movie3d(spin3d(axis = c(0, 0, 1), rpm = 2), duration = 30, dir = getwd())
 #' #}
 #' 
@@ -145,9 +145,9 @@ isoscape <- function(raster,
   time <- system.time({
     
     ## we extract lat/long from all cells of the raster
-    coord <- sp::coordinates(raster)
-    long_to_do <- coord[, 1]  # extract the longitude
-    lat_to_do <-  coord[, 2]  # extract the lattitude
+    coord <- terra::crds(raster)
+    long_to_do <- coord[, "x"]  # extract the longitude
+    lat_to_do <-  coord[, "y"]  # extract the lattitude
     rm(coord); gc()  ## remove coord as it can be a large object
     
     ## size of chunks to split the job into smaller ones
@@ -178,33 +178,33 @@ isoscape <- function(raster,
                      lat = lat_to_do,
                      lat_abs = abs(lat_to_do),
                      lat_2 = lat_to_do^2,
-                     elev = raster::extract(raster, cbind(long_to_do, lat_to_do)),  ## ToDo: check that it is elev and not something else
-                     source_ID = as.factor(paste("new", seq_len(length(long_to_do)), sep = "_"))
-    )
+                     elev = terra::extract(raster, cbind(long_to_do, lat_to_do))[[1]],  ## ToDo: check that it is elev and not something else
+                     source_ID = as.factor(paste("new", seq_len(length(long_to_do)), sep = "_")))
     
     
     ## we loop on each chunk
     for (i in 1:(length(steps) - 1)) {
-
+      
       ## compute indexes for covariate values matching the current chunk
       within_steps <-  (steps[i] + 1L):steps[i + 1L] 
-
+      
       ## we select the chunk of the design matrix required for the loop
       xs_small <- xs[within_steps, ]
       
       ## predictions from disp_fit
-      pred_dispfit <- spaMM::predict.HLfit(object = isofit$disp_fit,
-                                            newdata = xs_small,
-                                            variances = list(respVar = TRUE)
-      )
+      pred_dispfit <- .suppress_warning(spaMM::predict.HLfit(object = isofit$disp_fit,
+                                                             newdata = xs_small,
+                                                             variances = list(respVar = TRUE)),
+                              warn = "Prior weights are not taken in account in residVar computation.")
       
       ## transmission of phi to mean_fit
       xs_small$pred_disp <- pred_dispfit[, 1]
       
       ## predictions from mean_fit
-      pred_meanfit <- spaMM::predict.HLfit(object = isofit$mean_fit,
-                                           newdata = xs_small,
-                                           variances = list(respVar = TRUE)
+      pred_meanfit <- .suppress_warning(spaMM::predict.HLfit(object = isofit$mean_fit,
+                                                             newdata = xs_small,
+                                                             variances = list(respVar = TRUE),
+                               warn = "phi dispVar component not yet available for phi model != ~1.")
       )
       
       ## we save the predictions
@@ -231,16 +231,16 @@ isoscape <- function(raster,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("predictions for all", length(long_to_do),
-                "locations have been computed in", time, "sec."), quote = FALSE)
+    print(paste0("predictions for all ", length(long_to_do),
+                " locations have been computed in ", time, "s."), quote = FALSE)
   }
   
   ## we store the predictions for mean isotopic values into a raster
   save_raster <- function(x) {
     .create_raster(long = long_to_do,
-                  lat = lat_to_do,
-                  values = x,
-                  proj = "+proj=longlat +datum=WGS84"
+                   lat = lat_to_do,
+                   values = x,
+                   proj = "+proj=longlat +datum=WGS84"
     )
   }
   
@@ -248,7 +248,7 @@ isoscape <- function(raster,
   mean_predVar_raster <- save_raster(mean_predVar)
   mean_residVar_raster <- save_raster(mean_residVar)
   mean_respVar_raster <- save_raster(mean_respVar)
-
+  
   disp_raster <- save_raster(disp_pred)
   disp_predVar_raster <- save_raster(disp_predVar)
   disp_residVar_raster <- save_raster(disp_residVar)
@@ -262,14 +262,14 @@ isoscape <- function(raster,
   )
   
   ## we put all rasters in a brick
-  isoscapes <- raster::brick(list("mean" = mean_raster,
-                                 "mean_predVar" = mean_predVar_raster,
-                                 "mean_residVar" = mean_residVar_raster,
-                                 "mean_respVar" = mean_respVar_raster,
-                                 "disp" = disp_raster,
-                                 "disp_predVar" = disp_predVar_raster,
-                                 "disp_residVar" = disp_residVar_raster,
-                                 "disp_respVar" = disp_respVar_raster
+  isoscapes <- terra::rast(list("mean" = mean_raster,
+                                "mean_predVar" = mean_predVar_raster,
+                                "mean_residVar" = mean_residVar_raster,
+                                "mean_respVar" = mean_respVar_raster,
+                                "disp" = disp_raster,
+                                "disp_predVar" = disp_predVar_raster,
+                                "disp_residVar" = disp_residVar_raster,
+                                "disp_respVar" = disp_respVar_raster
   )
   )
   
@@ -278,7 +278,7 @@ isoscape <- function(raster,
   out <- list(isoscapes = isoscapes,
               sp_points = list(sources = source_points)
   )
-
+  
   ## store design matrix as attribute
   attr(out, "xs") <- xs
   
@@ -296,7 +296,7 @@ isoscape <- function(raster,
   # This function is an alternative implementation of isoscape().
   # It is not exported but may be put in use in a future version of IsoriX.
   # It does not compute the predictions into chunks.
-    
+  
   if (inherits(isofit, "MULTIISOFIT")) {
     stop("object 'isofit' of class MULTIISOFIT; use isomultiscape instead.")
   }
@@ -313,7 +313,7 @@ isoscape <- function(raster,
   time <- system.time({
     
     ## we extract lat/long from all cells of the raster
-    coord <- sp::coordinates(raster)
+    coord <- terra::crds(raster)
     
     ## we create the object for newdata
     xs <- data.frame(long = coord[, 1],
@@ -321,12 +321,12 @@ isoscape <- function(raster,
                      lat = coord[, 2],
                      lat_abs = abs(coord[, 2]),
                      lat_2 = coord[, 2]^2,
-                     elev = raster::extract(raster, coord), ## ToDo: check that it is elev
+                     elev = terra::extract(raster, coord)[[1]], ## ToDo: check that it is elev
                      source_ID = as.factor(paste("new", 1:nrow(coord), sep = "_"))
     )
-
+    
     rm(coord); gc()  ## remove coord as it can be a large object
-  
+    
     pred_dispfit <- spaMM::predict.HLfit(object = isofit$disp_fit,
                                          newdata = xs,
                                          variances = list(respVar = TRUE),
@@ -357,8 +357,8 @@ isoscape <- function(raster,
   ## display time
   time <- round(as.numeric((time)[3]))
   if (verbose) {
-    print(paste("predictions for all", nrow(xs),
-                "locations have been computed in", time, "sec."), quote = FALSE)
+    print(paste0("predictions for all ", nrow(xs),
+                " locations have been computed in ", time, "s."), quote = FALSE)
   }
   
   ## we store the predictions for mean isotopic values into a raster
@@ -388,14 +388,14 @@ isoscape <- function(raster,
   )
   
   ## we put all rasters in a brick
-  isoscapes <- raster::brick(list("mean" = mean_raster,
-                                 "mean_predVar" = mean_predVar_raster,
-                                 "mean_residVar" = mean_residVar_raster,
-                                 "mean_respVar" = mean_respVar_raster,
-                                 "disp" = disp_raster,
-                                 "disp_predVar" = disp_predVar_raster,
-                                 "disp_residVar" = disp_residVar_raster,
-                                 "disp_respVar" = disp_respVar_raster
+  isoscapes <- terra::rast(list("mean" = mean_raster,
+                                "mean_predVar" = mean_predVar_raster,
+                                "mean_residVar" = mean_residVar_raster,
+                                "mean_respVar" = mean_respVar_raster,
+                                "disp" = disp_raster,
+                                "disp_predVar" = disp_predVar_raster,
+                                "disp_residVar" = disp_residVar_raster,
+                                "disp_respVar" = disp_respVar_raster
   )
   )
   
@@ -426,7 +426,7 @@ isoscape <- function(raster,
 #' @param weighting An optional RasterBrick containing the weights
 #' @return This function returns a *list* of class *ISOSCAPE*
 #' containing a set of all 8 raster layers mentioned above (all being of
-#' class *RasterLayer*), and the location of the sources as spatial points.
+#' class *SpatRaster*), and the location of the sources as spatial points.
 #' @seealso
 #' 
 #' [isoscape] for details on the function used to compute the isoscapes for each strata
@@ -487,15 +487,15 @@ isomultiscape <- function(raster, ## change as method?
                           isofit,
                           weighting = NULL,
                           verbose = interactive()
-                          ) {
+) {
   
   ## In case the function is called on the output of isofit by mistake
   if (!inherits(isofit, "MULTIISOFIT")) {
     return(isoscape(raster = raster,
                     isofit = isofit,
                     verbose = verbose
-                    )
-           )
+    )
+    )
   }
   
   ## Checking the inputs
@@ -506,52 +506,52 @@ isomultiscape <- function(raster, ## change as method?
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
-    if (raster::extent(weighting) != raster::extent(raster)) {
+    if (terra::ext(weighting) != terra::ext(raster)) {
       stop("the extent of the object 'weighting' and 'raster' differ")
     }
-    if (raster::ncell(weighting) != raster::ncell(raster)) {
+    if (terra::ncell(weighting) != terra::ncell(raster)) {
       stop("the resolution of the object 'weighting' and 'raster' differ")
     }
   }
   
   isoscapes <- lapply(names(isofit$multi_fits),
                       function(fit) {
-                         if (verbose) {
-                           print(paste("#### building isoscapes for", fit, " in progress ####"), quote = FALSE)
-                         }
-                         iso <- isoscape(raster = raster,
-                                         isofit = isofit$multi_fits[[fit]],
-                                         verbose = verbose
-                                         )
-                         iso$sp_points$sources$values <- fit  ## set values for sp.points
-                         return(iso)
+                        if (verbose) {
+                          print(paste("#### building isoscapes for", fit, " in progress ####"), quote = FALSE)
+                        }
+                        iso <- isoscape(raster = raster,
+                                        isofit = isofit$multi_fits[[fit]],
+                                        verbose = verbose
+                        )
+                        iso$sp_points$sources$values <- fit  ## set values for sp.points
+                        return(iso)
                       }
-                    )
+  )
   
   names(isoscapes) <- names(isofit$multi_fits)
   
   ## Combining mean isoscapes into RasterBricks
-  brick_mean <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean))
-  brick_mean_predVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean_predVar))
-  brick_mean_residVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean_residVar))
-  brick_mean_respVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$mean_respVar))
-
+  brick_mean <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean))
+  brick_mean_predVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean_predVar))
+  brick_mean_residVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean_residVar))
+  brick_mean_respVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$mean_respVar))
+  
   ## Combining disp isoscapes into RasterBricks
-  brick_disp <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp))
-  brick_disp_predVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp_predVar))
-  brick_disp_residVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp_residVar))
-  brick_disp_respVar <- raster::brick(lapply(isoscapes, function(iso) iso$isoscapes$disp_respVar))
+  brick_disp <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp))
+  brick_disp_predVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp_predVar))
+  brick_disp_residVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp_residVar))
+  brick_disp_respVar <- terra::rast(lapply(isoscapes, function(iso) iso$isoscapes$disp_respVar))
   
   ## Compute the weights
   if (is.null(weighting)) {
-    weights <- raster::raster(raster)
-    weights <- raster::setValues(weights, 1/length(isoscapes))
+    weights <- terra::rast(raster)
+    weights <- terra::setValues(weights, 1/length(isoscapes))
   } else {
     weights <- weighting / sum(weighting)
   }
   
   ## Compute the weighted averages and store then in a list of RasterBricks
-  multiscape <- raster::brick(list("mean" = sum(brick_mean * weights),
+  multiscape <- terra::rast(list("mean" = sum(brick_mean * weights),
                                  "mean_predVar" = sum(brick_mean_predVar * weights^2),
                                  "mean_residVar" = sum(brick_mean_residVar * weights^2),
                                  "mean_respVar" = sum(brick_mean_respVar * weights^2),
@@ -559,8 +559,8 @@ isomultiscape <- function(raster, ## change as method?
                                  "disp_predVar" = sum(brick_disp_predVar * weights^2),
                                  "disp_residVar" = sum(brick_disp_residVar * weights^2),
                                  "disp_respVar" = sum(brick_disp_respVar * weights^2)
-                                )
-                            )
+  )
+  )
   
   ## Agglomerate the sources spatial points
   source_points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp_points$sources))
@@ -569,13 +569,13 @@ isomultiscape <- function(raster, ## change as method?
   ## the spatial points for the sources
   out <- list(isoscapes = multiscape,
               sp_points = list(sources = source_points)
-              )
+  )
   
   ## we define a new class
   class(out) <- c("ISOSCAPE", "list")
   
   return(out)
-  }
+}
 
 #' @export
 #' @method print ISOSCAPE
@@ -592,12 +592,12 @@ summary.ISOSCAPE <- function(object, ...) {
     cat("### Note: this isoscape has been simulated ###", "\n")
     cat("\n")
   }
-  cat("### raster brick containing the isoscapes")
+  cat("### Multilayered raster containing the isoscapes", "\n")
   print(object[[1]])
   cat("\n")
   if (length(object) > 1) {
-    cat("### first 5 locations of the dataset", "\n")
-    print(utils::head(object[[2]][[1]], 5L))
+    cat("### Points of the sampled sources", "\n")
+    print(methods::show(object[[2]][[1]]))
   }
   return(invisible(NULL))
 }

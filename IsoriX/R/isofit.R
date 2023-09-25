@@ -361,7 +361,7 @@ isofit <- function(data,
   total_time <- round(as.numeric((time_mean + time_disp)[3]))
   if (verbose) {
     print(paste("Done!"), quote = FALSE)
-    print(paste("Models were fitted in", total_time, "sec."))
+    print(paste0("Models were fitted in ", total_time, "s."))
   }
 
   ## Store the time
@@ -481,7 +481,7 @@ isomultifit <- function(data,
   ## Interactive display
   if (verbose) {
     print(paste("Done!"), quote = FALSE)
-    print(paste("All models have been fitted in", round(as.numeric((total_time)[3])), "sec."), quote = FALSE)
+    print(paste0("All models have been fitted in ", round(as.numeric((total_time)[3])), "s."), quote = FALSE)
   }
   
   ## Store the time

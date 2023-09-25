@@ -1,5 +1,5 @@
 Package: IsoriX
-Version: 0.9.0
+Version: 0.9.1
 Encoding: UTF-8
 Title: Isoscape Computation and Inference of Spatial Origins using Mixed Models
 Authors@R: c(
@@ -11,18 +11,17 @@ Authors@R: c(
 Depends:
     R (>= 3.5.0)
 Imports:
-    elevatr,
     graphics,
     grDevices,
     grid,
     lattice,
     latticeExtra,
+    methods,
     numDeriv,
-    raster,
     rasterVis (>= 0.30),
-    sp,
     spaMM (>= 3.13),
     stats,
+    terra,
     tools,
     utils,
     viridisLite
@@ -32,20 +31,18 @@ Description: Building isoscapes using mixed models and inferring the geographic
   statistical framework based on mixed models. It uses 'spaMM' for fitting and
   predicting isoscapes, and assigning an organism's origin depending on its
   isotopic ratio. 'IsoriX' also relies heavily on the package 'rasterVis' for
-  plotting the maps produced with 'raster' using 'lattice'.
+  plotting the maps produced with 'terra' using 'lattice'.
 License: GPL (>= 2)
 Suggests:
+    elevatr,
     colorspace,
     gmp,
     magick,
-    maps,
-    maptools,
-    rgeos,
-    rgdal,
     rgl,
-    testthat
+    testthat,
+    webshot2
 LazyData: true
 URL: https://github.com/courtiol/IsoriX/
 BugReports: https://github.com/courtiol/IsoriX/issues/
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)

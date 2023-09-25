@@ -12,6 +12,36 @@
   }
 }
 
+\section{version 0.9.1}{
+ \subsection{Major change}{
+    \itemize{
+      \item **IMPORTANT** Several spatial packages previously used by IsoriX are likely to retire sometimes in October 2023.
+  The maintainers of those packages have recommended developpers to instead rely on alternative packages which have been recently developped and which superseed the old packages.
+  As a consequence, we had to recode a lot of IsoriX for it to continue to work.
+  For the most part, these changes are internal and should not impact much users, but it is possible that old workflows used to create plots will have to be adapted for the code to keep working.
+  Moreover, IsoriX is not the only package that had to be overhault, other packages used by IsoriX are also being adapted, which means that the programming landscape is dynamic and bugs caused by incompatibility between packages are likely to surface. We will do our best to react quickly, but please let us know as soon as something goes wrong by dropping issues on the GitHub repository for IsoriX (\url{https://github.com/courtiol/IsoriX/issues}).
+  All this change can be perceived as annoying, but it is also for the best: it will allow us to add new features more easily in IsoriX in the future and it also makes it easier for users to convert IsoriX outputs so as to manipulate them using packages such as \pkg{sf} and \pkg{ggplot2}.
+      \item IsoriX no longer relies on the package \pkg{raster}. It instead now uses \pkg{terra} for handling rasters (#90 #161).
+      \item IsoriX no longer relies on the package \pkg{sp}. Plotting functionalities from sp have now been replaced by direct calls to \pkg{lattice}. For now, we had to implement methods and generics calling \pkg{lattice} in IsoriX, but those should ultimately be handled within \pkg{rasterVis} and \pkg{lattice}. See the file \code{interim_avoid_sp.R} for details.
+    }
+  }
+  \subsection{Minor change}{
+    \itemize{
+      \item \code{getprecip()} now normalises the input file and returns the path where the precipitation rasters are stored.
+      \item \code{prepcipitate()} can now handle as input for \code{path =} either the full path to the files returned by \code{getprecip()} -- which contains the folder inputed in \code{path} when calling \code{getprecip()} in addition to \code{"/wc2.1_30s_prec"} -- or the reduced path which only contains the folder inputed in \code{path} when calling \code{getprecip()}.
+      \item \code{getprecip()} now changes the timeout R options temporarily so as to avoid the download to fail because the default timeout setting is too short (#148).
+      \item the documentation for the datasets \code{GNIPDataALLagg} and \code{GNIPDataEUagg} was incorrect (#158).
+      \item one message about possible extrapolation during calibration was erroneous and is now removed (#159).
+    }
+  }
+  \subsection{Geeky change}{
+    \itemize{
+      \item \code{OceanMask} and \code{CountryBorders} are no longer stored as RDA files in \code{/data}, but as RDS files in \code{/extata} since objects created with \pkg{terra} cannot be saved as RDA files. These files are automatically loaded when the package is attached.
+      \item \pkg{elevatr} moved from Imports to Suggests (#157).
+    }
+  }
+}
+
 \section{version 0.9}{
   \subsection{Solved BUGS}{
     \itemize{

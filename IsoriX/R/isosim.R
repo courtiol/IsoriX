@@ -17,7 +17,7 @@
 #' won't be considered during computations either.
 #' 
 #' @param data A *data.frame* containing the covariates needed for the
-#' simulation, or alternatively a structural raster of class *RasterLayer*
+#' simulation, or alternatively a structural raster of class *SpatRaster*
 #' @param mean_model_fix_coef A *vector* of coefficients for fixed-effects
 #' @param disp_model_fix_coef A *vector* of coefficients for fixed-effects
 #' @param mean_model_matern_coef A *vector* of coefficients for the spatial
@@ -147,17 +147,17 @@ isosim <- function(data,
   }
   
   ## if data is a raster, we convert it as data.frame
-  if (inherits(data, "RasterLayer")) {
+  if (inherits(data, "SpatRaster")) {
     raster <- data
-    coord <- sp::coordinates(raster)
-    data <- data.frame(long = coord[, 1],
-                            long_2 = coord[, 1]^2,
-                            lat = coord[, 2],
-                            lat_2 = coord[, 2]^2,
-                            lat_abs = abs(coord[, 2]),
-                            elev = raster::extract(raster, coord),
-                            n_source_value = rep(1e6, nrow(coord)),
-                            source_ID = as.factor(paste("simu", 1:nrow(coord), sep = "_")))
+    coord <- terra::crds(raster)
+    data <- data.frame(long = coord[, "x"],
+                       long_2 = coord[, "x"]^2,
+                       lat = coord[, "y"],
+                       lat_2 = coord[, "y"]^2,
+                       lat_abs = abs(coord[, "y"]),
+                       elev = terra::extract(raster, coord),
+                       n_source_value = rep(1e6, nrow(coord)),
+                       source_ID = as.factor(paste("simu", 1:nrow(coord), sep = "_")))
     rm(coord); gc() ## remove coord as it can be a large object
   }
 
@@ -259,8 +259,8 @@ isosim <- function(data,
   ### Buidling return object
   out <- list()
 
-  out$isoscapes <- raster::brick(list("mean" = mean_raster,
-                                      "disp" = disp_raster))
+  out$isoscapes <- terra::rast(list("mean" = mean_raster,
+                                    "disp" = disp_raster))
 
   if (!save_dataframe & interactive()) {
     message(paste("Note: simulated data not saved as data.frame (save_dataframe is set to FALSE). Saving the simulated data as data.frame would require", format(utils::object.size(data), units = "MB")))

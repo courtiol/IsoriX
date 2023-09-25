@@ -11,7 +11,7 @@ getprecip(path = NULL, overwrite = FALSE, verbose = interactive())
 }
 \arguments{
 \item{path}{A \emph{string} indicating where to store the file on the hard
-drive (without the file name!)}
+drive (without the file name!). Default = current directory.}
 
 \item{overwrite}{A \emph{logical} indicating if an existing file should be
 re-downloaded}
@@ -22,6 +22,10 @@ running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise. If a \emph{numeric} is provided instead,
 additional information about the download will be provided if the number is
 greater than 1.}
+}
+\value{
+This function returns the path of the folder where the files have
+been stored
 }
 \description{
 The function \code{getprecip} allows for the download of rasters of monthly

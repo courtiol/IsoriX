@@ -18,24 +18,21 @@
                         "\n for help, news and discussions about IsoriX",
                         "\n"
                         )
+  
+  .load_internal_files() ## lazy loading of the internal data
+  
   }
 
 
 .onLoad <- function(libname, pkgname) {
   ## This function should not be called by the user.
-  ## It changes the default behaviour of sp concerning lat/long boundaries
-  ## and stores the all R options.
-  .data_IsoriX$sp_options$sp_ll_warn <- sp::get_ll_warn()
-  sp::set_ll_warn(TRUE)  ## makes sp creating warning instead of errors when lat/long out of boundaries
   .data_IsoriX$R_options <- .Options ## backup R options
 }
 
 
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
-  ## It restores the original behaviour of sp
-  ## and the original R options.
-  sp::set_ll_warn(.data_IsoriX$sp_options$sp_ll_warn)
+  ## It restores the original R options.
   options(.data_IsoriX$R_options)  ## reset R options to their backed up values
 }
 
@@ -46,7 +43,7 @@
   }
   ## This function should not be called by the user.
   ## It displays a rounded number keeping the number of decimals constant.
-  ## digits is the number of decimals beeing displayed.
+  ## digits is the number of decimals being displayed.
   formatC(x, digits = digits, format = "f")
 }
 
@@ -65,10 +62,7 @@
   ##   The raster
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~ long+lat  ## coordonates are being set for the raster
-  sp::proj4string(data) <- sp::CRS(proj)  ## projection is being set for the raster
-  sp::gridded(data) <- TRUE  ## a gridded structure is being set for the raster
-  raster::raster(data)  ## the raster is being created
+  terra::rast(data, crs = proj) ## the raster is being created
 }
 
 
@@ -86,9 +80,7 @@
   ##   The spatial points
   ##
   data <- data.frame(long = long, lat = lat, values = values)
-  sp::coordinates(data) <- ~long+lat
-  sp::proj4string(data) <- sp::CRS(proj)
-  return(data)
+  terra::vect(data, geom = c("long", "lat"), crs = proj)
 }
 
 
@@ -110,7 +102,7 @@
   env <- parent.frame()
   args <- formals(fn)
   for (arg_name in names(args)) {
-    if (is.call(arg <- args[[arg_name]])) {
+    if (is.call(x = arg <- args[[arg_name]])) {
       if (arg[1] == "list()") {
         arg_input <- mget(names(args), envir = env)[[arg_name]]
         arg_full  <- eval(formals(fn)[[arg_name]])
@@ -160,27 +152,30 @@
 .summarize_values <- function(var, nb_quantiles = 1e4) {
   ## This function should not be called by the user.
   ## It extracts and summarizes the raster values using quantiles if needed.
-  if (!inherits(var, c("RasterLayer", "RasterStack", "RasterBrick"))) {
+  if (!inherits(var, "SpatRaster")) {
     return(var)
-  } else if (raster::inMemory(var)) {
-    return(as.numeric(raster::values(var)))
+  } else if (terra::inMemory(var)) {
+    return(as.numeric(terra::values(var)))
   }
   
   if (interactive()) {
     print("extracting values from stored rasters...")
   }
   
-  if (inherits(var, c("RasterLayer"))) {
-    var <- raster::quantile(var, seq(0, 1, length = nb_quantiles))
-    return(var)
-  } else if (inherits(var, c("RasterStack", "RasterBrick"))) {
-    max_var <- max(raster::maxValue(var))
-    min_var <- min(raster::minValue(var))
+  if (inherits(var, c("SpatRaster"))) {
+    if (terra::nlyr(var) == 1) {
+       var <- terra::quantile(var, seq(0, 1, length = nb_quantiles))
+       return(var)
+    } else if (terra::nlyr(var) > 1) {
+    max_var <- max(terra::values(max(var)))
+    min_var <- min(terra::values(min(var)))
     var <- unique(c(min_var,
-                    apply(raster::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
+                    apply(terra::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
                     max_var))
     return(var)
+    }
   }
+  
   stop("'var' has an unknown class")
 }
 
@@ -191,10 +186,10 @@
   margin_long <- (xmax - xmin) * margin_pct/100
   margin_lat  <- (ymax - ymin) * margin_pct/100
   
-  raster::crop(raster, raster::extent(xmin - margin_long,
-                                      xmax + margin_long,
-                                      ymin - margin_lat,
-                                      ymax + margin_lat))
+  terra::crop(raster, terra::ext(xmin - margin_long,
+                                 xmax + margin_long,
+                                 ymin - margin_lat,
+                                 ymax + margin_lat))
 
 }
 
@@ -258,3 +253,25 @@
 #                    phi = foo$phi)
 # 
 # rbind(d_output, d_foo)
+
+
+.load_internal_files <- function() {
+  ## This function should not be called by the user.
+  ## It performs the lazy loading of the data since terra cannot handle rda files
+  assign("ElevRasterDE", terra::rast(system.file("extdata/ElevRasterDE.tif", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  assign("CountryBorders", terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  assign("OceanMask", terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+}
+
+.suppress_warning <-  function(x, warn = "") {
+  ## This function should not be called by the user.
+  ## It hides expected warnings in some functions
+  withCallingHandlers(x, warning = function(w) {
+    if (!grepl(warn, x = w[[1]])) {
+      warning(w[[1]], call. = FALSE)
+    }
+    invokeRestart("muffleWarning")
+  })
+}
+
+utils::globalVariables(c("CountryBorders", "OceanMask"))

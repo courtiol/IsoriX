@@ -9,7 +9,7 @@
 isoscape(raster, isofit, verbose = interactive())
 }
 \arguments{
-\item{raster}{The structural raster (\emph{RasterLayer}) such as an elevation
+\item{raster}{The structural raster (\emph{SpatRaster}) such as an elevation
 raster created using \link{prepelev}}
 
 \item{isofit}{The fitted isoscape created by \link{isofit}}
@@ -22,7 +22,7 @@ session and \code{FALSE} otherwise.}
 \value{
 This function returns a \emph{list} of class \emph{ISOSCAPE} containing
 a set of all 8 raster layers mentioned above (all being of class
-\emph{RasterLayer}), and the location of the sources as spatial points.
+\emph{SpatRaster}), and the location of the sources as spatial points.
 }
 \description{
 This function produces the set of isoscapes, i.e. the spatial prediction
@@ -119,8 +119,8 @@ plot(x = GermanScape, which = "mean", plot = FALSE, sphere = list(build = TRUE))
 ## and that you have both the packages 'rgl' and 'magick' installed.
 ## The building of the .gif implies to create temporarily many .png
 ## but those will be removed automatically once the .gif is done.
-## Uncomment to proceed (after making sure you have rgl and magick installed)
-#if(require("rgl") & require("magick")) {
+## Uncomment to proceed (after making sure you have rgl, magick & webshot2 installed)
+#if(require("rgl") && require("magick") && require("webshot2")) {
 #   movie3d(spin3d(axis = c(0, 0, 1), rpm = 2), duration = 30, dir = getwd())
 #}
 

@@ -74,7 +74,7 @@ NULL
 #' can be dropped). The columns should possess the same names as the ones
 #' described above. If the elevation is unknown at the sampling sites, elevation
 #' information can be extracted from a high resolution elevation raster using
-#' the function [raster::extract] (see **Examples** in
+#' the function [terra::extract] (see **Examples** in
 #' [CalibDataBat2]).
 #' 
 #' @name CalibDataBat
@@ -121,7 +121,7 @@ NULL
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function [raster::extract] (see **Examples**).
+#' raster using the function [terra::extract] (see **Examples**).
 #' Note that the original study used a different source of elevation data.
 #' 
 #' @name CalibDataBat2
@@ -154,7 +154,7 @@ NULL
 #' ## an elevation raster with the function getelev()
 #' ## and will therefore not run unless you uncomment it
 #' 
-#' #if (require(raster)){
+#' #if (require(terra)){
 #' #    ## We delete the elevation data
 #' #    CalibDataBat2$elev <- NULL
 #' #
@@ -164,7 +164,7 @@ NULL
 #' #            lat_max = max(CalibDataBat2$lat),
 #' #            long_min = min(CalibDataBat2$long),
 #' #            long_max = max(CalibDataBat2$long))
-#' #    ElevationRasterBig <- raster("elevBats.tif")
+#' #    ElevationRasterBig <- rast("elevBats.tif")
 #' #    CalibDataBat2$elev <- extract(
 #' #        ElevationRasterBig,
 #' #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
@@ -246,7 +246,7 @@ NULL
 #' *dataframe* of similar structure than this one. The columns should possess 
 #' the same names as the ones described above. If the elevation is unknown at the 
 #' sampling sites, elevation information can be extracted from a high resolution elevation
-#' raster using the function [raster::extract]. In this dataset, we
+#' raster using the function [terra::extract]. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010.
 #' 
@@ -307,75 +307,66 @@ NULL
 
 
 
-#' Mask of world oceans
+#' Borders of world CountryBorders
 #' 
-#' This dataset contains a polygon shapefile that can be used to mask large
-#' bodies of water.
+#' This dataset contains a polygon polygon SpatVector (from \pkg{terra}).
+#' It can be used to draw the borders of world countries.
 #' 
 #' 
-#' @name OceanMask
+#' @name CountryBorders
 #' @docType data
-#' @format A *SpatialPolygons* object
-#' @seealso [CountryBorders] for another polygon shapefile used to
-#' embellish the plots
-#' @source This *SpatialPolygons* is derived from the
-#' [CountryBorders]. See example for details on how we created the
-#' dataset.
+#' @format A *SpatVector* object
+#' @seealso 
+#' - [OceanMask] for another polygon used to embellish the plots
+#' @source This *SpatVector* is derived from the package
+#'   \pkg{rnaturalearth}. Please refer to this other package for description and
+#'   sources of this dataset. See example for details on how we created the
+#'   dataset.
 #' @keywords datasets
 #' @examples
 #' 
-#' if(require(sp)) {
-#'   plot(OceanMask, col='blue')
-#' }
+#' plot(CountryBorders, border="red", col="darkgrey")
 #' 
 #' ## How did we create this file?
 #' 
 #' ## Uncomment the following to create the file as we did
-#' #if(require(raster) & require(rgeos)){
-#' #    worldlimit <- as(extent(CountryBorders), "SpatialPolygons")
-#' #    proj4string(worldlimit) <- crs(CountryBorders)
-#' #    OceanMask <- gDifference(worldlimit, CountryBorders)  
-#' #    OceanMask
-#' #    save(OceanMask, file = "OceanMask.rda", compress = "xz")
-#' #}
-#' 
+#' # if (require(rnaturalearth) && require(terra)) {
+#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sf')
+#' #    CountryBorders <- vect(CountryBorders[, 0])
+#' #    #saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
+#' # }
 #' 
 NULL
 
 
 
-#' Borders of world CountryBorders
+#' Mask of world oceans
 #' 
-#' This dataset contains a polygon shapefile that can be used to plot the
-#' borders of CountryBorders.
+#' This dataset contains a polygon SpatVector (from \pkg{terra}).
+#' It can be used to mask large bodies of water.
 #' 
 #' 
-#' @name CountryBorders
+#' @name OceanMask
 #' @docType data
-#' @format A *SpatialPolygons*
-#' @seealso [OceanMask] for another polygon shapefile used to
-#' embellish the plots
-#' @source This *SpatialPolygons* is derived from the
-#' [maps::world] of the package \pkg{maps}. Please refer to this
-#' other package for description and sources of this dataset. See example for
-#' details on how we created the dataset.
+#' @format A *SpatVector* object
+#' @seealso 
+#' - [CountryBorders] for another polygon used to embellish the plots
+#' @source See example for details on how we created the dataset.
 #' @keywords datasets
 #' @examples
 #' 
-#' if(require(sp))
-#'   plot(CountryBorders, border="red", col="darkgrey")
+#' plot(OceanMask, col='blue')
 #' 
 #' ## How did we create this file?
 #' 
 #' ## Uncomment the following to create the file as we did
-#' #if(require(maps) & require(maptools) & require(rgeos)){
-#' #    worldmap <- map("world", fill = TRUE, plot = FALSE)
-#' #    CountryBorders <- map2SpatialPolygons(worldmap, IDs = worldmap$names)
-#' #    CountryBorders <- gBuffer(CountryBorders, byid = TRUE, width = 0)
-#' #    proj4string(CountryBorders) <- CRS(as.character(NA))
-#' #    CountryBorders
-#' #    save(CountryBorders, file = "CountryBorders.rda", compress = "xz")
-#' #}
+#' # if (require(terra)) {
+#' #   worldlimit <- vect(ext(CountryBorders))
+#' #   crs(worldlimit) <- crs(CountryBorders)
+#' #   OceanMask <- worldlimit - CountryBorders
+#' #   #saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+#' # }
+#' 
 #' 
 NULL
 
@@ -384,61 +375,46 @@ NULL
 #' The raster of elevation for Germany
 #' 
 #' This raster contains the elevation of the surface of Germany (meters above sea
-#' level) with a resolution of approximately 30 square-km.
+#' level) with a resolution of approximately 40 square-km.
 #' 
 #' This raster contains elevation data of Germany in a highly aggregated form
-#' corresponding to a resolution of approximately one elevation value per 50
+#' corresponding to a resolution of approximately one elevation value per 40
 #' square-km. This is only for the purpose of having a small and easy-to-handle
 #' file to practice, but it should not be used to perform real assignments!
 #' 
-#' In the example below, we show how we generated this small raster from a
-#' large original *DEM* (digital elevation model) of the entire world. The original raster has
-#' a resolution of approximately one elevation value per square-km (cell size
-#' of 30 arcseconds, i.e. 0.0083 decimal degrees). Although working on large
-#' rasters is technically problematic (memory and CPU greedy), we highly
-#' recommend to rely on high-resolution rasters with small to moderate
-#' aggregation levels in order to perform reliable assignment analyses. Indeed,
-#' large aggregation of raster cells can bias assignments due to the
-#' transformation of all elevations into a single value per aggregated raster
-#' cell.
-#' 
-#' We downloaded "Global Multi-resolution Terrain Elevation Data 2010" from:
-#' \cr \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm} \cr and converted it
-#' into a *tif* file. Because the original file is very large, we directly
-#' provide the url link of the *tif* file in the example below.
-#' 
 #' @name ElevRasterDE
 #' @docType data
-#' @format A *RasterLayer*
+#' @format A *SpatRaster* object
 #' @seealso [prepraster] to crop and/or aggregate this raster
 #' @source \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 #' @keywords datasets
 #' @examples
 #' 
-#' ## The following example require to download
-#' ## a large elevation raster with the function getelev()
-#' ## and will therefore not run unless you uncomment it
+#' ## Compute crudely the resolution (approximative size of cells in km2)
+#' median(values(cellSize(ElevRasterDE, unit = "km")))
 #' 
-#' #### Creating the object ElevRasterDE
+#' ## How did we create this file (without IsoriX) ?
+#' 
+#' ## Uncomment the following to create the file as we did
+#' 
+#' # ElevRasterDE <- elevatr::get_elev_raster(locations = data.frame(
+#' #                              x = c(5.5, 15.5), y = c(47, 55.5)),
+#' #                              prj = "+proj=longlat +datum=WGS84 +no_defs",
+#' #                              clip = "bbox", z = 3)
+#' # 
+#' # ElevRasterDE <- terra::rast(ElevRasterDE)
+#' 
+#' 
+#' ## How to create a similar file with IsoriX ?
 #' #
-#' ### Download the tif file (ca. 700 Mb)
-#' ### (see ?getelev for details on how to get the tif file)
-#' #getelev()
-#' #
-#' ### Convert the tif into R raster format
-#' #  ElevationRasterBig <- raster("gmted2010_30mn.tif")
-#' #  
-#' #  ## Create the highly agregated elevation raster
-#' #  ElevRasterDE <- prepraster(ElevationRasterBig,
-#' #                             aggregation_factor = 10,
-#' #                             manual_crop = c(5.5, 15.5, 47, 55.5))
-#' #                           
-#' #  ## Plot the elevation
-#' #  levelplot(ElevRasterDE, margin = FALSE, par.settings=RdBuTheme()) +
-#' #    layer(sp.polygons(CountryBorders, col = "white"))
-#' #  
-#' #  ## Compute crudely the resolution:
-#' #  median(values(area(ElevRasterDE)))  ## approximative size of cells in km2
+#' # ## Download the tif file (see ?getelev)
+#' # getelev(file = "~/ElevRasterDE.tif",
+#' #         z = 3,
+#' #         long_min = 5.5, long_max = 15.5, lat_min = 47, lat_max = 55.5)
+#'         
+#' # ## Convert the tif into R raster format
+#' # ElevRasterDE <- rast('~/ElevRasterDE.tif')
+#' 
 #' 
 NULL
 
@@ -485,7 +461,7 @@ NULL
 #' reuse provided the relevant citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
 #' provide larger GNIP dataset in the package as those are not free to reuse (but
-#' we do provide aggregated verisons of it; see [GNIPDataEUagg]).
+#' we do provide aggregated versions of it; see [GNIPDataEUagg]).
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
 #' interface WISER (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
@@ -535,15 +511,15 @@ NULL
 #'
 #' These datasets contain the mean and variance of hydrogen delta value from
 #' precipitation water sampled at weather stations between 1953 and 2015 in
-#' Europe (`GNIPDataEUagg`) and in the entire world
-#' (`GNIPDataALLagg`). These data have been extracted from the
-#' International Atomic Energy Agency IAEA in Vienna (GNIP Project: Global
-#' Network of Isotopes in Precipitation) and processed by us using the function
-#' [prepsources]. The data are aggregated per location. We no longer
-#' provide the full non-aggregate GNIP dataset in the package as it is not free
-#' to reuse. You can still download the complete GNIP dataset for free, but you
-#' will have to proceed to a registration process with GNIP and use their
-#' downloading interface WISER
+#' Europe (`GNIPDataEUagg`) and in the entire world (`GNIPDataALLagg`). These
+#' data have been extracted from the International Atomic Energy Agency IAEA in
+#' Vienna (GNIP Project: Global Network of Isotopes in Precipitation) and
+#' processed by us using the function [prepsources]. The data are aggregated per
+#' location (across all month-year combinations). We no longer provide the full
+#' non-aggregate GNIP dataset in the package as it is not free to reuse. You can
+#' still download the complete GNIP dataset for free, but you will have to
+#' proceed to a registration process with GNIP and use their downloading
+#' interface WISER
 #' (\url{http://www-naweb.iaea.org/napc/ih/IHS_resources_isohis.html}).
 #'
 #' These datasets have been aggregated and can thus be directly used for fitting
@@ -558,13 +534,13 @@ NULL
 #' @noMd
 #' @format The *dataframe*s include many observations on the following
 #' variables: \tabular{rlll}{
-#' [, 1] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 3] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-#' [, 4] \tab source_value \tab (*numeric*) \tab hydrogen delta value (per thousand)\cr
-#' [, 5] \tab year \tab (*numeric*) \tab Year of sampling\cr
-#' [, 6] \tab month \tab (*numeric*) \tab Month of sampling\cr
-#' [, 7] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr }
+#' [, 1] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr
+#' [, 2] \tab mean_source_value \tab (*numeric*) \tab Average of the aggregate of hydrogen delta values (per thousand)\cr
+#' [, 3] \tab var_source_value \tab (*numeric*) \tab Variance of the aggregate of hydrogen delta values (per thousand^2)\cr
+#' [, 4] \tab n_source_value \tab (*numeric*) \tab Number of hydrogen delta values aggregated\cr
+#' [, 5] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
+#' [, 6] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
+#' [, 7] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr}
 #' @seealso [GNIPDataDE] for a non-aggregated dataset.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #' @source Data provided by the IAEA and processed by us.

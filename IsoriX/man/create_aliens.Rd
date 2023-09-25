@@ -25,7 +25,7 @@ intercept, the slope, and the residual variance.}
 \item{coordinates}{An optional \emph{data.frame} with columns \code{site_ID},
 \code{long} and \code{lat}}
 
-\item{raster}{A \emph{RasterLayer} containing an elevation raster}
+\item{raster}{A \emph{SpatRaster} containing an elevation raster}
 
 \item{n_sites}{The number of sites from which the simulated organisms
 originate (\emph{integer})}

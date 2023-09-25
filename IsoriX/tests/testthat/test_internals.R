@@ -8,8 +8,8 @@ test_that("print_nice_and_round", {
 )
 
 test_that("make rasters and spatial points", {
-  expect_equal(class(.create_raster(long = seq_len(100)/10, lat = seq_len(100)/10, values = runif(10000)))[[1]], "RasterLayer")
-  expect_equal(class(.create_spatial_points(long = seq_len(100)/10, lat = seq_len(100)/10, values = runif(100)))[[1]], "SpatialPointsDataFrame")
+  expect_equal(class(.create_raster(long = seq_len(100)/10, lat = seq_len(100)/10, values = runif(10000)))[[1]], "SpatRaster")
+  expect_equal(class(.create_spatial_points(long = seq_len(100)/10, lat = seq_len(100)/10, values = runif(100)))[[1]], "SpatVector")
   }
 )
 

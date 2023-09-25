@@ -292,7 +292,7 @@ plot(sample_fitted ~ source_value, data = dataplot,
 polygon(x = c(dataplot$source_value, rev(dataplot$source_value)),
         y = c(dataplot$sample_lwr, rev(dataplot$sample_upr)),
         col = 3)
-points(sample_fitted ~ source_value, dataplot, type = "l", lty = 2)
+points(sample_fitted ~ source_value, data = dataplot, type = "l", lty = 2)
  
 
 ####################################################

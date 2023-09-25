@@ -24,7 +24,7 @@ isofind(
 argument is not needed if the isoscape had been fitted using isotopic
 ratios from sedentary animals.)}
 
-\item{mask}{A \emph{SpatialPolygons} of a mask to replace values on all
+\item{mask}{A polygon of class \emph{SpatVector} representing a mask to replace values on all
 rasters by NA inside polygons (see details)}
 
 \item{neglect_covPredCalib}{A \emph{logical} indicating whether to neglect the
@@ -162,7 +162,7 @@ AssignedGP <- isofind(data = AssignDataGP,
 ## We plot the assignment and 
 ## show where the station really is (using lattice)
 plot(AssignedGP) +
-  xyplot(47.48~11.06,
+  xyplot(47.48 ~ 11.06,
          panel = panel.points,
          cex = 5, pch = 13, lwd = 2, col = "black") 
 
