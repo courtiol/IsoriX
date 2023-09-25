@@ -77,7 +77,7 @@
 #' z-scale that shares a given colour; `range` can be used to constrain the
 #' minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
 #' argument is useful if one wants to create several plots with the same
-#' z-scale); `n_labels` allows for the user to approximatively define the
+#' z-scale); `n_labels` allows for the user to approximately define the
 #' maximum number of numbers plotted on the z-scale; `digits` defines the number
 #' of digits displayed for the numbers used as labels; and `fn` is used to
 #' specify the function that is used to sample the colours. If `fn` is NULL
@@ -116,7 +116,7 @@
 #' @param calibs A *list* containing information for the display of the
 #'   location of the calibration sampling location (see details)
 #' @param assigns A *list* containing information for the display of the
-#'   location of the assingment sampling location (see details)
+#'   location of the assignment sampling location (see details)
 #' @param borders A *list* containing information for the display of borders
 #'   (e.g. country borders) (see details)
 #' @param mask A *list* containing information for the display of a mask
@@ -130,7 +130,8 @@
 #' @param sphere A *list* containing information whether the raster should
 #'   be returned as a rotating sphere and if the image created during the
 #'   process should be saved in your current working directory. The default
-#'   settings are FALSE and TRUE, respectivelly.
+#'   settings are FALSE and TRUE, respectively.
+#'   
 #' @param xlab A *string* the x-axis label in plot.CALIBFIT
 #' @param ylab A *string* the y-axis label in plot.CALIBFIT
 #' @param xlim A range defining the extreme coordinates for the the x-axis in

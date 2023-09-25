@@ -244,7 +244,7 @@ stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
 \link[spaMM:fitme]{spaMM::fitme} and \link[spaMM:corrHLfit]{spaMM::corrHLfit} for
 information about the two possible fitting procedures that can be used here
 
-\link{spaMM}::atern.corr] for information about the Matérn
+\link[spaMM:MaternCorr]{spaMM::MaternCorr} for information about the Matérn
 correlation structure
 
 \link{prepsources} for the function preparing the data for isofit

@@ -95,7 +95,7 @@ just returned}
 \item{sphere}{A \emph{list} containing information whether the raster should
 be returned as a rotating sphere and if the image created during the
 process should be saved in your current working directory. The default
-settings are FALSE and TRUE, respectivelly.}
+settings are FALSE and TRUE, respectively.}
 
 \item{...}{Additional arguments (only in use in plot.CALIBFIT and
 plot.SpatRaster)}
@@ -110,7 +110,7 @@ region outside the prediction interval (see details)}
 location of the calibration sampling location (see details)}
 
 \item{assigns}{A \emph{list} containing information for the display of the
-location of the assingment sampling location (see details)}
+location of the assignment sampling location (see details)}
 
 \item{mask2}{A \emph{list} containing information for the display of a mask
 (e.g. a distribution mask) (see details)}
@@ -218,7 +218,7 @@ assignment plot. Within this list, \code{step} defines the number of units on th
 z-scale that shares a given colour; \code{range} can be used to constrain the
 minimum and/or maximum values to be drawn (e.g. range = c(0, 1)) (this latter
 argument is useful if one wants to create several plots with the same
-z-scale); \code{n_labels} allows for the user to approximatively define the
+z-scale); \code{n_labels} allows for the user to approximately define the
 maximum number of numbers plotted on the z-scale; \code{digits} defines the number
 of digits displayed for the numbers used as labels; and \code{fn} is used to
 specify the function that is used to sample the colours. If \code{fn} is NULL

@@ -21,7 +21,7 @@
 #'
 #' Let us summarize the meaning of `mean`, `mean_predVar`,
 #' `mean_residVar` and `mean_respVar` (see Courtiol & Rousset 2017 and
-#' Curtiol et al. 2019 for more details):
+#' Courtiol et al. 2019 for more details):
 #' 
 #' Our model assumes that that there is a single true unknown isoscape, which is
 #' fixed but which is represented by the mixed-effect model as a random draw

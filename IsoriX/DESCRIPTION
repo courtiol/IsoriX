@@ -34,11 +34,12 @@ Description: Building isoscapes using mixed models and inferring the geographic
   plotting the maps produced with 'terra' using 'lattice'.
 License: GPL (>= 2)
 Suggests:
-    elevatr,
     colorspace,
+    elevatr,
     gmp,
     magick,
     rgl,
+    spelling,
     testthat,
     webshot2
 LazyData: true
@@ -46,3 +47,4 @@ URL: https://github.com/courtiol/IsoriX/
 BugReports: https://github.com/courtiol/IsoriX/issues/
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
+Language: en-GB
