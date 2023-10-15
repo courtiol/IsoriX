@@ -866,17 +866,13 @@ plot.SpatRaster <- function(x, ...) {
   if (!sources$draw) {
     sources_layer <- latticeExtra::layer()
   } else {
-    sources_layer <- latticeExtra::layer(lpoints.SpatVector(sources,
-                                                            col = pt$col,
-                                                            cex = pt$cex,
-                                                            pch = pt$pch,
-                                                            lwd = pt$lwd
-    ),
-    data = list(sources = x$sp_points$sources,
-                pt = sources,
-                lpoints.SpatVector = lpoints.SpatVector ## TODO: figure out how to pass generic instead of method
-    )
-    )
+    sources_layer <- latticeExtra::layer(lattice::lpoints(sources,
+                                                          col = pt$col,
+                                                          cex = pt$cex,
+                                                          pch = pt$pch,
+                                                          lwd = pt$lwd),
+                                         data = list(sources = x$sp_points$sources,
+                                                     pt = sources))
   }
   
   ## layer for calibration points
@@ -886,17 +882,13 @@ plot.SpatRaster <- function(x, ...) {
     if (!calibs$draw) {
       calibs_layer <- latticeExtra::layer()
     } else {
-      calibs_layer <- latticeExtra::layer(lpoints.SpatVector(calibs,
-                                                             col = pt$col,
-                                                             cex = pt$cex,
-                                                             pch = pt$pch,
-                                                             lwd = pt$lwd
-      ),
-      data = list(calibs = x$sp_points$calibs,
-                  pt = calibs,
-                  lpoints.SpatVector = lpoints.SpatVector ## TODO: figure out how to pass generic instead of method
-      )
-      )
+      calibs_layer <- latticeExtra::layer(lattice::lpoints(calibs,
+                                                           col = pt$col,
+                                                           cex = pt$cex,
+                                                           pch = pt$pch,
+                                                           lwd = pt$lwd),
+                                          data = list(calibs = x$sp_points$calibs,
+                                                      pt = calibs))
     }
   }
   
@@ -907,17 +899,13 @@ plot.SpatRaster <- function(x, ...) {
     if (!assigns$draw) {
       assigns_layer <- latticeExtra::layer()
     } else {
-      assigns_layer <- latticeExtra::layer(lpoints.SpatVector(assigns,
-                                                              col = pt$col,
-                                                              cex = pt$cex,
-                                                              pch = pt$pch,
-                                                              lwd = pt$lwd
-      ),
-      data = list(assigns = x$sp_points$assigns,
-                  pt = assigns,
-                  lpoints.SpatVector = lpoints.SpatVector ## TODO: figure out how to pass generic instead of method
-      )
-      )
+      assigns_layer <- latticeExtra::layer(lattice::lpoints(assigns,
+                                                            col = pt$col,
+                                                            cex = pt$cex,
+                                                            pch = pt$pch,
+                                                            lwd = pt$lwd),
+                                           data = list(assigns = x$sp_points$assigns,
+                                                       pt = assigns))
     }
   }
   
@@ -925,43 +913,31 @@ plot.SpatRaster <- function(x, ...) {
   if (is.null(borders$borders)) {
     borders_layer <- latticeExtra::layer()
   }  else {
-    borders_layer <- latticeExtra::layer(lpolygon.SpatVector(b$borders,
-                                                             lwd = b$lwd,
-                                                             border = b$col
-    ),
-    data = list(b = borders,
-                lpolygon.SpatVector = lpolygon.SpatVector ## TODO: figure out how to pass generic instead of method
-    )
-    )
+    borders_layer <- latticeExtra::layer(lattice::lpolygon(b$borders,
+                                                           lwd = b$lwd,
+                                                           border = b$col),
+                                         data = list(b = borders))
   }
   
   ## layer for mask
   if (is.null(mask$mask)) {
     mask_layer <- latticeExtra::layer()
   } else {
-    mask_layer <- latticeExtra::layer(lpolygon.SpatVector(m$mask,
-                                                          col = m$fill,
-                                                          border = m$col,
-                                                          lwd = m$lwd
-    ),
-    data = list(m = mask,
-                lpolygon.SpatVector = lpolygon.SpatVector ## TODO: figure out how to pass generic instead of method
-    )
-    )
+    mask_layer <- latticeExtra::layer(lattice::lpolygon(m$mask,
+                                                        col = m$fill,
+                                                        border = m$col,
+                                                        lwd = m$lwd),
+                                      data = list(m = mask))
   }
   
   if (is.null(mask2$mask)) {
     mask2_layer <- latticeExtra::layer()
   } else {
-    mask2_layer <- latticeExtra::layer(lpolygon.SpatVector(m$mask,
-                                                           col = m$fill,
-                                                           border = m$col,
-                                                           lwd = m$lwd
-    ),
-    data = list(m = mask2,
-                lpolygon.SpatVector = lpolygon.SpatVector ## TODO: figure out how to pass generic instead of method
-    )
-    )
+    mask2_layer <- latticeExtra::layer(lattice::lpolygon(m$mask,
+                                                         col = m$fill,
+                                                         border = m$col,
+                                                         lwd = m$lwd),
+                                       data = list(m = mask2))
   }
   
   layers <- list(sources_layer = sources_layer,
