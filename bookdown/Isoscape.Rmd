@@ -13,7 +13,8 @@ You can download precipitation isotope data for hydrogen and oxygen from the Glo
 
 This step must be done outside IsoriX since there is no application programming interface for GNIP.
 
-To get to know what the GNIP is, its history, and more importantly its terms of use and information about the data, go there: http://www-naweb.iaea.org/napc/ih/IHS_resources_gnip.html
+To get to know what the GNIP go there and explore related resources:
+https://www.iaea.org/services/networks/gnip
 
 The GNIP data are free to download after the registration process is completed.
 The following link will bring you to the right place to create an account:
@@ -267,7 +268,7 @@ AIC(EuropeFit$mean_fit)
 ```
 
 ```{r print AIC EuropeFit, echo = FALSE}
-print(AIC(EuropeFit$mean_fit))
+print(AIC(EuropeFit$mean_fit, verbose = FALSE))
 ```
 
 Note that we re-exported some spaMM functions for you to use without the need to load the package spaMM (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all spaMM functions.
@@ -342,14 +343,15 @@ ElevEurope <- prepraster(raster = ElevWorld,
 ```
 
 ```{r build ElevEurope real, echo = FALSE, results = FALSE}
-if (file.exists("output/ElevEurope.rda")) {
-  load("output/ElevEurope.rda") } else {
-  ElevEurope <- prepraster(raster = ElevWorld,
-                           isofit = EuropeFit,
-                           aggregation_factor = 4)
-  if (terra::inMemory(ElevEurope)) {
-    save(ElevEurope, file = "output/ElevEurope.rda", compress = "xz")
-  }
+if (file.exists("output/ElevEurope.rds")) {
+    ElevEurope <- terra::readRDS("output/ElevEurope.rds")
+  } else {
+    ElevEurope <- prepraster(raster = ElevWorld,
+                             isofit = EuropeFit,
+                             aggregation_factor = 4)
+    if (terra::inMemory(ElevEurope)) {
+      terra::saveRDS(ElevEurope, file = "output/ElevEurope.rds", compress = "xz")
+    }
 }
 ```
 
@@ -367,8 +369,8 @@ levelplot(ElevEurope,
           margin = FALSE,
           col.regions = viridisLite::turbo, ## the colour palette
           main = "Structural raster") + 
-layer(sp.polygons(CountryBorders, col = "white")) +
-layer(sp.polygons(OceanMask, col = "white", fill = "lightgreen"))
+layer(lpolygon(CountryBorders, border = "white")) +
+layer(lpolygon(OceanMask, border = "white", col = "lightgrey"))
 ```
 
 Note that, in this raster, the highest elevation does not correspond to the highest elevations that are known in the depicted area (the maximal value in the raster is `r round(max(values(ElevEurope)))`m, but Mount Elbrus is 5642m tall).
@@ -393,12 +395,12 @@ EuropeIsoscape <- isoscape(raster = ElevEurope,
 
 ```{r build EuropeIsoscape real, warning = FALSE, echo = FALSE, results = FALSE}
 if (file.exists("output/EuropeIsoscape.rda")) {
-  load("output/EuropeIsoscape.rda")
+  #load("output/EuropeIsoscape.rda")
 } else {
   EuropeIsoscape <- isoscape(raster = ElevEurope,
                              isofit = EuropeFit)
-  if (raster::inMemory(EuropeIsoscape$isoscapes)) {
-    save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
+  if (terra::inMemory(EuropeIsoscape)) {
+    saveRDS(EuropeIsoscape, file = "output/EuropeIsoscape.rds", compress = "xz")
   }
 }
 ```

@@ -139,7 +139,7 @@
 #'   disp_fit object: mean_fit is not fitted independently from disp_fit.
 #'
 #'   For all methods, fixed effects are being estimated by Maximum Likelihood
-#'   (ML) and dispersion parameters (i.e. random effects and Matern correlation
+#'   (ML) and dispersion parameters (i.e. random effects and Matérn correlation
 #'   parameters) are estimated by Restricted Maximum Likelihood (REML). Using
 #'   REML provides more accurate prediction intervals but impedes the accuracy
 #'   of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the

@@ -50,7 +50,7 @@ For the stats bits, we will also assume that you now Generalized Linear Models a
 
 ## We need your help!
 
-For none of member of the IsoriX core Team, IsoriX is a main research topic, nor the main tool we use. We developed it so as to help our colleagues and others, but we cannot dedicate a huge amount of time to it. So, we would greatly appreciate any help to improve IsoriX and/or its documentation. There are plenty things you could do to help us, irrespective of your knownledge and skills. Please check chapter \@ref(contrib) for details, or contact us using our [mailing list](https://groups.google.com/g/IsoriX).
+For none of member of the IsoriX core Team, IsoriX is a main research topic, nor the main tool we use. We developed it so as to help our colleagues and others, but we cannot dedicate a huge amount of time to it. So, we would greatly appreciate any help to improve IsoriX and/or its documentation. There are plenty things you could do to help us, irrespective of your knowledge and skills. Please check chapter \@ref(contrib) for details, or contact us using our [mailing list](https://groups.google.com/g/IsoriX).
 
 
 ## Acknowledgements
