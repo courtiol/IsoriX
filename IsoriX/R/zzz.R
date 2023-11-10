@@ -261,6 +261,7 @@
   assign("ElevRasterDE", terra::rast(system.file("extdata/ElevRasterDE.tif", package = "IsoriX")), envir = as.environment("package:IsoriX"))
   assign("CountryBorders", terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
   assign("OceanMask", terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
+  assign("PrecipBrickDE", terra::readRDS(system.file("extdata/PrecipBrickDE.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
 }
 
 .suppress_warning <-  function(x, warn = "") {

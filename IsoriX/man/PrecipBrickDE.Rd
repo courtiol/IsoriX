@@ -29,7 +29,7 @@ be downloaded using the function \link{getprecip}.
 ## Uncomment the following to create the file as we did
 #getprecip() ## Download the tif files (~ 1 Gb compressed)
 #PrecipBrickDE <- prepcipitate(raster = ElevRasterDE)
-#save(PrecipBrickDE, file = "PrecipBrickDE", compress = "xz")
+#terra::saveRDS(PrecipBrickDE, file = "PrecipBrickDE.rds", compress = "xz")
 
 }
 \seealso{
