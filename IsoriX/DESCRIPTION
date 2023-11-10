@@ -41,7 +41,8 @@ Suggests:
     rgl,
     spelling,
     testthat,
-    webshot2
+    webshot2,
+    withr
 LazyData: true
 URL: https://github.com/courtiol/IsoriX/
 BugReports: https://github.com/courtiol/IsoriX/issues/
