@@ -5,8 +5,12 @@
 \alias{saveRDS}
 \alias{readRDS}
 \alias{saveRDS.ISOSCAPE}
+\alias{saveRDS.CALIBFIT}
+\alias{saveRDS.ISOFIND}
 \alias{readRDS.character}
 \alias{saveRDS,ISOSCAPE-method}
+\alias{saveRDS,CALIBFIT-method}
+\alias{saveRDS,ISOFIND-method}
 \alias{readRDS,character-method}
 \title{Save and read objects produced by IsoriX into RDS files}
 \usage{
@@ -30,9 +34,45 @@ readRDS(file, refhook = NULL)
   refhook = NULL
 )
 
+\method{saveRDS}{CALIBFIT}(
+  object,
+  file = "",
+  ascii = FALSE,
+  version = NULL,
+  compress = TRUE,
+  refhook = NULL
+)
+
+\method{saveRDS}{ISOFIND}(
+  object,
+  file = "",
+  ascii = FALSE,
+  version = NULL,
+  compress = TRUE,
+  refhook = NULL
+)
+
 \method{readRDS}{character}(file, refhook = NULL)
 
 \S4method{saveRDS}{ISOSCAPE}(
+  object,
+  file = "",
+  ascii = FALSE,
+  version = NULL,
+  compress = TRUE,
+  refhook = NULL
+)
+
+\S4method{saveRDS}{CALIBFIT}(
+  object,
+  file = "",
+  ascii = FALSE,
+  version = NULL,
+  compress = TRUE,
+  refhook = NULL
+)
+
+\S4method{saveRDS}{ISOFIND}(
   object,
   file = "",
   ascii = FALSE,
@@ -89,9 +129,17 @@ IsoriX methods compatible with the use of \code{\link[terra:serialize]{terra::sa
 
 \item \code{saveRDS(ISOSCAPE)}: S3 method to save an \code{ISOSCAPE} object into a RDS file
 
+\item \code{saveRDS(CALIBFIT)}: S3 method to save a \code{CALIBFIT} object into a RDS file
+
+\item \code{saveRDS(ISOFIND)}: S3 method to save an \code{ISOFIND} object into a RDS file
+
 \item \code{readRDS(character)}: S3 method to read an object produced with IsoriX (or other) stored in a RDS file
 
 \item \code{saveRDS(ISOSCAPE)}: S4 method to save an \code{ISOSCAPE} object into a RDS file
+
+\item \code{saveRDS(CALIBFIT)}: S4 method to save an \code{CALIBFIT} object into a RDS file
+
+\item \code{saveRDS(ISOFIND)}: S4 method to save an \code{ISOFIND} object into a RDS file
 
 \item \code{readRDS(character)}: S4 method to read an object produced with IsoriX (or other) stored in a RDS file
 

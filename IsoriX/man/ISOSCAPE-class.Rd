@@ -10,8 +10,8 @@ Class ISOSCAPE
 \section{Slots}{
 
 \describe{
-\item{\code{isoscapes}}{a SpatRaster storing the isoscapes.}
+\item{\code{isoscapes}}{a SpatRaster storing the isoscapes}
 
-\item{\code{sp_points}}{a list of spatial points.}
+\item{\code{sp_points}}{a list of spatial points}
 }}
 

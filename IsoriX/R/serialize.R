@@ -84,11 +84,13 @@ NULL
 #' 
 saveRDS <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) UseMethod("saveRDS")
 
+
 #' @describeIn serialize S4 generic function for `readRDS`
 #' 
 #' @export
 #' 
 readRDS <- function(file, refhook = NULL) UseMethod("readRDS")
+
 
 
 # Defining S3 methods -----------------------------------------------------
@@ -107,6 +109,24 @@ saveRDS.ISOSCAPE <- function(object, file = "", ascii = FALSE, version = NULL, c
       stop("Saving situation not implemented yet. Please contact the package maintainer.")
     }
   }
+  if (!is.null(object$group)) {
+    object$group <- lapply(object$group, \(x) {
+      if (inherits(x, "SpatRaster")) {
+        terra::wrap(x)
+      } else {
+        stop("Saving situation not implemented yet. Please contact the package maintainer.")
+      }
+    })
+  }
+  if (!is.null(object$sample)) {
+    object$sample <- lapply(object$sample, \(x) {
+      if (inherits(x, "SpatRaster")) {
+        terra::wrap(x)
+      } else {
+        stop("Saving situation not implemented yet. Please contact the package maintainer.")
+      }
+    })
+  }
   if (!is.null(object$sp_points)) {
     object$sp_points <- lapply(object$sp_points, \(x) {
       if (inherits(x, "SpatVector")) {
@@ -116,14 +136,34 @@ saveRDS.ISOSCAPE <- function(object, file = "", ascii = FALSE, version = NULL, c
       }
     })
   }
-  # class(object) <- setdiff("ISOSCAPE", class(object)) 
   base::saveRDS(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
 }
+
+
+#' @describeIn serialize S3 method to save a `CALIBFIT` object into a RDS file
+#' 
+#' @method  saveRDS CALIBFIT
+#' @exportS3Method saveRDS CALIBFIT
+#' 
+saveRDS.CALIBFIT <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
+  saveRDS.ISOSCAPE(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
+}
+
+
+#' @describeIn serialize S3 method to save an `ISOFIND` object into a RDS file
+#' 
+#' @method  saveRDS ISOFIND
+#' @exportS3Method saveRDS ISOFIND
+#' 
+saveRDS.ISOFIND <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
+  saveRDS.ISOSCAPE(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
+}
+
 
 #' @describeIn serialize S3 method to read an object produced with IsoriX (or other) stored in a RDS file
 #' 
 #' @method  readRDS character
-#' @exportS3Method saveRDS ISOSCAPE
+#' @exportS3Method readRDS character
 #' @export
 #' 
 readRDS.character <- function(file, refhook = NULL) {
@@ -132,7 +172,7 @@ readRDS.character <- function(file, refhook = NULL) {
   if (inherits(object, "PackedSpatRaster") || inherits(object, "PackedSpatVector")) {
     return(terra::unwrap(object))
   }
-  if (!inherits(object, "ISOSCAPE")) {
+  if (!inherits(object, "ISOSCAPE") && !inherits(object, "CALIBFIT") && !inherits(object, "ISOFIND")) {
     return(object)
   }
   if (!is.null(object$isoscapes)) {
@@ -155,6 +195,7 @@ readRDS.character <- function(file, refhook = NULL) {
 }
 
 
+
 # Defining S4 methods -----------------------------------------------------
 
 #' @describeIn serialize S4 method to save an `ISOSCAPE` object into a RDS file
@@ -163,6 +204,23 @@ readRDS.character <- function(file, refhook = NULL) {
 #' @export
 #' 
 setMethod("saveRDS", signature(object = "ISOSCAPE"), saveRDS.ISOSCAPE)
+
+
+#' @describeIn serialize S4 method to save an `CALIBFIT` object into a RDS file
+#' 
+#' @method saveRDS CALIBFIT
+#' @export
+#' 
+setMethod("saveRDS", signature(object = "CALIBFIT"), saveRDS.CALIBFIT)
+
+
+#' @describeIn serialize S4 method to save an `ISOFIND` object into a RDS file
+#' 
+#' @method saveRDS ISOFIND
+#' @export
+#' 
+setMethod("saveRDS", signature(object = "ISOFIND"), saveRDS.ISOFIND)
+
 
 #' @describeIn serialize S4 method to read an object produced with IsoriX (or other) stored in a RDS file
 #' 
