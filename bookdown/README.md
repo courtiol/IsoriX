@@ -2,24 +2,27 @@
 
 This is the development folder for the documentation about IsoriX.
 
-You can find the compiled (ie. readable) version of this documentation [here](https://bookdown.org/content/782/).
+You can find the compiled (i.e., readable) version of this documentation [here](https://bookdown.org/content/782/).
 
 ## Notes for developers
 
 This bookdown follows the model merge and knit, rather than knit and merge.
 As a consequence, do not attempt to knit individual chapters, it won't work.
 Instead, you must render the whole thing at once.
+
 Before doing that, do make sure to upload all your packages and to delete the content of the folder "output"; otherwise the bookdown will use objects created with old versions of packages.
+
 Do make sure however that the folder "output" exists, otherwise objects won't be saved.
 
 ### Workflow for preparing an update
 
-Make sure that you have the following packages installed (but no need to load them): rsconnect, servr.
+Make sure that you have the following packages installed (but no need to load them): **rsconnect**, **servr**.
 
 Then, render the full book once, so as to create all the content stored in the folder "output".
 
 For this, use:
 ```r
+setwd("bookdown")
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 ```
 
@@ -51,11 +54,11 @@ Check the bookdown online.
 If some steps are particularly slow, instead of relying on knitr cashing, it is best to store the created objects in the folder "output" and to use code similar to this:
 
 ```r
-if (file.exists("output/some_object_slow_to_create.rda")) {
-  load("output/some_object_slow_to_create.rda")
+if (file.exists("output/some_object_slow_to_create.rds")) {
+  some_object_slow_to_create <- readRDS("output/some_object_slow_to_create.rds")
 } else {
   some_object_slow_to_create <- slow_fn()
-  save(some_object_slow_to_create, file = "output/some_object_slow_to_create.rda", compress = "xz")
+  saveRDS(some_object_slow_to_create, file = "output/some_object_slow_to_create.rds", compress = "xz")
 }
 ```
 

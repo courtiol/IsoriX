@@ -56,7 +56,7 @@ calib_table <- tibble::tibble(Method = c("wild", "lab", "desk", "desk_inverse"),
                             c("known", "known", "unknown, estimated from fit `lm(sample_value ~ source_value)`", "unknown, estimated from fit `lm(source_value ~ sample_value)`"),
                           "Isotopic composition of the environment associated with the calibration samples" = 
                             c("unknown, estimated from the isoscapes", "known, or assumed to be known", "unknown, estimated from fit `lm(sample_value ~ source_value)`", "unknown, estimated from fit `lm(source_value ~ sample_value)`"))
-kable(calib_table) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
+kable(calib_table)  |> kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
 When using a method other than the default method, you must set the method to be used by `calibfit()` using a specific argument called `method`, e.g. `calibfit(..., method = 'lab')`.
@@ -82,7 +82,7 @@ head(CalibDataBat)
 ```
 
 ```{r CalibDataBat real, echo = FALSE}
-kable(head(CalibDataBat)) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
+kable(head(CalibDataBat)) |>  kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
 For your own applications, make sure that the dataset you use has the same structure. That is, the calibration dataset must contain (as long as you use the calibration method 'wild') a column `site_ID` of class factor describing the sampling site, the columns containing all covariates required for the geostatistical models to predict the isoscape values at these locations (so here `long`, `lat`, and `elev`), and a column `sample_value` containing the measured isotope values of the calibration samples. An important constraint to keep in mind is that only measurements on multiple calibration samples per location can capture variation between different samples exposed to the same isotope environment. Therefore, IsoriX needs multiple calibration samples for several (not necessarily all) sampling locations. That means that some levels of `site_ID` must be repeated on several rows. If laboratory measurements are replicated, we recommend to consider the mean measurement value for each sampling unit (here for each bat) instead of considering multiple rows for a given calibration sample in order to avoid confounding biological replicates from technical ones. If you do so, note however that this implies the technical variance to be neglected (which should be fine because it is usually very low unless something went wrong in the lab).
@@ -96,11 +96,11 @@ CalibBats <- calibfit(data = CalibDataBat, isofit = EuropeFit)
 ```
 
 ```{r calib real, echo = FALSE, message = FALSE}
-if (!file.exists("output/CalibBats.rda")) {
+if (!file.exists("output/CalibBats.rds")) {
   CalibBats <- calibfit(data = CalibDataBat, isofit = EuropeFit)
-  save(CalibBats, file = "output/CalibBats.rda", compress = "xz")
+  saveRDS(CalibBats, file = "output/CalibBats.rds", compress = "xz")
 } else {
-  load("output/CalibBats.rda")
+  CalibBats <- readRDS("output/CalibBats.rds")
 }
 ```
 

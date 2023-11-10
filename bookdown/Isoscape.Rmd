@@ -56,7 +56,7 @@ For example, the first row contains the following information:
 
 ```{r GNIP_raw_1st_row, echo = FALSE}
 ## we display the first row for this dataset as a column for visualization
-kable(t(rawGNIP[1, ])) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
+kable(t(rawGNIP[1, ])) |> kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
 We are now going to reshape these data step-by-step to make them ready for IsoriX.
@@ -349,9 +349,7 @@ if (file.exists("output/ElevEurope.rds")) {
     ElevEurope <- prepraster(raster = ElevWorld,
                              isofit = EuropeFit,
                              aggregation_factor = 4)
-    if (terra::inMemory(ElevEurope)) {
-      terra::saveRDS(ElevEurope, file = "output/ElevEurope.rds", compress = "xz")
-    }
+    terra::saveRDS(ElevEurope, file = "output/ElevEurope.rds", compress = "xz")
 }
 ```
 
@@ -394,14 +392,12 @@ EuropeIsoscape <- isoscape(raster = ElevEurope,
 ```
 
 ```{r build EuropeIsoscape real, warning = FALSE, echo = FALSE, results = FALSE}
-if (file.exists("output/EuropeIsoscape.rda")) {
-  #load("output/EuropeIsoscape.rda")
+if (file.exists("output/EuropeIsoscape.rds")) {
+  EuropeIsoscape <- readRDS("output/EuropeIsoscape.rds")
 } else {
   EuropeIsoscape <- isoscape(raster = ElevEurope,
                              isofit = EuropeFit)
-  if (terra::inMemory(EuropeIsoscape)) {
-    saveRDS(EuropeIsoscape, file = "output/EuropeIsoscape.rds", compress = "xz")
-  }
+  saveRDS(EuropeIsoscape, file = "output/EuropeIsoscape.rds", compress = "xz")
 }
 ```
 
