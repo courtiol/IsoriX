@@ -491,6 +491,7 @@ isomultiscape <- function(raster, ## change as method?
   
   ## In case the function is called on the output of isofit by mistake
   if (!inherits(isofit, "MULTIISOFIT")) {
+    message("Your input for `isofit =` is not of class MULTIISOFIT, so your call to `isomultiscape()` has been automatically converted into a call to `isoscape()`.")
     return(isoscape(raster = raster,
                     isofit = isofit,
                     verbose = verbose
@@ -500,8 +501,8 @@ isomultiscape <- function(raster, ## change as method?
   
   ## Checking the inputs
   if (!is.null(weighting)) {
-    if (!inherits(weighting, c("RasterStack", "RasterBrick"))) {
-      stop("the argument 'weighting' should be a RasterStack or a RasterBrick")
+    if (!inherits(weighting, "SpatRaster")) {
+      stop("the argument 'weighting' should be a SpatRaster")
     }
     if (!all(names(isofit$multi.fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
@@ -563,7 +564,10 @@ isomultiscape <- function(raster, ## change as method?
   )
   
   ## Agglomerate the sources spatial points
-  source_points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp_points$sources))
+  #source_points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp_points$sources)) ## no longer works with terra (v 1.7-55)
+  source_points <- Reduce("rbind", lapply(isoscapes, function(iso) iso$sp_points$sources))
+  terra::values(source_points) <- NULL
+  source_points <- terra::unique(source_points)
   
   ## we put the brick in a list that also contains
   ## the spatial points for the sources
