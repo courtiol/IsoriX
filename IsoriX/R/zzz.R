@@ -360,6 +360,8 @@ release_bullets <- function() {
   c(
     "run `styler:::style_active_pkg()` for reformatting of the code according to `styler::tidyverse_style()`",
     "run `lintr::lint_package()` for checking code in depth",
+    "run `all_checks <- rhub::check_for_cran()`",
+    "run `usethis::use_cran_comments()` and paste the output of `all_checks$cran_summary()` in the created file",
     "run make check in terminal",
     "check folder `IsoriX.Rcheck` and file in there",
     "run `tests/local_tests.R` step-by-step",
