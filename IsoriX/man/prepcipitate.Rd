@@ -38,15 +38,15 @@ extent as the structural raster. This function is designed to be used with
 #
 ### We prepare the structural raster:
 # StrRaster <- prepraster(raster = ElevRasterDE,
-#                        isofit = GermanFit,
-#                        aggregation_factor = 0)
+#                         isofit = GermanFit,
+#                         aggregation_factor = 0)
 #
 ### We download the precipitation data:
 # getprecip(path = "~/Downloads/")
 #
 ### We prepare the raster brick with all the precipitation data:
 # PrecipitationBrick <- prepcipitate(path = "~/Downloads/",
-#                                   raster = StrRaster)
+#                                    raster = StrRaster)
 #
 ### We plot the precipitation data:
 # levelplot(PrecipitationBrick)
