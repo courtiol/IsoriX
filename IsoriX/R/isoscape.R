@@ -191,8 +191,9 @@ isoscape <- function(raster,
     for (i in 1:(length(steps) - 1)) {
       
       ## compute indexes for covariate values matching the current chunk
-      within_steps <-  (steps[i] + 1L):steps[i + 1L] 
-      
+      within_steps <-  (steps[i] + 1L):steps[i + 1L]
+      #if (100000 %in% within_steps) browser() ## debugging
+
       ## we select the chunk of the design matrix required for the loop
       xs_small <- xs[within_steps, ]
       
@@ -205,8 +206,10 @@ isoscape <- function(raster,
       warnings_disppred <- c(warnings_disppred, pred_dispfit$warnings)
       pred_dispfit <- pred_dispfit$result
       
+      index_disp <- as.integer(rownames(pred_dispfit)) ## need since predictions drop values if NA in predictors
+
       ## transmission of phi to mean_fit
-      xs_small$pred_disp <- pred_dispfit[, 1]
+      xs_small[rownames(pred_dispfit), "pred_disp"] <- pred_dispfit[, 1]
       
       ## predictions from mean_fit
       pred_meanfit <- .safe_and_quiet_predictions(object = isofit$mean_fit,
@@ -217,16 +220,18 @@ isoscape <- function(raster,
       warnings_meanpred <- c(warnings_meanpred, pred_meanfit$warnings)
       pred_meanfit <- pred_meanfit$result
       
-      ## we save the predictions
-      mean_pred[within_steps] <- pred_meanfit[, 1]
-      mean_predVar[within_steps]  <- attr(pred_meanfit, "predVar")
-      mean_residVar[within_steps] <- attr(pred_meanfit, "residVar") ## same as disp_pred (as it should be)
-      mean_respVar[within_steps]  <- attr(pred_meanfit, "respVar")
+      index_mean <- as.integer(rownames(pred_meanfit)) ## need since predictions drop values if NA in predictors
       
-      disp_pred[within_steps] <- pred_dispfit[, 1]
-      disp_predVar[within_steps]  <- attr(pred_dispfit, "predVar")  ## same as mean_residVar (as it should be)
-      disp_residVar[within_steps] <- attr(pred_dispfit, "residVar")  
-      disp_respVar[within_steps]  <- attr(pred_dispfit, "respVar")
+      ## we save the predictions
+      mean_pred[index_mean] <- pred_meanfit[, 1]
+      mean_predVar[index_mean]  <- attr(pred_meanfit, "predVar")
+      mean_residVar[index_mean] <- attr(pred_meanfit, "residVar") ## same as disp_pred (as it should be)
+      mean_respVar[index_mean]  <- attr(pred_meanfit, "respVar")
+      
+      disp_pred[index_disp] <- pred_dispfit[, 1]
+      disp_predVar[index_disp]  <- attr(pred_dispfit, "predVar")  ## same as mean_residVar (as it should be)
+      disp_residVar[index_disp] <- attr(pred_dispfit, "residVar")  
+      disp_respVar[index_disp]  <- attr(pred_dispfit, "respVar")
       
       if (draw_pb) {
         utils::setTxtProgressBar(pb, steps[i + 1L]/length(lat_to_do)) ## update progress bar

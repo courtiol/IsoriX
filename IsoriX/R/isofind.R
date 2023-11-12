@@ -266,8 +266,8 @@ calibfit!")
       }
       
       # format as raster for coordinates to match
-      var_term4 <- .create_raster(long = terra::crds(isoscape$isoscapes)[, "x"],
-                                  lat = terra::crds(isoscape$isoscapes)[, "y"],
+      var_term4 <- .create_raster(long = terra::crds(isoscape$isoscapes, na.rm = FALSE)[, "x"],
+                                  lat = terra::crds(isoscape$isoscapes, na.rm = FALSE)[, "y"],
                                   values = var_term4_vec,
                                   proj = "+proj=longlat +datum=WGS84"
                                   )
