@@ -349,5 +349,16 @@
   res
 }
 
+release_bullets <- function() {
+  ## This function should not be called by the user.
+  ## It is used to add bullet points to GitHub issues created with `usethis::use_release_issue()`
+  c( "run make check in terminal",
+     "check folder `IsoriX.Rcheck` and file in there", 
+     "run `tests/local_tests.R` step-by-step",
+     "rebuilt bookdown to make sure all works in there too (open Rproj from the bookdown folder and follow instructions in README)",
+     "update bookdown (open Rproj from the bookdown folder and follow instructions in README)",
+     "write email to Google Group (https://groups.google.com/g/IsoriX)")
+  }
+
 
 utils::globalVariables(c("CountryBorders", "OceanMask"))
