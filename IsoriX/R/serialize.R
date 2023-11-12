@@ -26,6 +26,7 @@
 #' @param refhook	a hook function for handling reference objects.
 #' 
 #' @name serialize
+#' @keywords saving
 #' 
 #' @return 
 #' For `saveRDS`, `NULL` invisibly.
@@ -92,16 +93,14 @@ saveRDS <- function(object, file = "", ascii = FALSE, version = NULL, compress =
 readRDS <- function(file, refhook = NULL) UseMethod("readRDS")
 
 
+# Defining omnibus function --------------------------------------------------
 
-# Defining S3 methods -----------------------------------------------------
-
-#' @describeIn serialize S3 method to save an `ISOSCAPE` object into a RDS file
+#' @describeIn serialize S3 function to save IsoriX objects into a RDS file
 #' 
-#' @method  saveRDS ISOSCAPE
-#' @exportS3Method saveRDS ISOSCAPE
+#' @export
 #' 
-saveRDS.ISOSCAPE <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
-  message("Saving RDS using IsoriX method")
+saveRDS_IsoriX <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
+  #message("Saving RDS using IsoriX method")
   if (!is.null(object$isoscapes)) {
     if (inherits(object$isoscapes, "SpatRaster")) {
       object$isoscapes <- terra::wrap(object$isoscapes)
@@ -140,15 +139,27 @@ saveRDS.ISOSCAPE <- function(object, file = "", ascii = FALSE, version = NULL, c
 }
 
 
+# Defining S3 methods -----------------------------------------------------
+
+#' @describeIn serialize S3 method to save an `ISOSCAPE` object into a RDS file
+#' 
+#' @method  saveRDS ISOSCAPE
+#' @exportS3Method saveRDS ISOSCAPE
+#' @export
+#' 
+saveRDS.ISOSCAPE <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
+  saveRDS_IsoriX(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
+}
+
 #' @describeIn serialize S3 method to save a `CALIBFIT` object into a RDS file
 #' 
 #' @method  saveRDS CALIBFIT
 #' @exportS3Method saveRDS CALIBFIT
+#' @export
 #' 
 saveRDS.CALIBFIT <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
-  saveRDS.ISOSCAPE(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
+  saveRDS_IsoriX(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
 }
-
 
 #' @describeIn serialize S3 method to save an `ISOFIND` object into a RDS file
 #' 
@@ -156,18 +167,18 @@ saveRDS.CALIBFIT <- function(object, file = "", ascii = FALSE, version = NULL, c
 #' @exportS3Method saveRDS ISOFIND
 #' 
 saveRDS.ISOFIND <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) {
-  saveRDS.ISOSCAPE(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
+  saveRDS_IsoriX(object, file = file, ascii = ascii, version = version, compress = compress, refhook = refhook)
 }
 
 
 #' @describeIn serialize S3 method to read an object produced with IsoriX (or other) stored in a RDS file
 #' 
-#' @method  readRDS character
+#' @method readRDS character
 #' @exportS3Method readRDS character
 #' @export
 #' 
 readRDS.character <- function(file, refhook = NULL) {
-  message("Reading RDS using IsoriX wrapper")
+  #message("Reading RDS using IsoriX wrapper")
   object <- base::readRDS(file = file, refhook = refhook)
   if (inherits(object, "PackedSpatRaster") || inherits(object, "PackedSpatVector")) {
     return(terra::unwrap(object))
@@ -193,7 +204,6 @@ readRDS.character <- function(file, refhook = NULL) {
   }
   object
 }
-
 
 
 # Defining S4 methods -----------------------------------------------------
