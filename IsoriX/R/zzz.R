@@ -257,7 +257,7 @@
 
 .load_internal_files <- function() {
   ## This function should not be called by the user.
-  ## It performs the lazy loading of the data since terra cannot handle rda files
+  ## It performs the lazy loading of the data since terra cannot handle rda files.
   assign("ElevRasterDE", terra::rast(system.file("extdata/ElevRasterDE.tif", package = "IsoriX")), envir = as.environment("package:IsoriX"))
   assign("CountryBorders", terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
   assign("OceanMask", terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
