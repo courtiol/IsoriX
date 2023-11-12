@@ -528,9 +528,21 @@ calibfit <- function(data,
       print("predicting the isoscape value in each calibration site...")
     }
     
-    mean_calib <- spaMM::predict.HLfit(isofit[["mean_fit"]],
-                                       newdata = data,
-                                       variances = list(predVar = TRUE, cov = TRUE))
+    mean_calib_obj <- .safe_and_quiet_predictions(isofit[["mean_fit"]],
+                                                  newdata = data,
+                                                  variances = list(predVar = TRUE, cov = TRUE))
+    
+    mean_calib <- mean_calib_obj$result
+    
+    if (length(mean_calib_obj$messages) > 0) {
+      message("The following messages were produced by the predictions step during calibration: ")
+      message(mean_calib_obj$messages)
+    }
+    
+    if (length(mean_calib_obj$warnings) > 0) {
+      message("The following warnings were produced by the predictions step during calibration: ")
+      message(mean_calib_obj$warnings)
+    }
     
     ## store the mean prediction
     data$mean_source_value <- c(mean_calib)

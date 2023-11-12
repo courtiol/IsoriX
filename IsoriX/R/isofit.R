@@ -341,8 +341,19 @@ isofit <- function(data,
                           )
 
   ## Predict the values for the residual variance
-  args_meanfit$data$pred_disp <- spaMM::predict.HLfit(disp_fit, newdata = data)[, 1]
-
+  pred_disp_obj <- .safe_and_quiet_predictions(disp_fit, newdata = data)
+  args_meanfit$data$pred_disp <- pred_disp_obj$result[, 1]
+  
+  if (length(pred_disp_obj$messages) > 0) {
+    message("The following messages were produced by the predictions of residual dispersion: ")
+    message(pred_disp_obj$messages)
+  }
+  
+  if (length(pred_disp_obj$warnings) > 0) {
+    message("The following warnings were produced by the predictions of mean isotopic values: ")
+    message(pred_disp_obj$warnings)
+  }
+  
   ## Interactive display
   if (verbose) {
     nug_string <- ifelse(uncorr_terms$mean_model == "nugget", "with a Nugget", "")

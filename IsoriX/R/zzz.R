@@ -264,15 +264,90 @@
   assign("PrecipBrickDE", terra::readRDS(system.file("extdata/PrecipBrickDE.rds", package = "IsoriX")), envir = as.environment("package:IsoriX"))
 }
 
-.suppress_warning <-  function(x, warn = "") {
+## from purrr::quietly()
+.quiet <- function(job) {
   ## This function should not be called by the user.
-  ## It hides expected warnings in some functions
-  withCallingHandlers(x, warning = function(w) {
-    if (!grepl(warn, x = w[[1]])) {
-      warning(w[[1]], call. = FALSE)
-    }
+  ## It capture warnings and messages in some functions.
+  warnings <- character()
+  wHandler <- function(w) {
+    warnings <<- c(warnings, conditionMessage(w))
     invokeRestart("muffleWarning")
+  }
+  messages <- character()
+  mHandler <- function(m) {
+    messages <<- c(messages, conditionMessage(m))
+    invokeRestart("muffleMessage")
+  }
+  temp <- file()
+  sink(temp)
+  on.exit({
+    sink()
+    close(temp)
   })
+  result <- withCallingHandlers(job, warning = wHandler, message = mHandler)
+  output <- paste0(readLines(temp, warn = FALSE), collapse = "\n")
+  list(result = result,
+       output = output,
+       warnings = warnings, 
+       messages = messages)
 }
+
+.safe_and_quiet_predictions <- function(object, newdata, variances = list(), ...) {
+  ## This function should not be called by the user.
+  ## It run the predictions while capturing errors, warnings and messages without stopping
+  
+  res <- .quiet(tryCatch(spaMM::predict.HLfit(object = object, newdata = newdata, variances = variances, ...),
+                  error = function(e) {
+    
+    ## debugging mode
+    if (getOption_IsoriX("spaMM_debug")) {
+      stop(e)
+    }
+                    
+    ## convert error into warning to avoid stopping
+    warning(paste("  WARNING converted from ERROR in `spaMM::predict.HLfit()`:\n", e))
+    
+    ## return NAs for all outputs of `spaMM::predict.HLfit` if there is an error
+    m <- matrix(NA, nrow = nrow(newdata), ncol = 1)
+    if (isTRUE(as.vector(variances)[["predVar"]]) || isTRUE(as.vector(variances)[["respVar"]])) {
+      if (isTRUE(as.vector(variances)[["cov"]])) {
+        param_fixed <- names(fixef(object))
+        m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
+        rownames(m) <- colnames(m) <- names(param_fixed)
+        attr(m, "predVar") <- m
+      }
+      attr(m, "predVar") <- rep(NA, nrow(newdata))
+    }
+    if (isTRUE(as.vector(variances)[["residVar"]])) {
+      if (isTRUE(as.vector(variances)[["cov"]])) {
+        param_fixed <- names(fixef(object))
+        m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
+        rownames(m) <- colnames(m) <- names(param_fixed)
+        attr(m, "residVar") <- m
+      }
+      attr(m, "residVar") <- rep(NA, nrow(newdata))
+    }
+    if (isTRUE(as.vector(variances)[["respVar"]])) {
+      if (isTRUE(as.vector(variances)[["cov"]])) {
+        param_fixed <- names(fixef(object))
+        m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
+        rownames(m) <- colnames(m) <- names(param_fixed)
+        attr(m, "respVar") <- m
+      }
+      attr(m, "respVar") <- rep(NA, nrow(newdata))
+    }
+    return(m)
+    }))
+  
+  ## debugging mode
+  if (getOption_IsoriX("spaMM_debug")) {
+    if (length(res$warnings) > 0) warnings(res$warnings)
+    if (length(res$messages) > 0) message(res$messages)
+  }
+  
+  ## return
+  res
+}
+
 
 utils::globalVariables(c("CountryBorders", "OceanMask"))

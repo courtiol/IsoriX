@@ -183,6 +183,11 @@ isoscape <- function(raster,
     
     
     ## we loop on each chunk
+    messages_meanpred <- character()
+    messages_disppred <- character()
+    warnings_meanpred <- character()
+    warnings_disppred <- character()
+  
     for (i in 1:(length(steps) - 1)) {
       
       ## compute indexes for covariate values matching the current chunk
@@ -192,20 +197,25 @@ isoscape <- function(raster,
       xs_small <- xs[within_steps, ]
       
       ## predictions from disp_fit
-      pred_dispfit <- .suppress_warning(spaMM::predict.HLfit(object = isofit$disp_fit,
-                                                             newdata = xs_small,
-                                                             variances = list(respVar = TRUE)),
-                              warn = "Prior weights are not taken in account in residVar computation.")
+      pred_dispfit <- .safe_and_quiet_predictions(object = isofit$disp_fit,
+                                                  newdata = xs_small,
+                                                  variances = list(respVar = TRUE))
+      
+      messages_disppred <- c(messages_disppred, pred_dispfit$messages)
+      warnings_disppred <- c(warnings_disppred, pred_dispfit$warnings)
+      pred_dispfit <- pred_dispfit$result
       
       ## transmission of phi to mean_fit
       xs_small$pred_disp <- pred_dispfit[, 1]
       
       ## predictions from mean_fit
-      pred_meanfit <- .suppress_warning(spaMM::predict.HLfit(object = isofit$mean_fit,
-                                                             newdata = xs_small,
-                                                             variances = list(respVar = TRUE),
-                               warn = "phi dispVar component not yet available for phi model != ~1.")
-      )
+      pred_meanfit <- .safe_and_quiet_predictions(object = isofit$mean_fit,
+                                                  newdata = xs_small,
+                                                  variances = list(respVar = TRUE))
+      
+      messages_meanpred <- c(messages_meanpred, pred_meanfit$messages)
+      warnings_meanpred <- c(warnings_meanpred, pred_meanfit$warnings)
+      pred_meanfit <- pred_meanfit$result
       
       ## we save the predictions
       mean_pred[within_steps] <- pred_meanfit[, 1]
@@ -227,6 +237,31 @@ isoscape <- function(raster,
     ## the progress bar is being closed
     if (draw_pb) close(pb)
   })  ## end of system.time
+  
+  messages_meanpred <- unique(messages_meanpred)
+  messages_disppred <- unique(messages_disppred)
+  warnings_meanpred <- unique(warnings_meanpred)
+  warnings_disppred <- unique(warnings_disppred)
+  
+  if (length(messages_meanpred) > 0) {
+    message("The following messages were produced by the predictions of mean isotopic values: ")
+    message(messages_meanpred)
+  }
+  
+  if (length(messages_disppred) > 0) {
+    message("The following messages were produced by the predictions of residual dispersion: ")
+    message(messages_disppred)
+  }
+  
+  if (length(warnings_meanpred) > 0) {
+    message("The following warnings were produced by the predictions of mean isotopic values: ")
+    message(warnings_meanpred)
+  }
+  
+  if (length(warnings_disppred) > 0) {
+    message("The following warnings were produced by the predictions of residual dispersion: ")
+    message(warnings_disppred)
+  }
   
   ## display time
   time <- round(as.numeric((time)[3]))
@@ -327,20 +362,20 @@ isoscape <- function(raster,
     
     rm(coord); gc()  ## remove coord as it can be a large object
     
-    pred_dispfit <- spaMM::predict.HLfit(object = isofit$disp_fit,
-                                         newdata = xs,
-                                         variances = list(respVar = TRUE),
-                                         blockSize = 16000L
+    pred_dispfit <- .safe_and_quiet_predictions(object = isofit$disp_fit,
+                                                newdata = xs,
+                                                variances = list(respVar = TRUE),
+                                                blockSize = 16000L
     )
     
     ## transmission of phi to mean_fit
     xs$pred_disp <- pred_dispfit[, 1]
     
     ## predictions from mean_fit
-    pred_meanfit <- spaMM::predict.HLfit(object = isofit$mean_fit,
-                                         newdata = xs,
-                                         variances = list(respVar = TRUE),
-                                         blockSize = 16000L
+    pred_meanfit <- .safe_and_quiet_predictions(object = isofit$mean_fit,
+                                                newdata = xs,
+                                                variances = list(respVar = TRUE),
+                                                blockSize = 16000L
     )
     
     mean_pred <- pred_meanfit[, 1]
