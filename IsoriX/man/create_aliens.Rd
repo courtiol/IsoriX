@@ -59,7 +59,7 @@ provided to this function. An alternative possibility is to provide a data
 frame containing three columns (\code{site_ID}, \code{long} and \code{lat}) to input the
 coordinate of the sampling site manually.
 
-Irrespectively of how locations are chosen, a random number of observations
+Irrespective of how locations are chosen, a random number of observations
 will be drawn, at each site, according to a uniform distribution bounded by
 the values of the argument \code{min_n_samples} and \code{max_n_samples}.
 

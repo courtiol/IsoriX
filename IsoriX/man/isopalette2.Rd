@@ -71,7 +71,7 @@ pie(1:100, col = Isopalette2Fn(100), border = NA, labels = NA,
 
 }
 \seealso{
-\link[grDevices:palettes]{grDevices::rainbow} for information about R colour palettes,#'
+\link[grDevices:palettes]{grDevices::rainbow} for information about R colour palettes,
 \link[grDevices:colorRamp]{grDevices::colorRamp} and \link[colorspace:choose_palette]{colorspace::choose_palette} to create your
 own palettes
 }
