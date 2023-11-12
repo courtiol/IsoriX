@@ -212,11 +212,10 @@ prepraster <- function(raster,
   ## applies values_to_zero transformation
   terra::values(raster) <- ifelse(terra::values(raster) < max(values_to_zero) & terra::values(raster) > min(values_to_zero), 0, terra::values(raster))
   
-  ## store the raster in memory if possible
-  
-  raster_HD <- raster
-  raster <- terra::rast(raster_HD)
-  terra::values(raster) <- terra::values(raster_HD)
+  ## store the raster in memory if possible ## I think the following trick made for **raster** is useless in **tera** but I am not sure
+  #raster_HD <- raster
+  #raster <- terra::rast(raster_HD)
+  #terra::values(raster) <- terra::values(raster_HD)
   
   
   if (verbose) {
