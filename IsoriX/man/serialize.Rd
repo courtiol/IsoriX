@@ -94,17 +94,17 @@ saveRDS_IsoriX(
 \S4method{readRDS}{character}(file, refhook = NULL)
 }
 \arguments{
-\item{object}{R object to serialize.}
+\item{object}{(definition copied from  \code{\link[base:readRDS]{base::readRDS}}:) R object to serialize.}
 
-\item{file}{a connection or the name of the file where the R object is saved to or read from.}
+\item{file}{(definition copied from  \code{\link[base:readRDS]{base::readRDS}}:) a connection or the name of the file where the R object is saved to or read from.}
 
-\item{ascii}{a logical. If \code{TRUE} or \code{NA}, an ASCII representation is written; otherwise (default), a binary one is used. See the comments in the help for save.}
+\item{ascii}{(definition copied from  \code{\link[base:readRDS]{base::readRDS}}:) a logical. If \code{TRUE} or \code{NA}, an ASCII representation is written; otherwise (default), a binary one is used. See the comments in the help for \code{\link[base:save]{base::save}}.}
 
-\item{version}{the workspace format version to use. \code{NULL} specifies the current default version (3). The only other supported value is \code{2}, the default from R 1.4.0 to R 3.5.0.}
+\item{version}{(definition copied from  \code{\link[base:readRDS]{base::readRDS}}:) the workspace format version to use. \code{NULL} specifies the current default version (3). The only other supported value is \code{2}, the default from R 1.4.0 to R 3.5.0.}
 
-\item{compress}{a logical specifying whether saving to a named file is to use "gzip" compression, or one of "gzip", "bzip2" or "xz" to indicate the type of compression to be used. Ignored if file is a connection.}
+\item{compress}{(definition copied from  \code{\link[base:readRDS]{base::readRDS}}:) a logical specifying whether saving to a named file is to use "gzip" compression, or one of "gzip", "bzip2" or "xz" to indicate the type of compression to be used. Ignored if file is a connection.}
 
-\item{refhook}{a hook function for handling reference objects.}
+\item{refhook}{(definition copied from  \code{\link[base:readRDS]{base::readRDS}}:) a hook function for handling reference objects.}
 }
 \value{
 For \code{saveRDS}, \code{NULL} invisibly.

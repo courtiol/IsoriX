@@ -18,12 +18,12 @@
 #' IsoriX methods compatible with the use of [`terra::saveRDS`] and
 #' [`terra::readRDS`].
 #'
-#' @param object R object to serialize.
-#' @param file a connection or the name of the file where the R object is saved to or read from.
-#' @param ascii a logical. If `TRUE` or `NA`, an ASCII representation is written; otherwise (default), a binary one is used. See the comments in the help for save.
-#' @param version the workspace format version to use. `NULL` specifies the current default version (3). The only other supported value is `2`, the default from R 1.4.0 to R 3.5.0.
-#' @param compress a logical specifying whether saving to a named file is to use "gzip" compression, or one of "gzip", "bzip2" or "xz" to indicate the type of compression to be used. Ignored if file is a connection.
-#' @param refhook	a hook function for handling reference objects.
+#' @param object (definition copied from  [`base::readRDS`]:) R object to serialize.
+#' @param file (definition copied from  [`base::readRDS`]:) a connection or the name of the file where the R object is saved to or read from.
+#' @param ascii (definition copied from  [`base::readRDS`]:) a logical. If `TRUE` or `NA`, an ASCII representation is written; otherwise (default), a binary one is used. See the comments in the help for [`base::save`].
+#' @param version (definition copied from  [`base::readRDS`]:) the workspace format version to use. `NULL` specifies the current default version (3). The only other supported value is `2`, the default from R 1.4.0 to R 3.5.0.
+#' @param compress (definition copied from  [`base::readRDS`]:) a logical specifying whether saving to a named file is to use "gzip" compression, or one of "gzip", "bzip2" or "xz" to indicate the type of compression to be used. Ignored if file is a connection.
+#' @param refhook	(definition copied from  [`base::readRDS`]:) a hook function for handling reference objects.
 #' 
 #' @name serialize
 #' @keywords saving
