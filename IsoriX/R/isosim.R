@@ -303,8 +303,8 @@ isosim <- function(data,
 
   ## fixed effects
   fix <- with(as.list(fix_coef), intercept +
-                elev * data$elev + lat_abs * data$lat_abs + lat_2 * data$lat_2 +
-                long * data$long + long_2 * data$long_2)
+    elev * data$elev + lat_abs * data$lat_abs + lat_2 * data$lat_2 +
+    long * data$long + long_2 * data$long_2)
 
   ## spatial random effects
   matern <- 0

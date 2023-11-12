@@ -14,18 +14,18 @@ if (FALSE) { ## for not running during checks
 
   example(isofit)
   example(isomultifit)
-  
+
   example(isoscape)
   example(isomultiscape)
-  
+
   example(calibfit)
-  
+
   example(isofind)
 
   example(create_aliens)
 
   example(saveRDS_IsoriX)
-  
+
   library(terra)
   example(saveRDS_IsoriX)
 }
