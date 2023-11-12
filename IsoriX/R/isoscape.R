@@ -145,7 +145,7 @@ isoscape <- function(raster,
   time <- system.time({
     
     ## we extract lat/long from all cells of the raster
-    coord <- terra::crds(raster)
+    coord <- terra::crds(raster, na.rm = FALSE)
     long_to_do <- coord[, "x"]  # extract the longitude
     lat_to_do <-  coord[, "y"]  # extract the lattitude
     rm(coord); gc()  ## remove coord as it can be a large object
@@ -313,7 +313,7 @@ isoscape <- function(raster,
   time <- system.time({
     
     ## we extract lat/long from all cells of the raster
-    coord <- terra::crds(raster)
+    coord <- terra::crds(raster, na.rm = FALSE)
     
     ## we create the object for newdata
     xs <- data.frame(long = coord[, 1],

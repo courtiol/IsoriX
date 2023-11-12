@@ -149,7 +149,7 @@ isosim <- function(data,
   ## if data is a raster, we convert it as data.frame
   if (inherits(data, "SpatRaster")) {
     raster <- data
-    coord <- terra::crds(raster)
+    coord <- terra::crds(raster, na.rm = FALSE)
     data <- data.frame(long = coord[, "x"],
                        long_2 = coord[, "x"]^2,
                        lat = coord[, "y"],
