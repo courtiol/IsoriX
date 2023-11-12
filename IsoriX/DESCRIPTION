@@ -44,8 +44,8 @@ Suggests:
     webshot2,
     withr
 LazyData: true
-URL: https://github.com/courtiol/IsoriX/, https://bookdown.org/content/782/
-BugReports: https://github.com/courtiol/IsoriX/issues/
+URL: https://github.com/courtiol/IsoriX, https://bookdown.org/content/782
+BugReports: https://github.com/courtiol/IsoriX/issues
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Language: en-GB
