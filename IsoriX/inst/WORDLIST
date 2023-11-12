@@ -50,6 +50,7 @@ RasterBrick
 Roemer
 Rohwäder
 Roxygen
+Rproj
 SEs
 Schadt
 Soergel
@@ -114,6 +115,7 @@ testthat
 th
 tibble
 tibbles
+usethis
 var
 viridis
 viridisLite
