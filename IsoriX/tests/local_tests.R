@@ -1,4 +1,4 @@
-if (FALSE) {
+if (FALSE) { ## for not running during checks
   library(IsoriX)
   options_IsoriX(example_maxtime = Inf)
 
@@ -14,13 +14,19 @@ if (FALSE) {
 
   example(isofit)
   example(isomultifit)
+  
   example(isoscape)
   example(isomultiscape)
+  
   example(calibfit)
+  
   example(isofind)
 
   example(create_aliens)
 
+  example(saveRDS_IsoriX)
+  
+  library(terra)
   example(saveRDS_IsoriX)
 }
 
