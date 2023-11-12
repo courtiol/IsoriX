@@ -202,7 +202,10 @@ prepraster <- function(raster,
       if (interactive()) {
         print(paste("aggregating..."))
       }
-      raster <- terra::aggregate(raster, fact = aggregation_factor, fun = aggregation_fn)  ## aggregation
+      raster <- terra::aggregate(raster, fact = aggregation_factor, fun = aggregation_fn,
+                                 na.rm = TRUE, ## aggregation introduces NAs if the ratio before/after aggreg is not whole in both directions
+                                               ## (`raster::aggregate()` implied `na.rm = TRUE` by default, `terra::aggregate()` does not)
+                                 cores = .data_IsoriX$IsoriX_options$Ncpu)
     }
   })
   
