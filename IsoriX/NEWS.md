@@ -11,15 +11,40 @@
 * **main release goal**
 
   * This release restores some key features that had been lost after dropping the direct dependencies **raster** and **sp** in v0.9.1.:
-     * the possibility to save and reload objects created by IsoriX (now via `saveRDS()` and `readRDS()`).
-     * the possibility to plot oceans and other masks containing "holes" (thanks to changes in **lattice** and **rasterVis**).
+     * the possibility to save and reload objects created by IsoriX (now via `saveRDS()` and `readRDS()`). (#172)
+     * the possibility to plot oceans and other masks containing "holes" (thanks to changes in **lattice** and **rasterVis**). (#169, #170)
+
+* **breaking changes**
+  
+  As compared to IsoriX versions < 0.9.1, the following changes may break existing code:
+  
+  * code for plots:
+    
+    ```r
+    layer(sp.polygons(CountryBorders, col = "white")) +
+    layer(sp.polygons(OceanMask, col = "white", fill = "lightgreen"))
+    ```
+    
+    now needs to be replaced by:
+    
+    ```r
+    layer(lpolygon(CountryBorders, border = "white")) +
+    layer(lpolygon(OceanMask, border = "white", col = "lightgrey"))
+    ```
+    
+    Notice both the change in the function used to plot polygons and the change in the arguments used to control the colour of the borders and the colour of the fill.
+    Similarly, the function `sp.points()` should be replaced by `lpoints()` and so on.
+    
+  * saving and reloading objects `save()` & `load()` can no longer be used, one must instead use `saveRDS()` & `readRDS()`.
 
 * **new features**
 
   * the NEWS (contained in this file) are now stored in `NEWS.md` rather than in `inst/NEWS.Rd` and use a markdown syntax.
+  * it is now possible to have missing values in predictors used to build isoscapes and in the isoscapes themselves.
 
 * **major changes**
 
+  * plotting methods for polygons, lines and points have been removed from IsoriX and are now handled by **lattice** and **rasterVis**.
   * new S3 and S4 methods `saveRDS()` for objects of the class `ISOSCAPE`, `CALIBFIT` & `ISOFIND` (see `?serialize` for details).
   * new S3 and S4 method `readRDS()` which should be able to read objects created in IsoriX, as well as objects created with **terra** and objects created otherwise.
   
@@ -28,7 +53,7 @@
 * **minor changes**
 
   * the bookdown is now listed in DESCRIPTION.
-  * the URL to the WISER was updated.
+  * some old URLs have been updated.
 
 * **bug fixes**
   
@@ -37,9 +62,14 @@
 
 * **internal (geeky) changes**
 
+  * new function `.safe_and_quiet_predictions()` which turns wraps around `spaMM::predict.HLfit()`, turns warnings into messages, allows not to display the same messages many times, and outputs `NA`s when `spaMM::predict.HLfit()` fails. For testing, `options_IsoriX(spaMM_debug = TRUE)` may be used to restore the original behaviour of `spaMM::predict.HLfit()`.
   * the classes `ISOSCAPE`, `CALIBFIT` & `ISOFIND` are now also defined as S4 classes, which was necessary to design methods for `saveRDS()` which are compatible with **terra**.
   * the package now contains a `WORDLIST` file which is used by `devtools::spell_check()` (via `spelling::spell_check_package`) to check for typos in the documentation.
+  * fixed various `|` or `&` which should have always been `||` or `&&` (spotted via `lintr::lint_package()`).
+  * fixed various sequences of the form `1:...` which should have always been handled by `seq_along` or `seq_len` to avoid NULL issues (spotted via `lintr::lint_package()`).
   * package **withr** now suggested; we use it to automatically delete a file created during testing (using `withr::defer`).
+  * instead of one Rproj file used to handle both the package and the bookdown development, we now rely on 2 Rproj files, which solves some limitations encountered with **usethis**.
+
 
 ## v0.9.1
 
