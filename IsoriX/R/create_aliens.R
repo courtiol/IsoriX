@@ -17,7 +17,7 @@
 #' frame containing three columns (`site_ID`, `long` and `lat`) to input the
 #' coordinate of the sampling site manually.
 #'
-#' Irrespectively of how locations are chosen, a random number of observations
+#' Irrespective of how locations are chosen, a random number of observations
 #' will be drawn, at each site, according to a uniform distribution bounded by
 #' the values of the argument `min_n_samples` and `max_n_samples`.
 #'
