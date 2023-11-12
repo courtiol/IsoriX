@@ -32,13 +32,13 @@ You can download and install the stable version of IsoriX directly from within R
 install.packages("IsoriX", dependencies = TRUE)
 ```
 
-Note: if you get into troubles due to `elevatr`, `gmp`, `magick`, `rgl`, `testthat`, or `webshot2` retry using simply:
+Note: if you get into troubles due to suggested package(s) (`colorspace`, `elevatr`, `gmp`, `magick`, `rgl`, `spelling`, `testthat`, `webshot2` or `withr`) retry using simply:
 
 ```R
 install.packages("IsoriX")
 ```
 
-These packages offer additional functionalities but some of them are particularly difficult to install on some systems.
+These packages offer additional functionalities but some of them can be difficult to install on some systems.
 
 If you want the development version of IsoriX, you can download and install it by typing:
 
@@ -57,7 +57,7 @@ library(httr)
 with_config(use_proxy("192.123.4.5:6789"), remotes::install_github("courtiol/IsoriX/IsoriX"))
 ```
 
-Off course, unless you are in the same institute than some of us, replace the numbers (`"192.123.4.5:6789"`) with those corresponding to your proxy settings!
+Off course, replace the numbers (`"192.123.4.5:6789"`) with those corresponding to your proxy settings!
 
 
 ## How can you contribute?
