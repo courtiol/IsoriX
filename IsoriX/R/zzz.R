@@ -311,7 +311,7 @@
     m <- matrix(NA, nrow = nrow(newdata), ncol = 1)
     if (isTRUE(as.vector(variances)[["predVar"]]) || isTRUE(as.vector(variances)[["respVar"]])) {
       if (isTRUE(as.vector(variances)[["cov"]])) {
-        param_fixed <- names(fixef(object))
+        param_fixed <- names(spaMM::fixef(object))
         m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
         rownames(m) <- colnames(m) <- names(param_fixed)
         attr(m, "predVar") <- m
@@ -320,7 +320,7 @@
     }
     if (isTRUE(as.vector(variances)[["residVar"]])) {
       if (isTRUE(as.vector(variances)[["cov"]])) {
-        param_fixed <- names(fixef(object))
+        param_fixed <- names(spaMM::fixef(object))
         m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
         rownames(m) <- colnames(m) <- names(param_fixed)
         attr(m, "residVar") <- m
@@ -329,7 +329,7 @@
     }
     if (isTRUE(as.vector(variances)[["respVar"]])) {
       if (isTRUE(as.vector(variances)[["cov"]])) {
-        param_fixed <- names(fixef(object))
+        param_fixed <- names(spaMM::fixef(object))
         m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
         rownames(m) <- colnames(m) <- names(param_fixed)
         attr(m, "respVar") <- m
