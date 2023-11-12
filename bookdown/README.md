@@ -22,7 +22,6 @@ Then, render the full book once, so as to create all the content stored in the f
 
 For this, use:
 ```r
-setwd("bookdown")
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 ```
 

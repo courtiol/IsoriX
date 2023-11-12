@@ -3,3 +3,5 @@ R/testpackage\.R
 man/isosim\.Rd
 README\.md
 
+^.*\.Rproj$
+^\.Rproj\.user$
