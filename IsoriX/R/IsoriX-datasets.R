@@ -581,7 +581,7 @@ NULL
 #' @note We use the package \pkg{rasterVis} for plotting. Instead of using
 #' colour palettes directly, one can also use any "Theme" designed for the
 #' lattice graphic environment (see source for details).
-#' @seealso [grDevices::rainbow] for information about R colour palettes,#' 
+#' @seealso [grDevices::rainbow] for information about R colour palettes,
 #' [grDevices::colorRamp] and [colorspace::choose_palette] to create your
 #' own palettes
 #' @source For information on how to use themes, check:
