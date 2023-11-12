@@ -2,8 +2,9 @@
 % Please edit documentation in R/serialize.R
 \name{serialize}
 \alias{serialize}
-\alias{saveRDS}
+\alias{serialise}
 \alias{readRDS}
+\alias{saveRDS}
 \alias{saveRDS_IsoriX}
 \alias{saveRDS.ISOSCAPE}
 \alias{saveRDS.CALIBFIT}
@@ -13,19 +14,8 @@
 \alias{saveRDS,CALIBFIT-method}
 \alias{saveRDS,ISOFIND-method}
 \alias{readRDS,character-method}
-\title{Save and read objects produced by IsoriX into RDS files}
+\title{Save and read objects produced by IsoriX using RDS files}
 \usage{
-saveRDS(
-  object,
-  file = "",
-  ascii = FALSE,
-  version = NULL,
-  compress = TRUE,
-  refhook = NULL
-)
-
-readRDS(file, refhook = NULL)
-
 saveRDS_IsoriX(
   object,
   file = "",
@@ -113,30 +103,26 @@ For \code{readRDS}, an R object.
 }
 \description{
 Because files created with IsoriX contain \code{\link[terra:SpatRaster-class]{terra::SpatRaster}} and
-\code{\link[terra:SpatVector-class]{terra::SpatVector}} objects, they cannot be saved using \code{\link[base:readRDS]{base::saveRDS}} or
-\code{\link[base:save]{base::save}} functions. The reason is that objects created with \link{terra} point
-to data stored in memory which are not contained in the R objects themselves.
-Adapting the approach implemented in the \link{terra} package, we provide a
-wrapper for \code{\link[base:readRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} functions, which allows one
-to save and read objects produced with IsoriX by simply using \code{saveRDS()} and
-\code{readRDS()}.
+\code{\link[terra:SpatVector-class]{terra::SpatVector}} objects, they cannot be saved using \code{\link[base:readRDS]{base::saveRDS}}
+or \code{\link[base:save]{base::save}} functions. The reason is that objects created with \link{terra}
+point to data stored in memory which are not contained in the R objects
+themselves. Adapting the approach implemented in the \link{terra} package, we
+provide a wrapper for \code{\link[base:readRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} functions,
+which allows one to save and read objects produced with IsoriX by simply
+using \code{saveRDS()} and \code{readRDS()}.
 }
 \details{
 \code{\link[base:readRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} are standard S3 functions. So in
 order to be able to have a specific behaviour for objects produced with
-IsoriX, we turned \code{saveRDS} and \code{readRDS} into S4 generics that dispatch both
-S3 and S4 methods (see \link{Methods_for_S3}). The S3 implementation is consistent
-with the rest of the package and presents all usual benefits associated with
-S3 methods (e.g. simple access to the code). The S4 implementation makes
-IsoriX methods compatible with the use of \code{\link[terra:serialize]{terra::saveRDS}} and
-\code{\link[terra:serialize]{terra::readRDS}}.
+IsoriX, we imported \code{saveRDS} and \code{readRDS} S4 generics from  \link{terra} to
+dispatch both S3 and S4 IsoriX-specific methods (see \link{Methods_for_S3}). The
+S3 implementation is consistent with the rest of the package and presents all
+usual benefits associated with S3 methods (e.g. simple access to the code).
+The S4 implementation makes IsoriX methods compatible with the use of
+\code{\link[terra:serialize]{terra::saveRDS}} and \code{\link[terra:serialize]{terra::readRDS}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{saveRDS()}: S4 generic function for \code{saveRDS}
-
-\item \code{readRDS()}: S4 generic function for \code{readRDS}
-
 \item \code{saveRDS_IsoriX()}: S3 function to save IsoriX objects into a RDS file
 
 \item \code{saveRDS(ISOSCAPE)}: S3 method to save an \code{ISOSCAPE} object into a RDS file

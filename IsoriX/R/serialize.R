@@ -1,22 +1,22 @@
-#' Save and read objects produced by IsoriX into RDS files
+#' Save and read objects produced by IsoriX using RDS files
 #'
 #' Because files created with IsoriX contain [`terra::SpatRaster`] and
-#' [`terra::SpatVector`] objects, they cannot be saved using [`base::saveRDS`] or
-#' [`base::save`] functions. The reason is that objects created with [terra] point
-#' to data stored in memory which are not contained in the R objects themselves.
-#' Adapting the approach implemented in the [terra] package, we provide a
-#' wrapper for [`base::saveRDS`] and [`base::readRDS`] functions, which allows one
-#' to save and read objects produced with IsoriX by simply using `saveRDS()` and
-#' `readRDS()`.
+#' [`terra::SpatVector`] objects, they cannot be saved using [`base::saveRDS`]
+#' or [`base::save`] functions. The reason is that objects created with [terra]
+#' point to data stored in memory which are not contained in the R objects
+#' themselves. Adapting the approach implemented in the [terra] package, we
+#' provide a wrapper for [`base::saveRDS`] and [`base::readRDS`] functions,
+#' which allows one to save and read objects produced with IsoriX by simply
+#' using `saveRDS()` and `readRDS()`.
 #'
 #' [`base::saveRDS`] and [`base::readRDS`] are standard S3 functions. So in
 #' order to be able to have a specific behaviour for objects produced with
-#' IsoriX, we turned `saveRDS` and `readRDS` into S4 generics that dispatch both
-#' S3 and S4 methods (see [Methods_for_S3]). The S3 implementation is consistent
-#' with the rest of the package and presents all usual benefits associated with
-#' S3 methods (e.g. simple access to the code). The S4 implementation makes
-#' IsoriX methods compatible with the use of [`terra::saveRDS`] and
-#' [`terra::readRDS`].
+#' IsoriX, we imported `saveRDS` and `readRDS` S4 generics from  [terra] to
+#' dispatch both S3 and S4 IsoriX-specific methods (see [Methods_for_S3]). The
+#' S3 implementation is consistent with the rest of the package and presents all
+#' usual benefits associated with S3 methods (e.g. simple access to the code).
+#' The S4 implementation makes IsoriX methods compatible with the use of
+#' [`terra::saveRDS`] and [`terra::readRDS`].
 #'
 #' @param object (definition copied from  [`base::readRDS`]:) R object to serialize.
 #' @param file (definition copied from  [`base::readRDS`]:) a connection or the name of the file where the R object is saved to or read from.
@@ -26,6 +26,7 @@
 #' @param refhook	(definition copied from  [`base::readRDS`]:) a hook function for handling reference objects.
 #'
 #' @name serialize
+#' @aliases serialise readRDS saveRDS
 #' @keywords saving
 #'
 #' @return
@@ -75,22 +76,6 @@
 #' }
 #'
 NULL
-
-
-# Defining S4 generics -----------------------------------------------------
-
-#' @describeIn serialize S4 generic function for `saveRDS`
-#'
-#' @export
-#'
-saveRDS <- function(object, file = "", ascii = FALSE, version = NULL, compress = TRUE, refhook = NULL) UseMethod("saveRDS")
-
-
-#' @describeIn serialize S4 generic function for `readRDS`
-#'
-#' @export
-#'
-readRDS <- function(file, refhook = NULL) UseMethod("readRDS")
 
 
 # Defining omnibus function --------------------------------------------------
