@@ -82,23 +82,24 @@ This function is a wrapper around the function \link{isofit}.
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(getOption_IsoriX("example_maxtime") > 30) {
+if (getOption_IsoriX("example_maxtime") > 30) {
+  ## We prepare the GNIP monthly data between January and June for Germany
 
-## We prepare the GNIP monthly data between January and June for Germany
+  GNIPDataDEmonthly <- prepsources(
+    data = GNIPDataDE,
+    month = 1:6,
+    split_by = "month"
+  )
 
-GNIPDataDEmonthly <- prepsources(data = GNIPDataDE,
-                                 month = 1:6,
-                                 split_by = "month")
+  head(GNIPDataDEmonthly)
 
-head(GNIPDataDEmonthly)
+  ## We fit the isoscapes
 
-## We fit the isoscapes
+  GermanMonthlyFit <- isomultifit(data = GNIPDataDEmonthly)
 
-GermanMonthlyFit <- isomultifit(data = GNIPDataDEmonthly)
+  GermanMonthlyFit
 
-GermanMonthlyFit
-
-plot(GermanMonthlyFit)
+  plot(GermanMonthlyFit)
 }
 }
 \seealso{

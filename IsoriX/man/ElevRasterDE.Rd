@@ -33,7 +33,7 @@ median(values(cellSize(ElevRasterDE, unit = "km")))
 #                              x = c(5.5, 15.5), y = c(47, 55.5)),
 #                              prj = "+proj=longlat +datum=WGS84 +no_defs",
 #                              clip = "bbox", z = 3)
-# 
+#
 # ElevRasterDE <- terra::rast(ElevRasterDE)
 
 
@@ -43,10 +43,9 @@ median(values(cellSize(ElevRasterDE, unit = "km")))
 # getelev(file = "~/ElevRasterDE.tif",
 #         z = 3,
 #         long_min = 5.5, long_max = 15.5, lat_min = 47, lat_max = 55.5)
-        
+
 # ## Convert the tif into R raster format
 # ElevRasterDE <- rast('~/ElevRasterDE.tif')
-
 
 }
 \seealso{

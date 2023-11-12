@@ -41,7 +41,7 @@ str(CalibDataBat2)
 ## an elevation raster with the function getelev()
 ## and will therefore not run unless you uncomment it
 
-#if (require(terra)){
+# if (require(terra)){
 #    ## We delete the elevation data
 #    CalibDataBat2$elev <- NULL
 #
@@ -56,7 +56,7 @@ str(CalibDataBat2)
 #        ElevationRasterBig,
 #        cbind(CalibDataBat2$long, CalibDataBat2$lat))
 #    head(CalibDataBat2)
-#}
+# }
 
 }
 \references{

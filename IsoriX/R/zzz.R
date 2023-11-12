@@ -4,24 +4,23 @@
 .onAttach <- function(libname, pkgname) {
   ## This function should not be called by the user.
   ## It displays a message when the package is being loaded.
-  packageStartupMessage(## display message
-                        "\n IsoriX version ", utils::packageDescription("IsoriX")$Version," is now loaded",
-                        "\n",
-                        "\n Type:",
-                        "\n   * `?IsoriX` for a very short description",
-                        "\n   * `browseURL('https://bookdown.org/content/782/')` for a longer (online) documentation",
-                        "\n   * `help(package = 'IsoriX', help_type = 'html')` for a list of the package objects and help files",
-                        "\n   * `citation('IsoriX')` for how to cite IsoriX (i.e. the papers you should read)",
-                        "\n   * `news(package = 'IsoriX')` for info on changed between versions of IsoriX",
-                        "\n",
-                        "\n Please join the mailing list 'https://groups.google.com/g/IsoriX'",
-                        "\n for help, news and discussions about IsoriX",
-                        "\n"
-                        )
-  
+  packageStartupMessage( ## display message
+    "\n IsoriX version ", utils::packageDescription("IsoriX")$Version, " is now loaded",
+    "\n",
+    "\n Type:",
+    "\n   * `?IsoriX` for a very short description",
+    "\n   * `browseURL('https://bookdown.org/content/782/')` for a longer (online) documentation",
+    "\n   * `help(package = 'IsoriX', help_type = 'html')` for a list of the package objects and help files",
+    "\n   * `citation('IsoriX')` for how to cite IsoriX (i.e. the papers you should read)",
+    "\n   * `news(package = 'IsoriX')` for info on changed between versions of IsoriX",
+    "\n",
+    "\n Please join the mailing list 'https://groups.google.com/g/IsoriX'",
+    "\n for help, news and discussions about IsoriX",
+    "\n"
+  )
+
   .load_internal_files() ## lazy loading of the internal data
-  
-  }
+}
 
 
 .onLoad <- function(libname, pkgname) {
@@ -33,7 +32,7 @@
 .onUnload <- function(libpath) {
   ## This function should not be called by the user.
   ## It restores the original R options.
-  options(.data_IsoriX$R_options)  ## reset R options to their backed up values
+  options(.data_IsoriX$R_options) ## reset R options to their backed up values
 }
 
 
@@ -87,7 +86,7 @@
 .hit_return <- function() {
   ## This function should not be called by the user.
   ## It asks the user to press return in RStudio (used for plotting).
-  if (interactive() & .Platform$GUI == "RStudio" & getOption_IsoriX("dont_ask") == FALSE) {
+  if (interactive() && .Platform$GUI == "RStudio" && getOption_IsoriX("dont_ask") == FALSE) {
     cat("Hit <Return> for next plot")
     readline()
   }
@@ -105,12 +104,11 @@
     if (is.call(x = arg <- args[[arg_name]])) {
       if (arg[1] == "list()") {
         arg_input <- mget(names(args), envir = env)[[arg_name]]
-        arg_full  <- eval(formals(fn)[[arg_name]])
+        arg_full <- eval(formals(fn)[[arg_name]])
         if (is.null(names(arg_input))) {
           if (length(arg_input) == length(arg_full)) {
             names(arg_input) <- names(arg_full)
-          }
-          else {
+          } else {
             stop(paste("The list", arg_name, "should contain names, or be of length equal to the default."))
           }
         }
@@ -129,11 +127,11 @@
   ## If the months are already as numbers, it works too.
   ## Example: .converts_months_to_numbers(c("January", "Feb", 3, "April", "Toto"))
   end <- sapply(x, function(x) {
-    res <- match(tolower(x), tolower(month.abb))  ## deals with abbreviation
+    res <- match(tolower(x), tolower(month.abb)) ## deals with abbreviation
     if (is.na(res)) {
-      res <- match(tolower(x), tolower(month.name))  ## deals with full names
+      res <- match(tolower(x), tolower(month.name)) ## deals with full names
     }
-    if (is.na(res)) {  ## deal with other cases
+    if (is.na(res)) { ## deal with other cases
       res <- x
     }
     if (res %in% paste(1:12)) { ## check if other cases are numbers (quoted or not)
@@ -143,7 +141,7 @@
       return(res)
     } else {
       warning("some months are NA after the conversion in integers, please check/fix your data!")
-      return(NA)  ## if final output is not a number, it returns NA
+      return(NA) ## if final output is not a number, it returns NA
     }
   })
   return(end)
@@ -157,25 +155,27 @@
   } else if (terra::inMemory(var)) {
     return(as.numeric(terra::values(var)))
   }
-  
+
   if (interactive()) {
     print("extracting values from stored rasters...")
   }
-  
+
   if (inherits(var, c("SpatRaster"))) {
     if (terra::nlyr(var) == 1) {
-       var <- terra::quantile(var, seq(0, 1, length = nb_quantiles))
-       return(var)
+      var <- terra::quantile(var, seq(0, 1, length = nb_quantiles))
+      return(var)
     } else if (terra::nlyr(var) > 1) {
-    max_var <- max(terra::values(max(var)))
-    min_var <- min(terra::values(min(var)))
-    var <- unique(c(min_var,
-                    apply(terra::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
-                    max_var))
-    return(var)
+      max_var <- max(terra::values(max(var)))
+      min_var <- min(terra::values(min(var)))
+      var <- unique(c(
+        min_var,
+        apply(terra::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
+        max_var
+      ))
+      return(var)
     }
   }
-  
+
   stop("'var' has an unknown class")
 }
 
@@ -183,14 +183,15 @@
 .crop_withmargin <- function(raster, xmin, xmax, ymin, ymax, margin_pct = 5) {
   ## This function should not be called by the user.
   ## It crops a raster using a safety margin.
-  margin_long <- (xmax - xmin) * margin_pct/100
-  margin_lat  <- (ymax - ymin) * margin_pct/100
-  
-  terra::crop(raster, terra::ext(xmin - margin_long,
-                                 xmax + margin_long,
-                                 ymin - margin_lat,
-                                 ymax + margin_lat))
+  margin_long <- (xmax - xmin) * margin_pct / 100
+  margin_lat <- (ymax - ymin) * margin_pct / 100
 
+  terra::crop(raster, terra::ext(
+    xmin - margin_long,
+    xmax + margin_long,
+    ymin - margin_lat,
+    ymax + margin_lat
+  ))
 }
 
 .invert_reg <- function(intercept, slope, SE_I, SE_S, phi, N, sign_mean_Y) {
@@ -198,40 +199,42 @@
   ## It turns a regression x ~ y to a regression y ~ x.
   Nminus1 <- N - 1L
   Nminus2 <- N - 2L
-  Nfac <- Nminus1/N
-  
+  Nfac <- Nminus1 / N
+
   MSExony <- phi
   VarSxony <- SE_S^2
 
-  Vary <- MSExony/(Nminus1*VarSxony)
-  Covxy <- Vary*slope
-  Varx <- (MSExony*(slope^2 + Nminus2*VarSxony))/(Nminus1*VarSxony)
-  o_slope <- Covxy/Varx
-  
-  resid_MSE <-  (Vary - Covxy^2/Varx)*Nminus1/Nminus2
-  o_SE_S <- sqrt(resid_MSE/(Nminus1*Varx))
-  
-  Ey2 <- (SE_I/SE_S)^2 
-  Ey <- sign_mean_Y * sqrt(Ey2 - Vary*Nfac)
-  Ex <- intercept + slope*Ey
-  Ex2 <- Varx*Nfac + Ex^2
-  o_SE_I <- sqrt(resid_MSE*Ex2/(Nminus1*Varx))
-  vcov12 <- -resid_MSE*Ex/(Nminus1*Varx)
+  Vary <- MSExony / (Nminus1 * VarSxony)
+  Covxy <- Vary * slope
+  Varx <- (MSExony * (slope^2 + Nminus2 * VarSxony)) / (Nminus1 * VarSxony)
+  o_slope <- Covxy / Varx
+
+  resid_MSE <- (Vary - Covxy^2 / Varx) * Nminus1 / Nminus2
+  o_SE_S <- sqrt(resid_MSE / (Nminus1 * Varx))
+
+  Ey2 <- (SE_I / SE_S)^2
+  Ey <- sign_mean_Y * sqrt(Ey2 - Vary * Nfac)
+  Ex <- intercept + slope * Ey
+  Ex2 <- Varx * Nfac + Ex^2
+  o_SE_I <- sqrt(resid_MSE * Ex2 / (Nminus1 * Varx))
+  vcov12 <- -resid_MSE * Ex / (Nminus1 * Varx)
   o_vcov <- matrix(c(o_SE_I^2, vcov12, vcov12, o_SE_S^2), ncol = 2)
-  
-  list(intercept = Ey - o_slope*Ex, 
-       slope = o_slope, 
-       SE_I = o_SE_I, 
-       SE_S = o_SE_S, 
-       phi = resid_MSE,
-       vcov = o_vcov)
+
+  list(
+    intercept = Ey - o_slope * Ex,
+    slope = o_slope,
+    SE_I = o_SE_I,
+    SE_S = o_SE_S,
+    phi = resid_MSE,
+    vcov = o_vcov
+  )
 }
 # Example:
 # set.seed(123)
 # xy <- data.frame(x = x <- rnorm(20), y = rnorm(20, mean = 10) + 0.7*x)
 # input <- lm(x ~ y, data = xy)
 # output <- lm(y ~ x, data = xy)
-# 
+#
 # foo <- .invert_reg(intercept = coef(input)[1],
 #                   slope = coef(input)[2],
 #                   SE_I = sqrt(vcov(input)[1, 1]),
@@ -239,19 +242,19 @@
 #                   phi = summary(input)$sigma^2,
 #                   sign_mean_Y = sign(mean(xy$y)),
 #                   N = 20)
-# 
+#
 # d_output <- data.frame(intercept =  coef(output)[1],
 #                       slope = coef(output)[2],
 #                       SE_I = sqrt(vcov(output)[1, 1]),
 #                       SE_S = sqrt(vcov(output)[2, 2]),
 #                       phi = summary(output)$sigma^2)
-# 
+#
 # d_foo <- data.frame(intercept =  foo$intercept,
 #                    slope = foo$slope,
 #                    SE_I = foo$SE_I,
 #                    SE_S = foo$SE_S,
 #                    phi = foo$phi)
-# 
+#
 # rbind(d_output, d_foo)
 
 
@@ -286,65 +289,67 @@
   })
   result <- withCallingHandlers(job, warning = wHandler, message = mHandler)
   output <- paste0(readLines(temp, warn = FALSE), collapse = "\n")
-  list(result = result,
-       output = output,
-       warnings = warnings, 
-       messages = messages)
+  list(
+    result = result,
+    output = output,
+    warnings = warnings,
+    messages = messages
+  )
 }
 
 .safe_and_quiet_predictions <- function(object, newdata, variances = list(), ...) {
   ## This function should not be called by the user.
   ## It run the predictions while capturing errors, warnings and messages without stopping
-  
+
   res <- .quiet(tryCatch(spaMM::predict.HLfit(object = object, newdata = newdata, variances = variances, ...),
-                  error = function(e) {
-    
-    ## debugging mode
-    if (getOption_IsoriX("spaMM_debug")) {
-      stop(e)
-    }
-                    
-    ## convert error into warning to avoid stopping
-    warning(paste("  WARNING converted from ERROR in `spaMM::predict.HLfit()`:\n", e))
-    
-    ## return NAs for all outputs of `spaMM::predict.HLfit` if there is an error
-    m <- matrix(NA, nrow = nrow(newdata), ncol = 1)
-    if (isTRUE(as.vector(variances)[["predVar"]]) || isTRUE(as.vector(variances)[["respVar"]])) {
-      if (isTRUE(as.vector(variances)[["cov"]])) {
-        param_fixed <- names(spaMM::fixef(object))
-        m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
-        rownames(m) <- colnames(m) <- names(param_fixed)
-        attr(m, "predVar") <- m
+    error = function(e) {
+      ## debugging mode
+      if (getOption_IsoriX("spaMM_debug")) {
+        stop(e)
       }
-      attr(m, "predVar") <- rep(NA, nrow(newdata))
-    }
-    if (isTRUE(as.vector(variances)[["residVar"]])) {
-      if (isTRUE(as.vector(variances)[["cov"]])) {
-        param_fixed <- names(spaMM::fixef(object))
-        m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
-        rownames(m) <- colnames(m) <- names(param_fixed)
-        attr(m, "residVar") <- m
+
+      ## convert error into warning to avoid stopping
+      warning(paste("  WARNING converted from ERROR in `spaMM::predict.HLfit()`:\n", e))
+
+      ## return NAs for all outputs of `spaMM::predict.HLfit` if there is an error
+      m <- matrix(NA, nrow = nrow(newdata), ncol = 1)
+      if (isTRUE(as.vector(variances)[["predVar"]]) || isTRUE(as.vector(variances)[["respVar"]])) {
+        if (isTRUE(as.vector(variances)[["cov"]])) {
+          param_fixed <- names(spaMM::fixef(object))
+          m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
+          rownames(m) <- colnames(m) <- names(param_fixed)
+          attr(m, "predVar") <- m
+        }
+        attr(m, "predVar") <- rep(NA, nrow(newdata))
       }
-      attr(m, "residVar") <- rep(NA, nrow(newdata))
-    }
-    if (isTRUE(as.vector(variances)[["respVar"]])) {
-      if (isTRUE(as.vector(variances)[["cov"]])) {
-        param_fixed <- names(spaMM::fixef(object))
-        m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
-        rownames(m) <- colnames(m) <- names(param_fixed)
-        attr(m, "respVar") <- m
+      if (isTRUE(as.vector(variances)[["residVar"]])) {
+        if (isTRUE(as.vector(variances)[["cov"]])) {
+          param_fixed <- names(spaMM::fixef(object))
+          m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
+          rownames(m) <- colnames(m) <- names(param_fixed)
+          attr(m, "residVar") <- m
+        }
+        attr(m, "residVar") <- rep(NA, nrow(newdata))
       }
-      attr(m, "respVar") <- rep(NA, nrow(newdata))
+      if (isTRUE(as.vector(variances)[["respVar"]])) {
+        if (isTRUE(as.vector(variances)[["cov"]])) {
+          param_fixed <- names(spaMM::fixef(object))
+          m <- matrix(NA, nrow = nrow(length(param_fixed)), ncol = nrow(length(param_fixed)))
+          rownames(m) <- colnames(m) <- names(param_fixed)
+          attr(m, "respVar") <- m
+        }
+        attr(m, "respVar") <- rep(NA, nrow(newdata))
+      }
+      return(m)
     }
-    return(m)
-    }))
-  
+  ))
+
   ## debugging mode
   if (getOption_IsoriX("spaMM_debug")) {
     if (length(res$warnings) > 0) warnings(res$warnings)
     if (length(res$messages) > 0) message(res$messages)
   }
-  
+
   ## return
   res
 }
@@ -352,13 +357,17 @@
 release_bullets <- function() {
   ## This function should not be called by the user.
   ## It is used to add bullet points to GitHub issues created with `usethis::use_release_issue()`
-  c( "run make check in terminal",
-     "check folder `IsoriX.Rcheck` and file in there", 
-     "run `tests/local_tests.R` step-by-step",
-     "rebuilt bookdown to make sure all works in there too (open Rproj from the bookdown folder and follow instructions in README)",
-     "update bookdown (open Rproj from the bookdown folder and follow instructions in README)",
-     "write email to Google Group (https://groups.google.com/g/IsoriX)")
-  }
+  c(
+    "run `styler:::style_active_pkg()` for reformatting of the code according to `styler::tidyverse_style()`",
+    "run `lintr::lint_package()` for checking code in depth",
+    "run make check in terminal",
+    "check folder `IsoriX.Rcheck` and file in there",
+    "run `tests/local_tests.R` step-by-step",
+    "rebuilt bookdown to make sure all works in there too (open Rproj from the bookdown folder and follow instructions in README)",
+    "update bookdown (open Rproj from the bookdown folder and follow instructions in README)",
+    "write email to Google Group (https://groups.google.com/g/IsoriX)"
+  )
+}
 
 
 utils::globalVariables(c("CountryBorders", "OceanMask"))

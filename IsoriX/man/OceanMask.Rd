@@ -16,7 +16,7 @@ It can be used to mask large bodies of water.
 }
 \examples{
 
-plot(OceanMask, col='blue')
+plot(OceanMask, col = "blue")
 
 ## How did we create this file?
 
@@ -27,7 +27,6 @@ plot(OceanMask, col='blue')
 #   OceanMask <- worldlimit - CountryBorders
 #   #saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
 # }
-
 
 }
 \seealso{

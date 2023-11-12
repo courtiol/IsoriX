@@ -1,4 +1,3 @@
-
 #' Setting and displaying the options of the package
 #'
 #' @name options
@@ -22,19 +21,23 @@
 #' options_IsoriX()
 #' options_IsoriX(example_maxtime = OldOptions$example_maxtime)
 #' options_IsoriX()
-
 options_IsoriX <- function(...) { ## as in spaMM
-  if (nargs() == 0) return(.data_IsoriX$IsoriX_options)
+  if (nargs() == 0) {
+    return(.data_IsoriX$IsoriX_options)
+  }
   current <- .data_IsoriX$IsoriX_options
   temp <- list(...)
   if (length(temp) == 1 && is.null(names(temp))) {
     arg <- temp[[1]]
     switch(mode(arg),
-           list = temp <- arg,
-           character = return(.data_IsoriX$IsoriX_options[arg]),
-           stop("invalid argument: ", sQuote(arg)))
+      list = temp <- arg,
+      character = return(.data_IsoriX$IsoriX_options[arg]),
+      stop("invalid argument: ", sQuote(arg))
+    )
   }
-  if (length(temp) == 0) return(current)
+  if (length(temp) == 0) {
+    return(current)
+  }
   n <- names(temp)
   if (is.null(n)) stop("options must be given by name")
   current[n] <- temp
@@ -55,10 +58,12 @@ getOption_IsoriX <- function(x = NULL) {
     stop("argument 'x' must be of length 1 maximum")
   }
   if (x == "Ncpu" && (options_IsoriX(x)[["Ncpu"]] > parallel::detectCores())) {
-    warning(paste(options_IsoriX(x)[["Ncpu"]],
-                  "CPUs were requested, but the maximum number of CPU on this machine is",
-                  parallel::detectCores(),
-                  "so the Ncpu option of this package has been corrected"))
+    warning(paste(
+      options_IsoriX(x)[["Ncpu"]],
+      "CPUs were requested, but the maximum number of CPU on this machine is",
+      parallel::detectCores(),
+      "so the Ncpu option of this package has been corrected"
+    ))
     options_IsoriX(Ncpu = parallel::detectCores())
   }
   if (x == "Ncpu") {
@@ -78,6 +83,5 @@ getOption_IsoriX <- function(x = NULL) {
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE)  ## put example_maxtime = 500 to check all examples
-                                                                                                            ## otherwise put 5
-
+.data_IsoriX$IsoriX_options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+## otherwise put 5

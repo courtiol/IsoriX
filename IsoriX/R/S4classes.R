@@ -7,9 +7,11 @@
 #'
 #' @export
 #' @rdname ISOSCAPE-class
-#' 
-setClass("ISOSCAPE", slots = c(isoscapes = "SpatRaster",
-                               sp_points = "list"))
+#'
+setClass("ISOSCAPE", slots = c(
+  isoscapes = "SpatRaster",
+  sp_points = "list"
+))
 
 
 #' Class CALIBFIT
@@ -27,17 +29,19 @@ setClass("ISOSCAPE", slots = c(isoscapes = "SpatRaster",
 #'
 #' @export
 #' @rdname CALIBFIT-class
-#' 
-setClass("CALIBFIT", slots = c(method = "character",
-                               species_rand = "logical",
-                               site_rand = "logical",
-                               param = "numeric",
-                               fixefCov = "matrix",
-                               phi = "numeric",
-                               calib_fit = "list",
-                               iso_fit = "list",
-                               data = "data.frame",
-                               sp_points = "list"))
+#'
+setClass("CALIBFIT", slots = c(
+  method = "character",
+  species_rand = "logical",
+  site_rand = "logical",
+  param = "numeric",
+  fixefCov = "matrix",
+  phi = "numeric",
+  calib_fit = "list",
+  iso_fit = "list",
+  data = "data.frame",
+  sp_points = "list"
+))
 
 
 #' Class ISOFIND
@@ -48,7 +52,9 @@ setClass("CALIBFIT", slots = c(method = "character",
 #'
 #' @export
 #' @rdname ISOFIND-class
-#' 
-setClass("ISOFIND", slots = c(sample = "list",
-                              group = "SpatRaster",
-                              sp_points = "list"))
+#'
+setClass("ISOFIND", slots = c(
+  sample = "list",
+  group = "SpatRaster",
+  sp_points = "list"
+))

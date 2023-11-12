@@ -158,43 +158,43 @@ IsoriX methods compatible with the use of \code{\link[terra:serialize]{terra::sa
 }}
 \examples{
 if (getOption_IsoriX("example_maxtime") > 30) {
+  ## We prepare the data
+  GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-## We prepare the data
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+  ## We fit the models
+  GermanFit <- isofit(
+    data = GNIPDataDEagg,
+    mean_model_fix = list(elev = TRUE, lat_abs = TRUE)
+  )
 
-## We fit the models
-GermanFit <- isofit(data = GNIPDataDEagg,
-                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+  ## We build the isoscapes
+  GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
-## We build the isoscapes
-GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+  ## Saving as RDS
+  filename <- tempfile(fileext = ".rds") # or whatever names you want
+  saveRDS(GermanScape, file = filename)
 
-## Saving as RDS
-filename <- tempfile(fileext = ".rds") # or whatever names you want
-saveRDS(GermanScape, file = filename)
+  ## Reading RDS
+  GermanScape2 <- readRDS(filename)
+  GermanScape2
 
-## Reading RDS
-GermanScape2 <- readRDS(filename)
-GermanScape2
+  ## Saving data.frame object as RDS
+  filename2 <- tempfile(fileext = ".rds") # or whatever names you want
+  saveRDS(iris, file = filename2)
 
-## Saving data.frame object as RDS
-filename2 <- tempfile(fileext = ".rds") # or whatever names you want
-saveRDS(iris, file = filename2)
+  ## Reading RDS containing data.frame
+  iris2 <- readRDS(filename2)
+  iris2
 
-## Reading RDS containing data.frame
-iris2 <- readRDS(filename2) 
-iris2
+  ## Saving terra object as RDS
+  filename3 <- tempfile(fileext = ".rds") # or whatever names you want
+  f <- system.file("ex/elev.tif", package = "terra")
+  r <- rast(f)
+  saveRDS(r, file = filename3)
 
-## Saving terra object as RDS
-filename3 <- tempfile(fileext = ".rds") # or whatever names you want
-f <- system.file("ex/elev.tif", package="terra")
-r <- rast(f)
-saveRDS(r, file = filename3)
-
-## Reading RDS containing terra object
-r2 <- readRDS(filename3) 
-r2
-
+  ## Reading RDS containing terra object
+  r2 <- readRDS(filename3)
+  r2
 }
 
 }

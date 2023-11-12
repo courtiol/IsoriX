@@ -6,5 +6,4 @@ test_that("test options modification and retrieval", {
   expect_equal(length(getOption_IsoriX()), 4L)
   expect_error(getOption_IsoriX("bidon"))
   expect_error(getOption_IsoriX(c("example_maxtime", "bidon")))
-  }
-)
+})
