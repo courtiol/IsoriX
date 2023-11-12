@@ -55,28 +55,38 @@ It is a work in progress, but it already contains plenty of material that should
 
 ```{r image_intro, echo = FALSE, dev = 'CairoPNG', animation.hook = 'gifski', interval = 3, fig.with = 6, cache = FALSE}
 ## for the following to work several chapters must be compiled!
-if (file.exists("output/EuropeIsoscape.rda") &
-    file.exists("output/CalibBats.rda") &
-    file.exists("output/AssignedBats.rda")) {
-  load("output/EuropeIsoscape.rda")
-  load("output/CalibBats.rda")
-  load("output/AssignedBats.rda")
+
+if (file.exists("output/EuropeIsoscape.rds") &
+    file.exists("output/CalibBats.rds") &
+    file.exists("output/AssignedBats.rds")) {
+  
+  EuropeIsoscape <- readRDS("output/EuropeIsoscape.rds")
+  CalibBats <- readRDS("output/CalibBats.rds")
+  AssignedBats <- readRDS("output/AssignedBats.rds")
+  
   plot(EuropeIsoscape)
+  
   plot(EuropeIsoscape,
      sources = list(pch = 3, col = "orange"),
      borders = list(col = "white"),
      mask    = list(fill = "darkgrey"),
      palette = list(range = c(-130, 10), step = 1, n_labels = 10, fn = "rainbow"))
+  
   plot(EuropeIsoscape,
      title = "H Isoscape",
      sources = list(draw = FALSE),
      borders = list(borders = NULL),
      mask    = list(fill = "black"),
      palette = list(range = c(-130, 20), step = 30, fn = NULL))
+  
   plot(EuropeIsoscape, which = "mean_predVar")
+  
   plot(EuropeIsoscape, which = "mean_residVar")
+  
   plot(CalibBats)
+  
   plot(AssignedBats, who = "Nnoc_15")
+  
   plot(AssignedBats, who = 1:4,
        sources = list(draw = FALSE),
        calibs = list(draw = FALSE),

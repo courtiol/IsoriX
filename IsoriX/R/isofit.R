@@ -139,7 +139,7 @@
 #'   disp_fit object: mean_fit is not fitted independently from disp_fit.
 #'
 #'   For all methods, fixed effects are being estimated by Maximum Likelihood
-#'   (ML) and dispersion parameters (i.e. random effects and Matern correlation
+#'   (ML) and dispersion parameters (i.e. random effects and Matérn correlation
 #'   parameters) are estimated by Restricted Maximum Likelihood (REML). Using
 #'   REML provides more accurate prediction intervals but impedes the accuracy
 #'   of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the
@@ -167,7 +167,7 @@
 #'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
-#'   
+#'
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
 #' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
@@ -181,31 +181,29 @@
 #' @source \url{https://kimura.univ-montp2.fr/~rousset/spaMM.htm}
 #' @keywords models regression
 #' @examples
-#' 
+#'
 #' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
-#' 
-#' if(getOption_IsoriX("example_maxtime") > 10) {
-#' 
-#' ## Fitting the models for Germany
-#' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
-#' 
-#' GermanFit <- isofit(data = GNIPDataDEagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-#' 
-#' GermanFit
-#' 
-#' ## Diagnostics for the fits
-#' plot(GermanFit)
-#' 
-#' ## Exploration of the fitted models
-#' GermanFit$mean_fit
-#' GermanFit$disp_fit
-#' AIC(GermanFit$disp_fit)
-#' 
+#'
+#' if (getOption_IsoriX("example_maxtime") > 10) {
+#'   ## Fitting the models for Germany
+#'   GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+#'
+#'   GermanFit <- isofit(data = GNIPDataDEagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+#'
+#'   GermanFit
+#'
+#'   ## Diagnostics for the fits
+#'   plot(GermanFit)
+#'
+#'   ## Exploration of the fitted models
+#'   GermanFit$mean_fit
+#'   GermanFit$disp_fit
+#'   AIC(GermanFit$disp_fit)
 #' }
-#' 
+#'
 #' @export
 isofit <- function(data,
                    mean_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE, long_2 = FALSE),
@@ -217,9 +215,7 @@ isofit <- function(data,
                    dist_method = "Earth", ## or: "Euclidean"
                    control_mean = list(),
                    control_disp = list(),
-                   verbose = interactive()
-                   ) {
-
+                   verbose = interactive()) {
   ## Complete the arguments
   .complete_args(isofit)
 
@@ -237,24 +233,24 @@ isofit <- function(data,
   }
 
   ## Partially check that the different arguments are compatible between each others
-  if (sum(unlist(mean_model_rand)) == 0 & (spaMM_method$mean_model == "corrHLfit" | spaMM_method$disp_model == "corrHLfit")) {
+  if (sum(unlist(mean_model_rand)) == 0 && (spaMM_method$mean_model == "corrHLfit" || spaMM_method$disp_model == "corrHLfit")) {
     stop("Your call does not make sense: the spaMM_method 'corrHLfit' should only be used when random effects are present.")
   }
-  if (mean_model_rand[[2]] & spaMM_method$mean_model == "HLfit") {
+  if (mean_model_rand[[2]] && spaMM_method$mean_model == "HLfit") {
     stop("Your call does not make sense: the spaMM_method 'HLfit' should only be used when no spatial random effects are present.")
   }
-  if (disp_model_rand[[2]] & spaMM_method$disp_model == "HLfit") {
+  if (disp_model_rand[[2]] && spaMM_method$disp_model == "HLfit") {
     stop("Your call does not make sense: the spaMM_method 'HLfit' should only be used when no spatial random effects are present.")
   }
-  if (!mean_model_rand[[2]] & spaMM_method$mean_model == "corrHLfit") {
+  if (!mean_model_rand[[2]] && spaMM_method$mean_model == "corrHLfit") {
     stop("Your call does not make sense: the spaMM_method 'corrHLfit' should only be used when a spatial random effects is present.")
   }
-  if (!disp_model_rand[[2]] & spaMM_method$disp_model == "corrHLfit") {
+  if (!disp_model_rand[[2]] && spaMM_method$disp_model == "corrHLfit") {
     stop("Your call does not make sense: the spaMM_method 'corrHLfit' should only be used when a spatial random effects is present.")
   }
-  if (!mean_model_rand$spatial & !disp_model_rand$spatial &
-      all(unlist(uncorr_terms) != c("lambda", "lambda"))
-      ) {
+  if (!mean_model_rand$spatial && !disp_model_rand$spatial &&
+    all(unlist(uncorr_terms) != c("lambda", "lambda"))
+  ) {
     stop("In the absence of spatial random effects, only 'lambda' can be used as uncorr_terms.")
   }
 
@@ -262,15 +258,15 @@ isofit <- function(data,
   ## Prepare the dataset
   data <- .prepare_data_sources(data)
 
-  ## Define the formulas for each model   
+  ## Define the formulas for each model
   mean_formula <- .prepare_formula("mean_source_value ~ 1",
-                                  fix = mean_model_fix, rand = mean_model_rand,
-                                  rand_p = uncorr_terms$mean_model
-                                  )
+    fix = mean_model_fix, rand = mean_model_rand,
+    rand_p = uncorr_terms$mean_model
+  )
   disp_formula <- .prepare_formula("var_source_value ~ 1",
-                                  fix = disp_model_fix, rand = disp_model_rand,
-                                  rand_p = uncorr_terms$disp_model
-                                  )
+    fix = disp_model_fix, rand = disp_model_rand,
+    rand_p = uncorr_terms$disp_model
+  )
 
   ## Define weights
   data$weights_mean <- as.numeric(data$n_source_value)
@@ -278,19 +274,21 @@ isofit <- function(data,
   if (all(data$weights_disp < 1)) {
     stop("The variable 'n_source_value' must have some observations > 1 to fit the residual dispersion model.")
   }
-    
-  ## Define the baseline argument lists for the models irrespective of the spaMM_method       
-  args_dispfit <- list(formula = stats::formula(disp_formula),
-                        family = stats::Gamma(log),
-                        prior.weights = data$weights_disp,
-                        data = data
-                        )
 
-  args_meanfit <- list(formula = stats::formula(mean_formula),
-                        prior.weights = data$weights_mean,
-                        resid.model = list(formula = ~ 0 + offset(pred_disp), family = stats::Gamma(identity)),
-                        data = data
-                        )
+  ## Define the baseline argument lists for the models irrespective of the spaMM_method
+  args_dispfit <- list(
+    formula = stats::formula(disp_formula),
+    family = stats::Gamma(log),
+    prior.weights = data$weights_disp,
+    data = data
+  )
+
+  args_meanfit <- list(
+    formula = stats::formula(mean_formula),
+    prior.weights = data$weights_mean,
+    resid.model = list(formula = ~ 0 + offset(pred_disp), family = stats::Gamma(identity)),
+    data = data
+  )
 
   ## Inclusion of additional arguments for corrHLfit, if necessary
   if (spaMM_method[1] == "corrHLfit") {
@@ -335,13 +333,24 @@ isofit <- function(data,
   }
 
   ## Fit disp_fit
-  time_disp <- system.time(disp_fit <- do.call(eval(parse(text = paste0("spaMM::", spaMM_method$disp_model))),
-                                               c(args_dispfit, control_disp)
-                                               )
-                          )
+  time_disp <- system.time(disp_fit <- do.call(
+    eval(parse(text = paste0("spaMM::", spaMM_method$disp_model))),
+    c(args_dispfit, control_disp)
+  ))
 
   ## Predict the values for the residual variance
-  args_meanfit$data$pred_disp <- spaMM::predict.HLfit(disp_fit, newdata = data)[, 1]
+  pred_disp_obj <- .safe_and_quiet_predictions(disp_fit, newdata = data)
+  args_meanfit$data$pred_disp <- pred_disp_obj$result[, 1]
+
+  if (length(pred_disp_obj$messages) > 0) {
+    message("The following messages were produced by the predictions of residual dispersion: ")
+    message(pred_disp_obj$messages)
+  }
+
+  if (length(pred_disp_obj$warnings) > 0) {
+    message("The following warnings were produced by the predictions of mean isotopic values: ")
+    message(pred_disp_obj$warnings)
+  }
 
   ## Interactive display
   if (verbose) {
@@ -352,10 +361,10 @@ isofit <- function(data,
   }
 
   ## Fit mean_fit
-  time_mean <- system.time(mean_fit <- do.call(eval(parse(text = paste0("spaMM::", spaMM_method$mean_model))),
-                                               c(args_meanfit, control_mean)
-                                               )
-                           )
+  time_mean <- system.time(mean_fit <- do.call(
+    eval(parse(text = paste0("spaMM::", spaMM_method$mean_model))),
+    c(args_meanfit, control_mean)
+  ))
 
   ## Interactive display of fit time duration
   total_time <- round(as.numeric((time_mean + time_disp)[3]))
@@ -369,7 +378,7 @@ isofit <- function(data,
 
   ## Create the return object
   out <- list("mean_fit" = mean_fit, "disp_fit" = disp_fit, "info_fit" = info_fit)
-  
+
   class(out) <- c("ISOFIT", "list")
 
   return(invisible(out))
@@ -404,24 +413,25 @@ isofit <- function(data,
 #' ## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
-#' 
-#' if(getOption_IsoriX("example_maxtime") > 30) {
-#' 
-#' ## We prepare the GNIP monthly data between January and June for Germany
-#' 
-#' GNIPDataDEmonthly <- prepsources(data = GNIPDataDE,
-#'                                  month = 1:6,
-#'                                  split_by = "month")
-#' 
-#' head(GNIPDataDEmonthly)
-#' 
-#' ## We fit the isoscapes
-#' 
-#' GermanMonthlyFit <- isomultifit(data = GNIPDataDEmonthly)
-#' 
-#' GermanMonthlyFit
-#' 
-#' plot(GermanMonthlyFit)
+#'
+#' if (getOption_IsoriX("example_maxtime") > 30) {
+#'   ## We prepare the GNIP monthly data between January and June for Germany
+#'
+#'   GNIPDataDEmonthly <- prepsources(
+#'     data = GNIPDataDE,
+#'     month = 1:6,
+#'     split_by = "month"
+#'   )
+#'
+#'   head(GNIPDataDEmonthly)
+#'
+#'   ## We fit the isoscapes
+#'
+#'   GermanMonthlyFit <- isomultifit(data = GNIPDataDEmonthly)
+#'
+#'   GermanMonthlyFit
+#'
+#'   plot(GermanMonthlyFit)
 #' }
 #' @export
 isomultifit <- function(data,
@@ -435,24 +445,22 @@ isomultifit <- function(data,
                         dist_method = "Earth", ## or: "Euclidean"
                         control_mean = list(),
                         control_disp = list(),
-                        verbose = interactive()
-) {
-  
+                        verbose = interactive()) {
   ## Complete the arguments
   .complete_args(isomultifit)
-  
+
   ## Save the call information
   info_multifit <- info_fit <- mget(names(formals()))
   info_multifit$IsoriX_version <- utils::packageDescription("IsoriX")$Version
   info_multifit$verbose <- verbose
-  
+
   if (is.null(data[, split_by])) {
-      stop(paste("You used 'split_by =", split_by, "' but no column called ',", split_by, "' is found in 'data'..."))
+    stop(paste("You used 'split_by =", split_by, "' but no column called ',", split_by, "' is found in 'data'..."))
   }
-  
+
   ## Prepare arguments for call(s) to isofit
-  info_fit$split_by <- info_fit$weighting <- NULL  ## removes arguments unknown to isofit
-  
+  info_fit$split_by <- info_fit$weighting <- NULL ## removes arguments unknown to isofit
+
   ## Trivial case if no splitting is done
   if (is.null(split_by)) {
     return(do.call(isofit, info_fit))
@@ -465,7 +473,7 @@ isomultifit <- function(data,
   }
 
   ## Run all fits
-  info_fit$verbose <- FALSE ## no display for each fit  
+  info_fit$verbose <- FALSE ## no display for each fit
   total_time <- system.time({
     multi_fits <- lapply(unique(data[, split_by]), function(s) {
       info_fit$data <- data[data[, split_by] == s, ]
@@ -474,24 +482,24 @@ isomultifit <- function(data,
         print(paste("fit of the pair of models for", split_by, s, "done"), quote = FALSE)
       }
       return(fit)
-      })
+    })
   })
   names(multi_fits) <- paste(split_by, unique(data[, split_by]), sep = "_")
-  
+
   ## Interactive display
   if (verbose) {
     print(paste("Done!"), quote = FALSE)
     print(paste0("All models have been fitted in ", round(as.numeric((total_time)[3])), "s."), quote = FALSE)
   }
-  
+
   ## Store the time
   info_multifit$time_fit <- total_time
-  
+
   ## Create the return object
   out <- list("multi_fits" = multi_fits, "info_fit" = info_multifit)
-  
+
   class(out) <- c("MULTIISOFIT", "ISOFIT", "list")
-  
+
   return(invisible(out))
 }
 
@@ -514,7 +522,7 @@ isomultifit <- function(data,
   if (!is.null(data$source_ID)) {
     data$source_ID <- factor(data$source_ID)
   }
-    
+
   data$lat_abs <- abs(data$lat)
   data$lat_2 <- data$lat^2
   data$long_2 <- data$long^2
@@ -522,7 +530,7 @@ isomultifit <- function(data,
 }
 
 
-.prepare_formula <- function(base_formula, fix, rand, rand_p){
+.prepare_formula <- function(base_formula, fix, rand, rand_p) {
   ## This function should not be called by the user but is itself called by other functions.
   ## It prepares formulas for the fitting procedures.
   if (fix$elev) {
@@ -540,7 +548,7 @@ isomultifit <- function(data,
   if (fix$long_2) {
     base_formula <- paste(base_formula, "+ long_2")
   }
-  if (rand$uncorr & rand_p == "lambda") {
+  if (rand$uncorr && rand_p == "lambda") {
     base_formula <- paste(base_formula, "+ (1|source_ID)")
   }
   if (rand$spatial) {
@@ -574,12 +582,12 @@ summary.ISOFIT <- function(object, ...) {
     cat(paste("[models fitted with spaMM version ", object$mean_fit$spaMM.version, "]", sep = ""), "\n")
     cat("\n")
   } else {
-    for (fit in 1:length(object$multi_fits)) {
+    for (fit in seq_along(object$multi_fits)) {
       cat("\n")
       cat(paste("##### Pair of models", names(object$multi_fits)[fit]), "#####")
       cat("\n")
       Recall(object$multi_fits[[fit]])
-      }
+    }
   }
   return(invisible(NULL))
 }

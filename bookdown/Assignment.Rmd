@@ -49,13 +49,13 @@ AssignedBats <- isofind(data = AssignDataBat,
 ```
 
 ```{r assignment real, echo = FALSE, message = FALSE}
-if (!file.exists("output/AssignedBats.rda")) {
+if (!file.exists("output/AssignedBats.rds")) {
   AssignedBats <- isofind(data = AssignDataBat,
                           isoscape = EuropeIsoscape,
                           calibfit = CalibBats)
-  save(AssignedBats, file = "output/AssignedBats.rda", compress = "xz")
+  saveRDS(AssignedBats, file = "output/AssignedBats.rds", compress = "xz")
 } else {
-  load("output/AssignedBats.rda")
+  AssignedBats <- readRDS("output/AssignedBats.rda")
 }
 ```
 

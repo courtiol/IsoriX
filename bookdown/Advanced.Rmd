@@ -73,8 +73,8 @@ For example, consider you want to add the point that is the most compatible with
 The first step is to recover the coordinates for such a point:
 
 ```{r maximum, message = FALSE}
-library(raster)
-coord <- coordinates(AssignedBats2$group$pv)
+library(terra)
+coord <- crds(AssignedBats2$group$pv)
 MaxLocation <- coord[which.max(values(AssignedBats2$group$pv)), ]
 Maximum <- data.frame(long = MaxLocation[1], lat = MaxLocation[2])
 Maximum
@@ -132,7 +132,7 @@ As you can see, you first initialize the creation of the plot with the function 
 As arguments, you probably want to specify the dimensions and the resolution of the file.
 The height and width are here considered to be in pixels (default setting, you can choose other units if you want using the argument `units`). Here we chose the so-called Full-HD or 1080p resolution (1080x1920) because we wanted to observe the isoscape carefully on a monitor of that resolution.
 If your screen is Full-HD, try it and display the plot in full screen to get better results (if the plot does not match the definition of your screen, things can get ugly), if your screen is not, try another resolution.
-If you don't know what resolution your screen has, you can visit http://www.whatismyscreenresolution.com/.
+If you don't know what resolution your screen has, you can visit https://screenresolutiontest.com.
 
 The parameter `res` is very useful as it rescales the line and fonts in the plot.
 So if everything is too small just increase the value and if everything looks too bold and ugly, decreases it.
@@ -211,24 +211,22 @@ The trick is to simply add `dev='CairoPNG'` in the option of the chunks producin
 
 It is straightforward to export all spatial objects created by IsoriX into formats compatible with main software for Geographic Information System (GIS).
 This can be done using multiple R packages.
-Here is an example of how to export a GTiff raster using the package [**raster**](https://rspatial.org/raster/pkg/7-writing.html):
+Here is an example of how to export a GTiff raster using the package [**terra**](https://rspatial.org/spatial/5-files.html#writing-raster-data):
 
 ```{r save_raster_GIS_fake, eval=FALSE}
-library(raster)
+library(terra)
 
 writeRaster(EuropeIsoscape$isoscapes$mean,
             filename = "EuropeIsoscape.tif",
-            format = "GTiff",
             overwrite = TRUE,
             NAflag = -9999)
 ```
 
 ```{r save_raster_GIS, echo=FALSE}
-raster::writeRaster(EuropeIsoscape$isoscapes$mean,
-                    filename = "output/EuropeIsoscape.tif",
-                    format = "GTiff",
-                    overwrite = TRUE,
-                    NAflag = -9999)
+terra::writeRaster(EuropeIsoscape$isoscapes$mean,
+                   filename = "output/EuropeIsoscape.tif",
+                   overwrite = TRUE,
+                   NAflag = -9999)
 ```
 
 
@@ -356,20 +354,18 @@ EuropeIsoscape_weighted <- isoscape(raster = ElevEurope, isofit = EuropeFit_weig
 ```
 
 ```{r rest_workflow_weights1_fake_real, echo = FALSE}
-if (file.exists("output/EuropeFit_weighted.rda")) {
-  load("output/EuropeFit_weighted.rda")
+if (file.exists("output/EuropeFit_weighted.rds")) {
+  EuropeFit_weighted <- readRDS("output/EuropeFit_weighted.rds")
 } else {
   EuropeFit_weighted <- isofit(data = GNIPData_with_precipEUagg,
                                mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-  save(EuropeFit_weighted, file = "output/EuropeFit_weighted.rda", compress = "xz")
+  saveRDS(EuropeFit_weighted, file = "output/EuropeFit_weighted.rds", compress = "xz")
 }
-if (file.exists("output/EuropeIsoscape_weighted.rda")) {
-  load("output/EuropeIsoscape_weighted.rda")
+if (file.exists("output/EuropeIsoscape_weighted.rds")) {
+  EuropeIsoscape_weighted <- readRDS("output/EuropeIsoscape_weighted.rds")
 } else {
   EuropeIsoscape_weighted <- isoscape(raster = ElevEurope, isofit = EuropeFit_weighted)
-  if (raster::inMemory(EuropeIsoscape_weighted$isoscapes)) {
-    save(EuropeIsoscape_weighted, file = "output/EuropeIsoscape_weighted.rda", compress = "xz")
-  }
+  saveRDS(EuropeIsoscape_weighted, file = "output/EuropeIsoscape_weighted.rds", compress = "xz")
 }
 ```
 
@@ -386,8 +382,8 @@ The two isoscapes look very similar, but we can clarify what the differences are
 levelplot(EuropeIsoscape_weighted$isoscapes$mean - EuropeIsoscape$isoscapes$mean,
           margin = FALSE,
           main = "mean EuropeIsoscape_weighted - mean EuropeIsoscape") +
-  layer(sp.polygons(CountryBorders, col = "white")) +
-  layer(sp.polygons(OceanMask, fill = "black"))
+  layer(lpolygon(CountryBorders, border = "white")) +
+  layer(lpolygon(OceanMask, col = "black"))
 ```
 
 Let us similarly compare the isoscapes showing the prediction variance and the residual variance around the mean isoscape values:
@@ -396,13 +392,13 @@ Let us similarly compare the isoscapes showing the prediction variance and the r
 levelplot(EuropeIsoscape_weighted$isoscapes$mean_predVar - EuropeIsoscape$isoscapes$mean_predVar,
           margin = FALSE,
           main = "predVar EuropeIsoscape_weighted - predVar EuropeIsoscape") +
-  layer(sp.polygons(CountryBorders, col = "white")) +
-  layer(sp.polygons(OceanMask, fill = "black"))
+  layer(lpolygon(CountryBorders, border = "white")) +
+  layer(lpolygon(OceanMask, col = "black"))
 levelplot(EuropeIsoscape_weighted$isoscapes$mean_residVar - EuropeIsoscape$isoscapes$mean_residVar,
           margin = FALSE,
           main = "residVar EuropeIsoscape_weighted - residVar EuropeIsoscape") +
-  layer(sp.polygons(CountryBorders, col = "white")) +
-  layer(sp.polygons(OceanMask, fill = "black"))
+  layer(lpolygon(CountryBorders, border = "white")) +
+  layer(lpolygon(OceanMask, col = "black"))
 ```
 
 As you can see the residual variance is quite different because it now represents the (weighted) variation in isotopic values _between months_ for an average year and no longer the total variation combining both the variation across months and years.
@@ -481,10 +477,10 @@ PrecipitationBrickEU <- prepcipitate(path = "input", raster = ElevEurope) ## no 
 ```
 
 ```{r prepare_precip_real, echo=FALSE}
-if (file.exists("output/PrecipitationBrickEU.rda")) {
+if (file.exists("output/PrecipitationBrickEU.rds")) {
 } else {
   PrecipitationBrickEU <- prepcipitate(path = "input", raster = ElevEurope) ## no '/' here!
-  save(PrecipitationBrickEU, file = "output/PrecipitationBrickEU.rda", compress = "xz")
+  saveRDS(PrecipitationBrickEU, file = "output/PrecipitationBrickEU.rds", compress = "xz")
 }
 ```
 
@@ -523,12 +519,12 @@ EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
 ```
 
 ```{r isomultifit real, echo = FALSE, results = FALSE}
-if (file.exists("output/EuropeFit12.rda")) {
-  load("output/EuropeFit12.rda")
+if (file.exists("output/EuropeFit12.rds")) {
+  EuropeFit12 <- readRDS("output/EuropeFit12.rds")
 } else {
   EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
                              mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-  save(EuropeFit12, file = "output/EuropeFit12.rda", compress = "xz")
+  saveRDS(EuropeFit12, file = "output/EuropeFit12.rds", compress = "xz")
 }
 ```
 
@@ -550,13 +546,13 @@ EuropeIsoscape_weighted2 <- isomultiscape(raster = ElevEurope,
 ```
 
 ```{r EuropeIsoscape_weighted_real, echo=FALSE}
-if (file.exists("output/EuropeIsoscape_weighted2.rda")) {
-  load("output/EuropeIsoscape_weighted2.rda")
+if (file.exists("output/EuropeIsoscape_weighted2.rds")) {
+  readRDS("output/EuropeIsoscape_weighted2.rds")
 } else {
   EuropeIsoscape_weighted2 <- isomultiscape(raster = ElevEurope,
                                             isofit = EuropeFit12,
                                             weighting = PrecipitationBrickEU)
-  save(EuropeIsoscape_weighted2, file = "output/EuropeIsoscape_weighted2.rda")
+  saveRDS(EuropeIsoscape_weighted2, file = "output/EuropeIsoscape_weighted2.rds")
 }
 ```
 

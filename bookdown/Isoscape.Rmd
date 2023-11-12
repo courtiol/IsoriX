@@ -5,24 +5,25 @@
 To get an isoscape, you need data capturing how the isotope composition varies in space.
 In this documentation, we will use data provided by the Global Networks of Isotopes in Precipitation (GNIP), but you can use whatever source of data you prefer, or have access to.
 In any case, do make sure to format your data the same way we do it.
-Precisely, your dataset should be a `data.frame` (or `tibble`) with the same columns as the ones shown below in section \@ref(GNIPDataDE).
+Precisely, your dataset should be a `data.frame` (or a `tibble`) with the same columns as the ones shown below in section \@ref(GNIPDataDE).
 
 ### The GNIP database {#GNIP}
 
 You can download precipitation isotope data for hydrogen and oxygen from the Global Networks of Isotopes in Precipitation (GNIP).
 
-This step must be done outside IsoriX since there is no API for GNIP.
+This step must be done outside IsoriX since there is no application programming interface for GNIP.
 
-To get to know what the GNIP is, its history, and more importantly its terms of use and information about the data, go there: http://www-naweb.iaea.org/napc/ih/IHS_resources_gnip.html
+To get to know what the GNIP go there and explore related resources:
+https://www.iaea.org/services/networks/gnip
 
 The GNIP data are free to download after the registration process is completed.
 The following link will bring you to the right place to create an account:
 https://websso.iaea.org/IM/UserRegistrationPage.aspx?returnpage=http://nucleus.iaea.org/wiser
 
-Once your account has been activated, download the data you need from here:
+Once your account has been activated, download the data you need from the WISER interface:
 https://nucleus.iaea.org/wiser/index.aspx (Tab Datasets)
 
-For the time being, downloads are limited to 5,000 records per batch, which makes the compilation of huge databases fastidious.
+Last time we checked, downloads were limited to 5,000 records per batch, which makes the compilation of huge databases fastidious.
 GNIP promised to come up, in the future, with datasets directly prepared for IsoriX to save you the trouble.
 We are eagerly waiting for this to happen!
 
@@ -55,7 +56,7 @@ For example, the first row contains the following information:
 
 ```{r GNIP_raw_1st_row, echo = FALSE}
 ## we display the first row for this dataset as a column for visualization
-kable(t(rawGNIP[1, ])) %>% kable_styling(bootstrap_options = "striped", font_size = 15)
+kable(t(rawGNIP[1, ])) |> kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
 We are now going to reshape these data step-by-step to make them ready for IsoriX.
@@ -120,7 +121,7 @@ As you can see, the format is the same as the one for `GNIPDataDE`, which is pre
 
 In order to build your isoscape with IsoriX, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, over a time period.
 
-To aggregate the raw data, you can choose to aggregate your dataset on your own, or to use our function `prepsources()`.
+To aggregate the raw data, you can choose to aggregate your dataset on your own (e.g. using the package [**dplyr**](https://dplyr.tidyverse.org/index.html)), or to use our function `prepsources()`.
 This function allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
 
 The function `prepsources()` also allows you to aggregate the data separately for different time periods (see section \@ref(weighted)).
@@ -187,31 +188,33 @@ Therefore, you may want to save the fitted models in order to be allowed to reus
 This can be done as follow:
 
 ```{r saving models fake, eval = FALSE}
-save(EuropeFit, file = "EuropeFit.rda", compress = "xz")
+saveRDS(EuropeFit, file = "EuropeFit.rds", compress = "xz")
 ```
 
 ```{r saving models real, echo = FALSE, warning=FALSE}
 if (!file.exists("output/EuropeFit.rda"))
-  save(EuropeFit, file = "output/EuropeFit.rda", compress = "xz")
+  saveRDS(EuropeFit, file = "output/EuropeFit.rds", compress = "xz")
 ```
 
-The function `save()` will (by default) store your R object in a file that can be found in your working directory.
-To use `save()`, we must provide the object you want as a first argument of the function.
+The function `saveRDS()` will store your R object in a file.
+To use `saveRDS()`, you must provide the object you want as a first argument of the function.
 Then, `file =` defines the name of the file that will store the R object in your hard drive.
 You can also include a path to this name so to store the file wherever you want.
-This name can be different from the name object but naming the file as the object allows you to remember what the name of the stored object is (check `?saveRDS` for an alternative way of saving R objects which allows for you to name objects when loading them).
+This name can be different from the name of the object but here we stick to the same name for clarity.
 The last argument `compress =` is optional; it allows for the creation of smaller files without loosing any content, so we always use it.
 
-For loading a saved object (in a new session of R for example), just use the function `load()` as follows (but make sure the saved object is in your working directory or include the path to the file names):
+For loading a saved object (in a new session of R for example), just use the function `readRDS()` as follows:
 
 ```{r loading models, eval = FALSE}
-load(file = "EuropeFit.rda")
+EuropeFit <- readRDS(file = "EuropeFit.rds")
 ```
 
 _Be careful_, we do not recommend you to reuse saved object after updating either IsoriX, or spaMM, or both.
 After one of such update, the best practice to make sure that every thing is working properly is to refit all your models.
 By doing this you may also benefit from potentially new improvements we would have implemented. 
 
+There is another way to save and load object in R, which is to use the function `save()` and `load()`.
+However, it is better to get to used to `saveRDS()` and `readRDS()` because only those can be used to store objects that contain spatial information (which we will do below).
 
 ## Examining the fitted models
 
@@ -229,20 +232,22 @@ plot(EuropeFit)
 options_IsoriX(old_opt)
 ```
 
-In the panel produced, the left column shows the relationship between the observed and predicted response (top) and the variation in spatial autocorrelation with the distance between location (bottom) captured by the model for the fit called `mean_fit`, which corresponds to the fit of the mean isotopic values.
-The right column shows the same information for the fit called `disp_fit`, which corresponds to the fit of the residual dispersion variance in the isotope values.
-On the first row you can see points distributed practically along the 1:1 diagonal.
+The first plot shows the relationship between the observed and predicted response for the fitted model called `mean_fit`, which corresponds to the fit of the mean isotopic values.
+The second plot shows the same thing for the model called `disp_fit`, which corresponds to the fit of the residual dispersion variance in the isotope values.
+Here you can see, in these first two plots points distributed practically along the 1:1 diagonal.
 A different slope would suggest a high residual variance of the data.
-We do not expect the points to fall exactly on the line because the model fit does not attempt to predict perfectly the observations used during the fit.
+We do not expect the points to fall exactly on the 1:1 lines because the model fit does not attempt to predict perfectly the observations used during the fit.
 Instead, the model fit produces a smooth surface that aims at reaching a maximum predictive power for locations not considered during the fit.
-The second row gives you an idea of the strength of the spatial autocorrelation captured by the models.
+
+The third and fourth plots show the variation in spatial autocorrelation with the distance between locations captured by `mean_fit` and `disp_fit`, respectively.
+These plots thus give you an idea of the strength of the spatial autocorrelation captured by the models.
 Here the results suggest that the autocorrelation is very strong.
 Not considering this autocorrelation would thus lead here to a poor approximation of the isoscape and resulting assignments.
 
 
 ### Examining the summary tables
 
-To simply explore the fitted models you can simply type their name and the information of each fit will be displayed:
+To explore the fitted models you can start by simply typing their name and the information of each fit will be displayed:
 
 ```{r summary isofit}
 EuropeFit
@@ -265,7 +270,7 @@ AIC(EuropeFit$mean_fit)
 ```
 
 ```{r print AIC EuropeFit, echo = FALSE}
-print(AIC(EuropeFit$mean_fit))
+print(AIC(EuropeFit$mean_fit, verbose = FALSE))
 ```
 
 Note that we re-exported some spaMM functions for you to use without the need to load the package spaMM (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all spaMM functions.
@@ -292,14 +297,14 @@ if (!file.exists("input/elevation_world_z5.tif")) {
 }
 ```
 
-You may not need to pass any argument to `getelev()`, but here we opted to choose to define ourselves where to store the elevation raster and how to call such file using `file = "input/elevation_EU_z5.tif"`.
-We did not alter the resolution which is high enough under the default setting for our example, but doing so would be easy: one simply needs to define a value lower or larger than 5 for an argument called `z` (see `?getelev()` for details and [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution) for information on what value for the zoom parameter `z` really implies).
+You may not need to pass any argument to `getelev()`, but here we chose to define ourselves where to store the elevation raster and how to call such file using `file = "input/elevation_EU_z5.tif"`.
+We did not alter the default resolution, which is high enough for our example, but doing so would be easy: one simply needs to define a value lower or larger than 5 for an argument called `z` (see `?getelev()` for details and [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution) for information on what value for the zoom parameter `z` really implies).
 
-We then import the high resolution elevation raster and transform it into an R object of class `RasterLayer` object using the package raster:
+We then import the high resolution elevation raster and transform it into an R object of class `SpatRaster` object using the package [**terra**](https://rspatial.github.io/terra/index.html):
 
 ```{r elevationraster, dev='CairoPNG'}
 ## we import the high resolution raster
-ElevWorld <- raster("input/elevation_world_z5.tif")
+ElevWorld <- rast("input/elevation_world_z5.tif")
 
 ## we check that the import worked
 ElevWorld
@@ -323,15 +328,14 @@ To crop and resize the structural raster, you can use our function `prepraster()
 ::: {.rmdnote}
 **Geeky note**: In principle you could directly crop and resize the raster to the dimensions you want before downloading it (`getelev()` does allows for you to do that).
 However, in practice, we recommend you to download a raster that is a larger than what you need (`getelev()` downloads the full world by default, which should always be sufficient) and with a resolution overshooting a little what you may need.
-The benefit of relying on `prepraster()` rather than `getelev()` to crop and downsize the structural raster is that if you don't like the result, you can simply rerun `prepraster()` again -- with different settings -- without having to download again a large amount of data from the net.
-The only reason to rerun `getelev()` would be if you think the resolution of your initial raster is too low.
+The benefit of relying on `prepraster()` rather than `getelev()` to crop and downsize the structural raster is that you can study the impact of your decisions by simply rerunning `prepraster()` again -- with different settings -- without having to download again a large amount of data from the net.
 :::
 
-Here, the structural raster downloaded with `getelev()` covers the entire planet, so we will crop it to the limit of Europe which we also used to select our source data (see section \@ref(processing)).
+Here, the structural raster downloaded with `getelev()` covers the entire planet, so we will crop it to the limits of Europe, which we also used to select our source data (see section \@ref(processing)).
 
 To crop the elevation raster to a particular size, you can either provide a set of coordinates to `prepraster()`by means of the argument `manual_crop`.
 Alternatively, you can simply provide a fitted model to the function `prepraster()` by means of the argument `isofit`.
-In this latter case, the function will determine the coordinates required for the cropping automatically, from the coordinates of the weather stations used during the fitting procedure.
+In this latter case, the function will automatically determine the coordinates required for the cropping, from the coordinates of the weather stations used during the fitting procedure.
 We choose here to use this simpler way of defining the cropping area:
 
 ```{r build ElevEurope fake, eval = FALSE}
@@ -341,22 +345,21 @@ ElevEurope <- prepraster(raster = ElevWorld,
 ```
 
 ```{r build ElevEurope real, echo = FALSE, results = FALSE}
-if (file.exists("output/ElevEurope.rda")) {
-  load("output/ElevEurope.rda") } else {
-  ElevEurope <- prepraster(raster = ElevWorld,
-                           isofit = EuropeFit,
-                           aggregation_factor = 4)
-  if (raster::inMemory(ElevEurope)) {
-    save(ElevEurope, file = "output/ElevEurope.rda", compress = "xz")
-  }
+if (file.exists("output/ElevEurope.rds")) {
+    ElevEurope <- terra::readRDS("output/ElevEurope.rds")
+  } else {
+    ElevEurope <- prepraster(raster = ElevWorld,
+                             isofit = EuropeFit,
+                             aggregation_factor = 4)
+    terra::saveRDS(ElevEurope, file = "output/ElevEurope.rds", compress = "xz")
 }
 ```
 
 You may see that we also chose here to reduce the resolution of the elevation raster by choosing an aggregation factor of 4.
 We recommend to first use a large aggregation factor (e.g. 10) to draft your workflow and quickly notice errors in your code.
-Then, once things are working as they should, we recommend you to use the lowest aggregation factor that you hardware and patience can handle (i.e. 1 if possible).
+Once things are working as they should, we recommend you then use the lowest aggregation factor that you hardware and patience can handle (i.e. 1 if possible).
 As mentioned above, if you need isoscapes with a even greater resolution, use `getelev()` with a value of the parameter `z` that is higher than 5 (an increment of 1 -- i.e. `z = 6` already makes a big difference as shown [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution)).
-Here we set the `aggregation_factor` to 4 as something in between which produces plots nice enough for this tutorial, without being too heavy for us to recompile this bookdown quickly; but you should use a higher resolution than used here for real applications.
+Here we set the `aggregation_factor` to 4 as something in between which produces plots nice enough for this tutorial, without being too heavy for us to recompile this bookdown quickly; but, for real applications, you should use a higher resolution than used here.
 
 You can easily check what your structural raster looks like by plotting it.
 Compared to the map plotting above for `ElevWorld`, we will now draw a slightly more advanced map using the functions of the packages [**lattice**](http://lattice.r-forge.r-project.org) and [**rasterVis**](https://oscarperpinan.github.io/rastervis/) which we made available in IsoriX:
@@ -366,8 +369,8 @@ levelplot(ElevEurope,
           margin = FALSE,
           col.regions = viridisLite::turbo, ## the colour palette
           main = "Structural raster") + 
-layer(sp.polygons(CountryBorders, col = "white")) +
-layer(sp.polygons(OceanMask, col = "white", fill = "lightgreen"))
+layer(lpolygon(CountryBorders, border = "white")) +
+layer(lpolygon(OceanMask, border = "white", col = "lightgrey"))
 ```
 
 Note that, in this raster, the highest elevation does not correspond to the highest elevations that are known in the depicted area (the maximal value in the raster is `r round(max(values(ElevEurope)))`m, but Mount Elbrus is 5642m tall).
@@ -391,14 +394,12 @@ EuropeIsoscape <- isoscape(raster = ElevEurope,
 ```
 
 ```{r build EuropeIsoscape real, warning = FALSE, echo = FALSE, results = FALSE}
-if (file.exists("output/EuropeIsoscape.rda")) {
-  load("output/EuropeIsoscape.rda")
+if (file.exists("output/EuropeIsoscape.rds")) {
+  EuropeIsoscape <- readRDS("output/EuropeIsoscape.rds")
 } else {
   EuropeIsoscape <- isoscape(raster = ElevEurope,
                              isofit = EuropeFit)
-  if (raster::inMemory(EuropeIsoscape$isoscapes)) {
-    save(EuropeIsoscape, file = "output/EuropeIsoscape.rda", compress = "xz")
-  }
+  saveRDS(EuropeIsoscape, file = "output/EuropeIsoscape.rds", compress = "xz")
 }
 ```
 

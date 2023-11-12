@@ -92,52 +92,56 @@ predictions.
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(getOption_IsoriX("example_maxtime") > 30) {
+if (getOption_IsoriX("example_maxtime") > 30) {
+  ## We fit the models for Germany
+  GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-## We fit the models for Germany
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+  GermanFit <- isofit(
+    data = GNIPDataDEagg,
+    mean_model_fix = list(elev = TRUE, lat_abs = TRUE)
+  )
 
-GermanFit <- isofit(data = GNIPDataDEagg,
-                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+  ### Let's explore the difference between aggregation schemes
 
-### Let's explore the difference between aggregation schemes
-
-## We aggregate and crop using different settings
-ElevationRaster1 <- prepraster(
+  ## We aggregate and crop using different settings
+  ElevationRaster1 <- prepraster(
     raster = ElevRasterDE,
     isofit = GermanFit,
     margin_pct = 0,
-    aggregation_factor = 0)
+    aggregation_factor = 0
+  )
 
-ElevationRaster2 <- prepraster(
+  ElevationRaster2 <- prepraster(
     raster = ElevRasterDE,
     isofit = GermanFit,
     margin_pct = 5,
-    aggregation_factor = 5)
+    aggregation_factor = 5
+  )
 
-ElevationRaster3 <- prepraster(
+  ElevationRaster3 <- prepraster(
     raster = ElevRasterDE,
     isofit = GermanFit,
     margin_pct = 10,
-    aggregation_factor = 5, aggregation_fn = max)
+    aggregation_factor = 5, aggregation_fn = max
+  )
 
-## We plot the outcome of the 3 different aggregation schemes using terra
+  ## We plot the outcome of the 3 different aggregation schemes using terra
 
-oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
+  oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
 
-plot(ElevationRaster1, main = "Original small raster")
-polys(CountryBorders)
-polys(OceanMask, col = "blue")
+  plot(ElevationRaster1, main = "Original small raster")
+  polys(CountryBorders)
+  polys(OceanMask, col = "blue")
 
-plot(ElevationRaster2, main = "Small raster aggregated (by mean)")
-polys(CountryBorders)
-polys(OceanMask, col = "blue")
+  plot(ElevationRaster2, main = "Small raster aggregated (by mean)")
+  polys(CountryBorders)
+  polys(OceanMask, col = "blue")
 
-plot(ElevationRaster3, main = "Small raster aggregated (by max)")
-polys(CountryBorders)
-polys(OceanMask, col = "blue")
+  plot(ElevationRaster3, main = "Small raster aggregated (by max)")
+  polys(CountryBorders)
+  polys(OceanMask, col = "blue")
 
-par(oripar) ## restore graphical settings
+  par(oripar) ## restore graphical settings
 }
 
 ## The examples below will only be run if sufficient time is allowed
@@ -145,24 +149,22 @@ par(oripar) ## restore graphical settings
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(getOption_IsoriX("example_maxtime") > 10) {
+if (getOption_IsoriX("example_maxtime") > 10) {
+  ### Let's create a raster centered around the pacific
 
-### Let's create a raster centered around the pacific
+  ## We first create an empty raster
+  EmptyRaster <- rast(matrix(0, ncol = 360, nrow = 180))
+  ext(EmptyRaster) <- c(-180, 180, -90, 90)
+  crs(EmptyRaster) <- "+proj=longlat +datum=WGS84"
 
-## We first create an empty raster
-EmptyRaster <- rast(matrix(0, ncol = 360, nrow = 180))
-ext(EmptyRaster) <- c(-180, 180, -90, 90)
-crs(EmptyRaster) <- "+proj=longlat +datum=WGS84"
+  ## We crop it around the pacific
+  PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
+  ext(PacificA) # note that the extent has changed!
 
-## We crop it around the pacific
-PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
-ext(PacificA) # note that the extent has changed!
-
-## We plot (note the use of the function shift()!)
-plot(PacificA, col = "blue", legend = FALSE)
-polys(CountryBorders, col = "black")
-polys(shift(CountryBorders, dx = 360), col = "black")
-
+  ## We plot (note the use of the function shift()!)
+  plot(PacificA, col = "blue", legend = FALSE)
+  polys(CountryBorders, col = "black")
+  polys(shift(CountryBorders, dx = 360), col = "black")
 }
 
 }

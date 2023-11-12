@@ -19,7 +19,7 @@ It can be used to draw the borders of world countries.
 }
 \examples{
 
-plot(CountryBorders, border="red", col="darkgrey")
+plot(CountryBorders, border = "red", col = "darkgrey")
 
 ## How did we create this file?
 

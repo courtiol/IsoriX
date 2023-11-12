@@ -50,6 +50,6 @@ file again, specifying overwrite = TRUE to overwrite the corrupted file.
 ## To download the monthly precipitation
 ## in your current working
 ## directory, just type:
-## getprecip()
+## getprecip(path = "~/Downloads/")
 ## Mind that the file weights ca. 1GB!
 }

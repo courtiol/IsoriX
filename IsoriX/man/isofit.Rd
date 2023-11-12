@@ -180,7 +180,7 @@ Never use a mean_fit object to draw predictions without considering a
 disp_fit object: mean_fit is not fitted independently from disp_fit.
 
 For all methods, fixed effects are being estimated by Maximum Likelihood
-(ML) and dispersion parameters (i.e. random effects and Matern correlation
+(ML) and dispersion parameters (i.e. random effects and Matérn correlation
 parameters) are estimated by Restricted Maximum Likelihood (REML). Using
 REML provides more accurate prediction intervals but impedes the accuracy
 of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the
@@ -203,23 +203,21 @@ other covariates would be useful to add in IsoriX.
 ## if you want to allow for examples taking up to ca. XX seconds to run
 ## (so don't write XX but put a number instead!)
 
-if(getOption_IsoriX("example_maxtime") > 10) {
+if (getOption_IsoriX("example_maxtime") > 10) {
+  ## Fitting the models for Germany
+  GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-## Fitting the models for Germany
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+  GermanFit <- isofit(data = GNIPDataDEagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
 
-GermanFit <- isofit(data = GNIPDataDEagg, mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+  GermanFit
 
-GermanFit
+  ## Diagnostics for the fits
+  plot(GermanFit)
 
-## Diagnostics for the fits
-plot(GermanFit)
-
-## Exploration of the fitted models
-GermanFit$mean_fit
-GermanFit$disp_fit
-AIC(GermanFit$disp_fit)
-
+  ## Exploration of the fitted models
+  GermanFit$mean_fit
+  GermanFit$disp_fit
+  AIC(GermanFit$disp_fit)
 }
 
 }

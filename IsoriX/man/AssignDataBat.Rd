@@ -28,7 +28,7 @@ str(AssignDataBat)
 
 }
 \references{
-Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial 
+Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
 Migration with Stable Isotopes, second edition. Academic Press, London.
 }

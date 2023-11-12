@@ -103,7 +103,7 @@
 #' likely origin with the prediction region around it. When several organisms
 #' are being assigned, both assignments at the level of each sample and a single
 #' assignment for the whole group can be performed. }
-#' 
+#'
 #' @name IsoriX-package
 #' @aliases IsoriX-package IsoriX
 #' @docType package
@@ -111,21 +111,21 @@
 #' longitude) of any spatial data (locations, rasters) must be given in decimal
 #' degrees following the WGS84 spheroid standard.
 #' @author Alexandre Courtiol \email{alexandre.courtiol@@gmail.com},
-#' 
+#'
 #' François Rousset,
-#' 
+#'
 #' Marie-Sophie Rohwaeder,
-#' 
+#'
 #' Stephanie Kramer-Schadt \email{kramer@@izw-berlin.de}
 #' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA,
 #' Wassenaar LI, Kramer-Schadt S (2019). "Isoscape computation and inference of
 #' spatial origins with mixed models using the R package IsoriX." In Hobson KA,
 #' Wassenaar LI (eds.), Tracking Animal Migration with Stable Isotopes, second
 #' edition. Academic Press, London.
-#' 
+#'
 #' Courtiol A, Rousset F (2017). "Modelling isoscapes using mixed models." bioRxiv.
 #' doi: 10.1101/207662, [link](https://www.biorxiv.org/content/10.1101/207662v1).
-#'  
+#'
 #' @keywords package
-#' 
+#'
 NULL

@@ -78,52 +78,64 @@
 #' @examples
 #' ## Create a processed dataset for Germany
 #' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
-#' 
+#'
 #' head(GNIPDataDEagg)
-#' 
+#'
 #' ## Create a processed dataset for Germany per month
-#' GNIPDataDEmonthly <-prepsources(data = GNIPDataDE,
-#'                                 split_by = "month")
-#' 
+#' GNIPDataDEmonthly <- prepsources(
+#'   data = GNIPDataDE,
+#'   split_by = "month"
+#' )
+#'
 #' head(GNIPDataDEmonthly)
-#' 
+#'
 #' ## Create a processed dataset for Germany per year
-#' GNIPDataDEyearly <- prepsources(data = GNIPDataDE,
-#'                                 split_by = "year")
-#' 
+#' GNIPDataDEyearly <- prepsources(
+#'   data = GNIPDataDE,
+#'   split_by = "year"
+#' )
+#'
 #' head(GNIPDataDEyearly)
-#' 
+#'
 #' ## Create isoscape-dataset for warm months in germany between 1995 and 1996
-#' GNIPDataDEwarm <- prepsources(data = GNIPDataDE,
-#'                               month = 5:8,
-#'                               year = 1995:1996)
-#' 
+#' GNIPDataDEwarm <- prepsources(
+#'   data = GNIPDataDE,
+#'   month = 5:8,
+#'   year = 1995:1996
+#' )
+#'
 #' head(GNIPDataDEwarm)
-#' 
-#' 
+#'
+#'
 #' ## Create a dataset with 90% of obs
-#' GNIPDataDE90pct <- prepsources(data = GNIPDataDE,
-#'                                prop_random = 0.9,
-#'                                random_level = "obs")
-#' 
+#' GNIPDataDE90pct <- prepsources(
+#'   data = GNIPDataDE,
+#'   prop_random = 0.9,
+#'   random_level = "obs"
+#' )
+#'
 #' lapply(GNIPDataDE90pct, head) # show beginning of both datasets
-#' 
+#'
 #' ## Create a dataset with half the weather sources
-#' GNIPDataDE50pctsources <- prepsources(data = GNIPDataDE,
-#'                                        prop_random = 0.5,
-#'                                        random_level = "source")
-#' 
+#' GNIPDataDE50pctsources <- prepsources(
+#'   data = GNIPDataDE,
+#'   prop_random = 0.5,
+#'   random_level = "source"
+#' )
+#'
 #' lapply(GNIPDataDE50pctsources, head)
 #'
 #'
 #' ## Create a dataset with half the weather sources split per month
-#' GNIPDataDE50pctsourcesMonthly <- prepsources(data = GNIPDataDE,
-#'                                               split_by = "month",
-#'                                               prop_random = 0.5,
-#'                                               random_level = "source")
-#' 
+#' GNIPDataDE50pctsourcesMonthly <- prepsources(
+#'   data = GNIPDataDE,
+#'   split_by = "month",
+#'   prop_random = 0.5,
+#'   random_level = "source"
+#' )
+#'
 #' lapply(GNIPDataDE50pctsourcesMonthly, head)
-#' 
+#'
 #' @export
 prepsources <- function(data,
                         month = 1:12,
@@ -141,46 +153,46 @@ prepsources <- function(data,
                         col_long = "long",
                         col_elev = "elev",
                         col_month = "month",
-                        col_year = "year"
-) {
-
+                        col_year = "year") {
   ## Some checks
-  if (any(month %% 1 != 0) | any(month < 1) | any(month > 12)) {
+  if (any(month %% 1 != 0) || any(month < 1) || any(month > 12)) {
     stop("Months must be provided as a vector of integers and should be between 1 and 12.")
   }
-  
+
   if (prop_random > 1) {
     stop("The value you entered for prop_random is > 1. It must be a proportion (so between 0 and 1)!")
   }
-  
+
   ## Handle missing data
   if (missing("year")) year <- sort(unique(data[, col_year, drop = TRUE], na.rm = TRUE))
 
   ## Handle the month column and convert all months to numbers
   data[, col_month] <- .converts_months_to_numbers(data[, col_month, drop = TRUE])
-  
+
   ## Prepare selection
-  month_select <- data[, col_month, drop = TRUE] %in% month 
+  month_select <- data[, col_month, drop = TRUE] %in% month
   year_select <- data[, col_year, drop = TRUE] %in% year
   long_select <- data[, col_long, drop = TRUE] >= long_min & data[, col_long, drop = TRUE] <= long_max
-  lat_select  <- data[, col_lat, drop = TRUE]  >= lat_min  & data[, col_lat, drop = TRUE]  <= lat_max
-  all_select <-  month_select & year_select & long_select & lat_select
-  
+  lat_select <- data[, col_lat, drop = TRUE] >= lat_min & data[, col_lat, drop = TRUE] <= lat_max
+  all_select <- month_select & year_select & long_select & lat_select
+
   ## Apply selection
-  query_data <- data[all_select, ,drop = TRUE]
-  
+  query_data <- data[all_select, , drop = TRUE]
+
   ## Defining function returning unique values with test
   unique2 <- function(x, key) {
     u_x <- unique(x)
-    if (length(u_x) == 1) return(u_x)
+    if (length(u_x) == 1) {
+      return(u_x)
+    }
     warning(paste(c("Some", key, "values are not unique but should be, so the first element was taken among:", u_x, "."), collapse = " "))
     return(u_x[1])
   }
-  
+
   ## Defining function for aggregation
   aggregate_data <- function(d, split_by = split_by) {
     d <- droplevels(d)
-    
+
     ## Create the variable used for the split
     if (is.null(split_by)) {
       split <- d[, col_source_ID, drop = TRUE]
@@ -191,25 +203,26 @@ prepsources <- function(data,
     } else {
       stop("The argument used for 'split_by' is unknown.")
     }
-    
+
     ## Perform the aggregation
-    df <- data.frame(split = factor(c(tapply(as.character(split), split, unique2, key = "split"))),
-                     source_ID = factor(c(tapply(as.character(d[, col_source_ID, drop = TRUE]), split, unique2, key = "source_ID"))),
-                     mean_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, mean, na.rm = TRUE)),
-                     var_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, stats::var, na.rm = TRUE)),
-                     n_source_value = c(tapply(d[, col_source_ID, drop = TRUE], split, length)),
-                     lat = c(tapply(d[, col_lat, drop = TRUE], split, unique2, key = "latitude")),
-                     long = c(tapply(d[, col_long, drop = TRUE], split, unique2, key = "longitude")),
-                     elev = c(tapply(d[, col_elev, drop = TRUE], split, unique2, key = "elevation"))
+    df <- data.frame(
+      split = factor(c(tapply(as.character(split), split, unique2, key = "split"))),
+      source_ID = factor(c(tapply(as.character(d[, col_source_ID, drop = TRUE]), split, unique2, key = "source_ID"))),
+      mean_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, mean, na.rm = TRUE)),
+      var_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, stats::var, na.rm = TRUE)),
+      n_source_value = c(tapply(d[, col_source_ID, drop = TRUE], split, length)),
+      lat = c(tapply(d[, col_lat, drop = TRUE], split, unique2, key = "latitude")),
+      long = c(tapply(d[, col_long, drop = TRUE], split, unique2, key = "longitude")),
+      elev = c(tapply(d[, col_elev, drop = TRUE], split, unique2, key = "elevation"))
     )
     ## Note that above the c() prevent the creation of 1d arrays that are troublesome in spaMM
-    
+
     null.var <- !is.na(df$var_source_value) & df$var_source_value == 0
     if (sum(null.var) > 0) {
       df$var_source_value[null.var] <- 0.01
       warnings(paste(length(null.var), "Null variances were obtained during aggregation. They were changed to 0.01 assuming that the actual variance cannot be smaller than the measurement error variance."))
     }
-    
+
     ## Retrieve the relevant splitting information
     if (is.null(split_by)) {
       df <- df[order(df$source_ID), ]
@@ -220,46 +233,44 @@ prepsources <- function(data,
       df$year <- as.numeric(unlist(lapply(strsplit(as.character(df$split), split = "_", fixed = TRUE), function(i) i[2])))
       df <- df[order(df$source_ID, df$year), ]
     }
-    
+
     ## Clean-up and output
     df$split <- NULL
     df <- droplevels(df[!is.na(df$mean_source_value), ])
     rownames(df) <- NULL
     return(df)
   }
-  
+
   ## Return aggregated data if no random selection is needed
   if (prop_random == 0) {
     return(aggregate_data(query_data, split_by = split_by))
   }
-  
+
   ## Random draw of observations
   if (random_level == "obs") {
     howmanylines <- round(prop_random * nrow(query_data))
     whichlines <- sample(x = nrow(query_data), size = howmanylines, replace = FALSE)
-    selected_data <- query_data[whichlines, ] 
+    selected_data <- query_data[whichlines, ]
     remaining_data <- query_data[-whichlines, ]
-    return(list(selected_data = aggregate_data(selected_data, split_by = split_by),
-                remaining_data = aggregate_data(remaining_data, split_by = split_by)
-    )
-    )
-  } 
-  
+    return(list(
+      selected_data = aggregate_data(selected_data, split_by = split_by),
+      remaining_data = aggregate_data(remaining_data, split_by = split_by)
+    ))
+  }
+
   ## Random draw of source_ID
   if (random_level == "source") {
     howmanysources <- round(prop_random * length(unique(query_data[, col_source_ID])))
     whichssources <- sample(x = unique(query_data[, col_source_ID]), size = howmanysources, replace = FALSE)
     dolines <- query_data[, col_source_ID] %in% whichssources
-    selected_data <- query_data[dolines, ] 
+    selected_data <- query_data[dolines, ]
     remaining_data <- query_data[!dolines, ]
-    return(list(selected_data = aggregate_data(selected_data, split_by = split_by),
-                remaining_data = aggregate_data(remaining_data, split_by = split_by)
-    )
-    )
+    return(list(
+      selected_data = aggregate_data(selected_data, split_by = split_by),
+      remaining_data = aggregate_data(remaining_data, split_by = split_by)
+    ))
   }
-  
+
   ## Display error if no return encountered before
   stop("The argument you chose for random_level is unknown.")
-  
 }
-  

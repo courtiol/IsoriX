@@ -258,120 +258,136 @@ for the calibration fit. This is required for pivoting the regression from
 ## (so don't write XX but put a number instead!)
 
 if (getOption_IsoriX("example_maxtime") > 30) {
+  #####################################################
+  ## 1 Example of calibration using the method "wild" #
+  #####################################################
 
-#####################################################
-## 1 Example of calibration using the method "wild" #
-#####################################################
+  ## 1.1 We prepare the data to fit the isoscape:
+  GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-## 1.1 We prepare the data to fit the isoscape:
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+  ## 1.2 We fit the isoscape models for Germany:
+  GermanFit <- isofit(
+    data = GNIPDataDEagg,
+    mean_model_fix = list(elev = TRUE, lat_abs = TRUE)
+  )
 
-## 1.2 We fit the isoscape models for Germany:
-GermanFit <- isofit(data = GNIPDataDEagg,
-                    mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+  ## 1.3 We fit the calibration model using the method "wild" (the default):
+  CalibAlien <- calibfit(data = CalibDataAlien, isofit = GermanFit)
 
-## 1.3 We fit the calibration model using the method "wild" (the default):
-CalibAlien <- calibfit(data = CalibDataAlien, isofit = GermanFit)
+  ## 1.4 We explore the outcome of the calibration:
+  CalibAlien
+  summary(CalibAlien)
+  plot(CalibAlien)
 
-## 1.4 We explore the outcome of the calibration:
-CalibAlien
-summary(CalibAlien)
-plot(CalibAlien)
+  ## Note 1: you can plot several calibrations at once (using bats this time):
+  CalibBat1 <- calibfit(data = CalibDataBat, isofit = GermanFit)
+  CalibBat2 <- calibfit(data = CalibDataBat2, isofit = GermanFit)
+  plot(CalibBat1)
+  points(CalibBat2, pch = 3, col = "red", CI = list(col = "green"))
 
-## Note 1: you can plot several calibrations at once (using bats this time):
-CalibBat1 <- calibfit(data = CalibDataBat, isofit = GermanFit)
-CalibBat2 <- calibfit(data = CalibDataBat2, isofit = GermanFit)
-plot(CalibBat1)
-points(CalibBat2, pch = 3, col = "red", CI = list(col = "green"))
-
-## Note 2: you can extract data created by plot() for plotting things yourself:
-dataplot <- plot(CalibAlien, plot = FALSE)
-plot(sample_fitted ~ source_value, data = dataplot,
-     xlim = range(dataplot$source_value),
-     ylim = range(dataplot$sample_lwr, dataplot$sample_upr), col = NULL)
-polygon(x = c(dataplot$source_value, rev(dataplot$source_value)),
-        y = c(dataplot$sample_lwr, rev(dataplot$sample_upr)),
-        col = 3)
-points(sample_fitted ~ source_value, data = dataplot, type = "l", lty = 2)
- 
-
-####################################################
-## 2 Example of calibration using the method "lab" #
-####################################################
-
-## 2.0 We create made up data here because we don't have yet a good dataset
-## for this case, but you should use your own data instead:
-GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
-set.seed(123)
-CalibDataAlien2 <- create_aliens(calib_fn = list(intercept = 3, slope = 0.5,
-                                                 resid_var = 5),
-                                 isoscape = GermanScape,
-                                 raster = ElevRasterDE,
-                                 n_sites = 25,
-                                 min_n_samples = 5,
-                                 max_n_samples = 5)
-CalibDataAlien2 <- CalibDataAlien2[, c("site_ID", "sample_ID", "source_value", 
-                                       "sample_value")]
-head(CalibDataAlien2) ## your data should have this structure
-
-## 2.1 We fit the calibration model using the method "lab": 
-CalibAlien2 <- calibfit(data = CalibDataAlien2, method = "lab")
-                       
-## 2.2 We explore the outcome of the calibration:
-CalibAlien2
-summary(CalibAlien2)
-plot(CalibAlien2)
+  ## Note 2: you can extract data created by plot()
+  ## for plotting things yourself:
+  dataplot <- plot(CalibAlien, plot = FALSE)
+  plot(sample_fitted ~ source_value,
+    data = dataplot,
+    xlim = range(dataplot$source_value),
+    ylim = range(dataplot$sample_lwr, dataplot$sample_upr), col = NULL
+  )
+  polygon(
+    x = c(dataplot$source_value, rev(dataplot$source_value)),
+    y = c(dataplot$sample_lwr, rev(dataplot$sample_upr)),
+    col = 3
+  )
+  points(sample_fitted ~ source_value, data = dataplot, type = "l", lty = 2)
 
 
-#####################################################
-## 3 Example of calibration using the method "desk" #
-#####################################################
+  ####################################################
+  ## 2 Example of calibration using the method "lab" #
+  ####################################################
 
-## 3.1 We format the information about the calibration function to be used
-## as a dataframe:
-CalibDataAlien3 <- data.frame(intercept = 1.67, slope = 0.48,
-                              intercept_se = 1.65, slope_se = 0.03,
-                              resid_var = 3.96)
-CalibDataAlien3
-               
-## 3.2 We fit the calibration model using the method "desk":
-CalibAlien3 <- calibfit(data = CalibDataAlien3, method = "desk")
+  ## 2.0 We create made up data here because we don't have yet a good dataset
+  ## for this case, but you should use your own data instead:
+  GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+  set.seed(123)
+  CalibDataAlien2 <- create_aliens(
+    calib_fn = list(
+      intercept = 3, slope = 0.5,
+      resid_var = 5
+    ),
+    isoscape = GermanScape,
+    raster = ElevRasterDE,
+    n_sites = 25,
+    min_n_samples = 5,
+    max_n_samples = 5
+  )
+  CalibDataAlien2 <- CalibDataAlien2[, c(
+    "site_ID", "sample_ID",
+    "source_value", "sample_value"
+  )]
+  head(CalibDataAlien2) ## your data should have this structure
 
-## 3.3 We explore the outcome of the calibration:
-CalibAlien3
-summary(CalibAlien3)
-plot(CalibAlien3, xlim = c(-100, 100), ylim = c(-50, 50))
+  ## 2.1 We fit the calibration model using the method "lab":
+  CalibAlien2 <- calibfit(data = CalibDataAlien2, method = "lab")
 
-## Note: the desk function also work with just intercept and slope:
-CalibDataAlien4 <- CalibDataAlien3[, c("intercept", "slope")]
-CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk")
-CalibAlien4
-summary(CalibAlien4)
-plot(CalibAlien3, xlim = c(-100, 100), ylim = c(-50, 50))
-points(CalibAlien4, line = list(col = "orange"))
-## Regression lines are the same, but the new calibration does not have a
-## confidence intervals since we provided no uncertainty measure in 
-## CalibDataAlien4, which will make a difference during assignments...
+  ## 2.2 We explore the outcome of the calibration:
+  CalibAlien2
+  summary(CalibAlien2)
+  plot(CalibAlien2)
 
 
-#############################################################
-## 4 Example of calibration using the method "desk_inverse" #
-#############################################################
+  #####################################################
+  ## 3 Example of calibration using the method "desk" #
+  #####################################################
 
-## 4.1 We format the information about the calibration function to be used
-## as a dataframe:
-CalibDataAlien4 <- data.frame(intercept = -16.98822, slope = 1.588885,
-                              intercept_se = 2.200435, slope_se = 0.08106032,
-                              resid_var = 13.15102, N = 125, sign_mean_Y = -1)
-CalibDataAlien4
-               
-## 4.2 We fit the calibration model using the method "desk_inverse":
-CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk_inverse")
+  ## 3.1 We format the information about the calibration function to be used
+  ## as a dataframe:
+  CalibDataAlien3 <- data.frame(
+    intercept = 1.67, slope = 0.48,
+    intercept_se = 1.65, slope_se = 0.03,
+    resid_var = 3.96
+  )
+  CalibDataAlien3
 
-## 4.3 We explore the outcome of the calibration:
-CalibAlien4
-summary(CalibAlien4)
-plot(CalibAlien4, xlim = c(-100, 100), ylim = c(-50, 50))
+  ## 3.2 We fit the calibration model using the method "desk":
+  CalibAlien3 <- calibfit(data = CalibDataAlien3, method = "desk")
+
+  ## 3.3 We explore the outcome of the calibration:
+  CalibAlien3
+  summary(CalibAlien3)
+  plot(CalibAlien3, xlim = c(-100, 100), ylim = c(-50, 50))
+
+  ## Note: the desk function also work with just intercept and slope:
+  CalibDataAlien4 <- CalibDataAlien3[, c("intercept", "slope")]
+  CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk")
+  CalibAlien4
+  summary(CalibAlien4)
+  plot(CalibAlien3, xlim = c(-100, 100), ylim = c(-50, 50))
+  points(CalibAlien4, line = list(col = "orange"))
+  ## Regression lines are the same, but the new calibration does not have a
+  ## confidence intervals since we provided no uncertainty measure in
+  ## CalibDataAlien4, which will make a difference during assignments...
+
+
+  #############################################################
+  ## 4 Example of calibration using the method "desk_inverse" #
+  #############################################################
+
+  ## 4.1 We format the information about the calibration function to be used
+  ## as a dataframe:
+  CalibDataAlien4 <- data.frame(
+    intercept = -16.98822, slope = 1.588885,
+    intercept_se = 2.200435, slope_se = 0.08106032,
+    resid_var = 13.15102, N = 125, sign_mean_Y = -1
+  )
+  CalibDataAlien4
+
+  ## 4.2 We fit the calibration model using the method "desk_inverse":
+  CalibAlien4 <- calibfit(data = CalibDataAlien4, method = "desk_inverse")
+
+  ## 4.3 We explore the outcome of the calibration:
+  CalibAlien4
+  summary(CalibAlien4)
+  plot(CalibAlien4, xlim = c(-100, 100), ylim = c(-50, 50))
 }
 
 }

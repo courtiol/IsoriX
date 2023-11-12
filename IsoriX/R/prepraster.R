@@ -30,7 +30,7 @@
 #' limitations as plotting polygons or points on top of that remains problematic
 #' (see example bellow). We will work on this on the future but we have other
 #' priorities for now (let us know if you really need this feature).
-#' 
+#'
 #' @inheritParams getelev
 #' @param raster The structural raster (*SpatRaster*)
 #' @param isofit The fitted isoscape model returned by the function [isofit]
@@ -55,88 +55,90 @@
 #'   predictions.
 #' @seealso [ElevRasterDE] for information on elevation rasters, which can be
 #'   used as structural rasters.
-#' 
+#'
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
-#' 
-#' if(getOption_IsoriX("example_maxtime") > 30) {
-#' 
-#' ## We fit the models for Germany
-#' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
-#' 
-#' GermanFit <- isofit(data = GNIPDataDEagg,
-#'                     mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-#' 
-#' ### Let's explore the difference between aggregation schemes
-#' 
-#' ## We aggregate and crop using different settings
-#' ElevationRaster1 <- prepraster(
+#'
+#' if (getOption_IsoriX("example_maxtime") > 30) {
+#'   ## We fit the models for Germany
+#'   GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+#'
+#'   GermanFit <- isofit(
+#'     data = GNIPDataDEagg,
+#'     mean_model_fix = list(elev = TRUE, lat_abs = TRUE)
+#'   )
+#'
+#'   ### Let's explore the difference between aggregation schemes
+#'
+#'   ## We aggregate and crop using different settings
+#'   ElevationRaster1 <- prepraster(
 #'     raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     margin_pct = 0,
-#'     aggregation_factor = 0)
-#' 
-#' ElevationRaster2 <- prepraster(
+#'     aggregation_factor = 0
+#'   )
+#'
+#'   ElevationRaster2 <- prepraster(
 #'     raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     margin_pct = 5,
-#'     aggregation_factor = 5)
-#' 
-#' ElevationRaster3 <- prepraster(
+#'     aggregation_factor = 5
+#'   )
+#'
+#'   ElevationRaster3 <- prepraster(
 #'     raster = ElevRasterDE,
 #'     isofit = GermanFit,
 #'     margin_pct = 10,
-#'     aggregation_factor = 5, aggregation_fn = max)
-#' 
-#' ## We plot the outcome of the 3 different aggregation schemes using terra
-#' 
-#' oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
-#' 
-#' plot(ElevationRaster1, main = "Original small raster")
-#' polys(CountryBorders)
-#' polys(OceanMask, col = "blue")
-#' 
-#' plot(ElevationRaster2, main = "Small raster aggregated (by mean)")
-#' polys(CountryBorders)
-#' polys(OceanMask, col = "blue")
-#' 
-#' plot(ElevationRaster3, main = "Small raster aggregated (by max)")
-#' polys(CountryBorders)
-#' polys(OceanMask, col = "blue")
-#' 
-#' par(oripar) ## restore graphical settings
+#'     aggregation_factor = 5, aggregation_fn = max
+#'   )
+#'
+#'   ## We plot the outcome of the 3 different aggregation schemes using terra
+#'
+#'   oripar <- par(mfrow = c(1, 3)) ## display 3 plots side-by-side
+#'
+#'   plot(ElevationRaster1, main = "Original small raster")
+#'   polys(CountryBorders)
+#'   polys(OceanMask, col = "blue")
+#'
+#'   plot(ElevationRaster2, main = "Small raster aggregated (by mean)")
+#'   polys(CountryBorders)
+#'   polys(OceanMask, col = "blue")
+#'
+#'   plot(ElevationRaster3, main = "Small raster aggregated (by max)")
+#'   polys(CountryBorders)
+#'   polys(OceanMask, col = "blue")
+#'
+#'   par(oripar) ## restore graphical settings
 #' }
-#' 
+#'
 #' ## The examples below will only be run if sufficient time is allowed
 #' ## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
 #' ## if you want to allow for examples taking up to ca. XX seconds to run
 #' ## (so don't write XX but put a number instead!)
-#' 
-#' if(getOption_IsoriX("example_maxtime") > 10) {
-#' 
-#' ### Let's create a raster centered around the pacific
-#' 
-#' ## We first create an empty raster
-#' EmptyRaster <- rast(matrix(0, ncol = 360, nrow = 180))
-#' ext(EmptyRaster) <- c(-180, 180, -90, 90)
-#' crs(EmptyRaster) <- "+proj=longlat +datum=WGS84"
-#' 
-#' ## We crop it around the pacific
-#' PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
-#' ext(PacificA) # note that the extent has changed!
-#' 
-#' ## We plot (note the use of the function shift()!)
-#' plot(PacificA, col = "blue", legend = FALSE)
-#' polys(CountryBorders, col = "black")
-#' polys(shift(CountryBorders, dx = 360), col = "black")
-#' 
+#'
+#' if (getOption_IsoriX("example_maxtime") > 10) {
+#'   ### Let's create a raster centered around the pacific
+#'
+#'   ## We first create an empty raster
+#'   EmptyRaster <- rast(matrix(0, ncol = 360, nrow = 180))
+#'   ext(EmptyRaster) <- c(-180, 180, -90, 90)
+#'   crs(EmptyRaster) <- "+proj=longlat +datum=WGS84"
+#'
+#'   ## We crop it around the pacific
+#'   PacificA <- prepraster(EmptyRaster, manual_crop = c(110, -70, -90, 90))
+#'   ext(PacificA) # note that the extent has changed!
+#'
+#'   ## We plot (note the use of the function shift()!)
+#'   plot(PacificA, col = "blue", legend = FALSE)
+#'   polys(CountryBorders, col = "black")
+#'   polys(shift(CountryBorders, dx = 360), col = "black")
 #' }
-#' 
+#'
 #' @export
 prepraster <- function(raster,
                        isofit = NULL,
@@ -145,21 +147,19 @@ prepraster <- function(raster,
                        aggregation_fn = mean,
                        manual_crop = NULL,
                        values_to_zero = c(-Inf, 0),
-                       verbose = interactive()
-) {
-  
+                       verbose = interactive()) {
   time <- system.time({
-    if (!is.null(isofit)) {  ## test if cropping is needed
+    if (!is.null(isofit)) { ## test if cropping is needed
       if (inherits(isofit, "multiisofit")) {
         isofit <- isofit$multi.fits[[1]]
       }
       if (!is.null(manual_crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
-      if (## test if the raster is not smaller than the area covered by the sources.
+      if ( ## test if the raster is not smaller than the area covered by the sources.
         ## If yes crop will not proceed!
         terra::xmin(raster) > min(isofit$mean_fit$data$long) |
-        terra::xmax(raster) < max(isofit$mean_fit$data$long) |
-        terra::ymin(raster) > min(isofit$mean_fit$data$lat) |
-        terra::ymax(raster) < max(isofit$mean_fit$data$lat)
+          terra::xmax(raster) < max(isofit$mean_fit$data$long) |
+          terra::ymin(raster) > min(isofit$mean_fit$data$lat) |
+          terra::ymax(raster) < max(isofit$mean_fit$data$lat)
       ) {
         warning("the cropping may not make sense (sources located outside structural raster)")
       }
@@ -167,61 +167,75 @@ prepraster <- function(raster,
       if (verbose) {
         print(paste("cropping..."))
       }
-      
+
       ## crop is performed:
       raster <- .crop_withmargin(raster,
-                                 xmin = min(isofit$mean_fit$data$long),
-                                 xmax = max(isofit$mean_fit$data$long),
-                                 ymin =  min(isofit$mean_fit$data$lat),
-                                 ymax = max(isofit$mean_fit$data$lat),
-                                 margin_pct = margin_pct)
+        xmin = min(isofit$mean_fit$data$long),
+        xmax = max(isofit$mean_fit$data$long),
+        ymin = min(isofit$mean_fit$data$lat),
+        ymax = max(isofit$mean_fit$data$lat),
+        margin_pct = margin_pct
+      )
     } else {
       if (length(manual_crop) == 4) {
-        
         if ((manual_crop[1] > manual_crop[2]) && (manual_crop[3] < manual_crop[4])) {
-          crop1 <- terra::crop(raster,
-                               terra::ext(terra::xmin(terra::ext(raster)),
-                                          manual_crop[2],
-                                          manual_crop[3],
-                                          manual_crop[4]))
-          crop2 <- terra::crop(raster,
-                               terra::ext(manual_crop[1],
-                                          terra::xmax(terra::ext(raster)),
-                                          manual_crop[3],
-                                          manual_crop[4]))
-          raster <- terra::shift(terra::merge(crop1, terra::shift(crop2,
-                                                                  dx = -360)),
-                                 dx = 360)
+          crop1 <- terra::crop(
+            raster,
+            terra::ext(
+              terra::xmin(terra::ext(raster)),
+              manual_crop[2],
+              manual_crop[3],
+              manual_crop[4]
+            )
+          )
+          crop2 <- terra::crop(
+            raster,
+            terra::ext(
+              manual_crop[1],
+              terra::xmax(terra::ext(raster)),
+              manual_crop[3],
+              manual_crop[4]
+            )
+          )
+          raster <- terra::shift(
+            terra::merge(crop1, terra::shift(crop2,
+              dx = -360
+            )),
+            dx = 360
+          )
           warning("The first longitude is greater than the second one. You may want this to study something around the pacific. This feature is not fully supported... but... the function prepraster() tried to cope with this. That implies a change in the coordinate system (0:360 instead of -180:180). This should create no problem for ploting isoscapes but this can create troubles to add polygons or points on the maps. If that is the case, you need to add 360 degree to the longitudes... If all that sounds complicated, just stick to a first longitude SMALLER than the second one.")
         } else {
           raster <- terra::crop(raster, manual_crop)
         }
       }
     }
-    if (aggregation_factor > 1) {  ## test if aggregation is needed
+    if (aggregation_factor > 1) { ## test if aggregation is needed
       if (interactive()) {
         print(paste("aggregating..."))
       }
-      raster <- terra::aggregate(raster, fact = aggregation_factor, fun = aggregation_fn)  ## aggregation
+      raster <- terra::aggregate(raster,
+        fact = aggregation_factor, fun = aggregation_fn,
+        na.rm = TRUE, ## aggregation introduces NAs if the ratio before/after aggreg is not whole in both directions
+        ## (`raster::aggregate()` implied `na.rm = TRUE` by default, `terra::aggregate()` does not)
+        cores = .data_IsoriX$IsoriX_options$Ncpu
+      )
     }
   })
-  
+
   ## applies values_to_zero transformation
   terra::values(raster) <- ifelse(terra::values(raster) < max(values_to_zero) & terra::values(raster) > min(values_to_zero), 0, terra::values(raster))
-  
-  ## store the raster in memory if possible
-  
-  raster_HD <- raster
-  raster <- terra::rast(raster_HD)
-  terra::values(raster) <- terra::values(raster_HD)
-  
-  
+
+  ## store the raster in memory if possible ## I think the following trick made for **raster** is useless in **tera** but I am not sure
+  # raster_HD <- raster
+  # raster <- terra::rast(raster_HD)
+  # terra::values(raster) <- terra::values(raster_HD)
+
+
   if (verbose) {
     print(paste("done!"))
     print(time)
   }
-  
+
   print(raster)
   return(raster)
 }
-

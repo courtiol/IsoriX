@@ -90,3 +90,14 @@ terra::values
 #' @importFrom terra cellSize
 #' @export
 terra::cellSize
+
+
+# Imports not reexported --------------------------------------------------
+
+#' @importFrom terra saveRDS
+#' @export
+NULL # to not shadow IsoriX doc
+
+#' @importFrom terra readRDS
+#' @export
+NULL # to not shadow IsoriX doc

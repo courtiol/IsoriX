@@ -31,25 +31,25 @@ extent as the structural raster. This function is designed to be used with
 ## It will therefore not be run unless you uncomment it
 
 ### We fit the models for Germany:
-#GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+# GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #
-#GermanFit <- isofit(data = GNIPDataDEagg,
+# GermanFit <- isofit(data = GNIPDataDEagg,
 #                     mean_model_fix = list(elev = TRUE, lat.abs = TRUE))
 #
 ### We prepare the structural raster:
-#StrRaster <- prepraster(raster = ElevRasterDE,
-#                        isofit = GermanFit,
-#                        aggregation_factor = 0)
+# StrRaster <- prepraster(raster = ElevRasterDE,
+#                         isofit = GermanFit,
+#                         aggregation_factor = 0)
 #
 ### We download the precipitation data:
-#getprecip(path = "~/Downloads/")
+# getprecip(path = "~/Downloads/")
 #
 ### We prepare the raster brick with all the precipitation data:
-#PrecipitationBrick <- prepcipitate(path = "~/Downloads/",
-#                                   raster = StrRaster)
+# PrecipitationBrick <- prepcipitate(path = "~/Downloads/",
+#                                    raster = StrRaster)
 #
 ### We plot the precipitation data:
-#levelplot(PrecipitationBrick)
+# levelplot(PrecipitationBrick)
 
 }
 \seealso{
