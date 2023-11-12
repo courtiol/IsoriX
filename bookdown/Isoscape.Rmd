@@ -188,31 +188,33 @@ Therefore, you may want to save the fitted models in order to be allowed to reus
 This can be done as follow:
 
 ```{r saving models fake, eval = FALSE}
-save(EuropeFit, file = "EuropeFit.rda", compress = "xz")
+saveRDS(EuropeFit, file = "EuropeFit.rds", compress = "xz")
 ```
 
 ```{r saving models real, echo = FALSE, warning=FALSE}
 if (!file.exists("output/EuropeFit.rda"))
-  save(EuropeFit, file = "output/EuropeFit.rda", compress = "xz")
+  saveRDS(EuropeFit, file = "output/EuropeFit.rds", compress = "xz")
 ```
 
-The function `save()` will (by default) store your R object in a file that can be found in your working directory.
-To use `save()`, we must provide the object you want as a first argument of the function.
+The function `saveRDS()` will store your R object in a file.
+To use `saveRDS()`, you must provide the object you want as a first argument of the function.
 Then, `file =` defines the name of the file that will store the R object in your hard drive.
 You can also include a path to this name so to store the file wherever you want.
-This name can be different from the name object but naming the file as the object allows you to remember what the name of the stored object is (check `?saveRDS` for an alternative way of saving R objects which allows for you to name objects when loading them).
+This name can be different from the name of the object but here we stick to the same name for clarity.
 The last argument `compress =` is optional; it allows for the creation of smaller files without loosing any content, so we always use it.
 
-For loading a saved object (in a new session of R for example), just use the function `load()` as follows (but make sure the saved object is in your working directory or include the path to the file names):
+For loading a saved object (in a new session of R for example), just use the function `readRDS()` as follows:
 
 ```{r loading models, eval = FALSE}
-load(file = "EuropeFit.rda")
+EuropeFit <- readRDS(file = "EuropeFit.rds")
 ```
 
 _Be careful_, we do not recommend you to reuse saved object after updating either IsoriX, or spaMM, or both.
 After one of such update, the best practice to make sure that every thing is working properly is to refit all your models.
 By doing this you may also benefit from potentially new improvements we would have implemented. 
 
+There is another way to save and load object in R, which is to use the function `save()` and `load()`.
+However, it is better to get to used to `saveRDS()` and `readRDS()` because only those can be used to store objects that contain spatial information (which we will do below).
 
 ## Examining the fitted models
 
