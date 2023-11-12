@@ -4,14 +4,15 @@ This is the development folder for the R package IsoriX.
 
 See [main page](https://github.com/courtiol/IsoriX) for description and installation procedure.
 
+## Steps before new release
+
+  - run `usethis::use_release_issue(version = "XX")` with `"XX"` the future release number.
+  - follow the steps in the issue created by the previous command.
+
 ## Some useful links for developers
 
- - [Simple introduction to the making of R packages](http://r-pkgs.had.co.nz/)
-
+ - [Wickham & Bryan's book *R packages*](https://r-pkgs.org/)
  - [Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
-
- - [R coding standard](https://google.github.io/styleguide/Rguide.xml)
-
+ - [R coding standard](https://style.tidyverse.org/)
  - [Using version control in RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
- 
  - [Preparing your package for a CRAN submission](https://github.com/ThinkR-open/prepare-for-cran)
