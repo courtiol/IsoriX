@@ -45,7 +45,7 @@ test_that("isofind() can handle NA", {
 })
 
 test_that("plot.ISOFIND() can handle NA", {
-  expect_warning(plot(AssignmentDry, who = 2), regexp = "The p-values for an assignment samples containing only missing values are considered as 0.")
+  expect_warning(plot(AssignmentDry, who = 1), regexp = "The p-values for an assignment samples containing only missing values are considered as 0.")
   expect_error(plot(AssignmentDry, who = "group"), regexp = NA)
 })
 
