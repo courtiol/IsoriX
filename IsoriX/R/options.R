@@ -8,6 +8,7 @@
 #'   \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
 #'   \item{Ncpu}{An *integer* corresponding to the number of cores to be used (in functions that can handle parallel processing)}
 #'   \item{dont_ask}{A *logical* indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
+#'   \item{spaMM_debugmod}{A *logical* indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only)}
 #' }
 #'
 #' @return The options are invisibly returned in an object called `IsoriX:::.data_IsoriX$options`
@@ -69,11 +70,14 @@ getOption_IsoriX <- function(x = NULL) {
   if (x == "dont_ask") {
     return(options_IsoriX(x)[["dont_ask"]])
   }
+  if (x == "spaMM_debug") {
+    return(options_IsoriX(x)[["spaMM_debug"]])
+  }
   stop("option not found")
 }
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE)  ## put example_maxtime = 500 to check all examples
-                                                                                       ## otherwise put 5
+.data_IsoriX$IsoriX_options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE)  ## put example_maxtime = 500 to check all examples
+                                                                                                            ## otherwise put 5
 
