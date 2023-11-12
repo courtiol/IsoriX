@@ -14,5 +14,5 @@ See [main page](https://github.com/courtiol/IsoriX) for description and installa
  - [Wickham & Bryan's book *R packages*](https://r-pkgs.org/)
  - [Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
  - [R coding standard](https://style.tidyverse.org/)
- - [Using version control in RStudio](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
+ - [Using version control in RStudio](https://support.posit.co/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
  - [Preparing your package for a CRAN submission](https://github.com/ThinkR-open/prepare-for-cran)
