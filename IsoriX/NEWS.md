@@ -1,12 +1,4 @@
-# IsoriX News
-
-## v1.0
-
-* version 1.0 does not exist yet
-* feature requests can be defined and watched here: https://github.com/courtiol/IsoriX/issues
-
-
-## v0.9.1.9999
+# IsoriX 0.9.2
 
 * **main release goal**
 
@@ -71,7 +63,7 @@
   * instead of one Rproj file used to handle both the package and the bookdown development, we now rely on 2 Rproj files, which solves some limitations encountered with **usethis**.
 
 
-## v0.9.1
+# v0.9.1
 
 * **main release goal**
 
@@ -97,7 +89,7 @@
   * **elevatr** moved from Imports to Suggests. (#157)
 
 
-## v0.9.0
+# v0.9.0
 
 * **bug fixes**
     
@@ -108,7 +100,7 @@
   * the base package **colourspace** is now suggested to avoid a note in R CMD check.
     
 
-## v0.8.3
+# v0.8.3
 
 * **new features**
     
@@ -151,7 +143,7 @@
   * plotting on a sphere ISOFIND objects did not work in some cases. (#126)
 
 
-## v0.8.2
+# v0.8.2
 
 * **new features**
     
@@ -171,7 +163,7 @@
   * all old defunct functions have been removed from the package.
 
 
-## v0.8.1
+# v0.8.1
 
 * **bug fixes**
     
@@ -229,7 +221,7 @@
   * the plotting function for fitted model was not displaying one plot in RStudio when called on objects of class `MULTIISOFIT`.
 
 
-## v0.7.1
+# v0.7.1
 
 * **new features**
     
@@ -241,7 +233,7 @@
   * the syntax for the extraction of correlation terms of **spaMM** objects has changed.
 
 
-## v0.7
+# v0.7
 
 * **new features**
     
@@ -256,7 +248,7 @@
   * new internal function `.converts_months_to_numbers()`.
 
 
-## v0.6
+# v0.6
 
 * **new features**
       
@@ -286,7 +278,7 @@
   * changed some object names following our coding convention (more to come).
 
 
-## v0.5
+# v0.5
 
 * **bug fixes**
     
@@ -318,7 +310,7 @@
   * `queryGNIP()` is now provided with a single month argument specifying the months to select.
 
 
-## v0.4-1
+# v0.4-1
 
 * this was the first version of IsoriX submitted to CRAN.
       
