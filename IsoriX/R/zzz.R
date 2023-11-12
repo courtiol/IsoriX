@@ -182,7 +182,7 @@
 
 .crop_withmargin <- function(raster, xmin, xmax, ymin, ymax, margin_pct = 5) {
   ## This function should not be called by the user.
-  ## It crops a raster using a safety margin
+  ## It crops a raster using a safety margin.
   margin_long <- (xmax - xmin) * margin_pct/100
   margin_lat  <- (ymax - ymin) * margin_pct/100
   
@@ -195,7 +195,7 @@
 
 .invert_reg <- function(intercept, slope, SE_I, SE_S, phi, N, sign_mean_Y) {
   ## This function should not be called by the user.
-  ## It turns a regression x ~ y to a regression y ~ x
+  ## It turns a regression x ~ y to a regression y ~ x.
   Nminus1 <- N - 1L
   Nminus2 <- N - 2L
   Nfac <- Nminus1/N
