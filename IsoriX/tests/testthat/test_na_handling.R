@@ -14,8 +14,11 @@ test_that("isofit() can handle NA", {
 
 test_that("isoscape() can handle NA", {
   ElevRasterDE[50, 50] <- NA
-
-  expect_error(GermanScape <<- isoscape(raster = ElevRasterDE, isofit = GermanFit), regexp = NA)
+  GermanFit2 <- isofit(data = GNIPDataDEagg,
+                       mean_model_fix = list(elev = TRUE, lat_abs = FALSE), ## Elev is TRUE for NA to have an effect
+                       mean_model_rand = list(uncorr = FALSE, spatial = TRUE),
+                       disp_model_rand = list(uncorr = FALSE, spatial = FALSE))
+  expect_error(GermanScape <<- isoscape(raster = ElevRasterDE, isofit = GermanFit2), regexp = NA)
 })
 
 test_that("plot.ISOSCAPE() can handle NA", {
@@ -41,11 +44,10 @@ test_that("isofind() can handle NA", {
                                          calibfit = CalibAlien), regexp = NA)
   
   expect_false(all(is.na(terra::values(AssignmentDry$group$pv$lyr.1))))
-  
 })
 
 test_that("plot.ISOFIND() can handle NA", {
-  expect_warning(plot(AssignmentDry, who = 1), regexp = "The p-values for an assignment samples containing only missing values are considered as 0.")
-  expect_error(plot(AssignmentDry, who = "group"), regexp = NA)
+  expect_warning(plot(AssignmentDry, who = 2)) # "The assignment test occurred at location(s) with unknown isoscape value(s); p-values set to 0 for such (a) location(s)."
+  expect_warning(plot(AssignmentDry, who = "group")) # "The assignment test occurred at location(s) with unknown isoscape value(s); p-values set to 0 for such (a) location(s)."
 })
 

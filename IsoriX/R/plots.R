@@ -416,7 +416,12 @@ plot.ISOFIND <- function(x,
                               n_labels   = palette$n_labels,
                               digits     = palette$digits)
 
-    map <- rasterVis::levelplot(x$group$pv, # x$group$pv * (x$group$pv > cutoff$level)
+    group_noNAs <- terra::classify(x$group$pv, cbind(NA, NA, 0))
+    if (!identical(terra::values(group_noNAs), terra::values(x$group$pv))) {
+      warning("The assignment test occurred at location(s) with unknown isoscape value(s); p-values set to 0 for such (a) location(s).")
+    }
+    
+    map <- rasterVis::levelplot(group_noNAs, # x$group$pv * (x$group$pv > cutoff$level)
                                 maxpixels = prod(dim(x$group$pv)[1:2]),
                                 margin = FALSE,
                                 col.regions = colours$all_cols,
@@ -440,9 +445,9 @@ plot.ISOFIND <- function(x,
                               n_labels   = palette$n_labels,
                               digits     = palette$digits)
 
-     stack_noNAs <- terra::classify(x$sample[[what]][[who]], cbind(NA, NA, 0))
+    stack_noNAs <- terra::classify(x$sample[[what]][[who]], cbind(NA, NA, 0))
     if (!identical(terra::values(stack_noNAs), terra::values(x$sample[[what]][[who]]))) {
-      warning("The p-values for an assignment samples containing only missing values are considered as 0.")
+      warning("The assignment test occurred at location(s) with unknown isoscape value(s); p-values set to 0 for such (a) location(s).")
     }
     
     map <- rasterVis::levelplot(stack_noNAs, #x$sample[[what]][[who]] * (x$sample$pv[[who]] > cutoff$level)
@@ -787,7 +792,7 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
   fixedVar <- rowSums(X * (X %*% x$fixefCov)) ## = diag(X %*% x$fixefCov %*% t(X))
   if (any(fixedVar < 0)) {
     fixedVar[fixedVar < 0] <- 0
-    warning("Some negative estimates of variances are considered null. Negative estimates of variances are a sign that numerical problems occured during the fitting of the calibration.")
+    warning("Some negative estimates of variances are considered null. Negative estimates of variances are a sign that numerical problems occurred during the fitting of the calibration.")
   }
   lwr <- fitted + stats::qnorm(0.025)*sqrt(fixedVar)
   upr <- fitted + stats::qnorm(0.975)*sqrt(fixedVar)

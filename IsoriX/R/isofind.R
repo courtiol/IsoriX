@@ -327,6 +327,8 @@ calibfit!")
     } else {
       group_pv <- .Fisher_method(logpv_brick)
     }
+    ## where isoscape values are missing, pv is NA
+    group_pv[is.na(isoscape$isoscapes$mean)] <- NA_real_
   })  ## end of system.time
 
   ## display time
