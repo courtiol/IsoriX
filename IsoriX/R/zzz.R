@@ -362,10 +362,10 @@ release_bullets <- function() {
     "run `lintr::lint_package()` for checking code in depth",
     "run `all_checks <- rhub::check_for_cran()`",
     "run `usethis::use_cran_comments()` and paste the output of `all_checks$cran_summary()` in the created file",
-    "run make check in terminal",
+    "run `make build` & `make check` in terminal",
     "check folder `IsoriX.Rcheck` and file in there",
     "run `tests/local_tests.R` step-by-step",
-    "rebuilt bookdown to make sure all works in there too (open Rproj from the bookdown folder and follow instructions in README)",
+    "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (open Rproj from the bookdown folder and follow instructions in README)",
     "update bookdown (open Rproj from the bookdown folder and follow instructions in README)",
     "write email to Google Group (https://groups.google.com/g/IsoriX)"
   )
