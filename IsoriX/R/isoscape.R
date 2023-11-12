@@ -564,7 +564,7 @@ isomultiscape <- function(raster, ## change as method?
   )
   
   ## Agglomerate the sources spatial points
-  #source_points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp_points$sources)) ## no longer works with terra (v 1.7-55)
+  #source_points <- Reduce("+", lapply(isoscapes, function(iso) iso$sp_points$sources)) ## https://github.com/rspatial/terra/issues/1337
   source_points <- Reduce("rbind", lapply(isoscapes, function(iso) iso$sp_points$sources))
   terra::values(source_points) <- NULL
   source_points <- terra::unique(source_points)
