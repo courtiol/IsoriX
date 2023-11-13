@@ -35,7 +35,7 @@ below to see their documentation.
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
-  \item{rasterVis}{\code{\link[rasterVis:rasterTheme]{RdBuTheme}}, \code{\link[rasterVis:levelplot-methods]{levelplot}}}
+  \item{rasterVis}{\code{\link[rasterVis:levelplot-methods]{levelplot}}, \code{\link[rasterVis:rasterTheme]{RdBuTheme}}}
 
   \item{spaMM}{\code{\link[spaMM:get_fittedPars]{get_ranPars}}}
 
