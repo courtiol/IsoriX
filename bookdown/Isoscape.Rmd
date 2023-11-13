@@ -171,8 +171,8 @@ EuropeFit <- isofit(data = GNIPDataEUagg,
 ```
 
 ```{r isofit real, echo = FALSE, results = FALSE}
-if (file.exists("output/EuropeFit.rda")) {
-  load("output/EuropeFit.rda")
+if (file.exists("output/EuropeFit.rds")) {
+  EuropeFit <- readRDS("output/EuropeFit.rds")
 } else {
   EuropeFit <- isofit(data = GNIPDataEUagg,
                       mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
