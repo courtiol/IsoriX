@@ -6,16 +6,17 @@ rsconnect
 #local folders
 
 _bookdown_files/
+Documentation\_for\_IsoriX\_files/
 libs/
 cache/
 data/
 input/
 output/
-output_v0.8.1/
 docs/
 
 # local files
 
+Documentation\_for\_IsoriX.Rmd
 *.Rproh
 *.sh
 *.cls
