@@ -55,24 +55,6 @@
 #'   ## Reading RDS
 #'   GermanScape2 <- readRDS(filename)
 #'   GermanScape2
-#'
-#'   ## Saving data.frame object as RDS
-#'   filename2 <- tempfile(fileext = ".rds") # or whatever names you want
-#'   saveRDS(iris, file = filename2)
-#'
-#'   ## Reading RDS containing data.frame
-#'   iris2 <- readRDS(filename2)
-#'   iris2
-#'
-#'   ## Saving terra object as RDS
-#'   filename3 <- tempfile(fileext = ".rds") # or whatever names you want
-#'   f <- system.file("ex/elev.tif", package = "terra")
-#'   r <- rast(f)
-#'   saveRDS(r, file = filename3)
-#'
-#'   ## Reading RDS containing terra object
-#'   r2 <- readRDS(filename3)
-#'   r2
 #' }
 #'
 NULL
@@ -113,7 +95,9 @@ saveRDS_IsoriX <- function(object, file = "", ascii = FALSE, version = NULL, com
   }
   if (!is.null(object$sp_points)) {
     object$sp_points <- lapply(object$sp_points, \(x) {
-      if (inherits(x, "SpatVector")) {
+      if (is.null(x)) {
+        NULL
+      } else if (inherits(x, "SpatVector")) {
         terra::wrap(x)
       } else {
         stop("Saving situation not implemented yet. Please contact the package maintainer.")
@@ -183,7 +167,25 @@ readRDS.character <- function(file, refhook = NULL) {
       if (inherits(x, "PackedSpatVector")) {
         terra::unwrap(x)
       } else {
-        stop("Saving situation not implemented yet. Please contact the package maintainer.")
+        x
+      }
+    })
+  }
+  if (!is.null(object$sample)) {
+    object$sample <- lapply(object$sample, \(x) {
+      if (inherits(x, "PackedSpatRaster")) {
+        terra::unwrap(x)
+      } else {
+        x
+      }
+    })
+  }
+  if (!is.null(object$group)) {
+    object$group <- lapply(object$group, \(x) {
+      if (inherits(x, "PackedSpatRaster")) {
+        terra::unwrap(x)
+      } else {
+        x
       }
     })
   }

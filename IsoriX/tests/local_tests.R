@@ -25,9 +25,6 @@ if (FALSE) { ## for not running during checks
   example(create_aliens)
 
   example(saveRDS_IsoriX)
-
-  library(terra)
-  example(saveRDS_IsoriX)
 }
 
 # devtools::check()
