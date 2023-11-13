@@ -35,6 +35,8 @@ colorlinks: yes
 lot: yes
 lof: yes
 description: "This book is the official documentation for the R package IsoriX."
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, echo = FALSE}
