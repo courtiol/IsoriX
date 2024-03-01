@@ -55,7 +55,7 @@ if (!file.exists("output/AssignedBats.rds")) {
                           calibfit = CalibBats)
   saveRDS(AssignedBats, file = "output/AssignedBats.rds", compress = "xz")
 } else {
-  AssignedBats <- readRDS("output/AssignedBats.rda")
+  AssignedBats <- readRDS("output/AssignedBats.rds")
 }
 ```
 
