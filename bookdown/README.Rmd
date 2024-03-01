@@ -40,7 +40,7 @@ bookdown::render_book("index.Rmd", "bookdown::gitbook")
 
 Importantly, this job should not break even if you work on a remote computer and that your connection to RStudio Server is not kept alive the whole time.
 
-Once this is done, you can check the output by opening "IsoriX_project/Documentation/docs/index.html" (if it did not open automatically).
+Once this is done, you can check the output by opening "IsoriX_project/bookdown/docs/index.html" (if it did not open automatically).
 
 Then, you should serve the book:
 
