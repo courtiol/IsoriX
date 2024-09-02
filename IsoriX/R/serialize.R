@@ -4,14 +4,14 @@
 #' [`terra::SpatVector`] objects, they cannot be saved using [`base::saveRDS`]
 #' or [`base::save`] functions. The reason is that objects created with [terra]
 #' point to data stored in memory which are not contained in the R objects
-#' themselves. Adapting the approach implemented in the [terra] package, we
+#' themselves. Adapting the approach implemented in the [`terra::terra`] package, we
 #' provide a wrapper for [`base::saveRDS`] and [`base::readRDS`] functions,
 #' which allows one to save and read objects produced with IsoriX by simply
 #' using `saveRDS()` and `readRDS()`.
 #'
 #' [`base::saveRDS`] and [`base::readRDS`] are standard S3 functions. So in
 #' order to be able to have a specific behaviour for objects produced with
-#' IsoriX, we imported `saveRDS` and `readRDS` S4 generics from  [terra] to
+#' IsoriX, we imported `saveRDS` and `readRDS` S4 generics from  [`terra::terra`] to
 #' dispatch both S3 and S4 IsoriX-specific methods (see [Methods_for_S3]). The
 #' S3 implementation is consistent with the rest of the package and presents all
 #' usual benefits associated with S3 methods (e.g. simple access to the code).

@@ -20,7 +20,7 @@ relationship between the isotope values in the environment and those in the
 simulated organisms. This list must contain three parameters: the
 intercept, the slope, and the residual variance.}
 
-\item{isoscape}{The output of the function \link{isoscape}}
+\item{isoscape}{The output of the function \code{\link{isoscape}}}
 
 \item{coordinates}{An optional \emph{data.frame} with columns \code{site_ID},
 \code{long} and \code{lat}}
@@ -124,11 +124,11 @@ if (getOption_IsoriX("example_maxtime") > 30) {
 
 }
 \seealso{
-\link{calibfit} for a calibration based on simulated data
+\code{\link{calibfit}} for a calibration based on simulated data
 
-\link{isofind} for an assignment based on simulated data
+\code{\link{isofind}} for an assignment based on simulated data
 
-\link{IsoriX} for the complete work-flow of our package
+\code{\link{IsoriX}} for the complete work-flow of our package
 }
 \keyword{simulate}
 \keyword{simulation}

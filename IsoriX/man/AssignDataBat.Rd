@@ -19,7 +19,7 @@ data directly provided by the authors of the following publication
 This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
 delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 killed at wind turbines in northern Germany. The data can be used as an
-example to perform assignments using the function [isofind].
+example to perform assignments using the function [`isofind`].
 }
 \examples{
 
@@ -33,6 +33,6 @@ mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Anima
 Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
-[isofind] to perform assignments
+[`isofind`] to perform assignments
 }
 \keyword{datasets}

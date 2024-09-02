@@ -9,9 +9,9 @@ isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
 }
 \arguments{
 \item{raster}{The structural raster (\emph{SpatRaster}) such as an elevation
-raster created using \link{prepelev}}
+raster created using \code{\link{prepelev}}}
 
-\item{isofit}{The fitted isoscape created by \link{isofit}}
+\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
 \item{weighting}{An optional RasterBrick containing the weights}
 
@@ -26,10 +26,10 @@ containing a set of all 8 raster layers mentioned above (all being of
 class \emph{SpatRaster}), and the location of the sources as spatial points.
 }
 \description{
-This function is the counterpart of \link{isoscape} for the objects
-created with \link{isomultifit}. It creates the isoscapes for each
+This function is the counterpart of \code{\link{isoscape}} for the objects
+created with \code{\link{isomultifit}}. It creates the isoscapes for each
 strata (e.g. month) defined by \code{split_by} during the call to
-\link{isomultifit} and the aggregate them. The function can handle
+\code{\link{isomultifit}} and the aggregate them. The function can handle
 weighting for the aggregation process and can thus be used to predict annual
 averages precipitation weighted isoscapes.
 }
@@ -86,12 +86,12 @@ if (getOption_IsoriX("example_maxtime") > 180) {
 }
 }
 \seealso{
-\link{isoscape} for details on the function used to compute the isoscapes for each strata
-\link{isomultifit} for the function fitting the isoscape
+\code{\link{isoscape}} for details on the function used to compute the isoscapes for each strata
+\code{\link{isomultifit}} for the function fitting the isoscape
 
-\link{plot.ISOSCAPE} for the function plotting the isoscape model
+\code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
 
-\link{IsoriX} for the complete work-flow
+\code{\link{IsoriX}} for the complete work-flow
 }
 \keyword{models}
 \keyword{predict}

@@ -34,7 +34,7 @@
 #'   simulated organisms. This list must contain three parameters: the
 #'   intercept, the slope, and the residual variance.
 #'
-#' @param isoscape The output of the function [isoscape]
+#' @param isoscape The output of the function [`isoscape`]
 #'
 #' @param coordinates An optional *data.frame* with columns `site_ID`,
 #' `long` and `lat`
@@ -53,11 +53,11 @@
 #' @return This functions returns a *data.frame* (see example for column
 #'   names)
 #'
-#' @seealso [calibfit] for a calibration based on simulated data
+#' @seealso [`calibfit`] for a calibration based on simulated data
 #'
-#'   [isofind] for an assignment based on simulated data
+#'   [`isofind`] for an assignment based on simulated data
 #'
-#'   [IsoriX] for the complete work-flow of our package
+#'   [`IsoriX`] for the complete work-flow of our package
 #' @keywords simulate simulation
 #' @examples
 #'

@@ -56,29 +56,29 @@ running. By default verbose is \code{TRUE} if users use an interactive R
 session and \code{FALSE} otherwise.}
 
 \item{...}{Other parameters to be passed to the function
-\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}}
+\code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}}}
 }
 \value{
 This function returns the full path where the file has been stored
 }
 \description{
 The function \code{getelev} downloads an elevation raster from internet. It
-is a wrapper that 1) calls the function \link[elevatr:get_elev_raster]{elevatr::get_elev_raster} to
+is a wrapper that 1) calls the function \code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}} to
 download the data and 2) saves the downloaded raster on the hard drive (so
 that you don't have to keep downloading the same file over and over again).
 The file saved on the disk is a *.tif file which you can directly read using
-the function \link[terra:rast]{terra::rast}.
+the function \code{\link[terra:rast]{terra::rast}}.
 }
 \details{
 By default (and to keep with the spirit of the former implementations of
-\code{getelev} in IsoriX, which did not rely on \link[elevatr:elevatr]{elevatr::elevatr}), an
+\code{getelev} in IsoriX, which did not rely on \code{\link[elevatr:elevatr]{elevatr::elevatr}}), an
 elevation raster of the whole world is downloaded with a resolution
 correspond to ca. 0.6 km2 per raster cell. You can increase the resolution by
 increasing the value of the argument \code{z}. You can also restrict the area
 to be downloaded using the arguments \code{long_min}, \code{long_max}, \code{lat_min} &
 \code{lat_max}.
 
-Note that when using \link{prepraster} you will be able to reduce the resolution
+Note that when using \code{\link{prepraster}} you will be able to reduce the resolution
 and restrict the boundaries of this elevation raster, but you won't be able
 to increase the resolution or expend the boundaries. As a consequence, it is
 probably a good idea to overshoot a little when using \code{getelev} and
@@ -86,10 +86,10 @@ download data at a resolution slightly higher than you need and for a extent
 larger than your data.
 
 You can customise further what you download by using other parameters of
-\link[elevatr:get_elev_raster]{elevatr::get_elev_raster} (via the elipsis \code{...}).
+\code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}} (via the elipsis \code{...}).
 
 Please refer to the documentation of
-\link[elevatr:get_elev_raster]{elevatr::get_elev_raster} for information on the sources and follows link in
+\code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}} for information on the sources and follows link in
 there to know how to cite them.
 }
 \examples{

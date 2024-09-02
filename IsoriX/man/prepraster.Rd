@@ -18,7 +18,7 @@ prepraster(
 \arguments{
 \item{raster}{The structural raster (\emph{SpatRaster})}
 
-\item{isofit}{The fitted isoscape model returned by the function \link{isofit}}
+\item{isofit}{The fitted isoscape model returned by the function \code{\link{isofit}}}
 
 \item{margin_pct}{The percentage representing by how much the area should
 extend outside the area used for cropping (default = 5, corresponding to
@@ -54,7 +54,7 @@ isoscapes and the assignments are defined.
 \details{
 This functions allows the user to crop a raster according to either the
 extent of the isoscape or manually. If a fitted isoscape object is provided
-(see \link{isofit}), the function extracts the observed locations of isotopic
+(see \code{\link{isofit}}), the function extracts the observed locations of isotopic
 sources from the model object and crops the structural raster accordingly.
 Alternatively, \code{manual_crop} allows you to crop the structural raster to a
 desired extent. If no model and no coordinates for manual cropping are
@@ -68,9 +68,9 @@ faster and using less memory (this can affect the assignment; see note
 below). An aggregation factor of zero (or one) keeps the resolution constant
 (default).
 
-This function relies on calls to the functions \link[terra:aggregate]{terra::aggregate} and
-\link[terra:crop]{terra::crop} from the package \pkg{terra}. It thus share the limitations
-of these functions. In particular, \link[terra:crop]{terra::crop} expects extents with
+This function relies on calls to the functions \code{\link[terra:aggregate]{terra::aggregate}} and
+\code{\link[terra:crop]{terra::crop}} from the package \pkg{terra}. It thus share the limitations
+of these functions. In particular, \code{\link[terra:crop]{terra::crop}} expects extents with
 increasing longitudes and latitudes. We have tried to partially relax this
 constrains for longitude and you can use the argument \code{manual_crop} to
 provide longitudes in decreasing order, which is useful to centre a isoscape
@@ -169,7 +169,7 @@ if (getOption_IsoriX("example_maxtime") > 10) {
 
 }
 \seealso{
-\link{ElevRasterDE} for information on elevation rasters, which can be
+\code{\link{ElevRasterDE}} for information on elevation rasters, which can be
 used as structural rasters.
 }
 \keyword{utilities}

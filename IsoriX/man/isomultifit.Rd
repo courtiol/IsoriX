@@ -27,7 +27,7 @@ isoscape model}
 
 \item{split_by}{A \emph{string} indicating the name of the column of
 \code{data} used to split the dataset. The function
-\link{isofit} will then be called on each of these sub-datasets. The
+\code{\link{isofit}} will then be called on each of these sub-datasets. The
 default behaviour is to consider that the dataset should be split per
 months (\code{split_by = "month"}).}
 
@@ -73,7 +73,7 @@ This function fits several set of isoscapes (e.g. one per strata). It can thus b
 used to predict annual averages precipitation weighted isoscapes.
 }
 \details{
-This function is a wrapper around the function \link{isofit}.
+This function is a wrapper around the function \code{\link{isofit}}.
 }
 \examples{
 
@@ -103,6 +103,6 @@ if (getOption_IsoriX("example_maxtime") > 30) {
 }
 }
 \seealso{
-\link{isofit} for information about the fitting procedure of
+\code{\link{isofit}} for information about the fitting procedure of
 each isoscape.
 }

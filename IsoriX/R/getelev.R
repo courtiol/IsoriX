@@ -1,21 +1,21 @@
 #' Download an elevation raster from internet
 #'
 #' The function `getelev` downloads an elevation raster from internet. It
-#' is a wrapper that 1) calls the function [elevatr::get_elev_raster] to
+#' is a wrapper that 1) calls the function [`elevatr::get_elev_raster`] to
 #' download the data and 2) saves the downloaded raster on the hard drive (so
 #' that you don't have to keep downloading the same file over and over again).
 #' The file saved on the disk is a *.tif file which you can directly read using
-#' the function [terra::rast].
+#' the function [`terra::rast`].
 #'
 #' By default (and to keep with the spirit of the former implementations of
-#' `getelev` in IsoriX, which did not rely on [elevatr::elevatr]), an
+#' `getelev` in IsoriX, which did not rely on [`elevatr::elevatr`]), an
 #' elevation raster of the whole world is downloaded with a resolution
 #' correspond to ca. 0.6 km2 per raster cell. You can increase the resolution by
 #' increasing the value of the argument `z`. You can also restrict the area
 #' to be downloaded using the arguments `long_min`, `long_max`, `lat_min` &
 #' `lat_max`.
 #'
-#' Note that when using [prepraster] you will be able to reduce the resolution
+#' Note that when using [`prepraster`] you will be able to reduce the resolution
 #' and restrict the boundaries of this elevation raster, but you won't be able
 #' to increase the resolution or expend the boundaries. As a consequence, it is
 #' probably a good idea to overshoot a little when using `getelev` and
@@ -23,10 +23,10 @@
 #' larger than your data.
 #'
 #' You can customise further what you download by using other parameters of
-#' [elevatr::get_elev_raster] (via the elipsis `...`).
+#' [`elevatr::get_elev_raster`] (via the elipsis `...`).
 #'
 #' Please refer to the documentation of
-#' [elevatr::get_elev_raster] for information on the sources and follows link in
+#' [`elevatr::get_elev_raster`] for information on the sources and follows link in
 #' there to know how to cite them.
 #'
 #' @inheritParams prepsources
@@ -47,7 +47,7 @@
 #'   running. By default verbose is `TRUE` if users use an interactive R
 #'   session and `FALSE` otherwise.
 #' @param ... Other parameters to be passed to the function
-#'   [elevatr::get_elev_raster]
+#'   [`elevatr::get_elev_raster`]
 #'
 #' @return This function returns the full path where the file has been stored
 #' @examples
@@ -151,9 +151,9 @@ getelev <- function(file = "~/elevation_world_z5.tif",
 #' the function also unzip the file. The function `getprecip` uses the
 #' generic function `downloadfile` that can also be used to download
 #' directly other files. This raster needs further processing with the function
-#' [prepcipitate]. It can then be used to predict annual averages
+#' [`prepcipitate`]. It can then be used to predict annual averages
 #' precipitation weighted isoscapes with the function
-#' [isomultiscape].
+#' [`isomultiscape`].
 #'
 #' In the argument "path" is not provided, the file will be stored in the
 #' current working directory. The functions can create new directories, so you
@@ -247,8 +247,8 @@ getprecip <- function(path = NULL,
 #' options to reduce this possibility and the function runs a check if the
 #' signature of the file is provided to the argument `md5sum`.
 #'
-#' @note Users should directly use the function [getelev()] and
-#'   [getprecip()].
+#' @note Users should directly use the function [`getelev`] and
+#'   [`getprecip`].
 #'
 #' @inheritParams getelev
 #' @inheritParams getprecip
@@ -256,7 +256,7 @@ getprecip <- function(path = NULL,
 #' @param filename A *string* indicating the name under which the file must
 #'   be stored
 #' @param md5sum A *string* indicating the md5 signature of the valid file
-#'   as created with [tools::md5sum()]
+#'   as created with [`tools::md5sum`]
 #' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
 #'   running. By default verbose is `TRUE` if users use an interactive R
@@ -268,7 +268,7 @@ getprecip <- function(path = NULL,
 #'
 #' @export
 #'
-#' @seealso [getelev()], [getprecip()]
+#' @seealso [`getelev`], [`getprecip`]
 #'
 #'
 downloadfile <- function(address = NULL, filename = NULL, path = NULL,

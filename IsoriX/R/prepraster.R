@@ -6,7 +6,7 @@
 #'
 #' This functions allows the user to crop a raster according to either the
 #' extent of the isoscape or manually. If a fitted isoscape object is provided
-#' (see [isofit]), the function extracts the observed locations of isotopic
+#' (see [`isofit`]), the function extracts the observed locations of isotopic
 #' sources from the model object and crops the structural raster accordingly.
 #' Alternatively, `manual_crop` allows you to crop the structural raster to a
 #' desired extent. If no model and no coordinates for manual cropping are
@@ -20,9 +20,9 @@
 #' below). An aggregation factor of zero (or one) keeps the resolution constant
 #' (default).
 #'
-#' This function relies on calls to the functions [terra::aggregate] and
-#' [terra::crop] from the package \pkg{terra}. It thus share the limitations
-#' of these functions. In particular, [terra::crop] expects extents with
+#' This function relies on calls to the functions [`terra::aggregate`] and
+#' [`terra::crop`] from the package \pkg{terra}. It thus share the limitations
+#' of these functions. In particular, [`terra::crop`] expects extents with
 #' increasing longitudes and latitudes. We have tried to partially relax this
 #' constrains for longitude and you can use the argument \code{manual_crop} to
 #' provide longitudes in decreasing order, which is useful to centre a isoscape
@@ -33,7 +33,7 @@
 #'
 #' @inheritParams getelev
 #' @param raster The structural raster (*SpatRaster*)
-#' @param isofit The fitted isoscape model returned by the function [isofit]
+#' @param isofit The fitted isoscape model returned by the function [`isofit`]
 #' @param aggregation_factor The number of neighbouring cells (*integer*) to
 #'   merge during aggregation
 #' @param aggregation_fn The *function* used to aggregate cells
@@ -53,7 +53,7 @@
 #'   assignment, because the values of raster cells changes depending on the
 #'   aggregation function (see example below), which in turn affects model
 #'   predictions.
-#' @seealso [ElevRasterDE] for information on elevation rasters, which can be
+#' @seealso [`ElevRasterDE`] for information on elevation rasters, which can be
 #'   used as structural rasters.
 #'
 #' @keywords utilities

@@ -94,7 +94,7 @@ estimates are computed.
 }
 \description{
 This function prepares the available dataset to be used for creating the
-isoscape (e.g. \link{GNIPDataDE}). This function allows the trimming of data
+isoscape (e.g. \code{\link{GNIPDataDE}}). This function allows the trimming of data
 by months, years and location, and for the aggregation of selected data per
 location, location:month combination or location:year combination. The
 function can also be used to randomly exclude some observations.
@@ -104,22 +104,22 @@ This function aggregates the data as required for the IsoriX workflow. Three
 aggregation schemes are possible for now. The most simple one, used as
 default, aggregates the data so to obtained a single row per sampling
 location. Datasets prepared in this way can be readily fitted with the
-function \link{isofit} to build an isoscape. It is also possible to
+function \code{\link{isofit}} to build an isoscape. It is also possible to
 aggregate data in a different way in order to build sub-isoscapes
 representing temporal variation in isotope composition, or in order to
 produce isoscapes weighted by the amount of precipitation (for isoscapes on
 precipitation data only). The two possible options are to either split the
 data from each location by month or to split them by year. This is set with
 the \code{split_by} argument of the function. Datasets prepared in this way
-should be fitted with the function \link{isomultifit}.
+should be fitted with the function \code{\link{isomultifit}}.
 
 The function also allows the user to filter the sampling locations based on
 time (years and/ or months) and space (locations given in geographic
 coordinates, i.e. longitude and latitude) to calculate tailored isoscapes
 matching e.g. the time of sampling and speeding up the model fit by
 cropping/clipping a certain area. The dataframe produced by this function can
-be used as input to fit the isoscape (see \link{isofit} and
-\link{isomultifit}).
+be used as input to fit the isoscape (see \code{\link{isofit}} and
+\code{\link{isomultifit}}).
 }
 \examples{
 ## Create a processed dataset for Germany

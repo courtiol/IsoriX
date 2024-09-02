@@ -46,9 +46,9 @@
 #' functions `RandomFields::RMwhittle` and
 #' `RandomFields::RMnugget`, respectively. These two functions are
 #' part of the powerful package \pkg{RandomFields} (currently retired from CRAN).
-#' @seealso [isofit] for the function fitting the isoscape model
+#' @seealso [`isofit`] for the function fitting the isoscape model
 #'
-#' [IsoriX] for the complete work-flow
+#' [`IsoriX`] for the complete work-flow
 #' @keywords simulate simulation
 #' @examples
 #'

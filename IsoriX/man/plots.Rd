@@ -68,8 +68,8 @@
 \method{plot}{SpatRaster}(x, ...)
 }
 \arguments{
-\item{x}{The return object of a call to \link{isofit}, \link{isoscape}, \link{calibfit},
-\link{isofind}, or \link[terra:rast]{terra::rast}]}
+\item{x}{The return object of a call to \code{\link{isofit}}, \code{\link{isoscape}}, \code{\link{calibfit}},
+\code{\link{isofind}}, or \code{\link[terra:rast]{terra::rast}}}
 
 \item{which}{A \emph{string} indicating the name of the raster to be plotted
 (see details)}
@@ -118,10 +118,10 @@ location of the assignment sampling location (see details)}
 \item{cex_scale}{A \emph{numeric} giving a scaling factor for the points in
 the plots}
 
-\item{pch}{The argument pch as in \link{par} for plot.CALIBFIT and
+\item{pch}{The argument pch as in \code{\link{par}} for plot.CALIBFIT and
 points.CALIBFIT}
 
-\item{col}{The argument col as in \link{par} for plot.CALIBFIT and
+\item{col}{The argument col as in \code{\link{par}} for plot.CALIBFIT and
 points.CALIBFIT}
 
 \item{xlab}{A \emph{string} the x-axis label in plot.CALIBFIT}
@@ -146,7 +146,7 @@ confidence interval}
 }
 \description{
 These functions plot objects created by IsoriX (with the exception of plot
-method for SpatRaster created using \link{terra}.
+method for SpatRaster created using \code{\link[terra:terra-package]{terra::terra}}.
 }
 \details{
 \strong{General}
@@ -163,7 +163,7 @@ fine-tuned plot of the isoscape.
 
 When called upon an object of class \emph{SpatRaster}, the plot function displays
 the raster (just for checking things fast and dirty). In this case, the
-function is a simple shortcut to \link[rasterVis:levelplot-methods]{rasterVis::levelplot}.
+function is a simple shortcut to \code{\link[rasterVis:levelplot-methods]{rasterVis::levelplot}}.
 
 \strong{Plotting isoscapes}
 
@@ -205,13 +205,13 @@ both types of plots), and the mask (again, for both). For assignment maps, an
 extra mask can be used (mask2), as one may want to add a mask covering the
 area outside the biological range of the species. Within these lists, the
 elements \code{lwd}, \code{col}, \code{cex}, \code{pch} and \code{fill} influences their respective
-objects as in traditional R plotting functions (see \link{par} for details). The
+objects as in traditional R plotting functions (see \code{\link{par}} for details). The
 element \code{draw} should be a \emph{logical} that indicates whether the layer must be
 created or not. The argument \code{borders} (within the list borders) expects an
-object of the class \emph{SpatVector}, such as the object \link{CountryBorders}
+object of the class \emph{SpatVector}, such as the object \code{\link{CountryBorders}}
 provided with this package. The argument \code{mask} (within the list mask)
 also expects an object of the class \emph{SpatVector}, such as the object
-\link{OceanMask} provided with this package (see examples).
+\code{\link{OceanMask}} provided with this package (see examples).
 
 The argument \code{palette} is used to define how to colour the isoscape and
 assignment plot. Within this list, \code{step} defines the number of units on the
@@ -222,9 +222,9 @@ z-scale); \code{n_labels} allows for the user to approximately define the
 maximum number of numbers plotted on the z-scale; \code{digits} defines the number
 of digits displayed for the numbers used as labels; and \code{fn} is used to
 specify the function that is used to sample the colours. If \code{fn} is NULL
-(default) the palette functions derived from \link{isopalette1} and \link{isopalette2}
+(default) the palette functions derived from \code{\link{isopalette1}} and \code{\link{isopalette2}}
 are used when plotting isoscape and assignments, respectively. If \code{fn} is NA
-the function used is the palette \link[viridisLite:viridis]{viridisLite::viridis}.
+the function used is the palette \code{\link[viridisLite:viridis]{viridisLite::viridis}}.
 
 \strong{Default symbols used on maps}
 
@@ -244,12 +244,12 @@ These symbols can be changed as explained above.
 
 }
 \seealso{
-\link{isofit} for the function fitting the isoscape
+\code{\link{isofit}} for the function fitting the isoscape
 
-\link{isoscape} for the function building the isoscape
+\code{\link{isoscape}} for the function building the isoscape
 
-\link{calibfit} for the function fitting the calibration function
+\code{\link{calibfit}} for the function fitting the calibration function
 
-\link{isofind} for the function performing the assignment
+\code{\link{isofind}} for the function performing the assignment
 }
 \keyword{plot}

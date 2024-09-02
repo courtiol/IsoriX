@@ -24,7 +24,7 @@
 #' methods. It is crucial for you to select the method that is most appropriate
 #' for your workflow, as the choice of method can impact the most likely
 #' assignment locations during the assignment test performed in
-#' [isofind].
+#' [`isofind`].
 #'
 #' ## Method "wild"
 #'
@@ -33,11 +33,11 @@
 #' no direct measurement of isotopic values in the environment are available at
 #' the locations where sedentary organisms have been collected. In such a case,
 #' the isotopic values in the environment of sedentary organisms are predicted
-#' internally using an isoscape fitted with [isofit]. This calibration method
+#' internally using an isoscape fitted with [`isofit`]. This calibration method
 #' thus aims at estimating and accounting for the uncertainty associated with
 #' these predicted values. Such uncertainty is accounted for when fitting the
 #' calibration fit so as to produce an unbiased estimation of the calibration
-#' relationship and it is also then accounted for by [isofind] when inferring
+#' relationship and it is also then accounted for by [`isofind`] when inferring
 #' the possible locations of origin. Before we added the argument `method` in
 #' calibfit (i.e. before releasing the version 0.8.3), this method was the only
 #' one available in IsoriX.
@@ -48,7 +48,7 @@
 #' (e.g. precipitation). The function considers that the isotopic values from
 #' the environment (e.g. from precipitation) at the locations at which organisms
 #' were sampled are not known. The function therefore predicts these isotopic
-#' values from the geostatistical model fitted by the function [isofit], which
+#' values from the geostatistical model fitted by the function [`isofit`], which
 #' is provided to calibfit using the argument `isofit`. The LMM used to fit the
 #' calibration function has a simple fixed-effect structure: an intercept and a
 #' slope. The random effect is more complex: it is normally distributed with
@@ -67,8 +67,8 @@
 #'   The column name must be identical to those indicated here. Other columns
 #'   can be present in the data but won't be used. Each row must correspond to
 #'   a different calibration sample (i.e. a single isotopic measurement). See
-#'   [CalibDataAlien], [CalibDataBat], or
-#'   [CalibDataBat2] for examples of such a dataset.
+#'   [`CalibDataAlien`], [`CalibDataBat`], or
+#'   [`CalibDataBat2`] for examples of such a dataset.
 #'
 #' ## Method "lab"
 #'
@@ -186,7 +186,7 @@
 #'    - `slope_se`: the standard error around the slope
 #'    - `resid_var`: the residual variance (not SD) of a LM calibration fit
 #'    - `sign_mean_Y`: a *numeric* indicating the sign of the mean
-#'    value of the isotopes in the environment in the format returned by [sign];
+#'    value of the isotopes in the environment in the format returned by [`sign`];
 #'    that is either `1` (if positive) or `-1` (if negative). This is
 #'    required for pivoting the regression from "desk_inverse" to "desk".
 #'    - `N`: a  *numeric* indicating the sample size of the data used
@@ -206,7 +206,7 @@
 #'   running. By default verbose is `TRUE` if you run an interactive R
 #'   session and `FALSE` otherwise.
 #' @param control_optim A *list* to pass information to the argument control
-#'   in the call to [optim] (only effective when `method =
+#'   in the call to [`optim`] (only effective when `method =
 #'   "wild"`; for advanced users only).
 #' @return This function returns a *list* of class *CALIBFIT* containing
 #'   the name of the calibration method used, whether a species_ID random effect
@@ -217,7 +217,7 @@
 #'   applicable), the original calibration data set with additional information
 #'   added during the fit, and the location of the calibration points as spatial
 #'   points.
-#' @seealso see [plot] for the help on how to plot the calibration
+#' @seealso see [`plot`] for the help on how to plot the calibration
 #' relationship.
 #' @keywords models regression
 #' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC,

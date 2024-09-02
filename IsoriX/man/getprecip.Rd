@@ -34,9 +34,9 @@ Version 2.1" at a spatial resolution of 30 seconds (~1 km2). After download,
 the function also unzip the file. The function \code{getprecip} uses the
 generic function \code{downloadfile} that can also be used to download
 directly other files. This raster needs further processing with the function
-\link{prepcipitate}. It can then be used to predict annual averages
+\code{\link{prepcipitate}}. It can then be used to predict annual averages
 precipitation weighted isoscapes with the function
-\link{isomultiscape}.
+\code{\link{isomultiscape}}.
 }
 \details{
 In the argument "path" is not provided, the file will be stored in the

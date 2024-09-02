@@ -26,7 +26,7 @@ drive (without the file name!). Default = current directory.}
 re-downloaded}
 
 \item{md5sum}{A \emph{string} indicating the md5 signature of the valid file
-as created with \code{\link[tools:md5sum]{tools::md5sum()}}}
+as created with \code{\link[tools:md5sum]{tools::md5sum}}}
 
 \item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
@@ -47,9 +47,9 @@ options to reduce this possibility and the function runs a check if the
 signature of the file is provided to the argument \code{md5sum}.
 }
 \note{
-Users should directly use the function \code{\link[=getelev]{getelev()}} and
-\code{\link[=getprecip]{getprecip()}}.
+Users should directly use the function \code{\link{getelev}} and
+\code{\link{getprecip}}.
 }
 \seealso{
-\code{\link[=getelev]{getelev()}}, \code{\link[=getprecip]{getprecip()}}
+\code{\link{getelev}}, \code{\link{getprecip}}
 }

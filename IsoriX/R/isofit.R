@@ -1,7 +1,7 @@
 #' Fit the isoscape models
 #'
 #' This function fits the aggregated source data using mixed models. The fitting
-#' procedures are done by the package [spaMM::spaMM] which we use to jointly fit
+#' procedures are done by the package [`spaMM::spaMM`] which we use to jointly fit
 #' the mean isotopic values and their associated residual dispersion variance in
 #' a spatially explicit manner.
 #'
@@ -95,9 +95,9 @@
 #' geographic scale, both distance methods should lead to similar results.
 #'
 #' The arguments `control_mean` and `control_dist` are lists that are
-#' transmitted to the [spaMM::spaMM] fitting functions (defined by
+#' transmitted to the [`spaMM::spaMM`] fitting functions (defined by
 #' `spaMM_method`). These lists can be used to finely control the fitting
-#' procedure, so advanced knowledge of the package [spaMM::spaMM] is required
+#' procedure, so advanced knowledge of the package [`spaMM::spaMM`] is required
 #' before messing around with these inputs.
 #'
 #' We highly recommend users to examine the output produced by isofit.
@@ -146,7 +146,7 @@
 #'   fact that our package is more likely to be used for drawing inferences than
 #'   null hypothesis testing. Users interested in model comparisons may rely on
 #'   the conditional AIC values that can be extracted from fitted models using
-#'   the function [spaMM::AIC] from  \pkg{spaMM}.
+#'   the function [`spaMM::AIC`] from  \pkg{spaMM}.
 #'
 #'   Variable names for `data` must be respected to ensure a correct utilization
 #'   of this package. Alteration to the fixed effect structure is not
@@ -155,15 +155,15 @@
 #'   using spaMM directly (see Courtiol & Rousset 2017) or let us know which
 #'   other covariates would be useful to add in IsoriX.
 #'
-#' @seealso [spaMM::spaMM] for an overview of the \pkg{spaMM} package
+#' @seealso [`spaMM::spaMM`] for an overview of the \pkg{spaMM} package
 #'
-#'   [spaMM::fitme] and [spaMM::corrHLfit] for
+#'   [`spaMM::fitme`] and [`spaMM::corrHLfit`] for
 #'   information about the two possible fitting procedures that can be used here
 #'
-#'   [spaMM::MaternCorr] for information about the Matérn
+#'   [`spaMM::MaternCorr`] for information about the Matérn
 #'   correlation structure
 #'
-#'   [prepsources] for the function preparing the data for isofit
+#'   [`prepsources`] for the function preparing the data for isofit
 #'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
@@ -390,7 +390,7 @@ isofit <- function(data,
 #' This function fits several set of isoscapes (e.g. one per strata). It can thus be
 #' used to predict annual averages precipitation weighted isoscapes.
 #'
-#' This function is a wrapper around the function [isofit].
+#' This function is a wrapper around the function [`isofit`].
 #'
 #' @return This function returns a *list* of class *MULTIISOFIT*
 #'   containing all pairs of inter-related fits (stored under
@@ -400,11 +400,11 @@ isofit <- function(data,
 #' @inheritParams isofit
 #' @param split_by A *string* indicating the name of the column of
 #'   `data` used to split the dataset. The function
-#'   [isofit] will then be called on each of these sub-datasets. The
+#'   [`isofit`] will then be called on each of these sub-datasets. The
 #'   default behaviour is to consider that the dataset should be split per
 #'   months (`split_by = "month"`).
 #'
-#' @seealso [isofit] for information about the fitting procedure of
+#' @seealso [`isofit`] for information about the fitting procedure of
 #'   each isoscape.
 #'
 #' @examples

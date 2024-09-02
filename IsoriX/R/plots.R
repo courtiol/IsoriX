@@ -1,7 +1,7 @@
 #' Plotting functions for IsoriX
 #'
 #' These functions plot objects created by IsoriX (with the exception of plot
-#' method for SpatRaster created using [terra].
+#' method for SpatRaster created using [`terra::terra`].
 #'
 #'
 #' **General**
@@ -18,7 +18,7 @@
 #'
 #' When called upon an object of class *SpatRaster*, the plot function displays
 #' the raster (just for checking things fast and dirty). In this case, the
-#' function is a simple shortcut to [rasterVis::levelplot].
+#' function is a simple shortcut to [`rasterVis::levelplot`].
 #'
 #'
 #' **Plotting isoscapes**
@@ -64,13 +64,13 @@
 #' extra mask can be used (mask2), as one may want to add a mask covering the
 #' area outside the biological range of the species. Within these lists, the
 #' elements `lwd`, `col`, `cex`, `pch` and `fill` influences their respective
-#' objects as in traditional R plotting functions (see [par] for details). The
+#' objects as in traditional R plotting functions (see [`par`] for details). The
 #' element `draw` should be a *logical* that indicates whether the layer must be
 #' created or not. The argument `borders` (within the list borders) expects an
-#' object of the class *SpatVector*, such as the object [CountryBorders]
+#' object of the class *SpatVector*, such as the object [`CountryBorders`]
 #' provided with this package. The argument `mask` (within the list mask)
 #' also expects an object of the class *SpatVector*, such as the object
-#' [OceanMask] provided with this package (see examples).
+#' [`OceanMask`] provided with this package (see examples).
 #'
 #' The argument `palette` is used to define how to colour the isoscape and
 #' assignment plot. Within this list, `step` defines the number of units on the
@@ -81,9 +81,9 @@
 #' maximum number of numbers plotted on the z-scale; `digits` defines the number
 #' of digits displayed for the numbers used as labels; and `fn` is used to
 #' specify the function that is used to sample the colours. If `fn` is NULL
-#' (default) the palette functions derived from [isopalette1] and [isopalette2]
+#' (default) the palette functions derived from [`isopalette1`] and [`isopalette2`]
 #' are used when plotting isoscape and assignments, respectively. If `fn` is NA
-#' the function used is the palette [viridisLite::viridis].
+#' the function used is the palette [`viridisLite::viridis`].
 #'
 #' **Default symbols used on maps**
 #'
@@ -99,8 +99,8 @@
 #' @name plots
 #' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND
 #'   plot.SpatRaster
-#' @param x The return object of a call to [isofit], [isoscape], [calibfit],
-#'   [isofind], or [terra::rast]]
+#' @param x The return object of a call to [`isofit`], [`isoscape`], [`calibfit`],
+#'   [`isofind`], or [`terra::rast`]
 #' @param cex_scale A *numeric* giving a scaling factor for the points in
 #'   the plots
 #' @param which A *string* indicating the name of the raster to be plotted
@@ -138,9 +138,9 @@
 #'   plot.CALIBFIT
 #' @param ylim A range defining the extreme coordinates for the the y-axis in
 #'   plot.CALIBFIT
-#' @param pch The argument pch as in [par] for plot.CALIBFIT and
+#' @param pch The argument pch as in [`par`] for plot.CALIBFIT and
 #'   points.CALIBFIT
-#' @param col The argument col as in [par] for plot.CALIBFIT and
+#' @param col The argument col as in [`par`] for plot.CALIBFIT and
 #'   points.CALIBFIT
 #' @param line A *list* containing two elements: `show`, a
 #'   *logical* indicating whether to show the regression line or not; and
@@ -153,13 +153,13 @@
 #' @param ... Additional arguments (only in use in plot.CALIBFIT and
 #'   plot.SpatRaster)
 #'
-#' @seealso [isofit] for the function fitting the isoscape
+#' @seealso [`isofit`] for the function fitting the isoscape
 #'
-#'   [isoscape] for the function building the isoscape
+#'   [`isoscape`] for the function building the isoscape
 #'
-#'   [calibfit] for the function fitting the calibration function
+#'   [`calibfit`] for the function fitting the calibration function
 #'
-#'   [isofind] for the function performing the assignment
+#'   [`isofind`] for the function performing the assignment
 #'
 #' @keywords plot
 #' @examples ## See ?isoscape or ?isofind for examples

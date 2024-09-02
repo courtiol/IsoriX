@@ -15,9 +15,9 @@
 #' `disp_residVar`, or `disp_respVar`).
 #'
 #' The predictions of isotopic values across the landscape are performed by
-#' calling the function [spaMM::predict] from the package
+#' calling the function [`spaMM::predict`] from the package
 #' \pkg{spaMM} on the fitted isoscape produced by
-#' [isofit].
+#' [`isofit`].
 #'
 #' Let us summarize the meaning of `mean`, `mean_predVar`,
 #' `mean_residVar` and `mean_respVar` (see Courtiol & Rousset 2017 and
@@ -36,7 +36,7 @@
 #' difference between the true unknown value of the linear predictor and the
 #' mean prediction at a given location. The residual variance is simply the
 #' prediction of the variance in isotopic value at a given location. Its exact
-#' meaning depends on the aggregation scheme used in [prepsources],
+#' meaning depends on the aggregation scheme used in [`prepsources`],
 #' but by default, it would correspond to the temporal variation between months
 #' and across years. The response variance estimates the variance of new
 #' observations drawn from the true unknown isoscape at a given location. The
@@ -44,13 +44,13 @@
 #' the residual variance (note that the residual variance considered assume that
 #' a single observation is being observed per location).
 #'
-#' The isoscape can be plotted using the function [plot.ISOSCAPE]
+#' The isoscape can be plotted using the function [`plot.ISOSCAPE`]
 #' (see examples).
 #'
 #' @aliases isoscape print.isoscape summary.isoscape
 #' @param raster The structural raster (*SpatRaster*) such as an elevation
-#'   raster created using [prepelev]
-#' @param isofit The fitted isoscape created by [isofit]
+#'   raster created using [`prepelev`]
+#' @param isofit The fitted isoscape created by [`isofit`]
 #' @param verbose A *logical* indicating whether information about the
 #'   progress of the procedure should be displayed or not while the function is
 #'   running. By default verbose is `TRUE` if users use an interactive R
@@ -58,9 +58,9 @@
 #' @return This function returns a *list* of class *ISOSCAPE* containing
 #'   a set of all 8 raster layers mentioned above (all being of class
 #'   *SpatRaster*), and the location of the sources as spatial points.
-#' @seealso [isofit] for the function fitting the isoscape
+#' @seealso [`isofit`] for the function fitting the isoscape
 #'
-#'   [plot.ISOSCAPE] for the function plotting the isoscape model
+#'   [`plot.ISOSCAPE`] for the function plotting the isoscape model
 #'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
@@ -472,10 +472,10 @@ isoscape <- function(raster,
 #' Predicts the average spatial distribution of isotopic values over months,
 #' years...
 #'
-#' This function is the counterpart of [isoscape] for the objects
-#' created with [isomultifit]. It creates the isoscapes for each
+#' This function is the counterpart of [`isoscape`] for the objects
+#' created with [`isomultifit`]. It creates the isoscapes for each
 #' strata (e.g. month) defined by `split_by` during the call to
-#' [isomultifit] and the aggregate them. The function can handle
+#' [`isomultifit`] and the aggregate them. The function can handle
 #' weighting for the aggregation process and can thus be used to predict annual
 #' averages precipitation weighted isoscapes.
 #'
@@ -486,13 +486,13 @@ isoscape <- function(raster,
 #' class *SpatRaster*), and the location of the sources as spatial points.
 #' @seealso
 #'
-#' [isoscape] for details on the function used to compute the isoscapes for each strata
+#' [`isoscape`] for details on the function used to compute the isoscapes for each strata
 
-#' [isomultifit] for the function fitting the isoscape
+#' [`isomultifit`] for the function fitting the isoscape
 #'
-#' [plot.ISOSCAPE] for the function plotting the isoscape model
+#' [`plot.ISOSCAPE`] for the function plotting the isoscape model
 #'
-#' [IsoriX] for the complete work-flow
+#' [`IsoriX`] for the complete work-flow
 #'
 #' @keywords models regression prediction predict
 #' @examples

@@ -68,7 +68,7 @@ call arguments.
 }
 \description{
 This function fits the aggregated source data using mixed models. The fitting
-procedures are done by the package \link[spaMM:spaMM]{spaMM::spaMM} which we use to jointly fit
+procedures are done by the package \code{\link[spaMM:spaMM]{spaMM::spaMM}} which we use to jointly fit
 the mean isotopic values and their associated residual dispersion variance in
 a spatially explicit manner.
 }
@@ -163,9 +163,9 @@ alternative "Euclidean" distances do not. For studies performed on a small
 geographic scale, both distance methods should lead to similar results.
 
 The arguments \code{control_mean} and \code{control_dist} are lists that are
-transmitted to the \link[spaMM:spaMM]{spaMM::spaMM} fitting functions (defined by
+transmitted to the \code{\link[spaMM:spaMM]{spaMM::spaMM}} fitting functions (defined by
 \code{spaMM_method}). These lists can be used to finely control the fitting
-procedure, so advanced knowledge of the package \link[spaMM:spaMM]{spaMM::spaMM} is required
+procedure, so advanced knowledge of the package \code{\link[spaMM:spaMM]{spaMM::spaMM}} is required
 before messing around with these inputs.
 
 We highly recommend users to examine the output produced by isofit.
@@ -187,7 +187,7 @@ of Likelihood Ratio Tests (LRT). Our choice for REML was motivated by the
 fact that our package is more likely to be used for drawing inferences than
 null hypothesis testing. Users interested in model comparisons may rely on
 the conditional AIC values that can be extracted from fitted models using
-the function \link[spaMM:AIC]{spaMM::AIC} from  \pkg{spaMM}.
+the function \code{\link[spaMM:AIC]{spaMM::AIC}} from  \pkg{spaMM}.
 
 Variable names for \code{data} must be respected to ensure a correct utilization
 of this package. Alteration to the fixed effect structure is not
@@ -237,15 +237,15 @@ stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
 143(3):337-348.
 }
 \seealso{
-\link[spaMM:spaMM]{spaMM::spaMM} for an overview of the \pkg{spaMM} package
+\code{\link[spaMM:spaMM]{spaMM::spaMM}} for an overview of the \pkg{spaMM} package
 
-\link[spaMM:fitme]{spaMM::fitme} and \link[spaMM:corrHLfit]{spaMM::corrHLfit} for
+\code{\link[spaMM:fitme]{spaMM::fitme}} and \code{\link[spaMM:corrHLfit]{spaMM::corrHLfit}} for
 information about the two possible fitting procedures that can be used here
 
-\link[spaMM:MaternCorr]{spaMM::MaternCorr} for information about the Matérn
+\code{\link[spaMM:MaternCorr]{spaMM::MaternCorr}} for information about the Matérn
 correlation structure
 
-\link{prepsources} for the function preparing the data for isofit
+\code{\link{prepsources}} for the function preparing the data for isofit
 }
 \keyword{models}
 \keyword{regression}

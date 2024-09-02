@@ -18,9 +18,9 @@ isofind(
 \arguments{
 \item{data}{A \emph{dataframe} containing the assignment data (see note below)}
 
-\item{isoscape}{The output of the function \link{isoscape}}
+\item{isoscape}{The output of the function \code{\link{isoscape}}}
 
-\item{calibfit}{The output of the function \link{calibfit} (This
+\item{calibfit}{The output of the function \code{\link{calibfit}} (This
 argument is not needed if the isoscape had been fitted using isotopic
 ratios from sedentary animals.)}
 
@@ -61,7 +61,7 @@ null hypothesis (the organism is at a location with the same isotopic value
 than its original location), the test statistics follows a normal
 distribution with mean zero and a certain variance that stems from both the
 isoscape model fits and the calibration fit. The function
-\link{isofind} computes the map of p-value for such an assignment test
+\code{\link{isofind}} computes the map of p-value for such an assignment test
 (i.e. the p-values in all locations of the isoscape) for all samples in the
 dataframe \code{data}. The function also performs a single assignment for the
 entire group by combining the p-value maps of all samples using the Fisher's
@@ -74,7 +74,7 @@ uncertainties are captured and which are not, please refer to Courtiol et al.
 \strong{Details on parameters:}
 \itemize{
 \item \emph{neglect_covPredCalib}: as long as the calibration method used in
-\link{calibfit} is "wild", a covariance is expected between the
+\code{\link{calibfit}} is "wild", a covariance is expected between the
 uncertainty of predictions from the isoscape mean fit and the uncertainty in
 predictions from the calibration fit. This is because both the isoscape and
 the calibration use in part the same data. By default this term is omitted
@@ -82,17 +82,17 @@ the calibration use in part the same data. By default this term is omitted
 since in practice it seems to affect the results only negligibly in our
 trials and the computation of this term can be quite computer intensive. We
 nonetheless recommend to set \code{neglect_covPredCalib} to \code{FALSE} in
-your final analysis. If the calibration method used in \link{calibfit}
+your final analysis. If the calibration method used in \code{\link{calibfit}}
 is not "wild", this parameter has no effect.
 \item \emph{mask}: a mask can be used so to remove all values falling in the mask.
 This can be useful for performing for example assignments on lands only and
 discard anything falling in large bodies of water (see example). By default
-our \link{OceanMask} is considered. Setting \code{mask} to NULL allows
+our \code{\link{OceanMask}} is considered. Setting \code{mask} to NULL allows
 to prevent this automatic behaviour.
 }
 }
 \note{
-See \link{AssignDataAlien} to know which variables are needed to
+See \code{\link{AssignDataAlien}} to know which variables are needed to
 perform the assignment and their names.
 }
 \examples{

@@ -10,9 +10,9 @@ isoscape(raster, isofit, verbose = interactive())
 }
 \arguments{
 \item{raster}{The structural raster (\emph{SpatRaster}) such as an elevation
-raster created using \link{prepelev}}
+raster created using \code{\link{prepelev}}}
 
-\item{isofit}{The fitted isoscape created by \link{isofit}}
+\item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
 \item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
@@ -41,9 +41,9 @@ for the residual dispersion variance (\code{disp_pred}, \code{disp_predVar},
 \code{disp_residVar}, or \code{disp_respVar}).
 
 The predictions of isotopic values across the landscape are performed by
-calling the function \link[spaMM:predict]{spaMM::predict} from the package
+calling the function \code{\link[spaMM:predict]{spaMM::predict}} from the package
 \pkg{spaMM} on the fitted isoscape produced by
-\link{isofit}.
+\code{\link{isofit}}.
 
 Let us summarize the meaning of \code{mean}, \code{mean_predVar},
 \code{mean_residVar} and \code{mean_respVar} (see Courtiol & Rousset 2017 and
@@ -62,7 +62,7 @@ conditional distribution. The prediction variance is ideally the mean square
 difference between the true unknown value of the linear predictor and the
 mean prediction at a given location. The residual variance is simply the
 prediction of the variance in isotopic value at a given location. Its exact
-meaning depends on the aggregation scheme used in \link{prepsources},
+meaning depends on the aggregation scheme used in \code{\link{prepsources}},
 but by default, it would correspond to the temporal variation between months
 and across years. The response variance estimates the variance of new
 observations drawn from the true unknown isoscape at a given location. The
@@ -70,7 +70,7 @@ response variance is simply equal to the sum of the prediction variance and
 the residual variance (note that the residual variance considered assume that
 a single observation is being observed per location).
 
-The isoscape can be plotted using the function \link{plot.ISOSCAPE}
+The isoscape can be plotted using the function \code{\link{plot.ISOSCAPE}}
 (see examples).
 }
 \examples{
@@ -136,9 +136,9 @@ computation and inference of spatial origins with mixed models using the R packa
 Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{
-\link{isofit} for the function fitting the isoscape
+\code{\link{isofit}} for the function fitting the isoscape
 
-\link{plot.ISOSCAPE} for the function plotting the isoscape model
+\code{\link{plot.ISOSCAPE}} for the function plotting the isoscape model
 }
 \keyword{models}
 \keyword{predict}

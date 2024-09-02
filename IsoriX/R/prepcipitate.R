@@ -1,9 +1,9 @@
 #' Prepare the raster brick containing the precipitation data
 #'
 #' This functions turns the WorldClim data downloaded using the function
-#' [getprecip] into a *RasterBrick* of same resolution and
+#' [`getprecip`] into a *RasterBrick* of same resolution and
 #' extent as the structural raster. This function is designed to be used with
-#' [isomultiscape].
+#' [`isomultiscape`].
 #'
 #' @param path A *string* indicating the path where the WorldClim data have
 #'   been downloaded. If the path is null (the default) the function will assume
@@ -17,11 +17,11 @@
 #'
 #' @seealso
 #'
-#' [getprecip] to download the relevant precipitation data
+#' [`getprecip`] to download the relevant precipitation data
 #'
-#' [PrecipBrickDE] for the stored precipitation data for Germany
+#' [`PrecipBrickDE`] for the stored precipitation data for Germany
 #'
-#' [prepelev] to prepare an elevation raster
+#' [`prepelev`] to prepare an elevation raster
 #'
 #' @examples
 #'
