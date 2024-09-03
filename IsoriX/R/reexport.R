@@ -63,6 +63,10 @@ terra::polys
 #' @export
 terra::rast
 
+#' @importFrom terra extract
+#' @export
+terra::extract
+
 #' @importFrom terra crs
 #' @export
 terra::crs

@@ -15,6 +15,7 @@
 \alias{points}
 \alias{polys}
 \alias{rast}
+\alias{extract}
 \alias{crs}
 \alias{crs<-}
 \alias{ext}
@@ -39,6 +40,6 @@ below to see their documentation.
 
   \item{spaMM}{\code{\link[spaMM:get_fittedPars]{get_ranPars}}}
 
-  \item{terra}{\code{\link[terra]{cellSize}}, \code{\link[terra]{crs}}, \code{\link[terra:crs]{crs<-}}, \code{\link[terra]{ext}}, \code{\link[terra:ext]{ext<-}}, \code{\link[terra]{plot}}, \code{\link[terra:lines]{points}}, \code{\link[terra:lines]{polys}}, \code{\link[terra]{rast}}, \code{\link[terra]{shift}}, \code{\link[terra]{values}}}
+  \item{terra}{\code{\link[terra]{cellSize}}, \code{\link[terra]{crs}}, \code{\link[terra:crs]{crs<-}}, \code{\link[terra]{ext}}, \code{\link[terra:ext]{ext<-}}, \code{\link[terra]{extract}}, \code{\link[terra]{plot}}, \code{\link[terra:lines]{points}}, \code{\link[terra:lines]{polys}}, \code{\link[terra]{rast}}, \code{\link[terra]{shift}}, \code{\link[terra]{values}}}
 }}
 
