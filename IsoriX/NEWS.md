@@ -1,34 +1,35 @@
 # IsoriX (development version)
 
-* **major changes**
+## Major changes
 
   * the functions `prepsources()`, `calibfit()` and `isofind()` no longer tolerate that some locations share the same location IDs or that several locations IDs correspond to a unique location. This should prevent users to use datasets for which issues happened during the preparation (fixes #133). If you disagree with this choice, please let the developer know.
 
-* **minor changes**
+## Minor changes
 
   * the function `terra::extract()` is now re-exported.
 
-* **small fixes**
+## Small fixes
   
   * the URL for WorldClim data was outdated so `getprecip()` was no longer working.
   * some internal code had arguments misspelt. It was working as a result of R's ability to do partial matching, but this was not good practice. It is now fixed (fixes #181).
   * some links in the documentation were incomplete and flagged is some online CRAN checks ("Found the following Rd file(s) with Rd \link{} targets missing package"). This should now be fixed.
   * function names should now be consistently displayed as computer code in the documentation.
 
-* **internal (geeky) changes**
+## Internal (geeky) changes
 
   * the project is now being setup so that the development using VScode is possible.
+  * the format of the NEWS file has been changed to allow for using `usethis::use_github_release()` to create new releases (fixes #177).
 
 
 # IsoriX 0.9.2
 
-* **main release goal**
+## Main release goal
 
   * This release restores some key features that had been lost after dropping the direct dependencies **raster** and **sp** in v0.9.1.:
      * the possibility to save and reload objects created by IsoriX (now via `saveRDS()` and `readRDS()`). (#172)
      * the possibility to plot oceans and other masks containing "holes" (thanks to changes in **lattice** and **rasterVis**). (#169, #170)
 
-* **breaking changes**
+## Breaking changes
   
   As compared to IsoriX versions < 0.9.1, the following changes may break existing code:
   
@@ -51,12 +52,12 @@
     
   * saving and reloading objects `save()` & `load()` can no longer be used, one must instead use `saveRDS()` & `readRDS()`.
 
-* **new features**
+## New features
 
   * the NEWS (contained in this file) are now stored in `NEWS.md` rather than in `inst/NEWS.Rd` and use a markdown syntax.
   * it is now possible to have missing values in predictors used to build isoscapes and in the isoscapes themselves.
 
-* **major changes**
+## Major changes
 
   * plotting methods for polygons, lines and points have been removed from IsoriX and are now handled by **lattice** and **rasterVis**.
   * new S3 and S4 methods `saveRDS()` for objects of the class `ISOSCAPE`, `CALIBFIT` & `ISOFIND` (see `?serialize` for details).
@@ -64,17 +65,17 @@
   
     In case of issues reading RDS files not created by IsoriX, try using `base::readRDS()` with the namespace `base::` mentioned explicitly and please let us know of this issue.
 
-* **minor changes**
+## Minor changes
 
   * the bookdown is now listed in DESCRIPTION.
   * some old URLs have been updated.
 
-* **bug fixes**
+## Bug fixes
   
   * the function `isomultiscape()` was still using **raster** instead of **terra**.
   * the object `PrecipBrickDE` was still using **raster** instead of **terra**.
 
-* **internal (geeky) changes**
+## Internal (geeky) changes
 
   * new function `.safe_and_quiet_predictions()` which turns wraps around `spaMM::predict.HLfit()`, turns warnings into messages, allows not to display the same messages many times, and outputs `NA`s when `spaMM::predict.HLfit()` fails. For testing, `options_IsoriX(spaMM_debug = TRUE)` may be used to restore the original behaviour of `spaMM::predict.HLfit()`.
   * the classes `ISOSCAPE`, `CALIBFIT` & `ISOFIND` are now also defined as S4 classes, which was necessary to design methods for `saveRDS()` which are compatible with **terra**.
@@ -87,17 +88,17 @@
 
 # v0.9.1
 
-* **main release goal**
+## Main release goal
 
   * Several spatial packages previously used by IsoriX are likely to retire sometimes in October 2023.
   The maintainers of those packages have recommended developers to instead rely on alternative packages which have been recently developed and which superseed the old packages. As a consequence, we had to recode a lot of IsoriX for it to continue to work. For the most part, these changes are internal and should not impact much users, but it is possible that old workflows used to create plots will have to be adapted for the code to keep working. Moreover, IsoriX is not the only package that had to be overhauled, other packages used by IsoriX are also being adapted, which means that the programming landscape is dynamic and bugs caused by incompatibility between packages are likely to surface. We will do our best to react quickly, but please let us know as soon as something goes wrong by dropping issues on the GitHub repository for IsoriX (https://github.com/courtiol/IsoriX/issues). All this change can be perceived as annoying, but it is also for the best: it will allow us to add new features more easily in IsoriX in the future and it also makes it easier for users to convert IsoriX outputs so as to manipulate them using packages such as **sf** and **ggplot2**.
 
-* **major changes**
+## Major changes
     
   * IsoriX no longer relies on the package **raster**. It instead now uses **terra** for handling rasters. (#90 #161)
   * IsoriX no longer relies on the package **sp**. Plotting functionalities from sp have now been replaced by direct calls to **lattice**. For now, we had to implement methods and generics calling **lattice** in IsoriX, but those should ultimately be handled within **rasterVis** and **lattice**.
 
-* **minor changes**
+## Minor changes
     
   * `getprecip()` now normalizes the input file and returns the path where the precipitation rasters are stored.
   * `prepcipitate()` can now handle as input for `path =` either the full path to the files returned by `getprecip()` -- which contains the folder provided to `path` when calling `getprecip()` in addition to `"/wc2.1_30s_prec"` -- or the reduced path which only contains the folder provided to `path` when calling `getprecip()`.
@@ -105,7 +106,7 @@
   * the documentation for the datasets `GNIPDataALLagg` and `GNIPDataEUagg` was incorrect. (#158)
   * one message about possible extrapolation during calibration was erroneous and is now removed. (#159)
 
-* **internal (geeky) changes**
+## Internal (geeky) changes
     
   * `OceanMask` and `CountryBorders` are no longer stored as RDA files in `/data`, but as RDS files in `/extata` since objects created with **terra** cannot be saved as RDA files. These files are automatically loaded when the package is attached.
   * **elevatr** moved from Imports to Suggests. (#157)
@@ -113,18 +114,18 @@
 
 # v0.9.0
 
-* **bug fixes**
+## Bug fixes
     
   * the previous released introduced an error in how the variance of the assignment test is computed in the absence of calibration (with important consequence in terms of assignments). This is now fixed. (#151)
 
-* **minor changes**
+## Minor changes
 
   * the base package **colourspace** is now suggested to avoid a note in R CMD check.
     
 
 # v0.8.3
 
-* **new features**
+## New features
     
   * the function `calibfit()` gains an argument method that allows for selecting one of four calibration methods ("wild", "lab", "desk", "desk_inverse"). This allows for users to use:
     1) calibration samples associated with unknown environmental isotopic values,
@@ -138,7 +139,7 @@
   * the function `prepraster()` gains an argument `values_to_zero` to turn a range of elevation values to zeros (nullify negative elevation values by default). This is particular useful because the new version of `get_elev()` download an elevation raster that includes bathymetry.
   * new internal function `.invert_reg()` to invert regression (used for method "desk_inverse" in `calibfit()`.
   
-* **minor changes**
+## Minor changes
     
   * when calling `plot()` on an object created with `calibfit()`, the plotting function now returns the fitted values and CI for users to be able to make alternative plots. (#44)
   * new argument `xlim` for the plotting function for calibration fits.
@@ -152,14 +153,14 @@
   * typos have been corrected. (#130)
   * default y-axis title changed to "Isotopic value in the environment" when plotting calibration fits to be flexible enough irrespective of the methods used in `calibfit()`
   
-* **internal (geeky) changes**
+## Internal (geeky) changes
     
   * the argument `long_min`, `long_max`, `lat_min` & `lat_max` function `prepsources()` now have explicit default values and should no longer be missing.
   * the version of **spaMM** required by IsoriX has changed to 3.13 so as to benefit from a new extractor we rely on for the computation of the 4th variance term during assignment. (#143)
   * the function depending on the package **RandomFields** are no longer available since that package has been (for now) retired by CRAN :-(
   * IsoriX should now work with tibbles as inputs. (#118)
     
-* **bug fixes**
+## Bug fixes
 
   * the printing method for the object of class ISOSCAPE was somehow not exported and thus not used (unreported issue).
   * plotting on a sphere ISOFIND objects did not work in some cases. (#126)
@@ -167,19 +168,19 @@
 
 # v0.8.2
 
-* **new features**
+## New features
     
   * new argument `ylim` for the plotting function for calibration fits.
   * it is now possible to calibrate data containing missing isotopic values.
   * it is now possible to assign data containing missing isotopic values.
       
-* **internal (geeky) changes**
+## Internal (geeky) changes
     
   * the SpatialPolygons `CountryBorders` and `OceanMask` have been rebuilt for possibly improving the compatibility with new **sp** & **rgdal**.
   * the website for `WorlClim` has now changed address, so links have been updated.
   * **rgdal** is now listed as a suggested package.
       
-* **minor changes**
+## Minor changes
     
   * several URL had changed and have been updated.
   * all old defunct functions have been removed from the package.
@@ -187,11 +188,11 @@
 
 # v0.8.1
 
-* **bug fixes**
+## Bug fixes
     
   * the plotting function was not working for isoscapes not stored in memory due to a wrong use of the quantile function. Many thanks to Dr. Gary Roemer and Amy Withers for reporting it! (#113)
 
-* **new features**
+## New features
     
   * the datasets used in Courtiol et al. 2019 are now provided.
   * many useful functions from **raster**, **rasterVis**, **lattice**... are now re-exported so they can be used without attaching those packages.
@@ -202,13 +203,13 @@
   * new method points for plotting more than one calibration fit.
   * the plotting function for assignments can now show the location of the assignment samples.
 
-* **major changes**
+## Major changes
     
   * the citations for the package have been updated!
   * many objects have been renamed to prepare the release of the version 1.0.
   * the vignettes have now been moved to a bookdown. To access the documentation you should now visit: https://bookdown.org/content/782/
 
-* **minor changes**
+## Minor changes
     
   * all arguments with the structure `bla.bla` have been renamed so as to match the structure `bla_bla`.
   * the plotting function for `calibfit()` gains an argument `...` for more control.
@@ -218,7 +219,7 @@
   * in several functions the argument `elevation.raster` has been renamed as `raster`.
   * in several functions the argument `xxx.data` has been renamed as `data`.
     
-* **internal (geeky) changes**
+## Internal (geeky) changes
     
   * the file storing the internal functions is now called `zzz.R`.
   * the `dontrun` and `donttest` calls have been replaced by comments due to new R CMD check flags.
@@ -234,7 +235,7 @@
   * the function `calibfit()` as been prepared for a possible activation of a random effect for species ID in the future. But whether it would make sense or not remains to be determined.
   * the function `.Fisher_method()` now directly computes the exponential of the log pv if only one value is provided. This leads to much faster assignment in the case of a single observation.
   
-* **bug fixes**
+## Bug fixes
     
   * the plotting function for calibration fit was displaying CI based on variance instead of SD.
   * the function `getprecip()` and `prepcipitate()` were not handling paths manually defined properly.
@@ -245,26 +246,26 @@
 
 # v0.7.1
 
-* **new features**
+## New features
     
   * this is a minor update necessary to maintain compatibility with **spaMM** 2.4.
     
   
-* **internal (geeky) changes**
+## Internal (geeky) changes
     
   * the syntax for the extraction of correlation terms of **spaMM** objects has changed.
 
 
 # v0.7
 
-* **new features**
+## New features
     
   * the calibration step is now optional, allowing for users to use an isoscape directly fitted on tissues instead of precipitation water.
   * the function `queryGNIP()` has been renamed and is now called `prepdata()`, this function can also handle other datasets than GNIP.
   * the function `relevate()` has been modified to make crop possible around the pacific meridian -180/180 (but several issues remain to handle extra plot layers automatically).
     
   
-* **internal (geeky) changes**
+## Internal (geeky) changes
     
   * an additional options as been added to prevent prompting during examples.
   * new internal function `.converts_months_to_numbers()`.
@@ -272,7 +273,7 @@
 
 # v0.6
 
-* **new features**
+## New features
       
   * the maximum duration of running time for examples can now be controlled using `IsoriX.options(example_maxtime = XX)`.
   * due to new GNIP policies, we no longer provide the GNIP dataset for the entire World, but only a subset containing data for Germany (users should thus compile their precipitation data themselves from the 'wiser' platform provided by GNIP; see vignette Workflow).
@@ -287,12 +288,12 @@
   * new function `isomultiscape()` building isoscapes averaged across strata.
   * new function `create_aliens()` simulating of organism data.
     
-* **minor changes**
+## Minor changes
       
   * the inputs for filtering data by month or year using `queryGNIP()` have changed.
   * the default fixed effect structure for the mean model is `isofit()` has changed.
     
-* **internal (geeky) changes**
+## Internal (geeky) changes
       
   * the namespace is now generated with Roxygen2.
   * the datasets are now 'lazy-loaded'.
@@ -302,14 +303,14 @@
 
 # v0.5
 
-* **bug fixes**
+## Bug fixes
     
   * the package could not be detached and reloaded.
   * the citation was not correct.
   * the path in `getelev()` was breaking in some cases.
   * the title of the assignment plot was missing when a single individual was plotted.
 
-* **new features**
+## New features
       
   * new vignette explaining how to export spatial objects to GIS.
   * the file `GNIPdata` has been updated and now contains data for 2014.
@@ -321,7 +322,7 @@
   * the column `animalID` in the assignment dataset can now handle names with spaces.
   * added **Codecov** to track test coverage for the package.
       
-* **minor changes**
+## Minor changes
       
   * the modification of the option `set_ll_warn` from the **sp** package has been moved to `.onLoad()` (instead of `.onAttach()`) and the original state is now restored while unloading IsoriX.
   * the Earth distance method has been moved to the package **spaMM**.
