@@ -1,4 +1,5 @@
 AWS
+AssignData
 Beuneux
 CALIBFIT
 CMD
@@ -6,6 +7,7 @@ CalibDataBat
 Chun
 Ciechanowski
 Codecov
+Commun
 CountryBorders
 DX
 Ecography
@@ -13,9 +15,6 @@ Ferdy
 Fonderflick
 GLMM
 GNIP
-GNIPDataALLagg
-GNIPDataDE
-GNIPDataEUagg
 Goerfoel
 Greif
 ISOFIND
@@ -25,6 +24,7 @@ Ibanez
 Isoscape
 Juste
 Kelm
+Koehler
 LM
 LMM
 Lehnert
@@ -44,6 +44,7 @@ R's
 RDA
 RMA
 RStudio
+RW
 RandomFields
 RasterBrick
 Roemer
@@ -57,6 +58,7 @@ Soto
 SpatRaster
 SpatVector
 SpatialPolygons
+Spectrom
 Stichler
 Stumpp
 VScode
@@ -88,16 +90,16 @@ isoscape
 isoscapes
 isostopic
 lat
-lomg
 md
 metaDigitse
 noctula
 noctule
+org
 pch
-prepsources
 pv
 queryGNIP
 rasterVis
+rcm
 rgdal
 sp
 spaMM
@@ -112,3 +114,4 @@ usethis
 var
 withr
 xz
+δ
