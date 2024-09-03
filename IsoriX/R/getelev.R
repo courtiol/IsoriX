@@ -205,7 +205,7 @@ getprecip <- function(path = NULL,
   path <- base::normalizePath(path, mustWork = FALSE)
 
   ## Define web address and file name
-  address_precip <- "https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_30s_prec.zip"
+  address_precip <- "https://geodata.ucdavis.edu/climate/worldclim/2_1/base/wc2.1_30s_prec.zip"
   filename_precip <- "wc2.1_30s_prec.zip"
 
   ## Define md5sum
