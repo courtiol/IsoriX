@@ -1,3 +1,4 @@
 {
-    "latex-workshop.latex.autoBuild.run": "never"
+    "latex-workshop.latex.autoBuild.run": "never",
+    "makefile.configureOnOpen": false
 }
