@@ -43,10 +43,10 @@ These packages offer additional functionalities but some of them can be difficul
 If you want the development version of IsoriX, you can download and install it by typing:
 
 ```R
-remotes::install_github("courtiol/IsoriX/IsoriX")
+remotes::install_github("courtiol/IsoriX/IsoriX") ## no typo: you do need to write IsoriX twice ;-)
 ```
 
-Mind that you need the R package `remotes` to be installed for that to work. Mind also that the development version, being under development, can sometimes contain code that is partly broken.
+Mind that you need the R package [remotes](https://remotes.r-lib.org/) to be installed for that to work. Mind also that the development version, being under development, can sometimes contain code that is partly broken.
 
 ### Installation behind a proxy?
 
