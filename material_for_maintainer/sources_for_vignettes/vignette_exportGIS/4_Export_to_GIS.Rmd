@@ -73,23 +73,23 @@ The object 'CountryBorders' and the 'OceanMask' are ready-to-use ```SpatialPolyg
 
 ### The guts of the objects of class *isoscape*
 
-The objects of class *isoscape* (such as the object actually called ```isoscape``` which we created in the workflow) are lists that contain information stored in the element ```$isoscape``` (a RasterStack) and ```$sp.points``` (a list containing itself ```$sources``` a SpatialPointsDataFrame). All of this can be deduced from the analysis of the object in R:
+The objects of class *isoscape* (such as the object actually called ```isoscapes``` which we created in the workflow) are lists that contain information stored in the element ```$isoscape``` (a RasterStack) and ```$sp.points``` (a list containing itself ```$sources``` a SpatialPointsDataFrame). All of this can be deduced from the analysis of the object in R:
 
 ```{r AccessIsoscape1, R.options=list(max.print=10)}
 head(isoscape)
-class(isoscape$isoscape)
+class(isoscape$isoscapes)
 class(isoscape$sp.points$sources)
 ```
 
 The ```RasterStack``` consists of the following 8 layers:
 
 ```{r AccessIsoscape2}
-names(isoscape$isoscape) 
+names(isoscape$isoscapes) 
 ```
 
 You can access a single ```RasterLayers``` as you handle any element in a list. For example this is how you access to the raster containing the mean predictions:
 ```{r AccessIsoscape3}
-isoscape$isoscape$mean ## similar to: isoscape$isoscape[[1]] or isoscape$isoscape[["mean"]]
+isoscape$isoscapes$mean ## similar to: isoscape$isoscapes[[1]] or isoscape$isoscapes[["mean"]]
 ```
 In a similar way, you can access the weather station data, called sources:
 ```{r AccessIsoscape4}

@@ -3,11 +3,11 @@ createassignData <- function(assignFunction = list(slope = 0.5, intercept = 3),
   
   ## choose location for these sendentary animals
   
-  cells <- rep(sample(1:ncell(isoscape$isoscape$mean), 1, replace=F), 255)
-  xy <- xyFromCell(isoscape$isoscape$mean, cells)
+  cells <- rep(sample(1:ncell(isoscape$isoscapes$mean), 1, replace=F), 255)
+  xy <- xyFromCell(isoscape$isoscapes$mean, cells)
   
   ## get the isotopic value in the environment
-  environment.value <- extract(isoscape$isoscape$mean, xy)
+  environment.value <- extract(isoscape$isoscapes$mean, xy)
   residualVar <- rnorm(length(cells), mean = 1, sd = 0.02)
   
   ## prepare the dataset

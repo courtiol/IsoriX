@@ -6,12 +6,12 @@ As you can see the location of origin (purple) and the location for the best ass
 
 ```{r comparison}
 print(paste("mean isoscape value at origin (+/-SE) =",
-            round(extract(isoscape$isoscape$mean, origin), 2), "+/-",
-            round(sqrt(extract(isoscape$isoscape$mean.predVar, origin)), 2)))
+            round(extract(isoscape$isoscapes$mean, origin), 2), "+/-",
+            round(sqrt(extract(isoscape$isoscapes$mean.predVar, origin)), 2)))
 
 print(paste("mean isoscape value at maximum (+/-SE) =",
-            round(extract(isoscape$isoscape$mean, maximum),2), "+/-",
-            round(sqrt(extract(isoscape$isoscape$mean.predVar, maximum)), 2)))
+            round(extract(isoscape$isoscapes$mean, maximum),2), "+/-",
+            round(sqrt(extract(isoscape$isoscapes$mean.predVar, maximum)), 2)))
 ```
 
 Note that the estimate for the mean isotopic value where the maximum is has a large standard error as this area is not well covered by sources. You can also observe this effect by simply looking at the map for the prediction isoscape variance which we have plotted above. In this context, it is thus expected that such area will be difficult to rule out as a possible source of origin. This example is a good reminder that one must always think about the quality of the isoscape before drawing definitive biological conclusion.

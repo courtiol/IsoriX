@@ -162,14 +162,14 @@
 
   if (inherits(var, c("SpatRaster"))) {
     if (terra::nlyr(var) == 1) {
-      var <- terra::quantile(var, seq(0, 1, length = nb_quantiles))
+      var <- terra::quantile(var, seq(0, 1, length.out = nb_quantiles))
       return(var)
     } else if (terra::nlyr(var) > 1) {
       max_var <- max(terra::values(max(var)))
       min_var <- min(terra::values(min(var)))
       var <- unique(c(
         min_var,
-        apply(terra::quantile(var, seq(0, 1, length = nb_quantiles)), 2, stats::median),
+        apply(terra::quantile(var, seq(0, 1, length.out = nb_quantiles)), 2, stats::median),
         max_var
       ))
       return(var)

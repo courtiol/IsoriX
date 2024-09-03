@@ -141,7 +141,7 @@ We now compute the difference between the isoscapes produced by the two differen
 
 ```{r diff isoscapes}
 isoscape.diff <- isoscape  ## We create a new object of class isoscape
-isoscape.diff$isoscape <- isoscape$isoscape - isoscapes$isoscape  ## We replace the isoscape by 
+isoscape.diff$isoscapes <- isoscape$isoscapes - isoscapes$isoscapes  ## We replace the isoscape by 
                                                                   ## the difference in isoscapes
 ```
 

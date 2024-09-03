@@ -4,6 +4,8 @@ run <- FALSE ## To avoid cyclic issues in R CMD check
 # run <- TRUE
 
 if (run) {
+  options(warnPartialMatchArgs = TRUE, warnPartialMatchAttr = TRUE, warnPartialMatchDollar = TRUE)
+  
   library(IsoriX)
   options_IsoriX(example_maxtime = Inf)
 

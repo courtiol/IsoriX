@@ -61,7 +61,7 @@ hillsh <- hillShade(slope, aspect, angle = 45,direction = 270)
 ```{r hillshade II,warning=FALSE,fig.pos='t', fig.width=4, fig.height=3}
 plot(hillsh, col=grey(0:100/100), legend=FALSE)
 #and colors on top: alpha value gives semi-transparency
-image(isoscape$isoscape$mean, col=terrain.colors(100,alpha=0.3),add=T)
+image(isoscape$isoscapes$mean, col=terrain.colors(100,alpha=0.3),add=T)
 points(isoscape$sp.points$sources,cex=0.5,pch='+')
 plot(oceanmask,col='grey',border='transparent',add=T)
 plot(countries,col='transparent',border='white',add=T)
@@ -73,14 +73,14 @@ box()
 ```{r gridline, fig.pos='t', fig.width=3, fig.height=3}
 plot(hillsh, col=grey(0:100/100), legend=FALSE)
 #and colors on top: alpha value gives semi-transparency
-image(isoscape$isoscape$mean, col=terrain.colors(100,alpha=0.3),add=T)
+image(isoscape$isoscapes$mean, col=terrain.colors(100,alpha=0.3),add=T)
 points(isoscape$sp.points$sources,cex=0.5,pch='+')
 plot(oceanmask,col='grey',border='transparent',add=T)
 plot(countries,col='transparent',border='white',add=T)
 box()
-grd <- gridlines(isoscape$isoscape$mean, 
-                    easts = pretty(bbox(isoscape$isoscape$mean)[1,]),
-                    norths = pretty(bbox(isoscape$isoscape$mean)[2,]), 
+grd <- gridlines(isoscape$isoscapes$mean, 
+                    easts = pretty(bbox(isoscape$isoscapes$mean)[1,]),
+                    norths = pretty(bbox(isoscape$isoscapes$mean)[2,]), 
                     ndiscr = 20)
 plot(grd, add=T, col='pink', lty=2)
 ```
@@ -90,14 +90,14 @@ plot(grd, add=T, col='pink', lty=2)
 ```{r north arrow, fig.pos='t', fig.width=3, fig.height=3}
 plot(hillsh, col=grey(0:100/100), legend=FALSE)
 #and colors on top: alpha value gives semi-transparency
-image(isoscape$isoscape$mean, col=terrain.colors(100,alpha=0.3),add=T)
+image(isoscape$isoscapes$mean, col=terrain.colors(100,alpha=0.3),add=T)
 points(isoscape$sp.points$sources,cex=0.5,pch='+')
 plot(oceanmask,col='grey',border='transparent',add=T)
 plot(countries,col='transparent',border='white',add=T)
 box()
-grd <- gridlines(isoscape$isoscape$mean, 
-                    easts = pretty(bbox(isoscape$isoscape$mean)[1,]),
-                    norths = pretty(bbox(isoscape$isoscape$mean)[2,]), 
+grd <- gridlines(isoscape$isoscapes$mean, 
+                    easts = pretty(bbox(isoscape$isoscapes$mean)[1,]),
+                    norths = pretty(bbox(isoscape$isoscapes$mean)[2,]), 
                     ndiscr = 20)
 plot(grd, add=T, col='pink', lty=2)
 library(GISTools)
@@ -117,7 +117,7 @@ sources_moll <-  spTransform(isoscape$sp.points$sources,   CRS("+proj=moll +datu
 wrld_moll <- spTransform(countries,   CRS("+proj=moll +datum=WGS84"))
 ocma_moll <- spTransform(oceanmask,   CRS("+proj=moll +datum=WGS84")) ##### ALEX: the oceanmask get inverted, shiott...
 
-iso_mean_moll <- projectRaster(isoscape$isoscape$mean, crs=CRS("+proj=moll +datum=WGS84"))
+iso_mean_moll <- projectRaster(isoscape$isoscapes$mean, crs=CRS("+proj=moll +datum=WGS84"))
 hillsh_moll <- projectRaster(hillsh, crs=CRS("+proj=moll +datum=WGS84"))
 ```
 

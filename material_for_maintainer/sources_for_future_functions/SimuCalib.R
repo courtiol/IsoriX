@@ -10,8 +10,8 @@ createcalibData <- function(fn = list(intercept = 3,
   
   ## choose location for these sendentary animals
   
-  locationData <- data.frame(siteID = sample(1:ncell(isoscape$isoscape$mean), nsites, replace = FALSE))
-  xy <- raster::xyFromCell(isoscape$isoscape$mean, locationData$siteID)
+  locationData <- data.frame(siteID = sample(1:ncell(isoscape$isoscapes$mean), nsites, replace = FALSE))
+  xy <- raster::xyFromCell(isoscape$isoscapes$mean, locationData$siteID)
   locationData$long <- xy[, "x"]
   locationData$lat  <- xy[, "y"]
   locationData$elev = raster::extract(x = elevation.raster, y = xy)
@@ -19,8 +19,8 @@ createcalibData <- function(fn = list(intercept = 3,
   
   ## predict environmental values at the locations
   
-  locationData$mean.env.value <- raster::extract(isoscape$isoscape$mean, xy)
-  locationData$var.env.value  <- raster::extract(isoscape$isoscape$mean.respVar, xy)  ## to check with Francois!!!
+  locationData$mean.env.value <- raster::extract(isoscape$isoscapes$mean, xy)
+  locationData$var.env.value  <- raster::extract(isoscape$isoscapes$mean.respVar, xy)  ## to check with Francois!!!
   locationData$var.env.value  <- 0
   ## It is not clear to me if respVar, predVar or no variance should be consider in this last step.
   ## Considering respVar would imply to assume that the animal values are derived from environmental values at one time step.

@@ -225,7 +225,7 @@ plot.ISOSCAPE <- function(x,
 
   ## compute the colors
   colours <- .cut_and_color(
-    var = x$isoscape[[which]], # @data@values,
+    var = x$isoscapes[[which]], # @data@values,
     step = palette$step,
     range = palette$range,
     palette = palette$fn,
@@ -244,8 +244,8 @@ plot.ISOSCAPE <- function(x,
   ##  allows for the evaluation of arguments.
   ##  (the stars are used to remove spaces)
 
-  map <- rasterVis::levelplot(x$isoscape[[which]],
-    maxpixels = prod(dim(x$isoscape[[which]])[1:2]),
+  map <- rasterVis::levelplot(x$isoscapes[[which]],
+    maxpixels = prod(dim(x$isoscapes[[which]])[1:2]),
     margin = FALSE,
     col.regions = colours$all_cols,
     at = colours$at,
@@ -280,7 +280,7 @@ plot.ISOSCAPE <- function(x,
 
   ## build the 3D-Sphere
   if (sphere$build) {
-    .build_sphere(x$isoscape[[which]], colours = colours, decor = decor)
+    .build_sphere(x$isoscapes[[which]], colours = colours, decor = decor)
     if (!sphere$keep_image) {
       message(paste(
         "IsoriX no longer delete the image used to build the sphere since it prevents rgl to work on some system. \n",
@@ -315,7 +315,7 @@ plot.ISOSCAPE <- function(x,
     col.regions = colours$all_cols,
     at = colours$at,
     colorkey = FALSE,
-    maxpixel = prod(dim(x)[1:2])
+    maxpixels = prod(dim(x)[1:2])
   ) + decor$borders_layer +
     decor$mask_layer + decor$mask2_layer + decor$sources_layer + decor$calibs_layer
   grDevices::png(filename = "IsoriX_world_image.png", width = 2 * dim(x)[2], height = 2 * dim(x)[1])
@@ -334,8 +334,8 @@ plot.ISOSCAPE <- function(x,
   while (length(rgl::rgl.dev.list()) > 0) rgl::close3d() ## close all open rgl devices
   makerglsphere <- function(x, y = NULL, z = NULL, ng = 50, radius = 1, color = "white", add = FALSE, ...) {
     ## code inspired from https://stackoverflow.com/questions/30627647/how-to-plot-a-perfectly-round-sphere-in-r-rgl-spheres
-    lat <- matrix(seq(90, -90, len = ng) * pi / 180, ng, ng, byrow = TRUE)
-    long <- matrix(seq(-180, 180, len = ng) * pi / 180, ng, ng)
+    lat <- matrix(seq(90, -90, length.out = ng) * pi / 180, ng, ng, byrow = TRUE)
+    long <- matrix(seq(-180, 180, length.out = ng) * pi / 180, ng, ng)
     xyz <- grDevices::xyz.coords(x, y, z, recycle = TRUE)
     vertex <- matrix(rbind(xyz$x, xyz$y, xyz$z), nrow = 3, dimnames = list(c("x", "y", "z"), NULL))
     nvertex <- ncol(vertex)
@@ -605,7 +605,7 @@ If you want to build several spheres, build them one by one and do request a sin
   cols <- all_cols[match(cats, levels(cats))]
   at_keys <- where_cut
   if (length(at_keys) > n_labels) {
-    at_keys <- seq(min(where_cut), max(where_cut), length = n_labels)
+    at_keys <- seq(min(where_cut), max(where_cut), length.out = n_labels)
     if (!is.na(cutoff)) {
       at_keys <- sort(unique(c(cutoff, at_keys)))
     }
@@ -801,7 +801,7 @@ plotting_calibfit <- function(x, pch, col, line, CI, xlab, ylab, xlim = NULL, yl
     x$data,
     seq(min(x_var),
       max(x_var),
-      length = 100
+      length.out = 100
     )
   )
   X <- cbind(1, xs)

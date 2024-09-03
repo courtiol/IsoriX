@@ -123,8 +123,8 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
 
   ## Choose location for the aliens
   if (length(coordinates) == 1 && is.na(coordinates)) {
-    LocationData <- data.frame(site_ID = sample(1:terra::ncell(isoscape$isoscape$mean), n_sites, replace = FALSE))
-    xy <- terra::xyFromCell(isoscape$isoscape$mean, LocationData$site_ID)
+    LocationData <- data.frame(site_ID = sample(1:terra::ncell(isoscape$isoscapes$mean), n_sites, replace = FALSE))
+    xy <- terra::xyFromCell(isoscape$isoscapes$mean, LocationData$site_ID)
     LocationData$long <- xy[, "x"]
     LocationData$lat <- xy[, "y"]
   } else {
