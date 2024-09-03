@@ -5,28 +5,29 @@
 \alias{CalibDataAlien}
 \title{Simulated calibration dataset}
 \format{
-A *dataframe* with x observations on 6 variables:
-\tabular{rlll}{
-[, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
-[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-[, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-[, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-[, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
-[, 6] \tab tissue.value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
+A \emph{dataframe} with x observations on 6 variables:\tabular{lll}{
+    \tab  \tab  \cr
+   site_ID \tab (\emph{factor}) \tab Identification of the sampling site \cr
+   long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr
+   lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr
+   elev \tab (\emph{numeric}) \tab Elevation asl (m) \cr
+   sample_ID \tab (\emph{factor}) \tab Identification of the sampled animal \cr
+   tissue.value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
+}
 }
 \description{
 This dataset contains simulated hydrogen delta values for corresponding locations
 based on an assumed linear relationship between the animal tissue value and the
 hydrogen delta values in the environment.
 The data can be used as an example to fit a calibration model using the
-function [calibfit].
+function \code{\link{calibfit}}.
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-*dataframe* of similar structure than this one. The columns should possess
+\emph{dataframe} of similar structure than this one. The columns should possess
 the same names as the ones described above. If the elevation is unknown at the
 sampling sites, elevation information can be extracted from a high resolution elevation
-raster using the function [terra::extract]. In this dataset, we
+raster using the function \code{\link[terra:extract]{terra::extract}}. In this dataset, we
 retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 2010.
 }
@@ -71,6 +72,6 @@ if (getOption_IsoriX("example_maxtime") > 30) {
 
 }
 \seealso{
-[calibfit] to fit a calibration model
+\code{\link{calibfit}} to fit a calibration model
 }
 \keyword{datasets}

@@ -131,8 +131,8 @@ if (getOption_IsoriX("example_maxtime") > 30) {
 Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
 
-Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
-computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
+computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
 Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 }
 \seealso{

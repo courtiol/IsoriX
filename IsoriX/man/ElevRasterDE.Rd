@@ -49,6 +49,6 @@ median(values(cellSize(ElevRasterDE, unit = "km")))
 
 }
 \seealso{
-\link{prepraster} to crop and/or aggregate this raster
+\code{\link{prepraster}} to crop and/or aggregate this raster
 }
 \keyword{datasets}

@@ -33,7 +33,7 @@ plot(CountryBorders, border = "red", col = "darkgrey")
 }
 \seealso{
 \itemize{
-\item \link{OceanMask} for another polygon used to embellish the plots
+\item \code{\link{OceanMask}} for another polygon used to embellish the plots
 }
 }
 \keyword{datasets}

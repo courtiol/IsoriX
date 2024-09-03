@@ -1,25 +1,36 @@
-#' Assignment dataset for bat species
+#' Assignment datasets for bat species
 #'
-#' This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
+#' These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
 #' delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
-#' killed at wind turbines in northern Germany. The data can be used as an
-#' example to perform assignments using the function [`isofind`].
+#' killed at wind turbines in northern Germany. These data can be used as an
+#' example to perform assignments using the function [`isofind`]. The difference
+#' between `AssignDataBat` and `AssignDataBatRev` is that in the latter the bat
+#' fur isotope values were corrected to align with the current δ²H assigned values
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' ensuring comparability between formerly and more recently normalized δ²H datasets.
 #'
 #' @name AssignDataBat
+#' @aliases AssignDataBat AssignDataBatRev
 #' @docType data
-#' @noMd
-#' @format A *dataframe* with 14 observations on 4 variables:
-#' \tabular{rlll}{
-#' [, 1] \tab sample_ID \tab (*factor*) \tab Identification of the animal\cr
-#' [, 2] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 2] \tab lomg \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 4] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
+#' @format Two *dataframes* with 14 observations on 4 variables:
+#' | | | |
+#' |---|---|---|
+#' |sample_ID|(*factor*)|Identification of the animal|
+#' |lat|(*numeric*)|Latitude coordinate (decimal degrees)|
+#' |long|(*numeric*)|Longitude coordinate (decimal degrees)|
+#' |sample_value|(*numeric*)|Hydrogen delta value of the tissue|
+#' 
 #' @seealso [`isofind`] to perform assignments
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
-#' mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+#' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 #' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' 
+#' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+#' isotopic composition of keratin calibration standards for wildlife and forensic
+#' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+#' doi: 10.1002/rcm.7893. PMID: 28475227.
 #'
-#' @source data directly provided by the authors of the following publication
+#' @source data provided by  Voigt CC & Lehnert L.
 #' @keywords datasets
 #' @examples
 #'
@@ -30,27 +41,38 @@ NULL
 
 
 
-#' Assignment dataset for bat species
+#' Assignment datasets for bat species
 #'
-#' This dataset contains data from Voigt, Lehmann and Greif (2015). It contains
+#' These datasets contain data from Voigt, Lehmann & Greif (2015). It contains
 #' hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
 #' 2013 from their roosting sites in Bulgaria. We only retained the bats of the
-#' genus Myotis from the original study. The data can be used as an example to
-#' perform assignments using the function [isofind].
+#' genus Myotis from the original study. These data can be used as an example to
+#' perform assignments using the function [`isofind`].  The difference
+#' between `AssignDataBat2` and `AssignDataBat2Rev` is that in the latter the bat
+#' fur isotope values were corrected to align with the current δ²H assigned values
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' ensuring comparability between formerly and more recently normalized δ²H datasets.
 #'
 #' @name AssignDataBat2
+#' @aliases AssignDataBat2 AssignDataBat2Rev
 #' @docType data
-#' @noMd
-#' @format A *dataframe* with 244 observations on 3 variables:
-#' \tabular{rlll}{
-#' [, 1] \tab sample_ID \tab (*factor*) \tab Identification of the animal\cr
-#' [, 2] \tab species \tab (*factor*) \tab Animal species name\cr
-#' [, 3] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
-#' @seealso [isofind] to perform assignments
-#' @references Voigt, C.C., Lehmann, D., Greif, S. (2015). Stable isotope
+#' @format Two *dataframes* with 244 observations on 3 variables:
+#' | | | |
+#' |---|---|---|
+#' | sample_ID | (*factor*) | Identification of the animal|
+#' | species | (*factor*) | Animal species name|
+#' | sample_value | (*numeric*) | Hydrogen delta value of the tissue|
+#' @seealso [`isofind`] to perform assignments
+#' @references Voigt CC, Lehmann D & Greif S (2015). Stable isotope
 #' ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
 #' Methods in Ecology and Evolution 6(11).
-#' @source data directly provided by the authors of the following publication
+#' 
+#' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+#' isotopic composition of keratin calibration standards for wildlife and forensic
+#' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' 
+#' @source data provided by Voigt CC, Lehmann D & Greif S.
 #' @keywords datasets
 #' @examples
 #'
@@ -61,45 +83,56 @@ NULL
 
 
 
-#' Calibration dataset for bat species
+#' Calibration datasets for bat species
 #'
-#' This dataset contains hydrogen delta values of fur keratin from 6 sedentary
-#' bat species. It corresponds to the combination of several studies as detailed
-#' in Voigt & Lenhert 2019. This is the dataset used in Courtiol et al. 2019.
+#' These datasets contain hydrogen delta values of fur keratin from 6 sedentary
+#' bat species. They correspond to the combination of several studies as detailed
+#' in Voigt & Lenhert 2019. `CalibDataBat` is the dataset used in Courtiol et al. 2019.
 #' The data can be used as an example to fit a calibration model using the
-#' function [calibfit].
+#' function [`calibfit`]. `CalibDataBatRev` is the same data but the bat
+#' fur isotope values were corrected to align with the current δ²H assigned values
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' ensuring comparability between formerly and more recently normalized δ²H datasets. 
 #'
 #' Users who wish to use their own dataset for calibration should create a
-#' *dataframe* of similar structure than this one (only the column 'species'
+#' *dataframe* of similar structure than these ones (only the column 'species'
 #' can be dropped). The columns should possess the same names as the ones
 #' described above. If the elevation is unknown at the sampling sites, elevation
 #' information can be extracted from a high resolution elevation raster using
-#' the function [terra::extract] (see **Examples** in
-#' [CalibDataBat2]).
+#' the function [`terra::extract`] (see **Examples** in
+#' [`CalibDataBat2`]).
 #'
 #' @name CalibDataBat
+#' @aliases CalibDataBat CalibDataBatRev
 #' @docType data
-#' @noMd
-#' @format A *dataframe* with 335 observations on 7 variables:
-#' \tabular{rlll}{
-#' [, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
-#' [, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-#' [, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
-#' [, 6] \tab species \tab (*factor*) \tab A code for the species\cr
-#' [, 7] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
-#' @seealso [CalibDataBat2] for another (related) calibration dataset
+#' @format Two *dataframes* with 335 observations on 7 variables:
+#' |   |   |   |
+#' |---|---|---|
+#' | site_ID | (*factor*) | Identification of the sampling site|
+#' | long | (*numeric*) | Longitude coordinate (decimal degrees)|
+#' | lat | (*numeric*) | Latitude coordinate (decimal degrees)|
+#' | elev | (*numeric*) | Elevation asl (m)|
+#' | sample_ID | (*factor*) | Identification of the sampled animal|
+#' | species | (*factor*) | A code for the species|
+#' | sample_value | (*numeric*) | Hydrogen delta value of the tissue|
+#' @seealso [`CalibDataBat2`] for another (related) calibration dataset
 #'
-#' [calibfit] to fit a calibration model
+#' [`calibfit`] to fit a calibration model
+#' @source data provided by Voigt CC & Lehnert L.
+
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
-#' mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+#' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 #' Migration with Stable Isotopes, second edition. Academic Press, London.
 #'
-#' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
-#' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+#' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
+#' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
 #' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 #'
+#' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+#' isotopic composition of keratin calibration standards for wildlife and forensic
+#' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' 
 #' @keywords datasets
 #' @examples
 #'
@@ -109,41 +142,52 @@ NULL
 
 
 
-#' Calibration dataset for bat species
+#' Calibration datasets for bat species
 #'
-#' This dataset contains hydrogen delta values of fur keratin from sedentary
+#' These datasets contain hydrogen delta values of fur keratin from sedentary
 #' bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
-#' The data can be used as an example to fit a calibration model using the
-#' function [calibfit].
+#' These data can be used as an example to fit a calibration model using the
+#' function [`calibfit`]. The difference between `CalibDataBat2` and 
+#' `CalibDataBat2Rev` is that in the latter the bat
+#' fur isotope values were corrected to align with the current δ²H assigned values
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' ensuring comparability between formerly and more recently normalized δ²H datasets.
 #'
 #' Users who wish to use their own dataset for calibration should create a
-#' *dataframe* of similar structure than this one (only the column
+#' *dataframe* of similar structure than these ones (only the column
 #' 'species' can be dropped). The columns should possess the same names as the
 #' ones described above. If the elevation is unknown at the sampling sites,
 #' elevation information can be extracted from a high resolution elevation
-#' raster using the function [terra::extract] (see **Examples**).
+#' raster using the function [`terra::extract`] (see **Examples**).
 #' Note that the original study used a different source of elevation data.
 #'
 #' @name CalibDataBat2
+#' @aliases CalibDataBat2 CalibDataBat2Rev
 #' @docType data
-#' @noMd
-#' @format A *dataframe* with 178 observations on 6 variables:
-#' \tabular{rlll}{
-#' [, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
-#' [, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-#' [, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
-#' [, 6]  \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
-#' @seealso [CalibDataBat] for another (related) calibration dataset
+#' @format Two *dataframes* with 178 observations on 6 variables:
+#' |   |   |   |
+#' |---|---|---|
+#' | site_ID | (*factor*) | Identification of the sampling site|
+#' | long | (*numeric*) | Longitude coordinate (decimal degrees)|
+#' | lat | (*numeric*) | Latitude coordinate (decimal degrees)|
+#' | elev | (*numeric*) | Elevation asl (m)|
+#' | sample_ID | (*factor*) | Identification of the sampled animal|
+#' | sample_value | (*numeric*) | Hydrogen delta value of the tissue|
+#' @seealso [`CalibDataBat`] for another (related) calibration dataset
 #'
-#' [calibfit] to fit a calibration model
-#' @references Popa-Lisseanu, A. G., Soergel, K., Luckner, A., Wassenaar, L.
-#' I., Ibanez, C., Kramer-Schadt, S., Ciechanowski, M., Goerfoel, T., Niermann,
-#' I., Beuneux, G., Myslajek, R. W., Juste, J., Fonderflick, J., Kelm, D.,
-#' Voigt, C. C. (2012). A triple isotope approach to predict the breeding
-#' origins of European bats. PLoS ONE 7(1):e30388.
-#' @source data directly provided by the authors of the following publication
+#' [`calibfit`] to fit a calibration model
+#' @references Popa-Lisseanu AG, Soergel K, Luckner A, Wassenaar LI, Ibanez C,
+#' Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G, 
+#' Myslajek RW, Juste J, Fonderflick J, Kelm D & Voigt CC (2012).
+#' A triple isotope approach to predict the breeding origins of European bats.
+#' PLoS ONE 7(1):e30388.
+#' 
+#' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+#' isotopic composition of keratin calibration standards for wildlife and forensic
+#' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+#' doi: 10.1002/rcm.7893. PMID: 28475227.
+
+#' @source data provided by Popa-Lisseanu AG et al.
 #' @keywords datasets
 #' @examples
 #'
@@ -178,16 +222,16 @@ NULL
 #' Simulated assignment dataset
 #'
 #' This dataset contains simulated hydrogen delta values.
-#' The data can be used as an example to perform assignments using the function [isofind].
+#' The data can be used as an example to perform assignments using the function [`isofind`].
 #'
 #' @name AssignDataAlien
 #' @docType data
-#' @noMd
 #' @format A *dataframe* with 10 observations on 2 variables:
-#' \tabular{rlll}{
-#' [, 1] \tab sample_ID \tab (*factor*) \tab Identification of the sample\cr
-#' [, 2] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr}
-#' @seealso [isofind] to perform assignments
+#' |   |   |   |
+#' |---|---|---|
+#' | sample_ID | (*factor*) | Identification of the sample|
+#' | sample_value | (*numeric*) | Hydrogen delta value of the tissue|
+#' @seealso [`isofind`] to perform assignments
 #' @keywords datasets
 #' @examples
 #'
@@ -242,28 +286,28 @@ NULL
 #' based on an assumed linear relationship between the animal tissue value and the
 #' hydrogen delta values in the environment.
 #' The data can be used as an example to fit a calibration model using the
-#' function [calibfit].
+#' function [`calibfit`].
 #'
 #' Users who wish to use their own dataset for calibration should create a
 #' *dataframe* of similar structure than this one. The columns should possess
 #' the same names as the ones described above. If the elevation is unknown at the
 #' sampling sites, elevation information can be extracted from a high resolution elevation
-#' raster using the function [terra::extract]. In this dataset, we
+#' raster using the function [`terra::extract`]. In this dataset, we
 #' retrieved elevations from the Global Multi-resolution Terrain Elevation Data
 #' 2010.
 #'
 #' @name CalibDataAlien
 #' @docType data
-#' @noMd
 #' @format A *dataframe* with x observations on 6 variables:
-#' \tabular{rlll}{
-#' [, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
-#' [, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-#' [, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
-#' [, 6] \tab tissue.value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
-#' @seealso [calibfit] to fit a calibration model
+#' |   |   |   |
+#' |---|---|---|
+#' | site_ID | (*factor*) | Identification of the sampling site|
+#' | long | (*numeric*) | Longitude coordinate (decimal degrees)|
+#' | lat | (*numeric*) | Latitude coordinate (decimal degrees)|
+#' | elev | (*numeric*) | Elevation asl (m)|
+#' | sample_ID | (*factor*) | Identification of the sampled animal|
+#' | tissue.value | (*numeric*) | Hydrogen delta value of the tissue|
+#' @seealso [`calibfit`] to fit a calibration model
 #' @keywords datasets
 #' @examples
 #'
@@ -318,7 +362,7 @@ NULL
 #' @docType data
 #' @format A *SpatVector* object
 #' @seealso
-#' - [OceanMask] for another polygon used to embellish the plots
+#' - [`OceanMask`] for another polygon used to embellish the plots
 #' @source This *SpatVector* is derived from the package
 #'   \pkg{rnaturalearth}. Please refer to this other package for description and
 #'   sources of this dataset. See example for details on how we created the
@@ -351,7 +395,7 @@ NULL
 #' @docType data
 #' @format A *SpatVector* object
 #' @seealso
-#' - [CountryBorders] for another polygon used to embellish the plots
+#' - [`CountryBorders`] for another polygon used to embellish the plots
 #' @source See example for details on how we created the dataset.
 #' @keywords datasets
 #' @examples
@@ -385,7 +429,7 @@ NULL
 #' @name ElevRasterDE
 #' @docType data
 #' @format A *SpatRaster* object
-#' @seealso [prepraster] to crop and/or aggregate this raster
+#' @seealso [`prepraster`] to crop and/or aggregate this raster
 #' @source \url{https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm}
 #' @keywords datasets
 #' @examples
@@ -425,12 +469,12 @@ NULL
 #' Germany with a resolution of approximately 30 square-km.
 #'
 #' The data are derived from "precipitation (mm) WorldClim Version2" which can
-#' be downloaded using the function [getprecip].
+#' be downloaded using the function [`getprecip`].
 #'
 #' @name PrecipBrickDE
 #' @docType data
 #' @format A *RasterBrick*
-#' @seealso [prepcipitate] to prepare this raster
+#' @seealso [`prepcipitate`] to prepare this raster
 #' @source \url{https://www.worldclim.org/data/worldclim21.html}
 #' @keywords datasets
 #' @examples
@@ -460,7 +504,7 @@ NULL
 #' reuse provided the relevant citations (see references). These data represent
 #' a small sample of the much larger dataset compiled by the GNIP. We no longer
 #' provide larger GNIP dataset in the package as those are not free to reuse (but
-#' we do provide aggregated versions of it; see [GNIPDataEUagg]).
+#' we do provide aggregated versions of it; see [`GNIPDataEUagg`]).
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
 #' interface WISER (\url{https://nucleus.iaea.org/wiser/index.aspx}).
@@ -470,25 +514,26 @@ NULL
 #' This dataset is the raw data source and should not be directly used for
 #' fitting isoscapes.
 #'
-#' Please use [prepsources] to filter the dataset by time and
+#' Please use [`prepsources`] to filter the dataset by time and
 #' location.
 #'
 #' If you want to use your own dataset, you must format your data as those
-#' produced by the function [prepsources].
+#' produced by the function [`prepsources`].
 #'
 #' @name GNIPDataDE
 #' @docType data
-#' @noMd
 #' @format The *dataframe* includes 8591 observations on the following
-#' variables: \tabular{rlll}{
-#' [, 1] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 3] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-#' [, 4] \tab source_value \tab (*numeric*) \tab hydrogen delta value (per thousand)\cr
-#' [, 5] \tab year \tab (*numeric*) \tab Year of sampling\cr
-#' [, 6] \tab month \tab (*numeric*) \tab Month of sampling\cr
-#' [, 7] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr }
-#' @seealso [prepsources] to prepare the dataset for the analyses and
+#' variables: 
+#' |   |   |   |
+#' |---|---|---|
+#' | lat | (*numeric*) | Latitude coordinate (decimal degrees)|
+#' | long | (*numeric*) | Longitude coordinate (decimal degrees)|
+#' | elev | (*numeric*) | Elevation asl (m)|
+#' | source_value | (*numeric*) | hydrogen delta value (per thousand)|
+#' | year | (*numeric*) | Year of sampling|
+#' | month | (*numeric*) | Month of sampling|
+#' | source_ID | (*factor*) | The unique identifier of the weather station|
+#' @seealso [`prepsources`] to prepare the dataset for the analyses and
 #' to filter by time and location.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #'
@@ -496,7 +541,7 @@ NULL
 #'
 #' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 #'
-#' @source Data provided by the IAEA.
+#' @source data provided by the IAEA.
 #' @keywords datasets
 #' @examples
 #'
@@ -513,7 +558,7 @@ NULL
 #' Europe (`GNIPDataEUagg`) and in the entire world (`GNIPDataALLagg`). These
 #' data have been extracted from the International Atomic Energy Agency IAEA in
 #' Vienna (GNIP Project: Global Network of Isotopes in Precipitation) and
-#' processed by us using the function [prepsources]. The data are aggregated per
+#' processed by us using the function [`prepsources`]. The data are aggregated per
 #' location (across all month-year combinations). We no longer provide the full
 #' non-aggregate GNIP dataset in the package as it is not free to reuse. You can
 #' still download the complete GNIP dataset for free, but you will have to
@@ -530,19 +575,20 @@ NULL
 #' @name GNIPDataEUagg
 #' @aliases GNIPDataEUagg GNIPDataALLagg
 #' @docType data
-#' @noMd
 #' @format The *dataframe*s include many observations on the following
-#' variables: \tabular{rlll}{
-#' [, 1] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr
-#' [, 2] \tab mean_source_value \tab (*numeric*) \tab Average of the aggregate of hydrogen delta values (per thousand)\cr
-#' [, 3] \tab var_source_value \tab (*numeric*) \tab Variance of the aggregate of hydrogen delta values (per thousand^2)\cr
-#' [, 4] \tab n_source_value \tab (*numeric*) \tab Number of hydrogen delta values aggregated\cr
-#' [, 5] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-#' [, 6] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-#' [, 7] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr}
-#' @seealso [GNIPDataDE] for a non-aggregated dataset.
+#' variables:
+#' |   |   |   |
+#' |---|---|---|
+#' | source_ID | (*factor*) | The unique identifier of the weather station|
+#' | mean_source_value | (*numeric*) | Average of the aggregate of hydrogen delta values (per thousand)|
+#' | var_source_value | (*numeric*) | Variance of the aggregate of hydrogen delta values (per thousand^2)|
+#' | n_source_value | (*numeric*) | Number of hydrogen delta values aggregated|
+#' | lat | (*numeric*) | Latitude coordinate (decimal degrees)|
+#' | long | (*numeric*) | Longitude coordinate (decimal degrees)|
+#' | elev | (*numeric*) | Elevation asl (m)|
+#' @seealso [`GNIPDataDE`] for a non-aggregated dataset.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
-#' @source Data provided by the IAEA and processed by us.
+#' @source data provided by the IAEA and processed by us.
 #' @keywords datasets
 #' @examples
 #'
@@ -559,17 +605,17 @@ NULL
 #'
 #' These datasets contain colour vectors that can be used for plotting. In our
 #' examples, we use the `isopalette1` for plotting the isoscape using
-#' [plot.ISOSCAPE] and `isopalette2` for plotting the
-#' assignment outcome using [plot.ISOFIND].
+#' [`plot.ISOSCAPE`] and `isopalette2` for plotting the
+#' assignment outcome using [`plot.ISOFIND`].
 #'
-#' Colour palettes can be created by using the function [colorRamp]
+#' Colour palettes can be created by using the function [`colorRamp`]
 #' that interpolates colours between a set of given colours. One can also use
-#' [colorRampPalette] to create functions providing colours. Also
-#' interesting, the function [colorspace::choose_palette] offers a GUI
+#' [`colorRampPalette`] to create functions providing colours. Also
+#' interesting, the function [`colorspace::choose_palette`] offers a GUI
 #' interface allowing to create and save a palette in a hexadecimal format
 #' (which can later on be imported into R). This latter function is however
 #' limited to a maximum of 50 colours. You can also use R colour palettes
-#' already available such as [terrain.colors] or others available
+#' already available such as [`terrain.colors`] or others available
 #' (see examples below). Alternatively, you can design your own colour palette
 #' by writing standard hexadecimal code of colours into a vector.
 #'
@@ -580,8 +626,8 @@ NULL
 #' @note We use the package \pkg{rasterVis} for plotting. Instead of using
 #' colour palettes directly, one can also use any "Theme" designed for the
 #' lattice graphic environment (see source for details).
-#' @seealso [grDevices::rainbow] for information about R colour palettes,
-#' [grDevices::colorRamp] and [colorspace::choose_palette] to create your
+#' @seealso [`grDevices::rainbow`] for information about R colour palettes,
+#' [`grDevices::colorRamp`] and [`colorspace::choose_palette`] to create your
 #' own palettes
 #' @source For information on how to use themes, check:
 #'

@@ -3,23 +3,29 @@
 \docType{data}
 \name{AssignDataBat}
 \alias{AssignDataBat}
-\title{Assignment dataset for bat species}
+\alias{AssignDataBatRev}
+\title{Assignment datasets for bat species}
 \format{
-A *dataframe* with 14 observations on 4 variables:
-\tabular{rlll}{
-[, 1] \tab sample_ID \tab (*factor*) \tab Identification of the animal\cr
-[, 2] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-[, 2] \tab lomg \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-[, 4] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
+Two \emph{dataframes} with 14 observations on 4 variables:\tabular{lll}{
+    \tab  \tab  \cr
+   sample_ID \tab (\emph{factor}) \tab Identification of the animal \cr
+   lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr
+   long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr
+   sample_value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
+}
 }
 \source{
-data directly provided by the authors of the following publication
+data provided by  Voigt CC & Lehnert L.
 }
 \description{
-This dataset contains data from Voigt & Lenhert (2019). It contains hydrogen
+These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
 delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
-killed at wind turbines in northern Germany. The data can be used as an
-example to perform assignments using the function [`isofind`].
+killed at wind turbines in northern Germany. These data can be used as an
+example to perform assignments using the function \code{\link{isofind}}. The difference
+between \code{AssignDataBat} and \code{AssignDataBatRev} is that in the latter the bat
+fur isotope values were corrected to align with the current δ²H assigned values
+for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
+ensuring comparability between formerly and more recently normalized δ²H datasets.
 }
 \examples{
 
@@ -29,10 +35,15 @@ str(AssignDataBat)
 }
 \references{
 Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
-mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 Migration with Stable Isotopes, second edition. Academic Press, London.
+
+Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+isotopic composition of keratin calibration standards for wildlife and forensic
+science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+doi: 10.1002/rcm.7893. PMID: 28475227.
 }
 \seealso{
-[`isofind`] to perform assignments
+\code{\link{isofind}} to perform assignments
 }
 \keyword{datasets}

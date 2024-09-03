@@ -16,7 +16,7 @@ Germany with a resolution of approximately 30 square-km.
 }
 \details{
 The data are derived from "precipitation (mm) WorldClim Version2" which can
-be downloaded using the function \link{getprecip}.
+be downloaded using the function \code{\link{getprecip}}.
 }
 \examples{
 
@@ -33,6 +33,6 @@ be downloaded using the function \link{getprecip}.
 
 }
 \seealso{
-\link{prepcipitate} to prepare this raster
+\code{\link{prepcipitate}} to prepare this raster
 }
 \keyword{datasets}

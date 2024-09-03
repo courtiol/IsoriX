@@ -6,26 +6,28 @@
 \alias{GNIPDataALLagg}
 \title{Hydrogen delta values in precipitation water (aggregated per location)}
 \format{
-The *dataframe*s include many observations on the following
-variables: \tabular{rlll}{
-[, 1] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr
-[, 2] \tab mean_source_value \tab (*numeric*) \tab Average of the aggregate of hydrogen delta values (per thousand)\cr
-[, 3] \tab var_source_value \tab (*numeric*) \tab Variance of the aggregate of hydrogen delta values (per thousand^2)\cr
-[, 4] \tab n_source_value \tab (*numeric*) \tab Number of hydrogen delta values aggregated\cr
-[, 5] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-[, 6] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-[, 7] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr}
+The \emph{dataframe}s include many observations on the following
+variables:\tabular{lll}{
+    \tab  \tab  \cr
+   source_ID \tab (\emph{factor}) \tab The unique identifier of the weather station \cr
+   mean_source_value \tab (\emph{numeric}) \tab Average of the aggregate of hydrogen delta values (per thousand) \cr
+   var_source_value \tab (\emph{numeric}) \tab Variance of the aggregate of hydrogen delta values (per thousand^2) \cr
+   n_source_value \tab (\emph{numeric}) \tab Number of hydrogen delta values aggregated \cr
+   lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr
+   long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr
+   elev \tab (\emph{numeric}) \tab Elevation asl (m) \cr
+}
 }
 \source{
-Data provided by the IAEA and processed by us.
+data provided by the IAEA and processed by us.
 }
 \description{
 These datasets contain the mean and variance of hydrogen delta value from
 precipitation water sampled at weather stations between 1953 and 2015 in
-Europe (`GNIPDataEUagg`) and in the entire world (`GNIPDataALLagg`). These
+Europe (\code{GNIPDataEUagg}) and in the entire world (\code{GNIPDataALLagg}). These
 data have been extracted from the International Atomic Energy Agency IAEA in
 Vienna (GNIP Project: Global Network of Isotopes in Precipitation) and
-processed by us using the function [prepsources]. The data are aggregated per
+processed by us using the function \code{\link{prepsources}}. The data are aggregated per
 location (across all month-year combinations). We no longer provide the full
 non-aggregate GNIP dataset in the package as it is not free to reuse. You can
 still download the complete GNIP dataset for free, but you will have to
@@ -52,6 +54,6 @@ dim(GNIPDataEUagg)
 GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 }
 \seealso{
-[GNIPDataDE] for a non-aggregated dataset.
+\code{\link{GNIPDataDE}} for a non-aggregated dataset.
 }
 \keyword{datasets}

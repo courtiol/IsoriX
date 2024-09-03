@@ -3,33 +3,39 @@
 \docType{data}
 \name{CalibDataBat2}
 \alias{CalibDataBat2}
-\title{Calibration dataset for bat species}
+\alias{CalibDataBat2Rev}
+\title{Calibration datasets for bat species}
 \format{
-A *dataframe* with 178 observations on 6 variables:
-\tabular{rlll}{
-[, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
-[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-[, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-[, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-[, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
-[, 6]  \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
+Two \emph{dataframes} with 178 observations on 6 variables:\tabular{lll}{
+    \tab  \tab  \cr
+   site_ID \tab (\emph{factor}) \tab Identification of the sampling site \cr
+   long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr
+   lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr
+   elev \tab (\emph{numeric}) \tab Elevation asl (m) \cr
+   sample_ID \tab (\emph{factor}) \tab Identification of the sampled animal \cr
+   sample_value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
+}
 }
 \source{
-data directly provided by the authors of the following publication
+data provided by Popa-Lisseanu AG et al.
 }
 \description{
-This dataset contains hydrogen delta values of fur keratin from sedentary
+These datasets contain hydrogen delta values of fur keratin from sedentary
 bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
-The data can be used as an example to fit a calibration model using the
-function [calibfit].
+These data can be used as an example to fit a calibration model using the
+function \code{\link{calibfit}}. The difference between \code{CalibDataBat2} and
+\code{CalibDataBat2Rev} is that in the latter the bat
+fur isotope values were corrected to align with the current δ²H assigned values
+for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
+ensuring comparability between formerly and more recently normalized δ²H datasets.
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-*dataframe* of similar structure than this one (only the column
+\emph{dataframe} of similar structure than these ones (only the column
 'species' can be dropped). The columns should possess the same names as the
 ones described above. If the elevation is unknown at the sampling sites,
 elevation information can be extracted from a high resolution elevation
-raster using the function [terra::extract] (see **Examples**).
+raster using the function \code{\link[terra:extract]{terra::extract}} (see \strong{Examples}).
 Note that the original study used a different source of elevation data.
 }
 \examples{
@@ -60,15 +66,20 @@ str(CalibDataBat2)
 
 }
 \references{
-Popa-Lisseanu, A. G., Soergel, K., Luckner, A., Wassenaar, L.
-I., Ibanez, C., Kramer-Schadt, S., Ciechanowski, M., Goerfoel, T., Niermann,
-I., Beuneux, G., Myslajek, R. W., Juste, J., Fonderflick, J., Kelm, D.,
-Voigt, C. C. (2012). A triple isotope approach to predict the breeding
-origins of European bats. PLoS ONE 7(1):e30388.
+Popa-Lisseanu AG, Soergel K, Luckner A, Wassenaar LI, Ibanez C,
+Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G,
+Myslajek RW, Juste J, Fonderflick J, Kelm D & Voigt CC (2012).
+A triple isotope approach to predict the breeding origins of European bats.
+PLoS ONE 7(1):e30388.
+
+Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+isotopic composition of keratin calibration standards for wildlife and forensic
+science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+doi: 10.1002/rcm.7893. PMID: 28475227.
 }
 \seealso{
-[CalibDataBat] for another (related) calibration dataset
+\code{\link{CalibDataBat}} for another (related) calibration dataset
 
-[calibfit] to fit a calibration model
+\code{\link{calibfit}} to fit a calibration model
 }
 \keyword{datasets}

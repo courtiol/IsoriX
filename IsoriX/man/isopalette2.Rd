@@ -16,18 +16,18 @@ For information on how to use themes, check:
 \description{
 These datasets contain colour vectors that can be used for plotting. In our
 examples, we use the \code{isopalette1} for plotting the isoscape using
-\link{plot.ISOSCAPE} and \code{isopalette2} for plotting the
-assignment outcome using \link{plot.ISOFIND}.
+\code{\link{plot.ISOSCAPE}} and \code{isopalette2} for plotting the
+assignment outcome using \code{\link{plot.ISOFIND}}.
 }
 \details{
-Colour palettes can be created by using the function \link{colorRamp}
+Colour palettes can be created by using the function \code{\link{colorRamp}}
 that interpolates colours between a set of given colours. One can also use
-\link{colorRampPalette} to create functions providing colours. Also
-interesting, the function \link[colorspace:choose_palette]{colorspace::choose_palette} offers a GUI
+\code{\link{colorRampPalette}} to create functions providing colours. Also
+interesting, the function \code{\link[colorspace:choose_palette]{colorspace::choose_palette}} offers a GUI
 interface allowing to create and save a palette in a hexadecimal format
 (which can later on be imported into R). This latter function is however
 limited to a maximum of 50 colours. You can also use R colour palettes
-already available such as \link{terrain.colors} or others available
+already available such as \code{\link{terrain.colors}} or others available
 (see examples below). Alternatively, you can design your own colour palette
 by writing standard hexadecimal code of colours into a vector.
 }
@@ -89,8 +89,8 @@ pie(1:100,
 
 }
 \seealso{
-\link[grDevices:palettes]{grDevices::rainbow} for information about R colour palettes,
-\link[grDevices:colorRamp]{grDevices::colorRamp} and \link[colorspace:choose_palette]{colorspace::choose_palette} to create your
+\code{\link[grDevices:palettes]{grDevices::rainbow}} for information about R colour palettes,
+\code{\link[grDevices:colorRamp]{grDevices::colorRamp}} and \code{\link[colorspace:choose_palette]{colorspace::choose_palette}} to create your
 own palettes
 }
 \keyword{color}

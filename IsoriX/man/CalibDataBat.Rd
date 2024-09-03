@@ -3,33 +3,41 @@
 \docType{data}
 \name{CalibDataBat}
 \alias{CalibDataBat}
-\title{Calibration dataset for bat species}
+\alias{CalibDataBatRev}
+\title{Calibration datasets for bat species}
 \format{
-A *dataframe* with 335 observations on 7 variables:
-\tabular{rlll}{
-[, 1] \tab site_ID \tab (*factor*) \tab Identification of the sampling site\cr
-[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-[, 3] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-[, 4] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-[, 5] \tab sample_ID \tab (*factor*) \tab Identification of the sampled animal\cr
-[, 6] \tab species \tab (*factor*) \tab A code for the species\cr
-[, 7] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
+Two \emph{dataframes} with 335 observations on 7 variables:\tabular{lll}{
+    \tab  \tab  \cr
+   site_ID \tab (\emph{factor}) \tab Identification of the sampling site \cr
+   long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr
+   lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr
+   elev \tab (\emph{numeric}) \tab Elevation asl (m) \cr
+   sample_ID \tab (\emph{factor}) \tab Identification of the sampled animal \cr
+   species \tab (\emph{factor}) \tab A code for the species \cr
+   sample_value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
+}
+}
+\source{
+data provided by Voigt CC & Lehnert L.
 }
 \description{
-This dataset contains hydrogen delta values of fur keratin from 6 sedentary
-bat species. It corresponds to the combination of several studies as detailed
-in Voigt & Lenhert 2019. This is the dataset used in Courtiol et al. 2019.
+These datasets contain hydrogen delta values of fur keratin from 6 sedentary
+bat species. They correspond to the combination of several studies as detailed
+in Voigt & Lenhert 2019. \code{CalibDataBat} is the dataset used in Courtiol et al. 2019.
 The data can be used as an example to fit a calibration model using the
-function [calibfit].
+function \code{\link{calibfit}}. \code{CalibDataBatRev} is the same data but the bat
+fur isotope values were corrected to align with the current δ²H assigned values
+for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
+ensuring comparability between formerly and more recently normalized δ²H datasets.
 }
 \details{
 Users who wish to use their own dataset for calibration should create a
-*dataframe* of similar structure than this one (only the column 'species'
+\emph{dataframe} of similar structure than these ones (only the column 'species'
 can be dropped). The columns should possess the same names as the ones
 described above. If the elevation is unknown at the sampling sites, elevation
 information can be extracted from a high resolution elevation raster using
-the function [terra::extract] (see **Examples** in
-[CalibDataBat2]).
+the function \code{\link[terra:extract]{terra::extract}} (see \strong{Examples} in
+\code{\link{CalibDataBat2}}).
 }
 \examples{
 
@@ -38,16 +46,21 @@ str(CalibDataBat)
 }
 \references{
 Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
-mammals using stable isotopes. In Hobson KA, Wassenaar LI (eds.), Tracking Animal
+mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 Migration with Stable Isotopes, second edition. Academic Press, London.
 
-Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
-computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
+computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
 Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+
+Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+isotopic composition of keratin calibration standards for wildlife and forensic
+science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+doi: 10.1002/rcm.7893. PMID: 28475227.
 }
 \seealso{
-[CalibDataBat2] for another (related) calibration dataset
+\code{\link{CalibDataBat2}} for another (related) calibration dataset
 
-[calibfit] to fit a calibration model
+\code{\link{calibfit}} to fit a calibration model
 }
 \keyword{datasets}

@@ -68,8 +68,8 @@
 #'   objects: `sources` and `calibs`.
 #' @note See [`AssignDataAlien`] to know which variables are needed to
 #'   perform the assignment and their names.
-#' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI, Kramer-Schadt S (2019). Isoscape
-#' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA, Wassenaar LI (eds.),
+#' @references Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
+#' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
 #' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
 #'
 #' Fisher, R.A. (1925). Statistical Methods for Research Workers.

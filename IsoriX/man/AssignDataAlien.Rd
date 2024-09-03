@@ -5,14 +5,15 @@
 \alias{AssignDataAlien}
 \title{Simulated assignment dataset}
 \format{
-A *dataframe* with 10 observations on 2 variables:
-\tabular{rlll}{
-[, 1] \tab sample_ID \tab (*factor*) \tab Identification of the sample\cr
-[, 2] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr}
+A \emph{dataframe} with 10 observations on 2 variables:\tabular{lll}{
+    \tab  \tab  \cr
+   sample_ID \tab (\emph{factor}) \tab Identification of the sample \cr
+   sample_value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
+}
 }
 \description{
 This dataset contains simulated hydrogen delta values.
-The data can be used as an example to perform assignments using the function [isofind].
+The data can be used as an example to perform assignments using the function \code{\link{isofind}}.
 }
 \examples{
 
@@ -59,6 +60,6 @@ if (getOption_IsoriX("example_maxtime") > 30) {
 
 }
 \seealso{
-[isofind] to perform assignments
+\code{\link{isofind}} to perform assignments
 }
 \keyword{datasets}

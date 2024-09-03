@@ -5,18 +5,20 @@
 \alias{GNIPDataDE}
 \title{Hydrogen delta values in precipitation water, Germany}
 \format{
-The *dataframe* includes 8591 observations on the following
-variables: \tabular{rlll}{
-[, 1] \tab lat \tab (*numeric*) \tab Latitude coordinate (decimal degrees)\cr
-[, 2] \tab long \tab (*numeric*) \tab Longitude coordinate (decimal degrees)\cr
-[, 3] \tab elev \tab (*numeric*) \tab Elevation asl (m)\cr
-[, 4] \tab source_value \tab (*numeric*) \tab hydrogen delta value (per thousand)\cr
-[, 5] \tab year \tab (*numeric*) \tab Year of sampling\cr
-[, 6] \tab month \tab (*numeric*) \tab Month of sampling\cr
-[, 7] \tab source_ID \tab (*factor*) \tab The unique identifier of the weather station\cr }
+The \emph{dataframe} includes 8591 observations on the following
+variables:\tabular{lll}{
+    \tab  \tab  \cr
+   lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr
+   long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr
+   elev \tab (\emph{numeric}) \tab Elevation asl (m) \cr
+   source_value \tab (\emph{numeric}) \tab hydrogen delta value (per thousand) \cr
+   year \tab (\emph{numeric}) \tab Year of sampling \cr
+   month \tab (\emph{numeric}) \tab Month of sampling \cr
+   source_ID \tab (\emph{factor}) \tab The unique identifier of the weather station \cr
+}
 }
 \source{
-Data provided by the IAEA.
+data provided by the IAEA.
 }
 \description{
 This dataset contains the hydrogen delta value from
@@ -27,7 +29,7 @@ Project: Global Network of Isotopes in Precipitation). These data are free to
 reuse provided the relevant citations (see references). These data represent
 a small sample of the much larger dataset compiled by the GNIP. We no longer
 provide larger GNIP dataset in the package as those are not free to reuse (but
-we do provide aggregated versions of it; see [GNIPDataEUagg]).
+we do provide aggregated versions of it; see \code{\link{GNIPDataEUagg}}).
 You can still download the complete GNIP dataset for free, but you will have
 to proceed to a registration process with GNIP and use their downloading
 interface WISER (\url{https://nucleus.iaea.org/wiser/index.aspx}).
@@ -38,11 +40,11 @@ The dataset contains non-aggregated data for 27 weather stations across Germany.
 This dataset is the raw data source and should not be directly used for
 fitting isoscapes.
 
-Please use [prepsources] to filter the dataset by time and
+Please use \code{\link{prepsources}} to filter the dataset by time and
 location.
 
 If you want to use your own dataset, you must format your data as those
-produced by the function [prepsources].
+produced by the function \code{\link{prepsources}}.
 }
 \examples{
 
@@ -57,7 +59,7 @@ Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isoto
 Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
 }
 \seealso{
-[prepsources] to prepare the dataset for the analyses and
+\code{\link{prepsources}} to prepare the dataset for the analyses and
 to filter by time and location.
 }
 \keyword{datasets}

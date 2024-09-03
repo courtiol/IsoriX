@@ -3,23 +3,29 @@
 \docType{data}
 \name{AssignDataBat2}
 \alias{AssignDataBat2}
-\title{Assignment dataset for bat species}
+\alias{AssignDataBat2Rev}
+\title{Assignment datasets for bat species}
 \format{
-A *dataframe* with 244 observations on 3 variables:
-\tabular{rlll}{
-[, 1] \tab sample_ID \tab (*factor*) \tab Identification of the animal\cr
-[, 2] \tab species \tab (*factor*) \tab Animal species name\cr
-[, 3] \tab sample_value \tab (*numeric*) \tab Hydrogen delta value of the tissue\cr }
+Two \emph{dataframes} with 244 observations on 3 variables:\tabular{lll}{
+    \tab  \tab  \cr
+   sample_ID \tab (\emph{factor}) \tab Identification of the animal \cr
+   species \tab (\emph{factor}) \tab Animal species name \cr
+   sample_value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
+}
 }
 \source{
-data directly provided by the authors of the following publication
+data provided by Voigt CC, Lehmann D & Greif S.
 }
 \description{
-This dataset contains data from Voigt, Lehmann and Greif (2015). It contains
+These datasets contain data from Voigt, Lehmann & Greif (2015). It contains
 hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
 2013 from their roosting sites in Bulgaria. We only retained the bats of the
-genus Myotis from the original study. The data can be used as an example to
-perform assignments using the function [isofind].
+genus Myotis from the original study. These data can be used as an example to
+perform assignments using the function \code{\link{isofind}}.  The difference
+between \code{AssignDataBat2} and \code{AssignDataBat2Rev} is that in the latter the bat
+fur isotope values were corrected to align with the current δ²H assigned values
+for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
+ensuring comparability between formerly and more recently normalized δ²H datasets.
 }
 \examples{
 
@@ -28,11 +34,16 @@ str(AssignDataBat2)
 
 }
 \references{
-Voigt, C.C., Lehmann, D., Greif, S. (2015). Stable isotope
+Voigt CC, Lehmann D & Greif S (2015). Stable isotope
 ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
 Methods in Ecology and Evolution 6(11).
+
+Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
+isotopic composition of keratin calibration standards for wildlife and forensic
+science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
+doi: 10.1002/rcm.7893. PMID: 28475227.
 }
 \seealso{
-[isofind] to perform assignments
+\code{\link{isofind}} to perform assignments
 }
 \keyword{datasets}

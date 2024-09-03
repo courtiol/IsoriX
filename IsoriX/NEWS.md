@@ -1,5 +1,13 @@
 # IsoriX (development version)
 
+## New features
+
+  * new datasets `CalibDataBatRev`, `CalibDataBat2Rev`, `AssignDataRev` and `AssignData2Rev` which are revised version of CalibDataBat`, `CalibDataBat2`, `AssignData` and `AssignData2` (respectively). The bat fur isotope values were corrected to align with the current δ²H assigned values for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) ensuring comparability between formerly and more recently normalized δ²H datasets.
+
+## Breaking changes
+
+  * the dataset `CalibDataBat2` now contains slightly different elevation values (the one reported by field workers as opposed to those extracted from a specific elevation map).
+
 ## Major changes
 
   * the functions `prepsources()`, `calibfit()` and `isofind()` no longer tolerate that some locations share the same location IDs or that several locations IDs correspond to a unique location. This should prevent users to use datasets for which issues happened during the preparation (fixes #133). If you disagree with this choice, please let the developer know.
@@ -19,6 +27,7 @@
 
   * the project is now being setup so that the development using VScode is possible.
   * the format of the NEWS file has been changed to allow for using `usethis::use_github_release()` to create new releases (fixes #177).
+  * the description of datasets now relies on the markdown syntax.
 
 
 # IsoriX 0.9.2
