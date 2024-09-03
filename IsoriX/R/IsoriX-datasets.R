@@ -5,9 +5,9 @@
 #' killed at wind turbines in northern Germany. These data can be used as an
 #' example to perform assignments using the function [`isofind`]. The difference
 #' between `AssignDataBat` and `AssignDataBatRev` is that in the latter the bat
-#' fur isotope values were corrected to align with the current δ²H assigned values
+#' fur isotope values were corrected to align with the current delta values for deuterium
 #' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
-#' ensuring comparability between formerly and more recently normalized δ²H datasets.
+#' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' @name AssignDataBat
 #' @aliases AssignDataBat AssignDataBatRev
@@ -49,9 +49,9 @@ NULL
 #' genus Myotis from the original study. These data can be used as an example to
 #' perform assignments using the function [`isofind`].  The difference
 #' between `AssignDataBat2` and `AssignDataBat2Rev` is that in the latter the bat
-#' fur isotope values were corrected to align with the current δ²H assigned values
+#' fur isotope values were corrected to align with the current delta values for deuterium
 #' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
-#' ensuring comparability between formerly and more recently normalized δ²H datasets.
+#' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' @name AssignDataBat2
 #' @aliases AssignDataBat2 AssignDataBat2Rev
@@ -90,9 +90,9 @@ NULL
 #' in Voigt & Lenhert 2019. `CalibDataBat` is the dataset used in Courtiol et al. 2019.
 #' The data can be used as an example to fit a calibration model using the
 #' function [`calibfit`]. `CalibDataBatRev` is the same data but the bat
-#' fur isotope values were corrected to align with the current δ²H assigned values
+#' fur isotope values were corrected to align with the current delta values for deuterium
 #' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
-#' ensuring comparability between formerly and more recently normalized δ²H datasets. 
+#' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium. 
 #'
 #' Users who wish to use their own dataset for calibration should create a
 #' *dataframe* of similar structure than these ones (only the column 'species'
@@ -149,9 +149,9 @@ NULL
 #' These data can be used as an example to fit a calibration model using the
 #' function [`calibfit`]. The difference between `CalibDataBat2` and 
 #' `CalibDataBat2Rev` is that in the latter the bat
-#' fur isotope values were corrected to align with the current δ²H assigned values
+#' fur isotope values were corrected to align with the current delta values for deuterium
 #' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
-#' ensuring comparability between formerly and more recently normalized δ²H datasets.
+#' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' Users who wish to use their own dataset for calibration should create a
 #' *dataframe* of similar structure than these ones (only the column

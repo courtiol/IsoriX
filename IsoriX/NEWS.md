@@ -2,7 +2,7 @@
 
 ## New features
 
-  * new datasets `CalibDataBatRev`, `CalibDataBat2Rev`, `AssignDataRev` and `AssignData2Rev` which are revised version of CalibDataBat`, `CalibDataBat2`, `AssignData` and `AssignData2` (respectively). The bat fur isotope values were corrected to align with the current δ²H assigned values for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) ensuring comparability between formerly and more recently normalized δ²H datasets.
+  * new datasets `CalibDataBatRev`, `CalibDataBat2Rev`, `AssignDataRev` and `AssignData2Rev` which are revised version of CalibDataBat`, `CalibDataBat2`, `AssignData` and `AssignData2` (respectively). The bat fur isotope values were corrected to align with the current delta values for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 
 ## Breaking changes
 

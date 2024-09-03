@@ -25,9 +25,9 @@ bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
 These data can be used as an example to fit a calibration model using the
 function \code{\link{calibfit}}. The difference between \code{CalibDataBat2} and
 \code{CalibDataBat2Rev} is that in the latter the bat
-fur isotope values were corrected to align with the current δ²H assigned values
+fur isotope values were corrected to align with the current delta values for deuterium
 for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
-ensuring comparability between formerly and more recently normalized δ²H datasets.
+ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 }
 \details{
 Users who wish to use their own dataset for calibration should create a

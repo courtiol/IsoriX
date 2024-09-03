@@ -23,9 +23,9 @@ delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 killed at wind turbines in northern Germany. These data can be used as an
 example to perform assignments using the function \code{\link{isofind}}. The difference
 between \code{AssignDataBat} and \code{AssignDataBatRev} is that in the latter the bat
-fur isotope values were corrected to align with the current δ²H assigned values
+fur isotope values were corrected to align with the current delta values for deuterium
 for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
-ensuring comparability between formerly and more recently normalized δ²H datasets.
+ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 }
 \examples{
 
