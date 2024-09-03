@@ -1,5 +1,21 @@
 # IsoriX (development version)
 
+* **minor changes**
+
+  * the function `terra::extract()` is now re-exported.
+
+* **small fixes**
+  
+  * the URL for worldclim was outdated so `getprecip()` was no longer working.
+  * some internal code had arguments misspeld. It was working as a result of R's ability to do partial matching, but this was not good practice. It is now fixed (fixes #181).
+  * some links in the documentation were incomplete and flagged is some online CRAN checks ("Found the following Rd file(s) with Rd \link{} targets missing package"). This should now be fixed.
+  * function names should now be consistently displayed as computer code in the documentation.
+
+* **internal (geeky) changes**
+
+  * the project is now being setup so that the development using VScode is possible.
+
+
 # IsoriX 0.9.2
 
 * **main release goal**
