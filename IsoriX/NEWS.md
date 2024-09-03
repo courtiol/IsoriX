@@ -1,13 +1,17 @@
 # IsoriX (development version)
 
+* **major changes**
+
+  * the functions `prepsources()`, `calibfit()` and `isofind()` no longer tolerate that some locations share the same location IDs or that several locations IDs correspond to a unique location. This should prevent users to use datasets for which issues happened during the preparation (fixes #133). If you disagree with this choice, please let the developer know.
+
 * **minor changes**
 
   * the function `terra::extract()` is now re-exported.
 
 * **small fixes**
   
-  * the URL for worldclim was outdated so `getprecip()` was no longer working.
-  * some internal code had arguments misspeld. It was working as a result of R's ability to do partial matching, but this was not good practice. It is now fixed (fixes #181).
+  * the URL for WorldClim data was outdated so `getprecip()` was no longer working.
+  * some internal code had arguments misspelt. It was working as a result of R's ability to do partial matching, but this was not good practice. It is now fixed (fixes #181).
   * some links in the documentation were incomplete and flagged is some online CRAN checks ("Found the following Rd file(s) with Rd \link{} targets missing package"). This should now be fixed.
   * function names should now be consistently displayed as computer code in the documentation.
 

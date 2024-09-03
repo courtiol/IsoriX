@@ -373,12 +373,25 @@ calibfit <- function(data,
                      method = c("wild", "lab", "desk", "desk_inverse"),
                      verbose = interactive(),
                      control_optim = list()) {
+
   ## checking inputs
   if (inherits(isofit, "MULTIISOFIT")) {
     stop("object 'isofit' of class MULTIISOFIT; calibration have not yet been implemented for this situation.")
   }
 
   method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
+
+  ### Check that site_IDs correspond to unique locations
+  if (!is.null(data$site_ID)) {
+    data$.location <- paste(data[ ,"lat", drop = TRUE], data[, "long", drop = TRUE], data[, "elev", drop = TRUE], sep = "_")
+    test_unique_locations <- tapply(data$.location, as.character(data[, "site_ID", drop = TRUE]), \(x) length(unique(x)) == 1)
+    if (!all(test_unique_locations)) {
+      issues <- names(test_unique_locations[!test_unique_locations])
+      stop(c(paste("Different combinations of latitude, longitude and elevation seem to share the same site_ID. Please check and fix the data for the IDs:\n"),
+                paste(issues, collapse  = ", ")))
+    }
+    data$.location <- NULL
+  }
 
   ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
   ## That would allow to fit species as a random effect in the model

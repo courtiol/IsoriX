@@ -163,6 +163,24 @@ prepsources <- function(data,
     stop("The value you entered for prop_random is > 1. It must be a proportion (so between 0 and 1)!")
   }
 
+  ### Check that source_IDs correspond to unique locations
+  data$.location <- paste(data[, col_lat, drop = TRUE], data[, col_long, drop = TRUE], data[, col_elev, drop = TRUE], sep = "_")
+  test_unique_locations1 <- tapply(data$.location, as.character(data[, col_source_ID, drop = TRUE]), \(x) length(unique(x)) == 1)
+  if (!all(test_unique_locations1)) {
+    issues <- names(test_unique_locations1[!test_unique_locations1])
+    stop(c(paste("Different combinations of latitude, longitude and elevation seem to share the same source_ID. Please check and fix the data for the IDs:\n"),
+              paste(issues, collapse  = ", ")))
+    rm(issues)
+  }
+  test_unique_locations2 <- tapply(as.character(data[, col_source_ID, drop = TRUE]), data$.location, \(x) length(unique(x)) == 1)
+  if (!all(test_unique_locations2)) {
+    issues <- unique(as.character(data[, col_source_ID, drop = TRUE])[!test_unique_locations2])
+    stop(c(paste("The same combination of latitude, longitude and elevation seem to correspond to different source_ID. Please check and fix the data for the IDs:\n"),
+              paste(issues, collapse  = ", ")))
+    rm(issues)
+  }
+  data$.location <- NULL
+
   ## Handle missing data
   if (missing("year")) year <- sort(unique(data[, col_year, drop = TRUE], na.rm = TRUE))
 

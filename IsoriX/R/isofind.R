@@ -170,6 +170,18 @@ isofind <- function(data,
                     mask = NA,
                     neglect_covPredCalib = TRUE,
                     verbose = interactive()) {
+
+  ### Check that sample_IDs correspond to unique locations
+  data$.location <- paste(data[ ,"lat", drop = TRUE], data[, "long", drop = TRUE], sep = "_")
+  test_unique_locations <- tapply(data$.location, as.character(data[, "sample_ID", drop = TRUE]), \(x) length(unique(x)) == 1)
+  if (!all(test_unique_locations)) {
+    issues <- names(test_unique_locations[!test_unique_locations])
+    stop(c(paste("Different combinations of latitude and longitude seem to share the same sample_ID. Please check and fix the data for the following sample(s):\n"),
+           paste(issues, collapse  = ", ")))
+    rm(issues)
+  }
+  data$.location <- NULL
+
   ### WE COMPUTE THE TEST STATISTIC
   if (verbose) {
     print("computing the test statistic and its variance...")
