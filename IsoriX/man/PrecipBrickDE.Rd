@@ -5,10 +5,10 @@
 \alias{PrecipBrickDE}
 \title{The precipitation monthly amounts for Germany}
 \format{
-A \emph{RasterBrick}
+A \emph{SpatRaster} with 12 layers
 }
 \source{
-\url{https://www.worldclim.org/data/worldclim21.html}
+\url{https://worldclim.org/data/worldclim21.html}
 }
 \description{
 This brick of rasters contains the monthly precipitation amounts (in mm) for

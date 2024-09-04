@@ -1,7 +1,7 @@
 #' Prepare the raster brick containing the precipitation data
 #'
 #' This functions turns the WorldClim data downloaded using the function
-#' [`getprecip`] into a *RasterBrick* of same resolution and
+#' [`getprecip`] into a *SpatRaster* of same resolution and
 #' extent as the structural raster. This function is designed to be used with
 #' [`isomultiscape`].
 #'

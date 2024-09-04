@@ -473,9 +473,9 @@ NULL
 #'
 #' @name PrecipBrickDE
 #' @docType data
-#' @format A *RasterBrick*
+#' @format A *SpatRaster* with 12 layers
 #' @seealso [`prepcipitate`] to prepare this raster
-#' @source \url{https://www.worldclim.org/data/worldclim21.html}
+#' @source \url{https://worldclim.org/data/worldclim21.html}
 #' @keywords datasets
 #' @examples
 #'
