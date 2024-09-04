@@ -7,6 +7,7 @@
 ## Breaking changes
 
   * the dataset `CalibDataBat2` now contains slightly different elevation values (the one reported by field workers as opposed to those extracted from a specific elevation map).
+  * the dataset `CalibDataBat` now contains different values for the column "site_ID".
 
 ## Major changes
 
