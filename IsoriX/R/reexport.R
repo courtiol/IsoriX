@@ -63,6 +63,10 @@ terra::polys
 #' @export
 terra::rast
 
+#' @importFrom terra vect
+#' @export
+terra::vect
+
 #' @importFrom terra extract
 #' @export
 terra::extract
