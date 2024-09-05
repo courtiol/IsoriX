@@ -25,9 +25,11 @@ Do make sure however that the folder "output" exists, otherwise objects won't be
 Make sure that you have the following packages installed (but no need to load them):
 
 ```{r, eval = FALSE}
+if (!"bookdown" %in% installed.packages()[, 1]) install.packages("bookdown")
 if (!"rsconnect" %in% installed.packages()[, 1]) install.packages("rsconnect")
 if (!"servr" %in% installed.packages()[, 1]) install.packages("servr")
 if (!"gifski" %in% installed.packages()[, 1]) install.packages("gifski")
+if (!"kableExtra" %in% installed.packages()[, 1]) install.packages("kableExtra")
 ```
 
 Then, render the full book once, so as to create all the content stored in the folder "output".
