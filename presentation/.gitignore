@@ -12,3 +12,6 @@ fig_knitr
 *.toc
 *.vrb
 *.tif
+*.fls
+*latexmk
+*.RDS
