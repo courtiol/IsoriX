@@ -11,7 +11,7 @@
 
 ## Major changes
 
-  * the functions `prepsources()`, `calibfit()` and `isofind()` no longer tolerate that some locations share the same location IDs or that several locations IDs correspond to a unique location. This should prevent users to use datasets for which issues happened during the preparation (fixes #133). If you disagree with this choice, please let the developer know.
+  * the functions `prepsources()`, `calibfit()` and `isofind()` emit warnings if some locations share the same location IDs or if several locations IDs correspond to a unique location. This should help users to spot issues in their data (fixes #133).
 
 ## Minor changes
 

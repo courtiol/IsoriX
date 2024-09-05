@@ -164,20 +164,24 @@ prepsources <- function(data,
   }
 
   ### Check that source_IDs correspond to unique locations
-  data$.location <- paste(data[, col_lat, drop = TRUE], data[, col_long, drop = TRUE], data[, col_elev, drop = TRUE], sep = "_")
+  data$.location <- paste(data[, col_lat, drop = TRUE], data[, col_long, drop = TRUE], data[, col_elev, drop = TRUE])
   test_unique_locations1 <- tapply(data$.location, as.character(data[, col_source_ID, drop = TRUE]), \(x) length(unique(x)) == 1)
   if (!all(test_unique_locations1)) {
     issues <- names(test_unique_locations1[!test_unique_locations1])
-    stop(c(paste("Different combinations of latitude, longitude and elevation seem to share the same source_ID. Please check and fix the data for the IDs:\n"),
+    warning(c(paste("Different combinations of latitude, longitude and elevation seem to share the same source_ID. Please check and fix the data for the IDs:\n"),
               paste(issues, collapse  = ", ")))
     rm(issues)
   }
   test_unique_locations2 <- tapply(as.character(data[, col_source_ID, drop = TRUE]), data$.location, \(x) length(unique(x)) == 1)
   if (!all(test_unique_locations2)) {
-    issues <- unique(as.character(data[, col_source_ID, drop = TRUE])[!test_unique_locations2])
-    stop(c(paste("The same combination of latitude, longitude and elevation seem to correspond to different source_ID. Please check and fix the data for the IDs:\n"),
-              paste(issues, collapse  = ", ")))
-    rm(issues)
+    issues_locations <- names(test_unique_locations2[!test_unique_locations2])
+    issues_ID <- unique(as.character(data[, col_source_ID, drop = TRUE])[data$.location %in% issues_locations])
+    warning(c(paste("The same combination of latitude, longitude and elevation seem to correspond to different source_ID. Please check and fix the data for the IDs:\n"),
+              paste(issues_ID, collapse  = ", "),
+              paste("\nThese IDs correspond to the following sets of", col_lat, col_long, col_elev, ":\n"),
+              paste(issues_locations, collapse  = ", ")))
+    rm(issues_ID)
+    rm(issues_locations)
   }
   data$.location <- NULL
 

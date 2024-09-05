@@ -387,7 +387,7 @@ calibfit <- function(data,
     test_unique_locations <- tapply(data$.location, as.character(data[, "site_ID", drop = TRUE]), \(x) length(unique(x)) == 1)
     if (!all(test_unique_locations)) {
       issues <- names(test_unique_locations[!test_unique_locations])
-      stop(c(paste("Different combinations of latitude, longitude and elevation seem to share the same site_ID. Please check and fix the data for the IDs:\n"),
+      warning(c(paste("Different combinations of latitude, longitude and elevation seem to share the same site_ID. Please check and fix the data for the IDs:\n"),
                 paste(issues, collapse  = ", ")))
     }
     data$.location <- NULL

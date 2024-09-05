@@ -14,21 +14,21 @@ test_that("prepsources() flags duplicated locations with different IDs", {
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
   GNIPDataDE2 <- rbind(GNIPDataDE2, GNIPDataDE2)
   GNIPDataDE2$source_ID <- c("a", "a", "a", "b", "b", "b")
-  expect_error(prepsources(GNIPDataDE2))
+  expect_warning(prepsources(GNIPDataDE2))
 })
 
 test_that("prepsources() flags IDs actualy corresponding to different locations", { 
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
   GNIPDataDE2 <- rbind(GNIPDataDE2, GNIPDataDE2)
   GNIPDataDE2$elev[1:3] <- 10
-  expect_error(prepsources(GNIPDataDE2))
+  expect_warning(prepsources(GNIPDataDE2))
 })
 
 test_that("calibfit() flags siteIDs actualy corresponding to different locations", {
-  CalibDataAlien2 <- CalibDataAlien[1:3, ]
+  CalibDataAlien2 <- CalibDataAlien[1:20, ]
   CalibDataAlien2 <- rbind(CalibDataAlien2, CalibDataAlien2)
   CalibDataAlien2$elev[1:3] <- 10
-  expect_error(calibfit(data = CalibDataAlien2, isofit = GermanFit))
+  expect_warning(calibfit(data = CalibDataAlien2, isofit = GermanFit))
 })
 
 test_that("isofind() flags siteIDs actualy corresponding to different locations", {
@@ -37,5 +37,5 @@ test_that("isofind() flags siteIDs actualy corresponding to different locations"
   AssignDataAlien2$lat[1:3] <- 10
   expect_error(isofind(data = AssignDataAlien2,
                        isoscape = GermanScape,
-                       calibfit = NULL))
+                       calibfit = NULL)) ## FIXME test combines various errors and warnings
 })

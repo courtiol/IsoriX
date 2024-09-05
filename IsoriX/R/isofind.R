@@ -176,8 +176,8 @@ isofind <- function(data,
   test_unique_locations <- tapply(data$.location, as.character(data[, "sample_ID", drop = TRUE]), \(x) length(unique(x)) == 1)
   if (!all(test_unique_locations)) {
     issues <- names(test_unique_locations[!test_unique_locations])
-    stop(c(paste("Different combinations of latitude and longitude seem to share the same sample_ID. Please check and fix the data for the following sample(s):\n"),
-           paste(issues, collapse  = ", ")))
+    warning(c(paste("Different combinations of latitude and longitude seem to share the same sample_ID. Please check and fix the data for the following sample(s):\n"),
+              paste(issues, collapse  = ", ")))
     rm(issues)
   }
   data$.location <- NULL
