@@ -411,7 +411,7 @@ The most important questions you must answer:
 \item Which months?
 \item Which geographic area?
 \item Weighted by precipitation or not? 
-{\scriptsize If yes and by hand, don't forget to rise the weights to the square when averaging variances.}
+{\scriptsize See details in bookdown, section 6.3.3.}
 \end{itemize}
 \vfill
 \pause
@@ -1506,20 +1506,20 @@ plot(Assigned15)
 \vfill
 \item More predictors for building isoscapes (e.g. temperature), with data download performed via \R\ packages.
 \vfill
-\item More precipitation isotopic data readily available?
+\item More precipitation isotopic data readily available.
 \vfill
-\item Function for weighting the isoscape by precipitation amount.
+\item More calibration data readily available.
 \vfill
-\item DHGLM to capture the uncertainty of the residual dispersion model?
+\item Autmatised the weighting the isoscape by precipitation amount.
 \vfill
-\item 3D/4D isoscapes?
+\item DHGLM to capture the uncertainty of the residual dispersion model.
 \vfill
-\item More calibration data readily available?
+\item 3D/4D isoscapes.
 \vfill
 \item Adding clustering after assignment (with p-value against null model)?
 \vfill
 \pause
-\item Anything else?
+\item What would you prefer? Anything other suggestions?
 \end{itemize}
 \end{frame}
 
