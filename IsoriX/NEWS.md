@@ -1,4 +1,4 @@
-# IsoriX (development version)
+# IsoriX 0.9.3
 
 ## New features
 
@@ -16,7 +16,7 @@
 
 ## Minor changes
 
-  * the function `terra::extract()` is now re-exported.
+  * the functions `terra::extract()` and `lattice::lpolygon()` now re-exported and `lattice::panel.points())` no longer is.
 
 ## Small fixes
   
