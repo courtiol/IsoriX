@@ -27,11 +27,11 @@ However, such locations are not considered for the statistical assignment.
 Here we are going to assign the following bats:
 
 ```{r AssignDataBat fake, eval = FALSE}
-AssignDataBat
+AssignDataBatRev
 ```
 
 ```{r AssignDataBat real, echo = FALSE}
-kable(AssignDataBat)
+kable(AssignDataBatRev)
 ```
 
 This dataset is available in _IsoriX_.
@@ -43,14 +43,14 @@ The question we want to answer is whether those bats are local bats or migratory
 Running the assignment is fairly straightforward: you must use the function `isofind()` and provide it with the data frame with the data to assign, the isoscape object (i.e. the object produced by the function `isoscape()`; see chapter \@ref(isoscape)), and (if needed) the calibration object (i.e. the object produced by the function `calibfit()`; see chapter \@ref(calibration)):
 
 ```{r assignment fake, eval = FALSE}
-AssignedBats <- isofind(data = AssignDataBat,
+AssignedBats <- isofind(data = AssignDataBatRev,
                         isoscape = EuropeIsoscape,
                         calibfit = CalibBats)
 ```
 
 ```{r assignment real, echo = FALSE, message = FALSE}
 if (!file.exists("output/AssignedBats.rds")) {
-  AssignedBats <- isofind(data = AssignDataBat,
+  AssignedBats <- isofind(data = AssignDataBatRev,
                           isoscape = EuropeIsoscape,
                           calibfit = CalibBats)
   saveRDS(AssignedBats, file = "output/AssignedBats.rds", compress = "xz")
@@ -65,12 +65,12 @@ As for the output of the function `isoscape()`, we choose to store all this info
 ## How does the assignment work?
 
 Here we explain how the assignment procedure work without going into geeky details.
-It is important that you understand how it works because it has bearing on how you will interpret the assignment results.
+It is important that you understand how it works because it has bearing on how you must interpret the assignment results.
 
 First, `isofind()` runs the assignment test for each sample at each candidate location or cell from our structural raster.
 Precisely, for each candidate location the function tests whether the isoscape value at the unknown location of origin of a given sample is consistent with the predicted isoscape value at the candidate location.
 
-To do this, we use the difference between these two isoscape values as test statistics.
+To do this, we use the difference between these two isoscape values as a test statistic.
 The isoscape value at the unknown location of origin is either the isoscape value of the assignment sample if no calibration is being supplied (when the source samples and assignment samples are of the same type), or `isofind()` computes it by inverting the calibration relationship established by the calibration fit (when a calibration is required; see chapter \@ref(calibration)).
 The predicted isoscape value of the candidate location is directly the point prediction of the isotope value at each prediction location, which is an information given by the main isoscape (see chapter \@ref(isoscape)).
 The test statistics over all locations can be retrieved for each sample from the object produced by `isofind()`.
@@ -80,9 +80,9 @@ For example, the raster stored under the name `AssignedBats$sample$stat$Nnoc_1` 
 AssignedBats$sample$stat$Nnoc_1
 ```
 
-We now detail the variance associated to the test statistics.
+We now detail the variance associated to the test statistic.
 Under the null hypothesis (the isotope value at location of origin = the isotope value at the  candidate location), the variance of the test statistic is the variance of the difference between the two isoscape values that defines it.
-The variance of the test statistics is also stored as a raster (e.g. `AssignedBats$sample$stat_var$Nnoc_1`).
+The variance of the test statistic is also stored as a raster (e.g. `AssignedBats$sample$stat_var$Nnoc_1`).
 
 In the appendix of our book chapter [@IsoriX], we show that such variance of the assignment test depends on up to four terms (some may be omitted depending on the calibration method considered):
 
@@ -134,7 +134,9 @@ Once the function `isofind()` has assigned all samples individually, it thus per
 The p-value of the geographic assignment test for the entire group (here stored as the raster `AssignedBats$group$pv`) is computed by combining, at each location, the p-value of the geographic assignment for all assignment samples using Fisher’s combination of probabilities method [@fisher1925statistical].
 
 
-*The null hypothesis of this group assignment is now that all assignment samples originated from a location with identical distribution of source isotope values as the one being tested.* Therefore, the test considers that all assignment samples must come from the same location of origin (or at least from a location presenting the same isotopic composition), and if this assumption is not fulfilled, the test may exclude all candidate locations. This is why you should always start by exploring individual assignments even you are ultimately interested in a group assignment!
+*The null hypothesis of this group assignment is that all assignment samples originated from a location with identical distribution of source isotope values as the one being tested.*
+Therefore, the test considers that all assignment samples must come from the same location of origin (or at least from a set of locations presenting the same isotopic composition), and if this assumption is not fulfilled, the test may exclude all candidate locations.
+This is why you should always start by exploring individual assignments even you are ultimately interested in a group assignment.
 
 
 ## Plotting the geographic assignments
@@ -147,10 +149,10 @@ One main difference, however, is that the argument `which` used to indicate whic
 If you set `who` to `"group"`, the function will show a single map representing the geographic assignment for the group.
 If instead you want to obtain a single assignment map per sample, you can provide a vector of the samples to be plotted (as indices or using their ID)to `who` .
 
-Here is an example for plotting the first 4 bats:
+Here is an example for plotting the first 2 bats:
 
 ```{r plot_AssignedBats_id1to4, dev = 'CairoPNG'}
-plot(AssignedBats, who = 1:4)
+plot(AssignedBats, who = 1:2)
 ```
 
 Here is an example for plotting specific all 14 bats:
@@ -186,7 +188,7 @@ So instead, we will now rerun the assignment and plot the result after taking ou
 This can be done by typing:
 
 ```{r plot_AssignedBats_group_no15, dev = 'CairoPNG', message = FALSE}
-AssignDataBat2 <- subset(AssignDataBat, sample_ID != "Nnoc_15")
+AssignDataBat2 <- subset(AssignDataBatRev, sample_ID != "Nnoc_15")
 AssignedBats2 <- isofind(data = AssignDataBat2,
                          isoscape = EuropeIsoscape,
                          calibfit = CalibBats)
@@ -196,13 +198,13 @@ plot(AssignedBats2, who = "group")
 ### More information on the assignment plots
 
 The plotting method use the information from the assignment test to define confidence regions. 
-By default, a 95%-confidence region is being displayed in grey, which means that the non grey area should contain the true location of origin with a 95% probability.
+By default, a 95%-confidence region is being displayed in grey, which means that the non-grey areas should contain the true location of origin with a 95% probability.
 You can alter this setting using the argument `level`.
 
-Another default setting you choose, is to apply a mask to hide the outcome of the geographic assignment over the large water bodies.
-You can change that as well if you fancy using the argument `mask`.
+Another default setting considered by IsoriX, is to apply a mask to hide the outcome of the geographic assignment over the large water bodies.
+You can change that as well using the argument `mask`.
 
 Related to this arguments, you can also define another mask using the argument `mask2`.
-For example, you may want to use it in order to hide areas outside the IUCN distribution map for your species.
-If more than two masks are necessary, just combine several masks into one and provide that one to this argument `mask2`.
-Otherwise, or if the masks need to be visually distinct, you can use the function `layer()`.
+You may want to use it, for exampple, to hide areas outside the IUCN distribution map for your species.
+If more than two masks are necessary, just combine several masks into one and provide that one to the argument `mask2`.
+For plotting, if these extra masks need to be visually distinct, you can use the function `layer()` and `lpolyong()` similarly to what we did towards the end of section \@ref(structuralraster).

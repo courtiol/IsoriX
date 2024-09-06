@@ -21,7 +21,7 @@ This matters because the direction dictates how the estimates associated with th
 
 The data behind any calibration fit ultimately derive from the isotopic composition of calibration samples and that of the environment in the same (known) location.
 Yet, because there are different ways to get these data, we introduced since IsoriX version 0.8.3 the possibility to choose among four alternatives to generate a calibration fit.
-We call these methods 'wild', 'lab', 'desk', 'desk_inverse'.
+We call these methods 'wild', 'lab', 'desk' and 'desk_inverse'.
 
 It is important for you to understand which method is most appropriate for your utilization since different methods imply different assumptions which translate into different statistics used to perform the assignment step.
 Different methods also require you to feed different type of data to `calibfit()`.
@@ -69,20 +69,20 @@ Obtaining good data for the calibration fit is very important for obtaining a pr
 
 1. the data are from many calibration samples covering the entire assignment area. Thus your data should span the whole range of each covariate considered in the models, which should limit risks associated with extrapolation when using the fitted calibration model during the geographic assignment.
 
-2. the data correspond to many repeated measurements per location, which allows for a reliable estimation of the inter-sample variance in isotopic composition. Such variance captures the effect of temporal variation in source isotope values at each site.
+2. the data correspond to many repeated measurements per location, which allows for a reliable estimation of the inter-sample variance in isotopic composition. Such variance captures the effect of biological variation in the isotopic signature of the calibration samples at each site.
 
 3. the timing of the sampling events for the calibration samples matches the overall sampling period of the source isotope data.
 
 4. the data are collected from samples directly comparable to those that need to be assigned; such as organisms from the same species and the same physiological state. Indeed, the relationship between the isotopic composition of an organism and that of its environment is known to be influenced by such factors.
 
-As an example, we will use here the calibration dataset `CalibDataBat` that is provided with IsoriX. This dataset contains stable isotope ratios of the non-exchangeable portion of hydrogen in fur keratin of non-migratory bats sampled across Europe:
+As an example, we will use here the calibration dataset `CalibDataBatRev` that is provided with IsoriX. This dataset contains stable isotope ratios of the non-exchangeable portion of hydrogen in fur keratin of non-migratory bats sampled across Europe:
 
 ```{r CalibDataBat fake, eval = FALSE}
-head(CalibDataBat)
+head(CalibDataBatRev)
 ```
 
 ```{r CalibDataBat real, echo = FALSE}
-kable(head(CalibDataBat)) |>  kable_styling(bootstrap_options = "striped", font_size = 15)
+kable(head(CalibDataBatRev)) |>  kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
 For your own applications, make sure that the dataset you use has the same structure. That is, the calibration dataset must contain (as long as you use the calibration method 'wild') a column `site_ID` of class factor describing the sampling site, the columns containing all covariates required for the geostatistical models to predict the isoscape values at these locations (so here `long`, `lat`, and `elev`), and a column `sample_value` containing the measured isotope values of the calibration samples. An important constraint to keep in mind is that only measurements on multiple calibration samples per location can capture variation between different samples exposed to the same isotope environment. Therefore, IsoriX needs multiple calibration samples for several (not necessarily all) sampling locations. That means that some levels of `site_ID` must be repeated on several rows. If laboratory measurements are replicated, we recommend to consider the mean measurement value for each sampling unit (here for each bat) instead of considering multiple rows for a given calibration sample in order to avoid confounding biological replicates from technical ones. If you do so, note however that this implies the technical variance to be neglected (which should be fine because it is usually very low unless something went wrong in the lab).
@@ -92,12 +92,12 @@ For your own applications, make sure that the dataset you use has the same struc
 With the calibration data at hand, we can thus proceed to fit the calibration model using `calibfit()`:
 
 ```{r calib fake, eval = FALSE}
-CalibBats <- calibfit(data = CalibDataBat, isofit = EuropeFit)
+CalibBats <- calibfit(data = CalibDataBatRev, isofit = EuropeFit)
 ```
 
 ```{r calib real, echo = FALSE, message = FALSE}
 if (!file.exists("output/CalibBats.rds")) {
-  CalibBats <- calibfit(data = CalibDataBat, isofit = EuropeFit)
+  CalibBats <- calibfit(data = CalibDataBatRev, isofit = EuropeFit)
   saveRDS(CalibBats, file = "output/CalibBats.rds", compress = "xz")
 } else {
   CalibBats <- readRDS("output/CalibBats.rds")

@@ -43,7 +43,8 @@ editor_options:
 library(IsoriX)
 library(knitr)
 library(kableExtra)
-options(width = 80)
+options(width = 80,repos = c("CRAN" = "https://cloud.r-project.org"))
+options_IsoriX(title_delta_notation = bquote(italic("\u03B4")**2*H[p]))
 opts_chunk$set(cache = FALSE,
                global.par = TRUE,
                fig.align = "center",

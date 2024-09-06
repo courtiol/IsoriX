@@ -11,7 +11,7 @@ You could also tell us what new features you would like, what you hate, what you
 
 To do all this, the best is to use the GitHub interface https://github.com/courtiol/IsoriX.
 On these GitHub pages you will be able to access all the code and to leave feedback in the page called "Issues".
-According to GitHub, new features are also considered as "issues" (for programmers it really makes sense actually).
+According to GitHub, new features are also considered as "issues" (for programmers it actually makes sense).
 
 From our perspective, the easiest way for you to make IsoriX better is to create so-called *pull requests* on GitHub (check this [short tutorial](https://www.r-bloggers.com/2019/01/a-newbies-guide-to-making-a-pull-request-for-an-r-package/) for how to).
 If that seems too complicated and intimidating, feel free to directly send us code or text.

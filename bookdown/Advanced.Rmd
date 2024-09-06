@@ -5,33 +5,82 @@ The goal of this chapter is to illustrate such possibilities.
 
 ## Working with plots {#betterplots}
 
-### Fiddling with the plotting functions {#plotisoscapes}
+### Lattice? No thanks, I want to use **ggplot**! {#ggplot}
 
-If you want to change anything on the existing plot, have a look at `?plots`.
+If lattice is not for you and are more familiar with [**ggplot2**](https://ggplot2.tidyverse.org/index.html), you can use it.
+We did not implement specific functions for doing so, but since IsoriX spatial objects are now made with [**terra**](https://rspatial.github.io/terra/), it is relativelly straightforward.
+
+Here, is a first example using the recent pacakge [**tidyterra**](https://dieghernan.github.io/tidyterra/) which creates a plot of the mean isoscape:
+
+```{r plot_EuropeIsoscape_terra, dev='CairoPNG'}
+library(tidyterra)
+library(ggplot2)
+
+ggplot() +
+  geom_spatraster(data = EuropeIsoscape$isoscapes$mean) +
+  geom_spatvector(data = CountryBorders, fill = NA, colour = "white") +
+  geom_spatvector(data = OceanMask, fill = "lightgrey", colour = NA) +
+  scale_fill_binned(type = "viridis") +
+  scale_x_continuous(expand = c(0, 0), limits = c(-30, 60)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(30, 70)) +
+  labs(fill = getOption_IsoriX("title_delta_notation"))
+```
+
+Here is the same thing not using tidyterra but instead converting the IsoriX objects on the fly into [**sf**](https://r-spatial.github.io/sf/) objects (for `SpatVector`) and into [**stars**](https://r-spatial.github.io/stars/) objects (for `SpatRaster`):
+
+```{r plot_EuropeIsoscape_sf, dev='CairoPNG'}
+library(stars)
+library(sf)
+library(ggplot2)
+
+ggplot() +
+  geom_stars(data = st_as_stars(EuropeIsoscape$isoscapes$mean)) +
+  geom_sf(data = st_as_sf(CountryBorders), fill = NA, colour = "white") +
+  geom_sf(data = st_as_sf(OceanMask), fill = "lightgrey", colour = NA) +
+  scale_fill_binned(type = "viridis") +
+  scale_x_continuous(expand = c(0, 0), limits = c(-30, 60)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(30, 70)) +
+  labs(fill = getOption_IsoriX("title_delta_notation"))
+```
+
+The benefit of using the combination ggplot2, sf & stars (as opposed to using tidyterra or even, alas, the functions of IsoriX) is that you will find plenty more tutorials online for how to draw nice maps that way.
+
+Since tidyterra and ggplot2 have both overridden functions that IsoriX or this bookdown rely on, let's unload these packages to avoid issues:
+
+```{r detach_ggplot2}
+detach(package:tidyterra)
+detach(package:ggplot2)
+```
+
+### Fiddling with IsoriX plotting functions {#plotisoscapes}
+
+If you do want to use our IsoriX plotting functions, note that it is possible to change pretty much anything on the existing plot; have a look at `?plots`.
 The help file should provide you with all the details you need to customize your plots.
-Here is are a couples of example:
+
+Here are a couples of example:
 
 ```{r plot_EuropeIsoscape2, dev='CairoPNG'}
 plot(EuropeIsoscape,
      sources = list(pch = 3, col = "orange"),
      borders = list(col = "white"),
-     mask    = list(fill = "darkgrey"),
+     mask    = list(fill = "lightgrey"),
      palette = list(range = c(-130, 10), step = 1, n_labels = 10, fn = "rainbow"))
 ```
 
+You can see that it is possible to provide a function defining the colors using the argument `fn` from the list `palette`.
+Note that when it is set to `NULL`, the famous palette [**viridis**](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
+So here is another example, using such a palette:
+
 ```{r plot_EuropeIsoscape3, dev='CairoPNG'}
 plot(EuropeIsoscape,
-     title = "H Isoscape",
+     y_title = list(title = "H Isoscape"),
      sources = list(draw = FALSE),
      borders = list(borders = NULL),
      mask    = list(fill = "black"),
      palette = list(range = c(-130, 20), step = 30, fn = NULL))  
 ```
 
-You can see that it is possible to provide a function defining the colors using the argument `fn` from the list `palette`.
-Note that when it is set to `NULL`, the famous palette [**viridis**](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
-
-If you need to change things on the plots that are not covered by the plotting functions from IsoriX, you will have to learn how to use [**lattice**](http://lattice.r-forge.r-project.org/index.php).
+If you need to change things on the plots that are not covered by the plotting functions from IsoriX, it may be worth getting the basics of how to use [**lattice**](http://lattice.r-forge.r-project.org/index.php).
 The package lattice is very powerful but not always very intuitive to use, so we are going to list here a few tips.
 
 The easiest way to modify a plot is to start saving the plot into an object:
@@ -84,10 +133,10 @@ We can then plot this information on top of the assignment plot by simply typing
 
 ```{r plot_maximum, message = FALSE, dev = 'CairoPNG'}
 plot(AssignedBats2, who = "group", plot = FALSE) + 
-  xyplot(Maximum$lat ~ Maximum$long,
-         pch = 13, col = "orange", cex = 5, lwd = 2, panel = panel.points)
+  xyplot(Maximum$lat ~ Maximum$long, pch = 13, col = "orange", cex = 5, lwd = 2)
 ```
 
+Note that the new symbol is present on the right edge of the plot.
 
 ### Why you should save plots & how to export nice looking plots? {#Cairo}
 
@@ -97,7 +146,7 @@ It may take a very long time and it may not fully work.
 It is better to directly plot the figures into files.
 
 ::: {.rmdnote}
-**Geeky note**: Since the lattice system is not part of ggplot2, the function `ggsave()` should not be used.
+**Geeky note**: Since the lattice system is not part of ggplot2, the function `ggsave()` should not be used (unless you are really using ggplot2 as shown in section \@ref(ggplot)).
 :::
 
 
@@ -211,6 +260,7 @@ The trick is to simply add `dev='CairoPNG'` in the option of the chunks producin
 
 It is straightforward to export all spatial objects created by IsoriX into formats compatible with main software for Geographic Information System (GIS).
 This can be done using multiple R packages.
+
 Here is an example of how to export a GTiff raster using the package [**terra**](https://rspatial.org/spatial/5-files.html#writing-raster-data):
 
 ```{r save_raster_GIS_fake, eval=FALSE}
@@ -218,22 +268,19 @@ library(terra)
 
 writeRaster(EuropeIsoscape$isoscapes$mean,
             filename = "EuropeIsoscape.tif",
-            overwrite = TRUE,
-            NAflag = -9999)
+            overwrite = TRUE)
 ```
 
 ```{r save_raster_GIS, echo=FALSE}
 terra::writeRaster(EuropeIsoscape$isoscapes$mean,
                    filename = "output/EuropeIsoscape.tif",
-                   overwrite = TRUE,
-                   NAflag = -9999)
+                   overwrite = TRUE)
 ```
-
 
 ## Weighted isoscapes {#weighted}
 
-For several applications it is recommend to produce *weighted isoscapes*.
-We will consider here the case of *precipitation-weighted annual average isoscapes*, which is often recommended when isoscapes are derived from the isotopic composition measured in precipitation water.
+For several applications it is often recommend to produce *weighted isoscapes*.
+We consider here the case of *precipitation-weighted annual average isoscapes*, which is often recommended when isoscapes are derived from the isotopic composition measured in precipitation water.
 Yet, the instructions that follow could also be adapted to other type of isoscapes that must be weighted for other reasons.
 
 The rational for using such precipitation-weighted isoscape is that the amount of precipitation influences how much specific isotopologues of water molecules end up in the soil, with repercussion on the entire food web.
@@ -247,16 +294,27 @@ In this case, only the step \@ref(sourceprep) & \@ref(processing) must be perfor
 
 - the second strategy is to build several non-weighted isoscapes (e.g. one for each month of the year) and then to combine and merge those isoscapes while applying the weights.
 
-::: {.rmdnote}
-**Note:** It is not clear to us which of these two approaches is better (please let us know if you do!).
+It is not clear to us which of these two approaches is better (please let us know if you do!).
 To our knowledge the first approach is the one used by most, but this could be because it is easier to implement.
-We suspect the second approach to be better, but at the time of the writing, IsoriX does not yet allow to use that method in workflows involving assignments.
-So for now, your choice is simple: if you must perform an assignment stick to the first method; otherwise, you may try both and compare the obtained results.
-:::
+We suspect the second approach may be better, but at the time of the writing, IsoriX does not yet allow to use that method in workflows involving assignments.
+So for now, we will keep things simple and stick to describing the first method.
 
-### Method 1: weighting before fitting {#multiplesets}
+Even for this first method though, a key detail remains unclear: what the variance associated with the averages should characterize?
+Other approaches neglect this residual variance, which is why little is known about it.
+Yet, this variance becomes the response variable of the residual dispersion model in IsoriX.
+So how to compute it does impact the assignments.
 
-#### Preparing the source data
+Statistically, the variance is internally used to model the variation between new observations that would be drawn from the true unknown isoscape at a given location.
+Biologically, taking the context of assignment of animals based on isoscapes derived from precipitation water, we would therefore want this variance to represent the variation between water sample drank by an animal within the local area where the animal grew the tissue used for measurements.
+In practice, however, things are less clear since we often use precipitation data collected over several years simply because data are too sparse for any given year.
+
+In the example below, we chose to compute the residual variance as the variance between the yearly averages.
+This represents the variation between yearly watershed, themselves produced by summing up the precipitation with their isotopic signature from each month.
+
+Those uncertainties explain why we have not yet fully automatised the computation in IsoriX.
+Instead, we want you to think carefully about the meaning of your mean isoscape and its residual variance, and perform the weighting you think is best for your situation.
+
+### Preparing the source data
 
 To create precipitation-weighted annual average isoscapes, the preparation of source data -- the data containing the isotopic composition found in precipitation -- must differ a little from what is described in section \@ref(processing) since we need to retain the information about precipitation amounts.
 
@@ -266,10 +324,14 @@ rows_missing_or_unreliable_info <- is.na(rawGNIP$H2) |
                                    rawGNIP$day.span > -25 |
                                    rawGNIP$day.span < -35 |
                                    is.na(rawGNIP$Precipitation)
-columns_to_keep <- c("Name.of.Site", "Latitude", "Longitude", "Altitude",
+columns_to_keep <- c("Latitude", "Longitude", "Altitude",
                      "Year", "Month", "H2", "Precipitation")
 GNIPData_with_precip <- rawGNIP[!rows_missing_or_unreliable_info, columns_to_keep]
-colnames(GNIPData_with_precip) <- c("source_ID", "lat", "long", "elev", "year", "month", "source_value", "precip")
+colnames(GNIPData_with_precip) <- c("lat", "long", "elev", "year", "month", "source_value", "precip")
+GNIPData_with_precip$source_ID <- factor(paste("site",
+                                               GNIPData_with_precip$lat,
+                                               GNIPData_with_precip$long,
+                                               GNIPData_with_precip$elev, sep = "_"))
 ```
 
 Which yields the following data:
@@ -287,32 +349,30 @@ nrow(GNIPData_with_precip)
 The row number is still high although `r nrow(GNIPData) - nrow(GNIPData_with_precip)` were lost in the process.
 
 
-#### Processing the source data with weighting
+### Processing the source data with weighting
 
 We can now process the source data we just prepared.
-For now the function `prepsources()` does not handle the weighting. 
-We will add this feature soon, but we will prepare the source data by hand for the time being.
-We will use the package [**dplyr**](https://dplyr.tidyverse.org/) for that since it makes aggregation much more straightforward than otherwise.
+For now the function `prepsources()` does not handle the weighting for the reasons stated above. 
+We will use here the package [**dplyr**](https://dplyr.tidyverse.org/) for that since it makes aggregation much more straightforward than otherwise.
 We start by aggregating and weighting the data over the different months per year:
 
 ```{r prepsource_precip, message=FALSE}
-library(dplyr) ## install this package beforehand if you don't have it
+library(dplyr) ## install this package beforehand if you don't have i
+
 GNIPData_with_precip |>
   filter(long > -30 & long < 60 & lat > 30 & lat < 70) |>
   group_by(source_ID, year) |>
   filter(n() > 6) |> ## only select years with more than 6 months of data
   mutate(w = precip/sum(precip)) |>
   summarize(total_precip = sum(precip),
-            mean_source_value = sum(w*source_value),
-            var_source_value = (n()/(n() - 1)) * sum(w*(source_value - mean(source_value))^2),
-            n_source_value = n(),
+            yearly_source_value = sum(w*source_value),
             lat = unique(lat),
             long = unique(long),
             elev = unique(elev)) |>
   as.data.frame() -> GNIPData_with_precipEUagg_yearly
 ```
 
-So the only difference with what we did in section \@ref(processing) is that we did not aggregate across the years and that we computed a weighted mean and variance of the isotopic measurements.
+So the only difference with what we did in section \@ref(processing) is that we did not aggregate across the years and that we computed a weighted mean of the isotopic measurements.
 
 We can check the data we just created:
 
@@ -320,21 +380,25 @@ We can check the data we just created:
 GNIPData_with_precipEUagg_yearly
 ```
 
-We then aggregate the data further, for each location, by computing averages over the different years.
-That way, we attempt to represent the situation for an average year.
+We then aggregate the data further, for each location, by computing averages over the different years and the between-year variance.
+That way, we attempt to represent an average year with its uncertainty.
+
 We can again use dplyr to do this, as follows:
 
 ```{r weighting1}
 GNIPData_with_precipEUagg_yearly |>
   group_by(source_ID) |>
-  summarize(mean_source_value = mean(mean_source_value),
-            var_source_value = mean(var_source_value),
-            n_source_value = sum(n_source_value),
+  filter(n() > 1) |> ## only select location with more than 1 year of data
+  summarize(mean_source_value = mean(yearly_source_value),
+            var_source_value = var(yearly_source_value),
+            n_source_value = n(),
             long = unique(long),
             lat = unique(lat),
             elev = unique(elev)) |>
   as.data.frame() -> GNIPData_with_precipEUagg
 ```
+
+Note that since the variance represents variation between years, the locations for which a single year of data were discared.
 
 We can check the data we just created:
 
@@ -342,7 +406,7 @@ We can check the data we just created:
 GNIPData_with_precipEUagg
 ```
 
-#### Building the precipitation-weighted annual average isoscapes
+### Building the precipitation-weighted annual average isoscapes
 
 We can now use these data and follow the rest of the workflow as described in more details in chapter \@ref(isoscape), \@ref(calibration) & \@ref(assignment).
 For example, you can create the precipitation-weighted annual average isoscapes exactly as described in chapter \@ref(isoscape) with the only difference being the data provided to `isofit()`:
@@ -383,7 +447,7 @@ levelplot(EuropeIsoscape_weighted$isoscapes$mean - EuropeIsoscape$isoscapes$mean
           margin = FALSE,
           main = "mean EuropeIsoscape_weighted - mean EuropeIsoscape") +
   layer(lpolygon(CountryBorders, border = "white")) +
-  layer(lpolygon(OceanMask, col = "black"))
+  layer(lpolygon(OceanMask, col = "lightgrey"))
 ```
 
 Let us similarly compare the isoscapes showing the prediction variance and the residual variance around the mean isoscape values:
@@ -393,176 +457,17 @@ levelplot(EuropeIsoscape_weighted$isoscapes$mean_predVar - EuropeIsoscape$isosca
           margin = FALSE,
           main = "predVar EuropeIsoscape_weighted - predVar EuropeIsoscape") +
   layer(lpolygon(CountryBorders, border = "white")) +
-  layer(lpolygon(OceanMask, col = "black"))
+  layer(lpolygon(OceanMask, col = "lightgrey"))
+
 levelplot(EuropeIsoscape_weighted$isoscapes$mean_residVar - EuropeIsoscape$isoscapes$mean_residVar,
           margin = FALSE,
           main = "residVar EuropeIsoscape_weighted - residVar EuropeIsoscape") +
   layer(lpolygon(CountryBorders, border = "white")) +
-  layer(lpolygon(OceanMask, col = "black"))
+  layer(lpolygon(OceanMask, col = "lightgrey"))
 ```
 
-As you can see the residual variance is quite different because it now represents the (weighted) variation in isotopic values _between months_ for an average year and no longer the total variation combining both the variation across months and years.
+As you can see the residual variance is considerable smaller for the precipitation-weighted annual average isoscape than for the non-weighted isoscape.
+This is because the residual variance now represents the variation in isotopic values _between years_ and no longer the total variation combining both the variation across years and months.
 
 You could then continue with the calibration and assignment steps exactly as described in the chapters \@ref(calibration) & \@ref(assignment).
 For this you simply need to replace the object `EuropeIsoscape` used in these chapters by the object `EuropeIsoscape_weighted` just created.
-
-
-### Method 2: weighting after fitting
-
-This second method takes a very different approach as the one just illustrated to produce weighted isoscapes.
-It is still highly experiemental and should probably not been used yet since statistical details need to be figured out (computation of variances may be wrong).
-As mentioned earlier, this method also does not (for now) allows for workflow involving assignments, but we will attempt to do this in the future.
-The principle of this second weighting method remains simple: instead of feeding weighted isotopic values to `isofit()`, the idea here is to actually build different isoscapes (one per month in the context of precipitation-weighted annual average isoscapes) and to merge them in a fashion accounting for weights.
-
-
-#### Preparing & processing the source data
-
-Here the preparation and processing of the source data can be done at once with the use of the function  `prepsources()` using the argument `split_by = "month"`:
-
-```{r GNIP_EU_12_build}
-GNIPDataEU12agg <- prepsources(data = GNIPData,
-                               long_min = -30, long_max = 60,
-                               lat_min = 30, lat_max = 70,
-                               split_by = "month")
-```
-
-Let us display the data:
-
-```{r GNIPDataEU12_view}
-GNIPDataEU12agg
-```
-
-As you can see, we now have observation for each month.
-The column `mean_source_value` gives the average for each month across the years.
-The column `var_source_value` gives the between-year variance in monthly measurements.
-
-Contrary to what we did in the first weighting method, we do not need to manipulate precipitation amounts at this stage.
-
-
-### Downloading the precipitation data
-
-For this second weighting method we need more precipitation data than those included in the GNIP raw data.
-Indeed, we actually need predictions for the precipitation amount all over the landscape covered by the isoscapes.
-One source of such data is https://worldclim.org/data/worldclim21.html which provides datasets at different spatial resolution.
-You can download and unzip manually the file you want, but IsoriX provides the function `getprecip()` which directly downloads and unzips the file presenting the highest resolution (30s or ~ 1 km$^2$).
-
-You can use `getprecip()` as follows:
-
-```{r download_precip_fake, eval=FALSE}
-old_opt <- options(timeout = 500) ## modify R options
-getprecip(path = "input/") ## for now do not forget the final '/' (we will fix that)
-options(old_opt) ## restore original R options
-```
-
-```{r download_precip_real, echo=FALSE, results='hold'}
-if (!file.exists("input/wc2.1_30s_prec.zip")) {
-  old_opt <- options(timeout = 500)
-  getprecip(path = "input/")
-  options(old_opt)
-}
-```
-
-::: {.rmdnote}
-**Geeky note:** You have to modify the R options because, by default, R aborts any download lasting more than 1 min. In the future, we will try to do this behind the scene so you don't have to worry about it.
-:::
-
-
-### Preparing the precipitation data
-
-Once the precipitation data downloaded, you can now import them into R and reshape them to the right format and resolution.
-This is what the function `prepcipitate()` is there for:
-
-```{r prepare_precip_fake, eval=FALSE}
-PrecipitationBrickEU <- prepcipitate(path = "input", raster = ElevEurope) ## no '/' here!
-```
-
-```{r prepare_precip_real, echo=FALSE}
-if (file.exists("output/PrecipitationBrickEU.rds")) {
-} else {
-  PrecipitationBrickEU <- prepcipitate(path = "input", raster = ElevEurope) ## no '/' here!
-  saveRDS(PrecipitationBrickEU, file = "output/PrecipitationBrickEU.rds", compress = "xz")
-}
-```
-
-
-::: {.rmdnote}
-**Warning:** As you can see, you need to have prepared a structural raster (as shown in section \@ref(structuralraster)) to run `prepcipitate()`.
-This implies that there is at the moment some circularity in the workflow we proposed since in section \@ref(structuralraster) we used a set of fitted models stored in the object `EuropeFit` which you may not have at this stage.
-To circumvent this circularity, either perform first a simple workflow (i.e. produce a non-weighted isoscape) before producing a weighted isoscape, or use the argument `manual_crop` instead of `isofit` when calling `prepraster()`.
-Indeed, the object `EuropeFit` used in section \@ref(structuralraster) when calling `prepraster()` with its argument `isofit = EuropeFit` is only used to define the coordinates of the boundaries of the structural raster and that can be done manually instead using e.g. `manual_crop = c(-27.34, 57.1, 30.08, 68.96)`.
-We will try to smooth this out in a future version of IsoriX.
-:::
-
-Let us examine the object `PrecipitationBrickEU` just prepared:
-```{r PrecipitationBrickEU}
-PrecipitationBrickEU
-```
-
-This set of rasters (combined in an object of class `RasterBrick`) contains average precipitation amounts for each month and for each location defined by the structural raster.
-We can for instance visualise the distribution of such precipitation amounts for January and June using the function `levelplot()` (`plot()` also works but the output is different):
-
-```{r plot_PrecipitationBrickEU}
-levelplot(PrecipitationBrickEU[[1]], main = "January", margin = FALSE)
-levelplot(PrecipitationBrickEU[[6]], main = "June", margin = FALSE)
-```
-
-
-### Fitting the models for a multiple set of isoscapes {#isomultifit}
-
-We now use the function `isomultifit()` for fitting one set of isoscapes per month.
-Remember that `GNIPDataEU12agg` indeed contains data at the monthly level (averged across years).
-As for `isofit()`, several parameters can be adjusted to fit different models in `isomultifit()`, and we will use here the settings seen previously:
-
-```{r isomultifit fake, eval = FALSE}
-EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
-                           mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-```
-
-```{r isomultifit real, echo = FALSE, results = FALSE}
-if (file.exists("output/EuropeFit12.rds")) {
-  EuropeFit12 <- readRDS("output/EuropeFit12.rds")
-} else {
-  EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
-                             mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
-  saveRDS(EuropeFit12, file = "output/EuropeFit12.rds", compress = "xz")
-}
-```
-
-::: {.rmdnote}
-**Geeky note:** For the time being, the function `isomultifit()` fits sequentially the sets of isoscapes.
-So for the example used here, it means that 12 sets of isoscapes are fitted sequentially, which thus takes more computing time than building a single set of isoscape.
-In the future our plan is to revise the internal structure of this function for it to be able to use several CPUs simultaneously and thus benefit from the IsoriX option used to define the number of CPUs to work with (see section \@ref(globaloptions)).
-:::
-
-
-### Building the precipitation-weighted annual average isoscapes {#isomultiscape}
-
-We can now use the set of isoscape models to build the isoscapes using the function `isomultiscape()` to which we pass the raster brick storing the precipitation amounts as weights:
-
-```{r EuropeIsoscape_weighted_fake, eval=FALSE}
-EuropeIsoscape_weighted2 <- isomultiscape(raster = ElevEurope,
-                                          isofit = EuropeFit12,
-                                          weighting = PrecipitationBrickEU)
-```
-
-```{r EuropeIsoscape_weighted_real, echo=FALSE}
-if (file.exists("output/EuropeIsoscape_weighted2.rds")) {
-  readRDS("output/EuropeIsoscape_weighted2.rds")
-} else {
-  EuropeIsoscape_weighted2 <- isomultiscape(raster = ElevEurope,
-                                            isofit = EuropeFit12,
-                                            weighting = PrecipitationBrickEU)
-  saveRDS(EuropeIsoscape_weighted2, file = "output/EuropeIsoscape_weighted2.rds")
-}
-```
-
-You can now plot this isoscape:
-
-```{r EuropeIsoscape_weighted_plot, dev='CairoPNG'}
-plot(EuropeIsoscape_weighted2)
-```
-
-::: {.rmdnote}
-**Warning:** In this second weighting method, the meaning of the residual variance is difference from that of non-weighted isoscapes and from that of isoscapes weighted using the first method.
-We will revisit this in a future version of IsoriX.
-:::

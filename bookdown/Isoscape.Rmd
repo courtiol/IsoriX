@@ -126,21 +126,28 @@ This function allows you to apply some restriction on the data, such as selectin
 
 The function `prepsources()` also allows you to aggregate the data separately for different time periods (see section \@ref(weighted)).
 Each time period define the temporal range of the data used to prepare a single set of isoscapes.
-Often, people are only interested in a single time period (e.g. data over all years they have been collected).
-But in some cases, it may be interested to aggregate data separately for different time periods.
-This can be useful, in particular, to build weighted isoscapes (see section \@ref(weighted)). 
+Most of the time people are only interested in a single time period (e.g. data over all years they have been collected), so we will not use this more advanced feature for this tutorial.
 
 Here we use the function `prepsources()` to select from the dataset `GNIPData` the observations available across all years (i.e. a single time period) within an extent of latitude and longitude that covers roughly Europe.
 This can be done as follows:
 
 ```{r GNIP_EU_build}
+GNIPDataEUagg_test <- prepsources(data = GNIPData,
+                                  long_min = -30, long_max = 60,
+                                  lat_min = 30, lat_max = 70)
+```
+
+As you can see, there are a few issues with the data. This is probably because the names used to refer to some weather stations have changed over time.
+We therefore fix this by simply creating new values for `source_ID` in the original data and we then rerun `prepsources()`:
+
+```{r GNIP_EU_fix_duplicates}
+GNIPData$source_ID <- factor(paste("site", GNIPData$lat, GNIPData$long, GNIPData$elev, sep = "_"))
 GNIPDataEUagg <- prepsources(data = GNIPData,
                              long_min = -30, long_max = 60,
                              lat_min = 30, lat_max = 70)
 ```
 
-
-Let us now visualize the dataset:
+No warning this time; that is better. Let us now explore the newly created dataset:
 
 ```{r GNIPDataEU_view}
 GNIPDataEUagg
@@ -157,11 +164,11 @@ Isoscapes are predictions stemming from statistical models.
 In this section we will show you how to fit such models based on the dataset we prepared in section \@ref(processing).
 We refer to *set of isoscapes* because IsoriX does not create a single isoscape predicting the spatial distribution of isotopes (i.e. the main isoscape), but it also creates other isoscapes related to the main isoscape.
 For example, it also creates an isoscape indicating how reliable the predictions are in any particular locations.
-If a single dataset is being used (as in section \@ref(processing)), then a single set of isoscapes need to be built.
+If a single dataset is being used (as in section \@ref(processing)), then a single set of isoscapes needs to be built.
 Instead, if several datasets have been prepared, then you will have to accordingly build multiple sets of isoscapes (see section \@ref(weighted) in this case).
 
 
-To fit the geostatisical model required to build a single set of isoscapes, you need to use the function `isofit()` (otherwise you need to use the function `isomultifit()` as shown in section \@ref(isomultifit)). 
+To fit the geostatisical model required to build a single set of isoscapes, you need to use the function `isofit()`. 
 The function `isofit()` has several parameters that can be adjusted to fit different models (see `?isofit`).
 Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting:
 
@@ -201,7 +208,9 @@ To use `saveRDS()`, you must provide the object you want as a first argument of 
 Then, `file =` defines the name of the file that will store the R object in your hard drive.
 You can also include a path to this name so to store the file wherever you want.
 This name can be different from the name of the object but here we stick to the same name for clarity.
-The last argument `compress =` is optional; it allows for the creation of smaller files without loosing any content, so we always use it.
+The last argument `compress =` is optional; it allows for the creation of smaller files without loosing any content.
+The only drawback of compressing is that the compression and the decompression can take some time.
+Here the object is relativelly quick to compress/decompress, so let us compress it and save a bit of space on the hard drive.
 
 For loading a saved object (in a new session of R for example), just use the function `readRDS()` as follows:
 
@@ -214,7 +223,7 @@ After one of such update, the best practice to make sure that every thing is wor
 By doing this you may also benefit from potentially new improvements we would have implemented. 
 
 There is another way to save and load object in R, which is to use the function `save()` and `load()`.
-However, it is better to get to used to `saveRDS()` and `readRDS()` because only those can be used to store objects that contain spatial information (which we will do below).
+However, it is better to get to used to the functions `saveRDS()` and `readRDS()` because only those can be used to store objects that contain spatial information (which we will do below).
 
 ## Examining the fitted models
 
@@ -327,7 +336,7 @@ To crop and resize the structural raster, you can use our function `prepraster()
 
 ::: {.rmdnote}
 **Geeky note**: In principle you could directly crop and resize the raster to the dimensions you want before downloading it (`getelev()` does allows for you to do that).
-However, in practice, we recommend you to download a raster that is a larger than what you need (`getelev()` downloads the full world by default, which should always be sufficient) and with a resolution overshooting a little what you may need.
+However, in practice, we recommend you to download a raster that is a little larger than what you need (`getelev()` downloads the full world by default, which should always be sufficient) and with a resolution overshooting a little what you may need.
 The benefit of relying on `prepraster()` rather than `getelev()` to crop and downsize the structural raster is that you can study the impact of your decisions by simply rerunning `prepraster()` again -- with different settings -- without having to download again a large amount of data from the net.
 :::
 
@@ -357,7 +366,7 @@ if (file.exists("output/ElevEurope.rds")) {
 
 You may see that we also chose here to reduce the resolution of the elevation raster by choosing an aggregation factor of 4.
 We recommend to first use a large aggregation factor (e.g. 10) to draft your workflow and quickly notice errors in your code.
-Once things are working as they should, we recommend you then use the lowest aggregation factor that you hardware and patience can handle (i.e. 1 if possible).
+Once things are working as they should, we recommend you then use the lowest aggregation factor that you hardware and patience can handle (i.e. 0 if possible).
 As mentioned above, if you need isoscapes with a even greater resolution, use `getelev()` with a value of the parameter `z` that is higher than 5 (an increment of 1 -- i.e. `z = 6` already makes a big difference as shown [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution)).
 Here we set the `aggregation_factor` to 4 as something in between which produces plots nice enough for this tutorial, without being too heavy for us to recompile this bookdown quickly; but, for real applications, you should use a higher resolution than used here.
 

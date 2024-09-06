@@ -5,7 +5,8 @@
 Before installing a new package it is good practice to have the latest version of R installed.
 The current documentation has been created with `r R.Version()$version.string`. So make sure you have at least an R version as recent as that one.
 
-Please also make sure that all your R packages are up to date. You can update them all by simply typing in the R console ```update.packages()```; and if you don't want to be bothered by confirmation messages asking you to type Y or yes, just add the option `ask = FALSE`.
+Please also make sure that all your R packages are up to date.
+You can update them all by simply typing in the R console `update.packages()`; and if you don't want to be bothered by confirmation messages asking you to type `Y` or `yes` for each package, just add the option `ask = FALSE`.1
 
 Once your R and all installed R packages are up to date, you are ready to install IsoriX.
 
@@ -39,7 +40,7 @@ If you want to install such development version, the easiest is to install the p
 
 ```{r install_devel, eval = FALSE}
 ## install remotes if missing
-if (!requireNamespace("remotes", quietly = TRUE)) {
+if (!"remotes" %in% installed.packages()[, 1]) {
   install.packages("remotes")
 }
 
@@ -61,7 +62,8 @@ Thus, if a single package that is needed by IsoriX (or by the packages used by I
 To avoid problems caused by dependencies, the only thing we can do on our side is to minimise dependencies and try not to use packages people have often problems with.
 That is why we have already stopped relying on packages (e.g. Cairo) which are not so easy to install on some systems.
 
-Despite these effort, for IsoriX to work we do rely on `r length(sort(setdiff(tools::package_dependencies("IsoriX", which = c("Imports", "Suggests"), recursive = FALSE)$IsoriX, names(which(installed.packages()[, "Priority"] == "base"))))) - 1` packages. Here is the current list:
+Despite these effort, for IsoriX to work we do rely on
+`r length(sort(setdiff(tools::package_dependencies("IsoriX", which = c("Imports", "Suggests"), recursive = FALSE)$IsoriX, names(which(installed.packages()[, "Priority"] == "base")))))` packages. Here is the current list:
 
 ```{r dependencies}
 pkg_IsoriX_Imports <- tools::package_dependencies("IsoriX",
@@ -80,14 +82,9 @@ data.frame(Suggested_packages = sort(setdiff(pkg_IsoriX_Suggests, pkg_base)))
 ```
 
 We can use a modified version of **miniCRAN** to visualise dependencies among the core packages required by IsoriX:
-```{r mini_CRAN}
-## install remotes if missing
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-
+```{r mini_CRAN, message=FALSE}
 ## install special fork from miniCRAN
-if (!requireNamespace("miniCRAN", quietly = TRUE)) {
+if (!"miniCRAN" %in% installed.packages()[, 1]) {
   remotes::install_github("courtiol/miniCRAN@Recursion_optional")
 }
   
@@ -108,7 +105,8 @@ All in all, this represents quite a lot of dependencies, and problems can thus h
 
 In case of problem(s), you should thus read carefully the error message and make sure that the problem is not caused by some other packages. If that is the case, try to install the problematic packages on their own (check the documentation of that other packages, it may help).
 A work around is to simply not rely on the problematic packages.
-That is possible as long as the problematic packages are among those that IsoriX "suggests" (or among those that are required by such suggested packages) and not packages that IsoriX depends on.
+That is possible as long as the problematic packages are among those that IsoriX "suggests" (or among those that are required by such suggested packages) and not packages that IsoriX "imports".
+
 The list of such packages that are not crucial for IsoriX (but that offer additional functionalities) is this:
 *`r sort(setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE)))`*.
 
@@ -120,7 +118,7 @@ install.packages("IsoriX")
 
 That way the argument `dependencies` of the function `install.packages()` will be set to its default setting `NA`, which does not lead to install "suggested" packages.
 
-Note: if you are used to install the packages using the RStudio menu, there is a small box that you can tick or untick to do the same thing. 
+Note: if you are used to install the packages using the RStudio menu, there is a small box that you can untick to do the same thing. 
 
 
 ## Loading IsoriX
@@ -137,7 +135,7 @@ If you have just updated IsoriX, don't forget to check the news by typing `news(
 
 Don't forget to set up your working directory, that is to tell R in which folder you want to work.
 This matters because you will have to read and write files in this directory while using IsoriX.
-The best is to let RStudio handle that automatically by using an [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects).
+If you are using RStudio, the best is to let RStudio handle that automatically by using an [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects).
 
 Otherwise, you can set the working directory by hand using the R command `setwd()`.
 You can also use the RStudio menu for that or the shortcut that seems to be (as default) CTRL-SHIFT-H.
@@ -145,11 +143,19 @@ In any case, double check that the folder you selected in the correct one by loo
 
 ## Global options {#globaloptions}
 
-There are a few general options you can set up for IsoriX (see ```?options_IsoriX``` for details).
+There are a few general options you can set up for IsoriX (see `?options_IsoriX` for details).
 Like the loading of the package, changing the general options must be done again each time you start an R session.
 
-Two of these general options are particularly useful: `example_maxtime` and `Ncpu`.
-The former allows you to control whether examples in the IsoriX help files should be run or not
+Three of these general options are particularly useful: `title_delta_notation`, `example_maxtime` and `Ncpu`.
+The first one allows you to control how the delta notation is being rendered in plots; so if you experience any issue,
+this is the place to tinker. For example, since we compile this bookdown on a special remote computer running Linux
+we had to change the default setting for it to work:
+
+```{r title_delta_notation, eval = FALSE}
+options_IsoriX(title_delta_notation = bquote(italic("\u03B4")**2*H[p]))
+```
+
+The second option -- `example_maxtime` --  allows you to control whether examples in the IsoriX help files should be run or not
 depending on the time they take. We have to restrict long examples to run since CRAN, the platform
 hosting R packages, checks all examples but do not allow for them to last more than a few seconds.
 None of our examples takes a terribly long time to run so we recommend you to activate them all by typing:
@@ -158,16 +164,16 @@ None of our examples takes a terribly long time to run so we recommend you to ac
 options_IsoriX(example_maxtime = Inf)
 ```
 
-The option `Ncpu` allows you to set up how many Central Processing Units (CPUs) you allow IsoriX to use.
-Most computer nowadays have 2, 4 or 8. If a function can use several CPUs and performed
+The third option -- `Ncpu` -- allows you to set up how many Central Processing Units (CPUs) you allow IsoriX to use.
+Most computer nowadays have 2 or more. If a function can use several CPUs and performed
 so-called parallel computing, the computation will be much faster if you allows it to use more CPUs.
 For now, only a few functions in IsoriX can make good use of that.
 We will try to make more functions able to perform such parallel computing in the future.
 
 We considered 2 as the default number of CPUs, but you may want to increase this.
-For example if you have 4 CPUs you can do:
+For example if you have 8 CPUs you can do:
 
 ```{r Ncpu, eval = FALSE}
-options_IsoriX(Ncpu = 4)
+options_IsoriX(Ncpu = 8)
 ```
 

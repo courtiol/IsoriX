@@ -1,0 +1,160 @@
+
+### Method 2: weighting after fitting
+
+This second method takes a very different approach as the one just illustrated to produce weighted isoscapes.
+It is still highly experiemental and should probably not been used yet since statistical details need to be figured out (computation of variances may be wrong).
+As mentioned earlier, this method also does not (for now) allows for workflow involving assignments, but we will attempt to do this in the future.
+The principle of this second weighting method remains simple: instead of feeding weighted isotopic values to `isofit()`, the idea here is to actually build different isoscapes (one per month in the context of precipitation-weighted annual average isoscapes) and to merge them in a fashion accounting for weights.
+
+
+#### Preparing & processing the source data
+
+Here the preparation and processing of the source data can be done at once with the use of the function  `prepsources()` using the argument `split_by = "month"`:
+
+```{r GNIP_EU_12_build}
+GNIPDataEU12agg <- prepsources(data = GNIPData,
+                               long_min = -30, long_max = 60,
+                               lat_min = 30, lat_max = 70,
+                               split_by = "month")
+```
+
+Let us display the data:
+
+```{r GNIPDataEU12_view}
+GNIPDataEU12agg
+```
+
+As you can see, we now have observation for each month.
+The column `mean_source_value` gives the average for each month across the years.
+The column `var_source_value` gives the between-year variance in monthly measurements.
+
+Contrary to what we did in the first weighting method, we do not need to manipulate precipitation amounts at this stage.
+
+
+### Downloading the precipitation data
+
+For this second weighting method we need more precipitation data than those included in the GNIP raw data.
+Indeed, we actually need predictions for the precipitation amount all over the landscape covered by the isoscapes.
+One source of such data is https://worldclim.org/data/worldclim21.html which provides datasets at different spatial resolution.
+You can download and unzip manually the file you want, but IsoriX provides the function `getprecip()` which directly downloads and unzips the file presenting the highest resolution (30s or ~ 1 km$^2$).
+
+You can use `getprecip()` as follows:
+
+```{r download_precip_fake, eval=FALSE}
+old_opt <- options(timeout = 500) ## modify R options
+getprecip(path = "input/") ## for now do not forget the final '/' (we will fix that)
+options(old_opt) ## restore original R options
+```
+
+```{r download_precip_real, echo=FALSE, results='hold'}
+if (!file.exists("input/wc2.1_30s_prec.zip")) {
+  old_opt <- options(timeout = 500)
+  getprecip(path = "input/")
+  options(old_opt)
+}
+```
+
+::: {.rmdnote}
+**Geeky note:** You have to modify the R options because, by default, R aborts any download lasting more than 1 min. In the future, we will try to do this behind the scene so you don't have to worry about it.
+:::
+
+
+### Preparing the precipitation data
+
+Once the precipitation data downloaded, you can now import them into R and reshape them to the right format and resolution.
+This is what the function `prepcipitate()` is there for:
+
+```{r prepare_precip_fake, eval=FALSE}
+PrecipitationBrickEU <- prepcipitate(path = "input", raster = ElevEurope) ## no '/' here!
+```
+
+```{r prepare_precip_real, echo=FALSE}
+if (file.exists("output/PrecipitationBrickEU.rds")) {
+} else {
+  PrecipitationBrickEU <- prepcipitate(path = "input", raster = ElevEurope) ## no '/' here!
+  saveRDS(PrecipitationBrickEU, file = "output/PrecipitationBrickEU.rds", compress = "xz")
+}
+```
+
+
+::: {.rmdnote}
+**Warning:** As you can see, you need to have prepared a structural raster (as shown in section \@ref(structuralraster)) to run `prepcipitate()`.
+This implies that there is at the moment some circularity in the workflow we proposed since in section \@ref(structuralraster) we used a set of fitted models stored in the object `EuropeFit` which you may not have at this stage.
+To circumvent this circularity, either perform first a simple workflow (i.e. produce a non-weighted isoscape) before producing a weighted isoscape, or use the argument `manual_crop` instead of `isofit` when calling `prepraster()`.
+Indeed, the object `EuropeFit` used in section \@ref(structuralraster) when calling `prepraster()` with its argument `isofit = EuropeFit` is only used to define the coordinates of the boundaries of the structural raster and that can be done manually instead using e.g. `manual_crop = c(-27.34, 57.1, 30.08, 68.96)`.
+We will try to smooth this out in a future version of IsoriX.
+:::
+
+Let us examine the object `PrecipitationBrickEU` just prepared:
+```{r PrecipitationBrickEU}
+PrecipitationBrickEU
+```
+
+This set of rasters (combined in an object of class `RasterBrick`) contains average precipitation amounts for each month and for each location defined by the structural raster.
+We can for instance visualise the distribution of such precipitation amounts for January and June using the function `levelplot()` (`plot()` also works but the output is different):
+
+```{r plot_PrecipitationBrickEU}
+levelplot(PrecipitationBrickEU[[1]], main = "January", margin = FALSE)
+levelplot(PrecipitationBrickEU[[6]], main = "June", margin = FALSE)
+```
+
+
+### Fitting the models for a multiple set of isoscapes {#isomultifit}
+
+We now use the function `isomultifit()` for fitting one set of isoscapes per month.
+Remember that `GNIPDataEU12agg` indeed contains data at the monthly level (averged across years).
+As for `isofit()`, several parameters can be adjusted to fit different models in `isomultifit()`, and we will use here the settings seen previously:
+
+```{r isomultifit fake, eval = FALSE}
+EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
+                           mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+```
+
+```{r isomultifit real, echo = FALSE, results = FALSE}
+if (file.exists("output/EuropeFit12.rds")) {
+  EuropeFit12 <- readRDS("output/EuropeFit12.rds")
+} else {
+  EuropeFit12 <- isomultifit(data = GNIPDataEU12agg,
+                             mean_model_fix = list(elev = TRUE, lat_abs = TRUE))
+  saveRDS(EuropeFit12, file = "output/EuropeFit12.rds", compress = "xz")
+}
+```
+
+::: {.rmdnote}
+**Geeky note:** For the time being, the function `isomultifit()` fits sequentially the sets of isoscapes.
+So for the example used here, it means that 12 sets of isoscapes are fitted sequentially, which thus takes more computing time than building a single set of isoscape.
+In the future our plan is to revise the internal structure of this function for it to be able to use several CPUs simultaneously and thus benefit from the IsoriX option used to define the number of CPUs to work with (see section \@ref(globaloptions)).
+:::
+
+
+### Building the precipitation-weighted annual average isoscapes {#isomultiscape}
+
+We can now use the set of isoscape models to build the isoscapes using the function `isomultiscape()` to which we pass the raster brick storing the precipitation amounts as weights:
+
+```{r EuropeIsoscape_weighted_fake, eval=FALSE}
+EuropeIsoscape_weighted2 <- isomultiscape(raster = ElevEurope,
+                                          isofit = EuropeFit12,
+                                          weighting = PrecipitationBrickEU)
+```
+
+```{r EuropeIsoscape_weighted_real, echo=FALSE}
+if (file.exists("output/EuropeIsoscape_weighted2.rds")) {
+  readRDS("output/EuropeIsoscape_weighted2.rds")
+} else {
+  EuropeIsoscape_weighted2 <- isomultiscape(raster = ElevEurope,
+                                            isofit = EuropeFit12,
+                                            weighting = PrecipitationBrickEU)
+  saveRDS(EuropeIsoscape_weighted2, file = "output/EuropeIsoscape_weighted2.rds")
+}
+```
+
+You can now plot this isoscape:
+
+```{r EuropeIsoscape_weighted_plot, dev='CairoPNG'}
+plot(EuropeIsoscape_weighted2)
+```
+
+::: {.rmdnote}
+**Warning:** In this second weighting method, the meaning of the residual variance is difference from that of non-weighted isoscapes and from that of isoscapes weighted using the first method.
+We will revisit this in a future version of IsoriX.
+:::
