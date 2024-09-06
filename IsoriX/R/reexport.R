@@ -12,9 +12,9 @@ grid::grid.text
 
 # reexport from lattice:
 
-#' @importFrom lattice panel.points
+#' @importFrom lattice lpolygon
 #' @export
-lattice::panel.points
+lattice::lpolygon
 
 #' @importFrom lattice xyplot
 #' @export

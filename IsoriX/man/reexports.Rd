@@ -5,7 +5,7 @@
 \alias{reexports}
 \alias{gpar}
 \alias{grid.text}
-\alias{panel.points}
+\alias{lpolygon}
 \alias{xyplot}
 \alias{layer}
 \alias{levelplot}
@@ -33,7 +33,7 @@ below to see their documentation.
 \describe{
   \item{grid}{\code{\link[grid]{gpar}}, \code{\link[grid]{grid.text}}}
 
-  \item{lattice}{\code{\link[lattice:llines]{panel.points}}, \code{\link[lattice]{xyplot}}}
+  \item{lattice}{\code{\link[lattice:llines]{lpolygon}}, \code{\link[lattice]{xyplot}}}
 
   \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
 
