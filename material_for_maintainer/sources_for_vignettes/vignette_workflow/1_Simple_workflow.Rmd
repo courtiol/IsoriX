@@ -326,10 +326,8 @@ You can plot these information on top of the last plot we created by means of th
 ```{r assign plot 4, message = FALSE}
 library(lattice)
 trellis.last.object() + 
-  xyplot(origin$lat~origin$long, pch = 13, col = "purple", cex = 5, lwd = 2, 
-      panel = panel.points) +
-  xyplot(maximum$lat~maximum$long, pch = 13, col = "orange", cex = 5, lwd = 2, 
-      panel = panel.points)
+  xyplot(origin$lat~origin$long, pch = 13, col = "purple", cex = 5, lwd = 2) +
+  xyplot(maximum$lat~maximum$long, pch = 13, col = "orange", cex = 5, lwd = 2)
 ```
 
 The function `trellis.last.object()` is very handy: it retrieves the last plot created using __lattice__ and our plot functions for isoscapes and assignments use __lattice__ since they use __rasterVis__, which is a package itself based on __lattice__.

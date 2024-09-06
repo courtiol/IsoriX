@@ -6,7 +6,7 @@
 \alias{AssignDataBat2Rev}
 \title{Assignment datasets for bat species}
 \format{
-Two \emph{dataframes} with 244 observations on 3 variables:\tabular{lll}{
+Two \emph{dataframes} with 244 observations and 3 variables:\tabular{lll}{
     \tab  \tab  \cr
    sample_ID \tab (\emph{factor}) \tab Identification of the animal \cr
    species \tab (\emph{factor}) \tab Animal species name \cr

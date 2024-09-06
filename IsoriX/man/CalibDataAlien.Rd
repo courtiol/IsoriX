@@ -5,7 +5,7 @@
 \alias{CalibDataAlien}
 \title{Simulated calibration dataset}
 \format{
-A \emph{dataframe} with x observations on 6 variables:\tabular{lll}{
+A \emph{dataframe} with x observations and 6 variables:\tabular{lll}{
     \tab  \tab  \cr
    site_ID \tab (\emph{factor}) \tab Identification of the sampling site \cr
    long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr

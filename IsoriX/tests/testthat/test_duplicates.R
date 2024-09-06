@@ -37,5 +37,5 @@ test_that("isofind() flags siteIDs actualy corresponding to different locations"
   AssignDataAlien2$lat[1:3] <- 10
   expect_error(isofind(data = AssignDataAlien2,
                        isoscape = GermanScape,
-                       calibfit = NULL)) ## FIXME test combines various errors and warnings
+                       calibfit = NULL)) ## FIXME test combines various warnings
 })

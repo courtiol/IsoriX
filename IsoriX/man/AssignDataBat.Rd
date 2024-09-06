@@ -6,7 +6,7 @@
 \alias{AssignDataBatRev}
 \title{Assignment datasets for bat species}
 \format{
-Two \emph{dataframes} with 14 observations on 4 variables:\tabular{lll}{
+Two \emph{dataframes} with 14 observations and 4 variables:\tabular{lll}{
     \tab  \tab  \cr
    sample_ID \tab (\emph{factor}) \tab Identification of the animal \cr
    lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr

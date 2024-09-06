@@ -476,7 +476,7 @@ isoscape <- function(raster,
 #' created with [`isomultifit`]. It creates the isoscapes for each
 #' strata (e.g. month) defined by `split_by` during the call to
 #' [`isomultifit`] and the aggregate them. The function can handle
-#' weighting for the aggregation process and can thus be used to predict annual
+#' weighting for the aggregation process and may thus be used to predict annual
 #' averages precipitation weighted isoscapes.
 #'
 #' @inheritParams isoscape
@@ -524,7 +524,7 @@ isoscape <- function(raster,
 #'     isofit = GermanMultiFit
 #'   )
 #'
-#'   ## We build the annual isoscapes with a weighing based on precipitation amount:
+#'   ## We build the annual isoscapes with a weighting based on precipitation amount:
 #'   GermanMultiscapeWeighted <- isomultiscape(
 #'     raster = ElevRasterDE,
 #'     isofit = GermanMultiFit,

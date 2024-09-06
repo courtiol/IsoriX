@@ -6,7 +6,7 @@
 \alias{CalibDataBatRev}
 \title{Calibration datasets for bat species}
 \format{
-Two \emph{dataframes} with 335 observations on 7 variables:\tabular{lll}{
+Two \emph{dataframes} with 335 observations and 7 variables:\tabular{lll}{
     \tab  \tab  \cr
    site_ID \tab (\emph{factor}) \tab Identification of the sampling site \cr
    long \tab (\emph{numeric}) \tab Longitude coordinate (decimal degrees) \cr

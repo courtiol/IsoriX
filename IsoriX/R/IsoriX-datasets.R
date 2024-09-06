@@ -12,7 +12,7 @@
 #' @name AssignDataBat
 #' @aliases AssignDataBat AssignDataBatRev
 #' @docType data
-#' @format Two *dataframes* with 14 observations on 4 variables:
+#' @format Two *dataframes* with 14 observations and 4 variables:
 #' | | | |
 #' |---|---|---|
 #' |sample_ID|(*factor*)|Identification of the animal|
@@ -56,7 +56,7 @@ NULL
 #' @name AssignDataBat2
 #' @aliases AssignDataBat2 AssignDataBat2Rev
 #' @docType data
-#' @format Two *dataframes* with 244 observations on 3 variables:
+#' @format Two *dataframes* with 244 observations and 3 variables:
 #' | | | |
 #' |---|---|---|
 #' | sample_ID | (*factor*) | Identification of the animal|
@@ -105,7 +105,7 @@ NULL
 #' @name CalibDataBat
 #' @aliases CalibDataBat CalibDataBatRev
 #' @docType data
-#' @format Two *dataframes* with 335 observations on 7 variables:
+#' @format Two *dataframes* with 335 observations and 7 variables:
 #' |   |   |   |
 #' |---|---|---|
 #' | site_ID | (*factor*) | Identification of the sampling site|
@@ -164,7 +164,7 @@ NULL
 #' @name CalibDataBat2
 #' @aliases CalibDataBat2 CalibDataBat2Rev
 #' @docType data
-#' @format Two *dataframes* with 178 observations on 6 variables:
+#' @format Two *dataframes* with 178 observations and 6 variables:
 #' |   |   |   |
 #' |---|---|---|
 #' | site_ID | (*factor*) | Identification of the sampling site|
@@ -226,7 +226,7 @@ NULL
 #'
 #' @name AssignDataAlien
 #' @docType data
-#' @format A *dataframe* with 10 observations on 2 variables:
+#' @format A *dataframe* with 10 observations and 2 variables:
 #' |   |   |   |
 #' |---|---|---|
 #' | sample_ID | (*factor*) | Identification of the sample|
@@ -298,7 +298,7 @@ NULL
 #'
 #' @name CalibDataAlien
 #' @docType data
-#' @format A *dataframe* with x observations on 6 variables:
+#' @format A *dataframe* with x observations and 6 variables:
 #' |   |   |   |
 #' |---|---|---|
 #' | site_ID | (*factor*) | Identification of the sampling site|
@@ -522,7 +522,7 @@ NULL
 #'
 #' @name GNIPDataDE
 #' @docType data
-#' @format The *dataframe* includes 8591 observations on the following
+#' @format The *dataframe* includes 8591 observations and the following
 #' variables: 
 #' |   |   |   |
 #' |---|---|---|
@@ -575,7 +575,7 @@ NULL
 #' @name GNIPDataEUagg
 #' @aliases GNIPDataEUagg GNIPDataALLagg
 #' @docType data
-#' @format The *dataframe*s include many observations on the following
+#' @format The *dataframe*s include many observations and the following
 #' variables:
 #' |   |   |   |
 #' |---|---|---|

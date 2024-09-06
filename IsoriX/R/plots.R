@@ -1,7 +1,10 @@
 #' Plotting functions for IsoriX
 #'
 #' These functions plot objects created by IsoriX (with the exception of plot
-#' method for SpatRaster created using [`terra::terra`].
+#' method for SpatRaster created using [`terra::terra`]. All plotting functions
+#' are based on the powerful package \pkg{lattice}. If instead you want to 
+#' use \pkg{ggplot2}, please follow the instructions on the 
+#' [online tutorial](https://bookdown.org/content/782/advanced.html#ggplot).
 #'
 #'
 #' **General**
@@ -51,7 +54,7 @@
 #' if the name of the layer should be displayed or not. The element `title` is a
 #' string or a call used to define the rest of the title. By default it draws
 #' the delta value for hydrogen. Check the syntax of this default before trying
-#' to modify it.
+#' to modify it. If you want to modify it for all plots, see [`getOption_IsoriX`]. 
 #'
 #' The arguments `cutoff`, `sources`, `calibs`, `assigns`, `borders`, `mask`,
 #' and `mask2` are used to fine-tune additional layers that can be added to the
@@ -171,7 +174,7 @@ NULL
 #' @exportS3Method plot ISOSCAPE
 plot.ISOSCAPE <- function(x,
                           which = "mean",
-                          y_title = list(which = TRUE, title = bquote(delta**2 * H)), ## bquote(italic("\u03B4")**2*H[p]) does not work on all system...
+                          y_title = list(which = TRUE, title = getOption_IsoriX("title_delta_notation")),
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
                           borders = list(borders = NA, lwd = 0.5, col = "black"),
                           mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),

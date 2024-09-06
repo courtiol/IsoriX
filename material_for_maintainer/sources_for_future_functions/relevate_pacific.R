@@ -28,8 +28,7 @@ plot(crop)
 
 origin <- data.frame(long = 170, lat = 0)
 levelplot(crop)+
-  xyplot(origin$lat~origin$long, pch = 13, col = "white", cex = 10, lwd = 2, 
-       panel = panel.points) 
+  xyplot(origin$lat~origin$long, pch = 13, col = "white", cex = 10, lwd = 2) 
 
 plot(crop)
 

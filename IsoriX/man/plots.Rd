@@ -13,7 +13,7 @@
 \method{plot}{ISOSCAPE}(
   x,
   which = "mean",
-  y_title = list(which = TRUE, title = bquote(delta^2 * H)),
+  y_title = list(which = TRUE, title = getOption_IsoriX("title_delta_notation")),
   sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
   borders = list(borders = NA, lwd = 0.5, col = "black"),
   mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
@@ -146,7 +146,10 @@ confidence interval}
 }
 \description{
 These functions plot objects created by IsoriX (with the exception of plot
-method for SpatRaster created using \code{\link[terra:terra-package]{terra::terra}}.
+method for SpatRaster created using \code{\link[terra:terra-package]{terra::terra}}. All plotting functions
+are based on the powerful package \pkg{lattice}. If instead you want to
+use \pkg{ggplot2}, please follow the instructions on the
+\href{https://bookdown.org/content/782/advanced.html#ggplot}{online tutorial}.
 }
 \details{
 \strong{General}
@@ -192,7 +195,7 @@ of isoscapes. Within this list, the element \code{which} is a logical indicating
 if the name of the layer should be displayed or not. The element \code{title} is a
 string or a call used to define the rest of the title. By default it draws
 the delta value for hydrogen. Check the syntax of this default before trying
-to modify it.
+to modify it. If you want to modify it for all plots, see \code{\link{getOption_IsoriX}}.
 
 The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{assigns}, \code{borders}, \code{mask},
 and \code{mask2} are used to fine-tune additional layers that can be added to the

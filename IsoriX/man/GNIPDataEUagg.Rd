@@ -6,7 +6,7 @@
 \alias{GNIPDataALLagg}
 \title{Hydrogen delta values in precipitation water (aggregated per location)}
 \format{
-The \emph{dataframe}s include many observations on the following
+The \emph{dataframe}s include many observations and the following
 variables:\tabular{lll}{
     \tab  \tab  \cr
    source_ID \tab (\emph{factor}) \tab The unique identifier of the weather station \cr

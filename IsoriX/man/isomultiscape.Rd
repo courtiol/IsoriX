@@ -30,7 +30,7 @@ This function is the counterpart of \code{\link{isoscape}} for the objects
 created with \code{\link{isomultifit}}. It creates the isoscapes for each
 strata (e.g. month) defined by \code{split_by} during the call to
 \code{\link{isomultifit}} and the aggregate them. The function can handle
-weighting for the aggregation process and can thus be used to predict annual
+weighting for the aggregation process and may thus be used to predict annual
 averages precipitation weighted isoscapes.
 }
 \examples{
@@ -62,7 +62,7 @@ if (getOption_IsoriX("example_maxtime") > 180) {
     isofit = GermanMultiFit
   )
 
-  ## We build the annual isoscapes with a weighing based on precipitation amount:
+  ## We build the annual isoscapes with a weighting based on precipitation amount:
   GermanMultiscapeWeighted <- isomultiscape(
     raster = ElevRasterDE,
     isofit = GermanMultiFit,

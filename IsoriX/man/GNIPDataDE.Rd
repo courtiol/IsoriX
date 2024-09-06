@@ -5,7 +5,7 @@
 \alias{GNIPDataDE}
 \title{Hydrogen delta values in precipitation water, Germany}
 \format{
-The \emph{dataframe} includes 8591 observations on the following
+The \emph{dataframe} includes 8591 observations and the following
 variables:\tabular{lll}{
     \tab  \tab  \cr
    lat \tab (\emph{numeric}) \tab Latitude coordinate (decimal degrees) \cr

@@ -13,6 +13,7 @@ getOption_IsoriX(x = NULL)
 \arguments{
 \item{...}{A named value or a list of named values. The following values, with their defaults, are used:
 \describe{
+\item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation}
 \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
 \item{Ncpu}{An \emph{integer} corresponding to the number of cores to be used (in functions that can handle parallel processing)}
 \item{dont_ask}{A \emph{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
@@ -25,11 +26,23 @@ getOption_IsoriX(x = NULL)
 The options are invisibly returned in an object called \code{IsoriX:::.data_IsoriX$options}
 }
 \description{
-Setting and displaying the options of the package
+** Information on the settings for the delta notation **
+}
+\details{
+Note that if the delta notation is not successfully rendered on
+your plots (which can happen for various reasons related to fonts, encoding
+settings, graphic devices and perhaps more), you may try to use e.g.
+\code{options_IsoriX(title_delta_notation = bquote(italic("\\u03B4")**2*H[p]))}
+to override the default for all plots. The default does correspond to
+\code{options_IsoriX(title_delta_notation = bquote(delta**2*H))}. If you
+are working with oxygen (rather than with deuterium), modifying the
+global option is also a good place to do so. You may do:
+\code{options_IsoriX(title_delta_notation = bquote(delta**18*O))}.
 }
 \examples{
 OldOptions <- options_IsoriX()
 OldOptions
+getOption_IsoriX("title_delta_notation")
 getOption_IsoriX("example_maxtime")
 options_IsoriX(example_maxtime = 30)
 options_IsoriX()

@@ -5,7 +5,7 @@
 \alias{AssignDataAlien}
 \title{Simulated assignment dataset}
 \format{
-A \emph{dataframe} with 10 observations on 2 variables:\tabular{lll}{
+A \emph{dataframe} with 10 observations and 2 variables:\tabular{lll}{
     \tab  \tab  \cr
    sample_ID \tab (\emph{factor}) \tab Identification of the sample \cr
    sample_value \tab (\emph{numeric}) \tab Hydrogen delta value of the tissue \cr
