@@ -1,9 +1,22 @@
 #' Setting and displaying the options of the package
+#' 
+#' ** Information on the settings for the delta notation ** 
+#' 
+#' Note that if the delta notation is not successfully rendered on 
+#' your plots (which can happen for various reasons related to fonts, encoding
+#' settings, graphic devices and perhaps more), you may try to use e.g. 
+#' `options_IsoriX(title_delta_notation = bquote(italic("\u03B4")**2*H[p]))`
+#' to override the default for all plots. The default does correspond to
+#' `options_IsoriX(title_delta_notation = bquote(delta**2*H))`. If you 
+#' are working with oxygen (rather than with deuterium), modifying the 
+#' global option is also a good place to do so. You may do:
+#' `options_IsoriX(title_delta_notation = bquote(delta**18*O))`.
 #'
 #' @name options
 #' @aliases options options_IsoriX getOption_IsoriX
 #' @param ... A named value or a list of named values. The following values, with their defaults, are used:
 #' \describe{
+#'   \item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation}
 #'   \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
 #'   \item{Ncpu}{An *integer* corresponding to the number of cores to be used (in functions that can handle parallel processing)}
 #'   \item{dont_ask}{A *logical* indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
@@ -16,6 +29,7 @@
 #' @examples
 #' OldOptions <- options_IsoriX()
 #' OldOptions
+#' getOption_IsoriX("title_delta_notation")
 #' getOption_IsoriX("example_maxtime")
 #' options_IsoriX(example_maxtime = 30)
 #' options_IsoriX()
@@ -69,6 +83,9 @@ getOption_IsoriX <- function(x = NULL) {
   if (x == "Ncpu") {
     return(options_IsoriX(x)[["Ncpu"]])
   }
+  if (x == "title_delta_notation") {
+    return(options_IsoriX(x)[["title_delta_notation"]])
+  }
   if (x == "example_maxtime") {
     return(options_IsoriX(x)[["example_maxtime"]])
   }
@@ -83,5 +100,5 @@ getOption_IsoriX <- function(x = NULL) {
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.data_IsoriX$IsoriX_options <- list(title_delta_notation = bquote(delta**2*H), example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
 ## otherwise put 5

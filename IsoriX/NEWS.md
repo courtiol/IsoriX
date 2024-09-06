@@ -2,6 +2,7 @@
 
 ## New features
 
+  * a new global option `title_delta_notation` is available to modify the delta notation for all plotted isoscapes. The can be use, for example, to fix some issues with the display of the delta character, or for using another stable isotope than deuterium. See `?options_IsoriX` for details.
   * new datasets `CalibDataBatRev`, `CalibDataBat2Rev`, `AssignDataRev` and `AssignData2Rev` which are revised version of CalibDataBat`, `CalibDataBat2`, `AssignData` and `AssignData2` (respectively). The bat fur isotope values were corrected to align with the current delta values for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 
 ## Breaking changes
