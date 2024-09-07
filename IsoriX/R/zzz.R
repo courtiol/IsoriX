@@ -360,13 +360,14 @@ release_bullets <- function() {
   c(
     "run `styler:::style_active_pkg()` for reformatting of the code according to `styler::tidyverse_style()`",
     "run `lintr::lint_package()` for checking code in depth",
-    "run `all_checks <- rhub::check_for_cran()`",
+    "run `all_checks <- rhub::rhub_check()`",
     "run `usethis::use_cran_comments()` and paste the output of `all_checks$cran_summary()` in the created file",
     "run `make build` & `make check` in terminal",
     "check folder `IsoriX.Rcheck` and file in there",
     "run `tests/local_tests.R` step-by-step",
-    "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (open Rproj from the bookdown folder and follow instructions in README)",
-    "update bookdown (open Rproj from the bookdown folder and follow instructions in README)",
+    "update manual using `devtools::build_manual(path = '../pkg_manuals')`",
+    "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (follow instructions in bookdown/README)",
+    "update bookdown (follow instructions in bookdown/README)",
     "write email to Google Group (https://groups.google.com/g/IsoriX)"
   )
 }
