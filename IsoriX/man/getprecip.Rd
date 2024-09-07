@@ -48,8 +48,10 @@ file again, specifying overwrite = TRUE to overwrite the corrupted file.
 \examples{
 
 ## To download the monthly precipitation
-## in your current working
+## in a temporary directory
 ## directory, just type:
-## getprecip(path = "~/Downloads/")
+## temp_folder <- tempdir()
+## getprecip(path = temp_folder)
 ## Mind that the file weights ca. 1GB!
+## For real use, replace temp_folder by your selected computer path
 }

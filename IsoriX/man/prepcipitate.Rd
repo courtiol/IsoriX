@@ -42,10 +42,11 @@ extent as the structural raster. This function is designed to be used with
 #                         aggregation_factor = 0)
 #
 ### We download the precipitation data:
-# getprecip(path = "~/Downloads/")
+# temp_folder <- tempdir()
+# getprecip(path = temp_folder)
 #
 ### We prepare the raster brick with all the precipitation data:
-# PrecipitationBrick <- prepcipitate(path = "~/Downloads/",
+# PrecipitationBrick <- prepcipitate(path = temp_folder,
 #                                    raster = StrRaster)
 #
 ### We plot the precipitation data:

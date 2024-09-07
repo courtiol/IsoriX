@@ -95,7 +95,7 @@ there to know how to cite them.
 \examples{
 
 ## To download the high resolution
-## raster at the default location, just type:
+## elevation raster in the current folder, just type:
 ## getelev()
 
 }
