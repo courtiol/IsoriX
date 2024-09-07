@@ -49,13 +49,13 @@ Importantly, this job should not break even if you work on a remote computer and
 
 Once this is done, you can check the output by opening "IsoriX_project/bookdown/docs/index.html" (if it did not open automatically).
 
-Then, you should serve the book:
+Then, if using RStudio, you may serve the book:
 
 ```{r, eval = FALSE}
 bookdown::serve_book()
 ```
 
-This will display the bookdown in RStudio and refresh on the fly any time you save your edits on a chapter.
+This displays the bookdown in RStudio and refreshes on the fly any time you save your edits on a chapter.
 This is much more convenient than calling `render_book()` repeatedly, but it breaks as soon as the connection with RStudio Server is interrupted.
 
 Once you are satisfied with the results, you may want to delete once again the content of the folder "output" and render (not serve) the book again.
