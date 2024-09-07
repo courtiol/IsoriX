@@ -152,7 +152,7 @@
   ## It extracts and summarizes the raster values using quantiles if needed.
   if (!inherits(var, "SpatRaster")) {
     return(var)
-  } else { #if (terra::inMemory(var)) 
+  } else { # if (terra::inMemory(var))
     return(as.numeric(terra::values(var)))
   }
 

@@ -2,8 +2,8 @@
 #'
 #' These functions plot objects created by IsoriX (with the exception of plot
 #' method for SpatRaster created using [`terra::terra`]. All plotting functions
-#' are based on the powerful package \pkg{lattice}. If instead you want to 
-#' use \pkg{ggplot2}, please follow the instructions on the 
+#' are based on the powerful package \pkg{lattice}. If instead you want to
+#' use \pkg{ggplot2}, please follow the instructions on the
 #' [online tutorial](https://bookdown.org/content/782/advanced.html#ggplot).
 #'
 #'
@@ -54,7 +54,7 @@
 #' if the name of the layer should be displayed or not. The element `title` is a
 #' string or a call used to define the rest of the title. By default it draws
 #' the delta value for hydrogen. Check the syntax of this default before trying
-#' to modify it. If you want to modify it for all plots, see [`getOption_IsoriX`]. 
+#' to modify it. If you want to modify it for all plots, see [`getOption_IsoriX`].
 #'
 #' The arguments `cutoff`, `sources`, `calibs`, `assigns`, `borders`, `mask`,
 #' and `mask2` are used to fine-tune additional layers that can be added to the

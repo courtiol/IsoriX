@@ -6,7 +6,7 @@
 #' example to perform assignments using the function [`isofind`]. The difference
 #' between `AssignDataBat` and `AssignDataBatRev` is that in the latter the bat
 #' fur isotope values were corrected to align with the current delta values for deuterium
-#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
 #' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' @name AssignDataBat
@@ -19,12 +19,12 @@
 #' |lat|(*numeric*)|Latitude coordinate (decimal degrees)|
 #' |long|(*numeric*)|Longitude coordinate (decimal degrees)|
 #' |sample_value|(*numeric*)|Hydrogen delta value of the tissue|
-#' 
+#'
 #' @seealso [`isofind`] to perform assignments
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 #' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 #' Migration with Stable Isotopes, second edition. Academic Press, London.
-#' 
+#'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
@@ -50,7 +50,7 @@ NULL
 #' perform assignments using the function [`isofind`].  The difference
 #' between `AssignDataBat2` and `AssignDataBat2Rev` is that in the latter the bat
 #' fur isotope values were corrected to align with the current delta values for deuterium
-#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
 #' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' @name AssignDataBat2
@@ -66,12 +66,12 @@ NULL
 #' @references Voigt CC, Lehmann D & Greif S (2015). Stable isotope
 #' ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
 #' Methods in Ecology and Evolution 6(11).
-#' 
+#'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
 #' doi: 10.1002/rcm.7893. PMID: 28475227.
-#' 
+#'
 #' @source data provided by Voigt CC, Lehmann D & Greif S.
 #' @keywords datasets
 #' @examples
@@ -91,8 +91,8 @@ NULL
 #' The data can be used as an example to fit a calibration model using the
 #' function [`calibfit`]. `CalibDataBatRev` is the same data but the bat
 #' fur isotope values were corrected to align with the current delta values for deuterium
-#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
-#' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium. 
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
+#' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' Users who wish to use their own dataset for calibration should create a
 #' *dataframe* of similar structure than these ones (only the column 'species'
@@ -132,7 +132,7 @@ NULL
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
 #' doi: 10.1002/rcm.7893. PMID: 28475227.
-#' 
+#'
 #' @keywords datasets
 #' @examples
 #'
@@ -147,10 +147,10 @@ NULL
 #' These datasets contain hydrogen delta values of fur keratin from sedentary
 #' bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
 #' These data can be used as an example to fit a calibration model using the
-#' function [`calibfit`]. The difference between `CalibDataBat2` and 
+#' function [`calibfit`]. The difference between `CalibDataBat2` and
 #' `CalibDataBat2Rev` is that in the latter the bat
 #' fur isotope values were corrected to align with the current delta values for deuterium
-#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893) 
+#' for keratin reference materials (Soto et al. 2017, https://doi.org/10.1002/rcm.7893)
 #' ensuring comparability between formerly and more recently normalized datasets of delta values for deuterium.
 #'
 #' Users who wish to use their own dataset for calibration should create a
@@ -177,11 +177,11 @@ NULL
 #'
 #' [`calibfit`] to fit a calibration model
 #' @references Popa-Lisseanu AG, Soergel K, Luckner A, Wassenaar LI, Ibanez C,
-#' Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G, 
+#' Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G,
 #' Myslajek RW, Juste J, Fonderflick J, Kelm D & Voigt CC (2012).
 #' A triple isotope approach to predict the breeding origins of European bats.
 #' PLoS ONE 7(1):e30388.
-#' 
+#'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
@@ -523,7 +523,7 @@ NULL
 #' @name GNIPDataDE
 #' @docType data
 #' @format The *dataframe* includes 8591 observations and the following
-#' variables: 
+#' variables:
 #' |   |   |   |
 #' |---|---|---|
 #' | lat | (*numeric*) | Latitude coordinate (decimal degrees)|

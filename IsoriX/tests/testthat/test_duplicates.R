@@ -2,22 +2,23 @@
 GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
 GermanFit <- isofit(
-    data = GNIPDataDEagg,
-    mean_model_fix = list(elev = FALSE, lat_abs = FALSE),
-    mean_model_rand = list(uncorr = FALSE, spatial = TRUE),
-    disp_model_rand = list(uncorr = FALSE, spatial = FALSE))
+  data = GNIPDataDEagg,
+  mean_model_fix = list(elev = FALSE, lat_abs = FALSE),
+  mean_model_rand = list(uncorr = FALSE, spatial = TRUE),
+  disp_model_rand = list(uncorr = FALSE, spatial = FALSE)
+)
 
 GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
 
 ## tests:
-test_that("prepsources() flags duplicated locations with different IDs", { 
+test_that("prepsources() flags duplicated locations with different IDs", {
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
   GNIPDataDE2 <- rbind(GNIPDataDE2, GNIPDataDE2)
   GNIPDataDE2$source_ID <- c("a", "a", "a", "b", "b", "b")
   expect_warning(prepsources(GNIPDataDE2))
 })
 
-test_that("prepsources() flags IDs actualy corresponding to different locations", { 
+test_that("prepsources() flags IDs actualy corresponding to different locations", {
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
   GNIPDataDE2 <- rbind(GNIPDataDE2, GNIPDataDE2)
   GNIPDataDE2$elev[1:3] <- 10
@@ -35,7 +36,9 @@ test_that("isofind() flags siteIDs actualy corresponding to different locations"
   AssignDataAlien2 <- AssignDataAlien[1:3, ]
   AssignDataAlien2 <- rbind(AssignDataAlien2, AssignDataAlien2)
   AssignDataAlien2$lat[1:3] <- 10
-  expect_error(isofind(data = AssignDataAlien2,
-                       isoscape = GermanScape,
-                       calibfit = NULL)) ## FIXME test combines various warnings
+  expect_error(isofind(
+    data = AssignDataAlien2,
+    isoscape = GermanScape,
+    calibfit = NULL
+  )) ## FIXME test combines various warnings
 })

@@ -168,18 +168,22 @@ prepsources <- function(data,
   test_unique_locations1 <- tapply(data$.location, as.character(data[, col_source_ID, drop = TRUE]), \(x) length(unique(x)) == 1)
   if (!all(test_unique_locations1)) {
     issues <- names(test_unique_locations1[!test_unique_locations1])
-    warning(c(paste("Different combinations of latitude, longitude and elevation share the same source_ID. Please consider fixing the data for the IDs:\n"),
-              paste(issues, collapse  = ", ")))
+    warning(c(
+      paste("Different combinations of latitude, longitude and elevation share the same source_ID. Please consider fixing the data for the IDs:\n"),
+      paste(issues, collapse = ", ")
+    ))
     rm(issues)
   }
   test_unique_locations2 <- tapply(as.character(data[, col_source_ID, drop = TRUE]), data$.location, \(x) length(unique(x)) == 1)
   if (!all(test_unique_locations2)) {
     issues_locations <- names(test_unique_locations2[!test_unique_locations2])
     issues_ID <- unique(as.character(data[, col_source_ID, drop = TRUE])[data$.location %in% issues_locations])
-    warning(c(paste("The same combination of latitude, longitude and elevation correspond to different source_ID. Please consider fixing the data for the IDs:\n"),
-              paste(issues_ID, collapse  = ", "),
-              paste("\nThese IDs correspond to the following sets of", col_lat, col_long, col_elev, ":\n"),
-              paste(issues_locations, collapse  = ", ")))
+    warning(c(
+      paste("The same combination of latitude, longitude and elevation correspond to different source_ID. Please consider fixing the data for the IDs:\n"),
+      paste(issues_ID, collapse = ", "),
+      paste("\nThese IDs correspond to the following sets of", col_lat, col_long, col_elev, ":\n"),
+      paste(issues_locations, collapse = ", ")
+    ))
     rm(issues_ID)
     rm(issues_locations)
   }

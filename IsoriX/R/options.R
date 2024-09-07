@@ -1,14 +1,14 @@
 #' Setting and displaying the options of the package
-#' 
-#' ** Information on the settings for the delta notation ** 
-#' 
-#' Note that if the delta notation is not successfully rendered on 
+#'
+#' ** Information on the settings for the delta notation **
+#'
+#' Note that if the delta notation is not successfully rendered on
 #' your plots (which can happen for various reasons related to fonts, encoding
-#' settings, graphic devices and perhaps more), you may try to use e.g. 
+#' settings, graphic devices and perhaps more), you may try to use e.g.
 #' `options_IsoriX(title_delta_notation = bquote(italic("\u03B4")**2*H[p]))`
 #' to override the default for all plots. The default does correspond to
-#' `options_IsoriX(title_delta_notation = bquote(delta**2*H))`. If you 
-#' are working with oxygen (rather than with deuterium), modifying the 
+#' `options_IsoriX(title_delta_notation = bquote(delta**2*H))`. If you
+#' are working with oxygen (rather than with deuterium), modifying the
 #' global option is also a good place to do so. You may do:
 #' `options_IsoriX(title_delta_notation = bquote(delta**18*O))`.
 #'
@@ -100,5 +100,5 @@ getOption_IsoriX <- function(x = NULL) {
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(title_delta_notation = bquote(delta**2*H), example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.data_IsoriX$IsoriX_options <- list(title_delta_notation = bquote(delta**2 * H), example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
 ## otherwise put 5
