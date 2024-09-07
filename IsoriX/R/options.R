@@ -16,11 +16,11 @@
 #' @aliases options options_IsoriX getOption_IsoriX
 #' @param ... A named value or a list of named values. The following values, with their defaults, are used:
 #' \describe{
-#'   \item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation}
+#'   \item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation.}
 #'   \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
-#'   \item{Ncpu}{An *integer* corresponding to the number of cores to be used (in functions that can handle parallel processing)}
-#'   \item{dont_ask}{A *logical* indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
-#'   \item{spaMM_debugmod}{A *logical* indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only)}
+#'   \item{Ncpu}{An *integer* corresponding to the number of cores to be used (in functions that can handle parallel processing).}
+#'   \item{dont_ask}{A *logical* indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only).}
+#'   \item{spaMM_debugmod}{A *logical* indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only).}
 #' }
 #'
 #' @return The options are invisibly returned in an object called `IsoriX:::.data_IsoriX$options`

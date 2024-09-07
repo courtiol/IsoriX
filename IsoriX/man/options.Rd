@@ -13,11 +13,11 @@ getOption_IsoriX(x = NULL)
 \arguments{
 \item{...}{A named value or a list of named values. The following values, with their defaults, are used:
 \describe{
-\item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation}
+\item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation.}
 \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
-\item{Ncpu}{An \emph{integer} corresponding to the number of cores to be used (in functions that can handle parallel processing)}
-\item{dont_ask}{A \emph{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only)}
-\item{spaMM_debugmod}{A \emph{logical} indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only)}
+\item{Ncpu}{An \emph{integer} corresponding to the number of cores to be used (in functions that can handle parallel processing).}
+\item{dont_ask}{A \emph{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only).}
+\item{spaMM_debugmod}{A \emph{logical} indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only).}
 }}
 
 \item{x}{A character string holding an option name.}
