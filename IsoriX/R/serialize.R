@@ -2,7 +2,7 @@
 #'
 #' Because files created with IsoriX contain [`terra::SpatRaster`] and
 #' [`terra::SpatVector`] objects, they cannot be saved using [`base::saveRDS`]
-#' or [`base::save`] functions. The reason is that objects created with [terra]
+#' or [`base::save`] functions. The reason is that objects created with [`terra::terra`]
 #' point to data stored in memory which are not contained in the R objects
 #' themselves. Adapting the approach implemented in the [`terra::terra`] package, we
 #' provide a wrapper for [`base::saveRDS`] and [`base::readRDS`] functions,

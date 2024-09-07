@@ -104,7 +104,7 @@ For \code{readRDS}, an R object.
 \description{
 Because files created with IsoriX contain \code{\link[terra:SpatRaster-class]{terra::SpatRaster}} and
 \code{\link[terra:SpatVector-class]{terra::SpatVector}} objects, they cannot be saved using \code{\link[base:readRDS]{base::saveRDS}}
-or \code{\link[base:save]{base::save}} functions. The reason is that objects created with \link{terra}
+or \code{\link[base:save]{base::save}} functions. The reason is that objects created with \code{\link[terra:terra-package]{terra::terra}}
 point to data stored in memory which are not contained in the R objects
 themselves. Adapting the approach implemented in the \code{\link[terra:terra-package]{terra::terra}} package, we
 provide a wrapper for \code{\link[base:readRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} functions,
