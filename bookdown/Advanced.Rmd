@@ -283,14 +283,14 @@ For several applications it is often recommend to produce *weighted isoscapes*.
 We consider here the case of *precipitation-weighted annual average isoscapes*, which is often recommended when isoscapes are derived from the isotopic composition measured in precipitation water.
 Yet, the instructions that follow could also be adapted to other type of isoscapes that must be weighted for other reasons.
 
-The rational for using such precipitation-weighted isoscape is that the amount of precipitation influences how much specific isotopologues of water molecules end up in the soil, with repercussion on the entire food web.
+The rationale for using such precipitation-weighted isoscape is that the amount of precipitation influences how much specific isotopologues of water molecules end up in the soil, with repercussion on the entire food web.
 Here the weights we will use are the monthly cumulative amount of precipitation water averaged over a year, but you could also adapt the procedure to use a different temporal resolution.
 
 You can follow two different approaches leading to weighted isoscapes.
 The two approaches differ according to when the weighting is being implemented in comparison to when the statistical models behind the isoscapes are being fitted:
 
 - the first strategy is to weigh the source data used to fit the isoscape. 
-In this case, only the step \@ref(sourceprep) & \@ref(processing) must be performed differently, but the rest of the entire workflow presented in chapters \@ref(isoscape), \@ref(calibration) & \@ref(assignment) remain the same.
+In this case, only the step \@ref(sourceprep) & \@ref(processing) must be performed differently, but the rest of the entire workflow presented in chapters \@ref(isoscape), \@ref(calibration) & \@ref(assignment) remains the same.
 
 - the second strategy is to build several non-weighted isoscapes (e.g. one for each month of the year) and then to combine and merge those isoscapes while applying the weights.
 
@@ -305,13 +305,13 @@ Yet, this variance becomes the response variable of the residual dispersion mode
 So how to compute it does impact the assignments.
 
 Statistically, the variance is internally used to model the variation between new observations that would be drawn from the true unknown isoscape at a given location.
-Biologically, taking the context of assignment of animals based on isoscapes derived from precipitation water, we would therefore want this variance to represent the variation between water sample drank by an animal within the local area where the animal grew the tissue used for measurements.
+Biologically, taking the context of assignment of animals based on isoscapes derived from precipitation water, we would therefore want this variance to represent the variation between water samples drank by an animal within the local area where the animal grew the tissue used for measurements.
 In practice, however, things are less clear since we often use precipitation data collected over several years simply because data are too sparse for any given year.
 
 In the example below, we chose to compute the residual variance as the variance between the yearly averages.
 This represents the variation between yearly watershed, themselves produced by summing up the precipitation with their isotopic signature from each month.
 
-Those uncertainties explain why we have not yet fully automatised the computation in IsoriX.
+Those uncertainties explain why we have not yet fully automated the computation in IsoriX.
 Instead, we want you to think carefully about the meaning of your mean isoscape and its residual variance, and perform the weighting you think is best for your situation.
 
 ### Preparing the source data
