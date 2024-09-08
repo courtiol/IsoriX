@@ -1,11 +1,11 @@
 # Contributing to IsoriX {#contrib}
 
-IsoriX was created with the goal to become a collective project.
+`IsoriX` was created with the goal to become a collective project.
 So far, it did not really pan out, but we are still hoping.
 
 Indeed, irrespective of your level of experience in R, statistics, English, or isotope research, **we are convinced that you could help!**
 
-Anything help, really: proposing new tutorial or documentation, fixing poor language, adding examples, fixing broken old stuff, creating new functions... the limit is only your creativity.
+Anything helps, really: proposing a new tutorial or documentation, fixing poor language, adding examples, fixing broken old stuff, creating new functions... the limit is only your creativity.
 
 You could also tell us what new features you would like, what you hate, what you think is buggy or too hard to understand and so forth.
 
@@ -13,7 +13,7 @@ To do all this, the best is to use the GitHub interface https://github.com/court
 On these GitHub pages you will be able to access all the code and to leave feedback in the page called "Issues".
 According to GitHub, new features are also considered as "issues" (for programmers it actually makes sense).
 
-From our perspective, the easiest way for you to make IsoriX better is to create so-called *pull requests* on GitHub (check this [short tutorial](https://www.r-bloggers.com/2019/01/a-newbies-guide-to-making-a-pull-request-for-an-r-package/) for how to).
+From our perspective, the easiest way for you to make `IsoriX` better is to create so-called *pull requests* on GitHub (check this [short tutorial](https://www.r-bloggers.com/2019/01/a-newbies-guide-to-making-a-pull-request-for-an-r-package/) for how to).
 If that seems too complicated and intimidating, feel free to directly send us code or text.
 
 Feel free to send anything you think would benefit the package.
