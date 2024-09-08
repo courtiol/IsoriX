@@ -2,7 +2,7 @@
 
 ## Struggles
 
-If you struggle, the best place to start is to read first this bookdown and try to reproduce each steps with the data provided in the package before moving on to use your own data.
+If you struggle, the best place to start is to read first this bookdown and try to reproduce each step with the data provided in the package before moving on to use your own data.
 
 The documentation present in the package should also help covering complex cases since it is more detailed when it comes to how to use each specific function.
 
@@ -11,8 +11,8 @@ If you still struggle after that, register to our [Google group](https://groups.
 If you want to contact us in confidence, just write to the email address provided when typing `maintainer(pkg = "IsoriX")`.
 
 You may also consider joining the *International Summer Course on Stable Isotopes in Nature* organised by David Soto, Christian Voigt and colleagues from the Leibniz IZW in Berlin.
-The summer school covers IsoriX as well as many other topics related to using isotopes.
-More info should be available [here](https://www.izw-berlin.de/en/summer-school-on-stable-isotopes-in-animal-ecology-en.htmlc).
+The summer school covers `IsoriX` as well as many other topics related to using isotopes.
+More info should be available [here](https://www.izw-berlin.de/en/summer-school-on-stable-isotopes-in-animal-ecology-en.html).
 
 
 ## Bugs
@@ -22,9 +22,9 @@ Please leave us an [issue](https://github.com/courtiol/IsoriX/issues) on GitHub.
 
 ## Feature requests
 
-We are aware that IsoriX is still missing a lot of key functions and we do what we can to fill the gaps progressively.
+We are aware that `IsoriX` is still missing a lot of key functions and we do what we can to fill the gaps progressively.
 
 If you badly need something that is not there, please detail your feature request as an [issue](https://github.com/courtiol/IsoriX/issues) on GitHub.
-Note that there is very little (wo)man power behind the development of IsoriX, so please understand that we cannot implement everyone's desires into code.
+Note that there is very little (wo)man power behind the development of `IsoriX`, so please understand that we cannot implement everyone's desires into code.
 
-For those who are willing to help us improving IsoriX, please check chapter \@ref(contrib).
+For those who are willing to help us improving `IsoriX`, please check chapter \@ref(contrib).
