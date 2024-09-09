@@ -3,17 +3,17 @@
 ## Preparing the source data {#sourceprep}
 
 To get an isoscape, you need data capturing how the isotope composition varies in space.
-In this documentation, we will use data provided by the Global Networks of Isotopes in Precipitation (GNIP), but you can use whatever source of data you prefer, or have access to.
+In this documentation, we will use data provided by the Global Network of Isotopes in Precipitation (GNIP), but you can use whatever source of data you prefer, or have access to.
 In any case, do make sure to format your data the same way we do it.
 Precisely, your dataset should be a `data.frame` (or a `tibble`) with the same columns as the ones shown below in section \@ref(GNIPDataDE).
 
 ### The GNIP database {#GNIP}
 
-You can download precipitation isotope data for hydrogen and oxygen from the Global Networks of Isotopes in Precipitation (GNIP).
+You can download precipitation isotope data for hydrogen and oxygen from the Global Network of Isotopes in Precipitation (GNIP).
 
-This step must be done outside IsoriX since there is no application programming interface for GNIP.
+This step must be done outside `IsoriX` since there is no application programming interface for GNIP.
 
-To get to know what the GNIP go there and explore related resources:
+To get to know what the GNIP is, go there and explore related resources:
 https://www.iaea.org/services/networks/gnip
 
 The GNIP data are free to download after the registration process is completed.
@@ -21,15 +21,15 @@ The following link will bring you to the right place to create an account:
 https://websso.iaea.org/IM/UserRegistrationPage.aspx?returnpage=http://nucleus.iaea.org/wiser
 
 Once your account has been activated, download the data you need from the WISER interface:
-https://nucleus.iaea.org/wiser/index.aspx (Tab Datasets)
+https://nucleus.iaea.org/wiser/index (Tab Datasets)
 
 Last time we checked, downloads were limited to 5,000 records per batch, which makes the compilation of huge databases fastidious.
-GNIP promised to come up, in the future, with datasets directly prepared for IsoriX to save you the trouble.
+GNIP promised to come up, in the future, with datasets directly prepared for `IsoriX` to save you the trouble.
 We are eagerly waiting for this to happen!
 
 ### A toy example: GNIPDataDE {#GNIPDataDE}
 
-Within IsoriX we have already included a small extract from GNIP corresponds to $\delta^2H$ values for Germany.
+Within `IsoriX` we have already included a small extract from GNIP corresponding to $\delta^2H$ values for Germany.
 The dataset has kindly been provided by Christine Stumpp and you can use it to try out the functions of the package without having to worry about getting data.
 We won't use this dataset here but it illustrates the structure of the data needed to fit an isoscape.
 Here is what this dataset looks like:
@@ -41,9 +41,9 @@ GNIPDataDE
 
 ### A real example: GNIPDataEU {#GNIPDataEU}
 
-We are going to show you how to prepare a dataset for IsoriX starting from a raw extract from GNIP.
+We are going to show you how to prepare a dataset for `IsoriX` starting from a raw extract from GNIP.
 For this, we will use a file in which we have compiled the GNIP data for $\delta^2H$ values for the whole world.
-We are unfortunately not being able to share these data with you, but you can download these data yourself as explained in section \@ref(GNIP).
+We are unfortunately unable to share these data with you, but you can download these data yourself as explained in section \@ref(GNIP).
 
 We first import the data into R:
 
@@ -59,7 +59,7 @@ For example, the first row contains the following information:
 kable(t(rawGNIP[1, ])) |> kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
-We are now going to reshape these data step-by-step to make them ready for IsoriX.
+We are now going to reshape these data step-by-step to make them ready for `IsoriX`.
 We first reformat some temporal information:
 
 ```{r GNIP_date_extraction}
@@ -74,12 +74,12 @@ rawGNIP$Month       <- as.numeric(format(as.Date(rawGNIP$Date), "%m"))
 ```
 
 Mind that, since we downloaded that file, WISER has renamed `Begin.Of.Period` to `Begin.of.Period` (small case for the "o" in `of`), so you may need to adjust that.
-Do pay attention to other possible change that may have also occurred in WISER.
+Do pay attention to other possible changes that may have also occurred in WISER.
 
 Second, we identify the rows for which crucial information is missing.
 Because we are going to make an isoscape based on deuterium measurements, we only check for the availability of data for this isotope in particular.
 If you work on oxygen, you will have to adjust the script accordingly.
-We also check that the intervals during which precipitation water has been collected for each measurement correspond roughly to one month:
+We also check that the intervals during which precipitation water has been collected for each measurement corresponds roughly to one month:
 
 ```{r GNIP_bad_rows}
 rows_missing_or_unreliable_info <- is.na(rawGNIP$H2) |
@@ -102,7 +102,7 @@ Fourth, we turn the variable `Name.of.Site` into a factor:
 GNIPData$Name.of.Site <- as.factor(GNIPData$Name.of.Site)
 ```
 
-Last, we rename the columns to conform to the general IsoriX format and we check that the data seem correct:
+Last, we rename the columns to conform to the general `IsoriX` format and we check that the data seems correct:
 
 ```{r GNIP_change_column_names}
 colnames(GNIPData) <- c("source_ID", "lat", "long", "elev", "year", "month", "source_value")
@@ -119,13 +119,13 @@ As you can see, the format is the same as the one for `GNIPDataDE`, which is pre
 
 ## Processing the source data {#processing}
 
-In order to build your isoscape with IsoriX, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, over a time period.
+In order to build your isoscape with `IsoriX`, your dataset must be aggregated in such a way that each observation corresponds to the mean and variance of isotope values collected in one location, over a time period.
 
-To aggregate the raw data, you can choose to aggregate your dataset on your own (e.g. using the package [**dplyr**](https://dplyr.tidyverse.org/index.html)), or to use our function `prepsources()`.
+To aggregate the raw data, you can either choose to aggregate your dataset on your own (e.g. using the package [**`dplyr`**](https://dplyr.tidyverse.org/index.html)), or to use our function `prepsources()`.
 This function allows you to apply some restriction on the data, such as selecting only particular months, years, or locations.
 
 The function `prepsources()` also allows you to aggregate the data separately for different time periods (see section \@ref(weighted)).
-Each time period define the temporal range of the data used to prepare a single set of isoscapes.
+Each time period defines the temporal range of the data used to prepare a single set of isoscapes.
 Most of the time people are only interested in a single time period (e.g. data over all years they have been collected), so we will not use this more advanced feature for this tutorial.
 
 Here we use the function `prepsources()` to select from the dataset `GNIPData` the observations available across all years (i.e. a single time period) within an extent of latitude and longitude that covers roughly Europe.
@@ -162,13 +162,13 @@ The column `var_source_value` gives the variance between monthly measurements sp
 
 Isoscapes are predictions stemming from statistical models.
 In this section we will show you how to fit such models based on the dataset we prepared in section \@ref(processing).
-We refer to *set of isoscapes* because IsoriX does not create a single isoscape predicting the spatial distribution of isotopes (i.e. the main isoscape), but it also creates other isoscapes related to the main isoscape.
-For example, it also creates an isoscape indicating how reliable the predictions are in any particular locations.
+We refer to *set of isoscapes* because `IsoriX` does not create a single isoscape predicting the spatial distribution of isotopes (i.e. the main isoscape), but it also creates other isoscapes related to the main isoscape.
+For example, it also creates an isoscape indicating how reliable the predictions are in any particular location.
 If a single dataset is being used (as in section \@ref(processing)), then a single set of isoscapes needs to be built.
 Instead, if several datasets have been prepared, then you will have to accordingly build multiple sets of isoscapes (see section \@ref(weighted) in this case).
 
 
-To fit the geostatisical model required to build a single set of isoscapes, you need to use the function `isofit()`. 
+To fit the geostatistical models required to build a single set of isoscapes, you need to use the function `isofit()`. 
 The function `isofit()` has several parameters that can be adjusted to fit different models (see `?isofit`).
 Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting:
 
@@ -210,7 +210,7 @@ You can also include a path to this name so to store the file wherever you want.
 This name can be different from the name of the object but here we stick to the same name for clarity.
 The last argument `compress =` is optional; it allows for the creation of smaller files without loosing any content.
 The only drawback of compressing is that the compression and the decompression can take some time.
-Here the object is relativelly quick to compress/decompress, so let us compress it and save a bit of space on the hard drive.
+Here the object is relatively quick to compress/decompress, so let us compress it and save a bit of space on the hard drive.
 
 For loading a saved object (in a new session of R for example), just use the function `readRDS()` as follows:
 
@@ -218,12 +218,12 @@ For loading a saved object (in a new session of R for example), just use the fun
 EuropeFit <- readRDS(file = "EuropeFit.rds")
 ```
 
-_Be careful_, we do not recommend you to reuse saved object after updating either IsoriX, or spaMM, or both.
-After one of such update, the best practice to make sure that every thing is working properly is to refit all your models.
+_Be careful_, we do not recommend you to reuse saved objects after updating either `IsoriX`, or `spaMM`, or both.
+After one of such updates, the best practice to make sure that every thing is working properly is to refit all your models.
 By doing this you may also benefit from potentially new improvements we would have implemented. 
 
-There is another way to save and load object in R, which is to use the function `save()` and `load()`.
-However, it is better to get to used to the functions `saveRDS()` and `readRDS()` because only those can be used to store objects that contain spatial information (which we will do below).
+There is another way to save and load objects in R, which is to use the function `save()` and `load()`.
+However, it is better to get used to the functions `saveRDS()` and `readRDS()` because only those can be used to store objects that contain spatial information (which we will do below).
 
 ## Examining the fitted models
 
@@ -243,9 +243,9 @@ options_IsoriX(old_opt)
 
 The first plot shows the relationship between the observed and predicted response for the fitted model called `mean_fit`, which corresponds to the fit of the mean isotopic values.
 The second plot shows the same thing for the model called `disp_fit`, which corresponds to the fit of the residual dispersion variance in the isotope values.
-Here you can see, in these first two plots points distributed practically along the 1:1 diagonal.
+Here you can see, in these first two plots the points are distributed practically along the 1:1 diagonal.
 A different slope would suggest a high residual variance of the data.
-We do not expect the points to fall exactly on the 1:1 lines because the model fit does not attempt to predict perfectly the observations used during the fit.
+We do not expect the points to fall exactly on the 1:1 line because the model fit does not attempt to predict perfectly the observations used during the fit.
 Instead, the model fit produces a smooth surface that aims at reaching a maximum predictive power for locations not considered during the fit.
 
 The third and fourth plots show the variation in spatial autocorrelation with the distance between locations captured by `mean_fit` and `disp_fit`, respectively.
@@ -264,15 +264,15 @@ EuropeFit
 
 The object `EuropeFit` created in section \@ref(isofit) is a list containing the two fits aforementioned: `mean_fit` and `disp_fit`.
 This is why you see information about those two corresponding fits.
-These summary tables are created behind the scenes by [**spaMM**](https://kimura.univ-montp2.fr/~rousset/spaMM.htm), so, learning a little about spaMM and mixed models is useful to derive meanings from these outputs.
+These summary tables are created behind the scenes by [**`spaMM`**](https://gitlab.mbb.univ-montp2.fr/francois/spamm-ref), so, learning a little about `spaMM` and mixed models is useful to derive meanings from these outputs.
 (We are also planning to write an extensive description of model outputs to guide you.)
 
 
 ### Doing more stuff with the fitted models
 
-Each of model fit is an object of class `HLfit` which has been created by spaMM.
-You can thus directly manipulate those fits using spaMM for advance usage.
-For example, if you want to compare different models using information criterion, you can call the `AIC()` function implemented by spaMM by simply typing:
+Each of the fitted models is an object of class `HLfit` which has been created by `spaMM.`
+You can thus directly manipulate those fits using `spaMM` for advanced usage.
+For example, if you want to compare different models using the information criterion, you can call the `AIC()` function implemented by `spaMM` by simply typing:
 
 ```{r AIC EuropeFit, eval = FALSE}
 AIC(EuropeFit$mean_fit)
@@ -282,7 +282,7 @@ AIC(EuropeFit$mean_fit)
 print(AIC(EuropeFit$mean_fit, verbose = FALSE))
 ```
 
-Note that we re-exported some spaMM functions for you to use without the need to load the package spaMM (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all spaMM functions.
+Note that we re-exported some `spaMM` functions for you to use without the need to load the package `spaMM` (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all `spaMM` functions.
 
 
 ## Building the isoscapes
@@ -291,10 +291,10 @@ Note that we re-exported some spaMM functions for you to use without the need to
 
 To build the isoscape using the geostatistical models fitted above, you need to provide the function `isoscape()` with a structural raster.
 Such raster defines the locations at which we want to predict the isotopic values.
-It must also contains the values for the predictors used in the geostatistical models at such locations.
+It must also contain the values for the predictors used in the geostatistical models at such locations.
 
 We will thus start by preparing such structural raster.
-Here, as a basis for the structural raster, we will download a high resolution elevation raster from Internet using our function `getelev`:
+Here, as a basis for the structural raster, we will download a high resolution elevation raster from the internet using our function `getelev`:
 
 ```{r getelev fake, eval = FALSE}
 getelev(file = "input/elevation_world_z5.tif")
@@ -307,9 +307,9 @@ if (!file.exists("input/elevation_world_z5.tif")) {
 ```
 
 You may not need to pass any argument to `getelev()`, but here we chose to define ourselves where to store the elevation raster and how to call such file using `file = "input/elevation_EU_z5.tif"`.
-We did not alter the default resolution, which is high enough for our example, but doing so would be easy: one simply needs to define a value lower or larger than 5 for an argument called `z` (see `?getelev()` for details and [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution) for information on what value for the zoom parameter `z` really implies).
+We did not alter the default resolution, which is high enough for our example, but doing so would be easy: one simply needs to define a value lower or larger than 5 for the zoom parameter `z` (see `?getelev()` for details and [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution) for information on what the value for the zoom parameter `z` really implies).
 
-We then import the high resolution elevation raster and transform it into an R object of class `SpatRaster` object using the package [**terra**](https://rspatial.github.io/terra/index.html):
+We then import the high resolution elevation raster and transform it into an R object of class `SpatRaster` using the package [**`terra`**](https://rspatial.github.io/terra/index.html):
 
 ```{r elevationraster, dev='CairoPNG'}
 ## we import the high resolution raster
@@ -326,12 +326,12 @@ Then, you may need to *crop* and *resize* this raster to the appropriate size be
 
 Cropping is used to define a rectangular area over which we will predict the isotope values.
 If the area you define to build your isoscapes is too small, you may miss crucial information.
-For example, a set of isoscapes that cover an area that is too small may lead you to miss the real origin of your migratory organisms during the assignment step.
+For example, a set of isoscapes that covers an area that is too small may lead you to miss the real origin of your migratory organisms during the assignment step.
 Similarly, if the area to be used for building the isoscapes is too large, you may extrapolate and the model will thus create unreliable predictions.
 
-Resizing the raster is used to reduce its resolution by aggregating neighboring cells in the raster.
+Resizing the raster is used to reduce its resolution by aggregating neighboring cells.
 If the selected resolution is too large, computations may take too much time or memory to work.
-If the selected resolution is too coarse, you may smooth too much the predictors over the landscape (e.g. the peaks and valleys of a mountain chain will be reduced to a plateau), which will lead to a unrealistic isoscapes that are too smooth.
+If the selected resolution is too coarse, you may smooth too much the predictors over the landscape (e.g. the peaks and valleys of a mountain chain will be reduced to a plateau), which will lead to unrealistic isoscapes that are too smooth.
 To crop and resize the structural raster, you can use our function `prepraster()`.
 
 ::: {.rmdnote}
@@ -364,14 +364,14 @@ if (file.exists("output/ElevEurope.rds")) {
 }
 ```
 
-You may see that we also chose here to reduce the resolution of the elevation raster by choosing an aggregation factor of 4.
+You may see that we also reduced the resolution of the elevation raster by choosing an aggregation factor of 4.
 We recommend to first use a large aggregation factor (e.g. 10) to draft your workflow and quickly notice errors in your code.
-Once things are working as they should, we recommend you then use the lowest aggregation factor that you hardware and patience can handle (i.e. 0 if possible).
-As mentioned above, if you need isoscapes with a even greater resolution, use `getelev()` with a value of the parameter `z` that is higher than 5 (an increment of 1 -- i.e. `z = 6` already makes a big difference as shown [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution)).
-Here we set the `aggregation_factor` to 4 as something in between which produces plots nice enough for this tutorial, without being too heavy for us to recompile this bookdown quickly; but, for real applications, you should use a higher resolution than used here.
+Once things are working as they should, we recommend you to then use the lowest aggregation factor that your hardware and patience can handle (i.e. 0 if possible).
+As mentioned above, if you need isoscapes with an even greater resolution, use `getelev()` with a value of the parameter `z` that is higher than 5 (an increment of 1 -- i.e. `z = 6` already makes a big difference as shown [here](https://github.com/tilezen/joerd/blob/master/docs/data-sources.md#what-is-the-ground-resolution)).
+Here we set the `aggregation_factor` to 4 to produce plots nice enough for this tutorial, without being too heavy for us to recompile this bookdown quickly; but, for real applications, you should use a higher resolution.
 
 You can easily check what your structural raster looks like by plotting it.
-Compared to the map plotting above for `ElevWorld`, we will now draw a slightly more advanced map using the functions of the packages [**lattice**](http://lattice.r-forge.r-project.org) and [**rasterVis**](https://oscarperpinan.github.io/rastervis/) which we made available in IsoriX:
+Compared to the map plotting above for `ElevWorld`, we will now draw a slightly more advanced map using the functions of the packages [**`lattice`**](http://lattice.r-forge.r-project.org) and [**`rasterVis`**](https://oscarperpinan.github.io/rastervis/) which we made available in `IsoriX`:
 
 ```{r plot_ElevEurope, dev='CairoPNG'}
 levelplot(ElevEurope,
@@ -382,7 +382,7 @@ layer(lpolygon(CountryBorders, border = "white")) +
 layer(lpolygon(OceanMask, border = "white", col = "lightgrey"))
 ```
 
-Note that, in this raster, the highest elevation does not correspond to the highest elevations that are known in the depicted area (the maximal value in the raster is `r round(max(values(ElevEurope)))`m, but Mount Elbrus is 5642m tall).
+Note that, in this raster, the highest elevation does not correspond to the actual highest elevation known in the depicted area (the maximal value in the raster is `r round(max(values(ElevEurope)))`m, but Mount Elbrus is 5642m high).
 This is not a bug but an expected result of aggregation.
 Indeed, each cell of the raster only contains a single value which corresponds to a summary statistic (the mean) applied to all locations aggregated together in the cell.
 
@@ -423,8 +423,8 @@ EuropeIsoscape$isoscapes
 
 ## Plotting the isoscapes
 
-One particular strength of IsoriX is the ability to produce nice looking and highly customisable plots of the isoscapes and assignment maps.
-All plotting functions in IsoriX present default settings so that a simple call to `plot()` on your object is sufficient to generate a nice looking plot.
+One particular strength of `IsoriX` is the ability to produce nice looking and highly customisable plots of the isoscapes and assignment maps.
+All plotting functions in `IsoriX` present default settings so that a simple call to `plot()` on your object is sufficient to generate a nice looking plot.
 
 For example, here you can obtain the main isoscape by typing:
 
@@ -432,7 +432,7 @@ For example, here you can obtain the main isoscape by typing:
 plot(EuropeIsoscape)
 ```
 
-This shows the prediction of the average isotope value in space (i.e. the point predictions).
+This shows the prediction of the average isotope value in space (i.e. the point prediction).
 
 For more information about how to improve your plots, check the section \@ref(betterplots).
 
@@ -447,9 +447,9 @@ plot(EuropeIsoscape, which = "mean_residVar")
 ```
 
 This first isoscape quantifies the temporal variation at each location.
-Here the variation represents the between month variance spanning across years, but it will not always be so as it depends on what how you aggregated the data (see section \@ref(processing)).
+Here the variation represents the between month variance spanning across years, but it will not always be so as it depends on how you aggregated the data (see section \@ref(processing)).
 Interestingly, you can see that the variance is large and spatially structured.
-Believe or not, but most methods of assignment alternative to IsoriX consider such variance to be equal to zero!
+Believe it or not, but most methods of assignment alternative to `IsoriX` consider such variance to be equal to zero!
 
 ```{r plot_predVar, dev='CairoPNG'}
 plot(EuropeIsoscape, which = "mean_predVar")
