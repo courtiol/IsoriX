@@ -87,7 +87,7 @@ AssignedBats$sample$stat$Nnoc_1
 ```
 
 We now detail the variance associated to the test statistic.
-Under the null hypothesis (the isotope value at location of origin = the isotope value at the candidate location), the variance of the test statistic is the variance of the difference between the two isoscape values that defines it.
+Under the null hypothesis the isotope value at location of origin equals the isotope value at the candidate location, the variance of the test statistic is the variance of the difference between these two isoscape values.
 The variance of the test statistic is also stored as a raster (e.g. `AssignedBats$sample$stat_var$Nnoc_1`).
 
 In the appendix of our book chapter [@IsoriX], we show that such variance of the assignment test depends on up to four terms (some may be omitted depending on the calibration method considered):
@@ -200,7 +200,7 @@ plot(AssignedBats2, who = "group")
 ### More information on the assignment plots
 
 The plotting method uses the information from the assignment test to define confidence regions.
-By default, a 95%-confidence region is being displayed in grey, which means that the non-grey areas should contain the true location of origin with a 95% probability.
+By default, a 5%-confidence region is being displayed in grey, which means that the non-grey areas should contain the true location of origin with a 95% probability.
 You can alter this setting using the argument `level`.
 
 Another default setting considered by `IsoriX`, is to apply a mask to hide the outcome of the geographic assignment over the large water bodies.

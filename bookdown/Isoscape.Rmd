@@ -270,7 +270,7 @@ These summary tables are created behind the scenes by [**`spaMM`**](https://gitl
 
 ### Doing more stuff with the fitted models
 
-Each of the fitted models is an object of class `HLfit` which has been created by `spaMM.`
+Each of the fitted models is an object of class `HLfit` which has been created by `spaMM`.
 You can thus directly manipulate those fits using `spaMM` for advanced usage.
 For example, if you want to compare different models using the information criterion, you can call the `AIC()` function implemented by `spaMM` by simply typing:
 

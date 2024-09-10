@@ -59,7 +59,7 @@ remotes::install_github("courtiol/IsoriX/IsoriX", dependencies = TRUE)
 ```
 
 ::: rmdnote
-**Geeky note**: Note that the double mention of `IsoriX` in `"courtiol/IsoriX/IsoriX"` is not a typo: the name is present twice because on our `IsoriX` repository in GitHub the content of the R package is located inside a sub-folder also called `IsoriX`.
+**Geeky note**: Note that the double mention of 'IsoriX' in `"courtiol/IsoriX/IsoriX"` is not a typo: the name is present twice because on our 'IsoriX' repository in GitHub the content of the R package is located inside a sub-folder also called 'IsoriX'.
 :::
 
 ## Dependencies on other R packages

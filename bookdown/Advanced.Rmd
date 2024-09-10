@@ -7,7 +7,7 @@ The goal of this chapter is to illustrate such possibilities.
 
 ### Lattice? No thanks, I want to use **ggplot**! {#ggplot}
 
-If lattice is not for you and you are more familiar with [**`ggplot2`**](https://ggplot2.tidyverse.org/index.html), you can use it.
+If `lattice` is not for you and you are more familiar with [**`ggplot2`**](https://ggplot2.tidyverse.org/index.html), you can use it.
 We did not implement specific functions for doing so, but since `IsoriX` spatial objects are now made with [**`terra`**](https://rspatial.github.io/terra/), it is relatively straightforward.
 
 Here, is a first example using the recent package [**`tidyterra`**](https://dieghernan.github.io/tidyterra/) which creates a plot of the mean isoscape:
@@ -146,7 +146,7 @@ It may take a very long time and it may not fully work.
 It is better to directly plot the figures into files.
 
 ::: {.rmdnote}
-**Geeky note**: Since the lattice system is not part of `ggplot2`, the function `ggsave()` should not be used (unless you are really using `ggplot2` as shown in section \@ref(ggplot)).
+**Geeky note**: Since the `lattice` system is not part of `ggplot2`, the function `ggsave()` should not be used (unless you are really using `ggplot2` as shown in section \@ref(ggplot)).
 :::
 
 
@@ -403,7 +403,7 @@ GNIPData_with_precipEUagg_yearly |>
   as.data.frame() -> GNIPData_with_precipEUagg
 ```
 
-Note that since the variance represents variation between years, the locations for which a single year of data were discarded.
+Note that since the variance represents variation between years, the locations represented by a single year of data were discarded.
 
 We can check the data we just created:
 

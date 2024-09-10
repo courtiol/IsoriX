@@ -67,13 +67,13 @@ More detailed information on the alternative calibration methods, the data they 
 
 Obtaining good data for the calibration fit is very important for obtaining a precise assignment. You should aim for data as close as possible to the following ideal situation:
 
-1. the data are from many calibration samples covering the entire assignment area. Thus your data should span the whole range of each covariate considered in the models, which should limit risks associated with extrapolation when using the fitted calibration model during the geographic assignment.
+1. The data are from many calibration samples covering the entire assignment area. Thus your data should span the whole range of each covariate considered in the models, which should limit risks associated with extrapolation when using the fitted calibration model during the geographic assignment.
 
-2. the data correspond to many repeated measurements per location, which allows for a reliable estimation of the inter-sample variance in isotopic composition. Such variance captures the effect of biological variation in the isotopic signature of the calibration samples at each site.
+2. The data correspond to many repeated measurements per location, which allows for a reliable estimation of the inter-sample variance in isotopic composition. Such variance captures the effect of biological variation in the isotopic signature of the calibration samples at each site.
 
-3. the timing of the sampling events for the calibration samples matches the overall sampling period of the source isotope data.
+3. The timing of the sampling events for the calibration samples matches the overall sampling period of the source isotope data.
 
-4. the data are collected from samples directly comparable to those that need to be assigned; such as organisms from the same species and the same physiological state. 
+4. The data are collected from samples directly comparable to those that need to be assigned; such as organisms from the same species and the same physiological state. 
 
 As an example, we will use here the calibration dataset `CalibDataBatRev` that is provided with `IsoriX`. This dataset contains stable isotope ratios of the non-exchangeable portion of hydrogen in fur keratin of non-migratory bats sampled across Europe:
 
