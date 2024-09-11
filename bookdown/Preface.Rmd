@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the official documentation for the R package [__`IsoriX`__](https://github.com/courtiol/IsoriX).
+Welcome to the official documentation for the R package [**`IsoriX`**](https://github.com/courtiol/IsoriX).
 This bookdown (a particular form of R documentation) explains how to use `IsoriX` and provide information about the underlying methods.
 The content will keep evolving so to remain up to date with the current version of `IsoriX`, as well as to become progressively more complete and accurate.
 In early versions of `IsoriX`, the documentation was included as vignettes attached to the package, but we have decided to move the content here.
