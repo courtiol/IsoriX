@@ -195,7 +195,7 @@ plot(AssignedBats2, who = "group")
 ### More information on the assignment plots
 
 The plotting method uses the information from the assignment test to define confidence regions.
-By default, a 5%-confidence region is being displayed in grey, which means that the non-grey areas should contain the true location of origin with a 95% probability.
+By default, a region corresponding to the most unlikely 5% is being displayed in grey, which means that the non-grey areas should contain the true location of origin with a 95% probability.
 You can alter this setting using the argument `level`.
 
 Another default setting considered by `IsoriX`, is to apply a mask to hide the outcome of the geographic assignment over the large water bodies.
