@@ -1,6 +1,6 @@
 # Calibration procedure {#calibration}
 
-To perform the geographic assignment of samples of unknown origins (i.e. _assignment samples_), you need to produce an isoscape that describes how the isotope composition of _source samples_ varies in space (see chapter \@ref(isoscape)).
+To perform the geographic assignment of samples of unknown origins (i.e. *assignment samples*), you need to produce an isoscape that describes how the isotope composition of *source samples* varies in space (see chapter \@ref(isoscape)).
 If the assignment samples are of different nature than the source samples (e.g. the source samples are precipitation water and the assignment samples are some animals), you will also need to account for such a discrepancy.
 Doing so is needed because looking at the isotopic composition in any candidate assignment location no longer reflects the isotopic composition of samples that may come from such a location (e.g. due to isotopic fractionation along the trophic chain).
 
