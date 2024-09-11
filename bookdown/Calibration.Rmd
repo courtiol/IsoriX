@@ -5,7 +5,7 @@ If the assignment samples are of different nature than the source samples (e.g. 
 Doing so is needed because looking at the isotopic composition in any candidate assignment location no longer reflects the isotopic composition of samples that may come from such a location (e.g. due to isotopic fractionation along the trophic chain).
 
 In `IsoriX`, the function performing the calibration is called `calibfit()`.
-The goal of this function is to characterize the relationship between the isotopic composition of samples similar to those that you want to assign but of known origin (e.g. sedentary individuals) -- which we call _calibration samples_ -- and the isotopic composition of the environment where these samples are collected.
+The goal of this function is to characterize the relationship between the isotopic composition of samples similar to those that you want to assign but of known origin (e.g. sedentary individuals) -- which we call *calibration samples* -- and the isotopic composition of the environment where these samples are collected.
 During the assignment step (detailed in chapter \@ref(assignment)), the relationship established by `calibfit()` will be used to rescale the mean isoscape so that it represents the isotopic composition of the samples to be assigned.
 
 We call the statistical model behind the calibration the _calibration model_ and the fitted model the _calibration fit_.
