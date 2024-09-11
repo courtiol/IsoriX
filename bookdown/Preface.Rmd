@@ -31,7 +31,9 @@ Stephanie is the person who initiated this project and who has co-supervised man
 Alex and Stephanie are both based in the Leibniz Institute for Zoo and Wildlife Research in Berlin (Germany).
 François is based at the Institut des Sciences de l'Evolution in Montpellier (France).
 
-We are indebted to other scientists who have helped us one way or another and the extended `IsoriX` family consists of all the authors listed in the main `IsoriX` publication [@IsoriX]:
+The extended `IsoriX` team also includes students that helped us with the coding and proofreading (Colin Vullioud, Leonie Walter),
+users and participants of the Leibniz-IZW summer schools on stable isotopes who made feedbacks,
+as well as all the authors listed in the main `IsoriX` publication [@IsoriX]:
 
 ```{r citation}
 print(citation(package = "IsoriX")[[1]], bibtex = FALSE)

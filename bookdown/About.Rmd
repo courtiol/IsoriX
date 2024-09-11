@@ -1,6 +1,9 @@
 # About this book
 
-We wrote this documentation in R Markdown and built it using the R package [**bookdown**](https://github.com/rstudio/bookdown).
+We wrote this documentation in R Markdown and built it using the R package [**`bookdown`**](https://github.com/rstudio/bookdown).
+
+You can check what has changed since the last time you read it using GitHub.
+For example, this information for the page you are reading right now is available [here](https://github.com/courtiol/IsoriX/blame/main/bookdown/About.Rmd).
 
 All the R code used to compile this bookdown ran within the following R session:
 

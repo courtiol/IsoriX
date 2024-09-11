@@ -40,7 +40,7 @@ The development version corresponds to a work in progress and should thus be con
 It may contain new features and fixes to bugs identified in the current stable version but the new code may not be very mature and the documentation may be lagging behind.
 It must thus be used at your own risk and/or under the guidance of the `IsoriX` developers.
 
-If you want to install such development version, the easiest is to install the package [`remotes`](https://remotes.r-lib.org/) (if it is not already present on your system) and to use that package to install the copy of `IsoriX` stored on GitHub:
+If you want to install such development version, the easiest is to install the package [**`remotes`**](https://remotes.r-lib.org/) (if it is not already present on your system) and to use that package to install the copy of `IsoriX` stored on GitHub:
 
 ```{r install_devel, eval = FALSE}
 ## install remotes if missing
@@ -114,7 +114,8 @@ If that is the case, try to install the problematic packages on their own (check
 A work around is to simply not rely on the problematic packages.
 That is possible as long as the problematic packages are among those that `IsoriX` "suggests" (or among those that are required by such suggested packages) and not packages that `IsoriX` "imports".
 
-The list of such packages that are not crucial for `IsoriX` (but that offer additional functionalities) is this: *`r sort(setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE)))`*.
+The list of such packages that are not crucial for `IsoriX` (but that offer additional functionalities) is this:
+`r paste0("\x60", sort(setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE))), "\x60")`.
 
 Since `IsoriX` could live without them and still perform all essential tasks, to circumvent installation issues on your system you may try to install `IsoriX` again without them:
 
