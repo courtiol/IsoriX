@@ -82,7 +82,7 @@ AssignedBats$sample$stat$Nnoc_1
 ```
 
 We now detail the variance associated to the test statistic.
-Under the null hypothesis the isotope value at location of origin equals the isotope value at the candidate location, the variance of the test statistic is the variance of the difference between these two isoscape values.
+Under the null hypothesis, we just saw that the isotope value at location of origin equals the isotope value at the candidate location. The variance of the test statistic is thus the variance of the difference between these two isoscape values.
 The variance of the test statistic is also stored as a raster (e.g. `AssignedBats$sample$stat_var$Nnoc_1`).
 
 In the appendix of our book chapter [@IsoriX], we show that such variance of the assignment test depends on up to four terms (some may be omitted depending on the calibration method considered):
