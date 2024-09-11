@@ -1,18 +1,18 @@
 # Calibration procedure {#calibration}
 
-To perform the geographic assignment of samples of unknown origins (i.e. _assignment samples_), you need to produce an isoscape that describes how the isotope composition of _source samples_ vary in space (see chapter \@ref(isoscape)).
+To perform the geographic assignment of samples of unknown origins (i.e. *assignment samples*), you need to produce an isoscape that describes how the isotope composition of *source samples* varies in space (see chapter \@ref(isoscape)).
 If the assignment samples are of different nature than the source samples (e.g. the source samples are precipitation water and the assignment samples are some animals), you will also need to account for such a discrepancy.
-Doing so is needed because looking at the isotopic composition in any candidate assignment location no longer reflects the isotopic composition of samples than may come from such a location (e.g. due to isotopic fractionation along the trophic chain).
+Doing so is needed because looking at the isotopic composition in any candidate assignment location no longer reflects the isotopic composition of samples that may come from such a location (e.g. due to isotopic fractionation along the trophic chain).
 
-In IsoriX, the function performing the calibration is called `calibfit()`.
-The goal of this function is to characterize the relationship between the isotopic composition of samples similar to those that you want to assign but of known origin (e.g. sedentary individuals)-- which we call _calibration samples_-- and the isotopic composition of the environment where these samples are collected.
+In `IsoriX`, the function performing the calibration is called `calibfit()`.
+The goal of this function is to characterize the relationship between the isotopic composition of samples similar to those that you want to assign but of known origin (e.g. sedentary individuals) -- which we call *calibration samples* -- and the isotopic composition of the environment where these samples are collected.
 During the assignment step (detailed in chapter \@ref(assignment)), the relationship established by `calibfit()` will be used to rescale the mean isoscape so that it represents the isotopic composition of the samples to be assigned.
 
 We call the statistical model behind the calibration the _calibration model_ and the fitted model the _calibration fit_.
 In other publications, the latter is also referred to as the calibration function, calibration curve, or transfer function.
 
-In IsoriX, we consider the fit of a statistical model predicting the isotopic composition of calibration samples from the isotopic composition of their environment.
-Others sometimes do the reverse; that is, to perform their assignments they rely on the fit of a model predicting the isotopic composition of the environment from the isotopic composition of calibration samples.
+In `IsoriX`, the calibration fit predicts the isotopic composition of calibration samples from the isotopic composition of their environment.
+Others sometimes do the reverse; that is, to perform their assignments they rely on a calibration fit predicting the isotopic composition of the environment from the isotopic composition of calibration samples.
 Whatever term you may use to refer to the calibration in your paper (calibration fit, calibration function, calibration curve or transfer function), do make it clear for others in which direction the fit looks at the problem.
 This matters because the direction dictates how the estimates associated with the fit can then be used to perform an assignment.
 
@@ -20,7 +20,7 @@ This matters because the direction dictates how the estimates associated with th
 ## Choosing the calibration method
 
 The data behind any calibration fit ultimately derive from the isotopic composition of calibration samples and that of the environment in the same (known) location.
-Yet, because there are different ways to get these data, we introduced since IsoriX version 0.8.3 the possibility to choose among four alternatives to generate a calibration fit.
+Yet, because there are different ways to get these data, we introduced since `IsoriX version 0.8.3` the possibility to choose among four alternatives to generate a calibration fit.
 We call these methods 'wild', 'lab', 'desk' and 'desk_inverse'.
 
 It is important for you to understand which method is most appropriate for your utilization since different methods imply different assumptions which translate into different statistics used to perform the assignment step.
@@ -38,14 +38,14 @@ The method **'lab'** is the one to use in two main situations:
 - you measured the isotopic composition of your calibration samples and you also know with great confidence the isotopic composition in their environment (either because you measured it or because your calibration individuals grew in a lab where the food and water has known isotopic composition).
 - you measured nothing but want to use datapoints of a published calibration relationship.
 
-While the method 'wild' and the method 'lab' both neglect measurement uncertainties, the 'wild' method does account that the isotopic composition at the location where the calibration samples have been collected is predicted with some (estimated) uncertainty.
+While the method 'wild' and the method 'lab' both neglect measurement uncertainties, the 'wild' method does account for the fact that the isotopic composition at the location where the calibration samples have been collected is predicted with some (estimated) uncertainty.
 In contrast, the 'lab' method does not account for any uncertainty in the isotopic composition of the environment.
-An important corollary is that using the lab method to recycle the calibration made by others comes at the cost of neglecting uncertainty in the isotopic composition of the environment.
+An important corollary is that using the 'lab' method to recycle the calibration made by others comes at the cost of neglecting uncertainty in the isotopic composition of the environment.
 
-The method **'desk'** and **'desk_inverse'** are methods to be use in case you have no measurements of any isotopic composition, cannot deduce measurements from a published plot, and thus must rely on summary statistics (e.g. regression coefficients) found in a publication.
+The methods **'desk'** and **'desk_inverse'** are to be used in case you have no measurements of any isotopic composition, cannot deduce measurements from a published plot, and thus must rely on summary statistics (e.g. regression coefficients) found in a publication.
 The former (desk) can accept summary statistics from a model predicting the isotopic composition of the sample values from that of the environment.
 The latter (desk inverse) can accept summary statistics from a model predicting the isotopic composition of the environment from those of the calibration samples.
-Reliable assignments can be obtained using such methods provided that you provide all the summary statistics they require.
+Reliable assignments can be obtained using such methods provided that you supply all the summary statistics they require.
 If not, uncertainty terms will be neglected during the assignment step.
 
 We can summarize when to use which method by a simple table:
@@ -65,17 +65,17 @@ More detailed information on the alternative calibration methods, the data they 
 
 ## Preparing the data (method 'wild')
 
-Obtaining good data for the calibration fit is very important for obtaining a precise assignments. You should aim for data as close as possible to the following ideal situation:
+Obtaining good data for the calibration fit is very important for obtaining a precise assignment. You should aim for data as close as possible to the following ideal situation:
 
-1. the data are from many calibration samples covering the entire assignment area. Thus your data should span the whole range of each covariate considered in the models, which should limit risks associated with extrapolation when using the fitted calibration model during the geographic assignment.
+1. The data are from many calibration samples covering the entire assignment area. Thus your data should span the whole range of each covariate considered in the models, which should limit risks associated with extrapolation when using the fitted calibration model during the geographic assignment.
 
-2. the data correspond to many repeated measurements per location, which allows for a reliable estimation of the inter-sample variance in isotopic composition. Such variance captures the effect of biological variation in the isotopic signature of the calibration samples at each site.
+2. The data correspond to many repeated measurements per location, which allows for a reliable estimation of the inter-sample variance in isotopic composition. Such variance captures the effect of biological variation in the isotopic signature of the calibration samples at each site.
 
-3. the timing of the sampling events for the calibration samples matches the overall sampling period of the source isotope data.
+3. The timing of the sampling events for the calibration samples matches the overall sampling period of the source isotope data.
 
-4. the data are collected from samples directly comparable to those that need to be assigned; such as organisms from the same species and the same physiological state. Indeed, the relationship between the isotopic composition of an organism and that of its environment is known to be influenced by such factors.
+4. The data are collected from samples directly comparable to those that need to be assigned; such as organisms from the same species and the same physiological state. 
 
-As an example, we will use here the calibration dataset `CalibDataBatRev` that is provided with IsoriX. This dataset contains stable isotope ratios of the non-exchangeable portion of hydrogen in fur keratin of non-migratory bats sampled across Europe:
+As an example, we will use here the calibration dataset `CalibDataBatRev` that is provided with `IsoriX`. This dataset contains stable isotope ratios of the non-exchangeable portion of hydrogen in fur keratin of non-migratory bats sampled across Europe:
 
 ```{r CalibDataBat fake, eval = FALSE}
 head(CalibDataBatRev)
@@ -85,7 +85,7 @@ head(CalibDataBatRev)
 kable(head(CalibDataBatRev)) |>  kable_styling(bootstrap_options = "striped", font_size = 15)
 ```
 
-For your own applications, make sure that the dataset you use has the same structure. That is, the calibration dataset must contain (as long as you use the calibration method 'wild') a column `site_ID` of class factor describing the sampling site, the columns containing all covariates required for the geostatistical models to predict the isoscape values at these locations (so here `long`, `lat`, and `elev`), and a column `sample_value` containing the measured isotope values of the calibration samples. An important constraint to keep in mind is that only measurements on multiple calibration samples per location can capture variation between different samples exposed to the same isotope environment. Therefore, IsoriX needs multiple calibration samples for several (not necessarily all) sampling locations. That means that some levels of `site_ID` must be repeated on several rows. If laboratory measurements are replicated, we recommend to consider the mean measurement value for each sampling unit (here for each bat) instead of considering multiple rows for a given calibration sample in order to avoid confounding biological replicates from technical ones. If you do so, note however that this implies the technical variance to be neglected (which should be fine because it is usually very low unless something went wrong in the lab).
+For your own applications, make sure that the dataset you use has the same structure. That is, the calibration dataset must contain (as long as you use the calibration method 'wild') a column `site_ID` of class 'factor' describing the sampling site, the columns containing all covariates required for the geostatistical models to predict the isoscape values at these locations (so here `long`, `lat`, and `elev`), and a column `sample_value` containing the measured isotope values of the calibration samples. An important constraint to keep in mind is that only measurements on multiple calibration samples per location can capture variation between different samples exposed to the same isotope environment. Therefore, `IsoriX` needs multiple calibration samples for several (not necessarily all) sampling locations. That means that some levels of `site_ID` must be repeated on several rows. If laboratory measurements are replicated, we recommend to consider the mean measurement value for each sampling unit (here for each bat) instead of considering multiple rows for a given calibration sample in order to avoid confounding biological replicates from technical ones. If you do so, note however that this implies the technical variance to be neglected (which should be fine because it is usually very low unless something went wrong in the lab).
 
 ## Fitting the calibration model (method 'wild')
 
@@ -111,7 +111,7 @@ CalibBats
 ```
 
 The model formula will differ depending on the calibration method you used.
-Here, for the method 'wild', the calibration model that is fitted is a particular linear mixed-effects model (LMM). The particularity lies in the calibration model controlling for the uncertainty of the isoscape predictions.
+Here, for the method 'wild', the calibration model that is fitted is a particular Linear Mixed-effects Model (LMM). The particularity lies in the calibration model controlling for the uncertainty of the isoscape predictions.
 The function `calibfit()` not only considers the prediction variance associated with each prediction from the mean model (which varies spatially) but also the prediction covariances between the different predictions of the isotope values across the isoscape.
 Moreover, the variation between calibration samples is captured by the residual variance of the calibration fit.
 

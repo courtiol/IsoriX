@@ -1,16 +1,16 @@
 # Advanced usage {#advanced}
 
-Chapters \@ref(isoscape), \@ref(calibration) & \@ref(assignment) illustrated a simple workflow, but IsoriX allows for much more complex workflows.
+Chapters \@ref(isoscape), \@ref(calibration) & \@ref(assignment) illustrated a simple workflow, but `IsoriX` allows for much more complex workflows.
 The goal of this chapter is to illustrate such possibilities.
 
 ## Working with plots {#betterplots}
 
 ### Lattice? No thanks, I want to use **ggplot**! {#ggplot}
 
-If lattice is not for you and are more familiar with [**ggplot2**](https://ggplot2.tidyverse.org/index.html), you can use it.
-We did not implement specific functions for doing so, but since IsoriX spatial objects are now made with [**terra**](https://rspatial.github.io/terra/), it is relativelly straightforward.
+If `lattice` is not for you and you are more familiar with [**`ggplot2`**](https://ggplot2.tidyverse.org/index.html), you can use it.
+We did not implement specific functions for doing so, but since `IsoriX` spatial objects are now made with [**`terra`**](https://rspatial.github.io/terra/), it is relatively straightforward.
 
-Here, is a first example using the recent pacakge [**tidyterra**](https://dieghernan.github.io/tidyterra/) which creates a plot of the mean isoscape:
+Here, is a first example using the recent package [**`tidyterra`**](https://dieghernan.github.io/tidyterra/) which creates a plot of the mean isoscape:
 
 ```{r plot_EuropeIsoscape_terra, dev='CairoPNG'}
 library(tidyterra)
@@ -26,7 +26,7 @@ ggplot() +
   labs(fill = getOption_IsoriX("title_delta_notation"))
 ```
 
-Here is the same thing not using tidyterra but instead converting the IsoriX objects on the fly into [**sf**](https://r-spatial.github.io/sf/) objects (for `SpatVector`) and into [**stars**](https://r-spatial.github.io/stars/) objects (for `SpatRaster`):
+Here is the same thing not using `tidyterra` but instead converting the `IsoriX` objects on the fly into [**`sf`**](https://r-spatial.github.io/sf/) objects (for `SpatVector`) and into [**`stars`**](https://r-spatial.github.io/stars/) objects (for `SpatRaster`):
 
 ```{r plot_EuropeIsoscape_sf, dev='CairoPNG'}
 library(stars)
@@ -43,9 +43,9 @@ ggplot() +
   labs(fill = getOption_IsoriX("title_delta_notation"))
 ```
 
-The benefit of using the combination ggplot2, sf & stars (as opposed to using tidyterra or even, alas, the functions of IsoriX) is that you will find plenty more tutorials online for how to draw nice maps that way.
+The benefit of using the combination `ggplot2`, `sf` & `stars` (as opposed to using `tidyterra` or even, alas, the functions of `IsoriX`) is that you will find plenty more tutorials online for how to draw nice maps that way.
 
-Since tidyterra and ggplot2 have both overridden functions that IsoriX or this bookdown rely on, let's unload these packages to avoid issues:
+Since `tidyterra` and `ggplot2` have both overridden functions that `IsoriX` or this bookdown rely on, let's unload these packages to avoid issues:
 
 ```{r detach_ggplot2}
 detach(package:tidyterra)
@@ -54,10 +54,10 @@ detach(package:ggplot2)
 
 ### Fiddling with IsoriX plotting functions {#plotisoscapes}
 
-If you do want to use our IsoriX plotting functions, note that it is possible to change pretty much anything on the existing plot; have a look at `?plots`.
+If you do want to use our `IsoriX` plotting functions, note that it is possible to change pretty much anything on the existing plot; have a look at `?plots`.
 The help file should provide you with all the details you need to customize your plots.
 
-Here are a couples of example:
+Here are a couple of examples:
 
 ```{r plot_EuropeIsoscape2, dev='CairoPNG'}
 plot(EuropeIsoscape,
@@ -68,7 +68,7 @@ plot(EuropeIsoscape,
 ```
 
 You can see that it is possible to provide a function defining the colors using the argument `fn` from the list `palette`.
-Note that when it is set to `NULL`, the famous palette [**viridis**](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
+Note that when it is set to `NULL`, the famous palette [**`viridis`**](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is used instead of our default palette.
 So here is another example, using such a palette:
 
 ```{r plot_EuropeIsoscape3, dev='CairoPNG'}
@@ -80,8 +80,8 @@ plot(EuropeIsoscape,
      palette = list(range = c(-130, 20), step = 30, fn = NULL))  
 ```
 
-If you need to change things on the plots that are not covered by the plotting functions from IsoriX, it may be worth getting the basics of how to use [**lattice**](http://lattice.r-forge.r-project.org/index.php).
-The package lattice is very powerful but not always very intuitive to use, so we are going to list here a few tips.
+If you need to change things on the plots that are not covered by the plotting functions from `IsoriX`, it may be worth getting the basics of how to use [**`lattice`**](http://lattice.r-forge.r-project.org/index.php).
+The package `lattice` is very powerful but not always very intuitive to use, so we are going to list here a few tips.
 
 The easiest way to modify a plot is to start saving the plot into an object:
 ```{r plot_EuropeIsoscape4, dev='CairoPNG'}
@@ -95,7 +95,7 @@ For example, you can increase the size of the text in the previous plot as follo
 update(isoscape_plot, par.settings = list(fontsize = list(text = 20)))
 ```
 
-As an entry point to see what can be changed in a lattice plot, you should consult the help page that shows up when typing `?lattice::xyplot` in your R console.
+As an entry point to see what can be changed in a `lattice` plot, you should consult the help page that shows up when typing `?lattice::xyplot` in your R console.
 
 Multipanel plots created after assignments can be modified using the same principle.
 For example, you can rename the title of each panel and modify the organisation of the panels as follows:
@@ -117,7 +117,7 @@ update(assignment_plot,
        )
 ```
 
-If you want to add things on top of the plots, you can do it as you would do it for any plot created using lattice.
+If you want to add things on top of the plots, you can do it as you would do it for any plot created using `lattice`.
 For example, consider you want to add the point that is the most compatible with the unknown origin of bats (see chapter \@ref(assignment)).
 The first step is to recover the coordinates for such a point:
 
@@ -138,7 +138,7 @@ plot(AssignedBats2, who = "group", plot = FALSE) +
 
 Note that the new symbol is present on the right edge of the plot.
 
-### Why you should save plots & how to export nice looking plots? {#Cairo}
+### Why you should save plots & how to export nice looking plots {#Cairo}
 
 Displaying the plot directly using R is very inefficient when it comes to high resolution isoscapes.
 It may take a very long time and it may not fully work.
@@ -146,13 +146,13 @@ It may take a very long time and it may not fully work.
 It is better to directly plot the figures into files.
 
 ::: {.rmdnote}
-**Geeky note**: Since the lattice system is not part of ggplot2, the function `ggsave()` should not be used (unless you are really using ggplot2 as shown in section \@ref(ggplot)).
+**Geeky note**: Since the `lattice` system is not part of `ggplot2`, the function `ggsave()` should not be used (unless you are really using `ggplot2` as shown in section \@ref(ggplot)).
 :::
 
 
 #### Using base R graphics devices functions
 
-A first option is to save your plot using one of the base R function such as `png()` or `tiff()`.
+A first option is to save your plot using one of the base R functions such as `png()` or `tiff()`.
 
 For example, you could do:
 
@@ -184,28 +184,28 @@ If your screen is Full-HD, try it and display the plot in full screen to get bet
 If you don't know what resolution your screen has, you can visit https://screenresolutiontest.com.
 
 The parameter `res` is very useful as it rescales the line and fonts in the plot.
-So if everything is too small just increase the value and if everything looks too bold and ugly, decreases it.
+So if everything is too small just increase the value and if everything looks too bold and ugly, decrease it.
 
 You also should specify the `filename`.
 If like us, you don't indicate the path in the `filename`, the file will be stored in your working directory which you can easily see by typing `getwd()`.
 So after running such code, simply go in your working directory and open the right file.
 
-We prefer the PNGs files since they are much lighter than their TIFF counterpart, but one format may lead to a better output for you.
-The nice thing about these functions is that there do not require you to install anything extra.
+We prefer the PNG files since they are much lighter than their TIFF counterpart, but one format may lead to a better output for you.
+The nice thing about these functions is that they do not require you to install anything extra.
 They also allow you to set the resolution, which is sometimes asked by journals.
 So if that works for you do stick to that.
 
 Unfortunately, depending on your system, usual plotting functions provided with R may not always work well for high resolution rasters.
 For example, using `png()` or `tiff()` may lead to display artifacts showing some random white lines.
 Changing the value of the argument `res` is often enough to get rid of these lines.
-Another more effective way is to use the package Cairo.
+Another more effective way is to use the package `Cairo`.
 
 
-#### Using Cairo graphics devices functions
+#### Using functions from the Cairo graphics device
 
-One set of plotting functions that seem to never suffer from white line artifacts are those provided by the package [**Cairo**](http://www.rforge.net/Cairo/).
+One set of plotting functions that seem to never suffer from white line artifacts are those provided by the package [**`Cairo`**](http://www.rforge.net/Cairo/).
 
-To use such functions, you first must make sure Cairo is installed and can be loaded:
+To use such functions, you first must make sure `Cairo` is installed and can be loaded:
 
 ```{r load Cairo}
 library(Cairo)
@@ -213,15 +213,20 @@ library(Cairo)
 
 If it complains, try to see why.
 If you have not installed it, just install the package.
+
+```{r install Cairo}
+install.packages("Cairo")
+```
+
 One noticeable source of trouble comes with MacOS.
-On this operating system, the package Cairo does not always install/load successfully.
-Problems happen when the program [**xquartz**](https://www.xquartz.org/) is not present on the system.
-This program used to be shipped by defaults on old version of MacOS but it is no longer the case.
-So if you are in trouble, please start by installing xquartz (outside R).
+On this operating system, the package `Cairo` does not always install/load successfully.
+Problems happen when the program [**`xquartz`**](https://www.xquartz.org/) is not present on the system.
+This program used to be shipped by defaults on old versions of MacOS but this is no longer the case.
+So if you are in trouble, please start by installing `xquartz` (outside R).
 
-If Cairo is installed and loaded successfully, typing `?Cairo` will show you all possible file formats you can save your plots into (PNG, JPG, TIFF, PDF...).
+If `Cairo` is installed and loaded successfully, typing `?Cairo` will show you all possible file formats you can save your plots into (PNG, JPG, TIFF, PDF...).
 
-Here we will show how to save our isoscape both as a PNG and as a PDF.
+Here we will show how to save our isoscapes both as a PNG and as a PDF.
 
 Let us start by creating a PNG file with the main isoscape:
 
@@ -234,10 +239,10 @@ plot(EuropeIsoscape)
 dev.off()
 ```
 
-As you can see, once you have managed to install Cairo it becomes as simple as using the base R functions.
+As you can see, once you have managed to install `Cairo` it becomes as simple as using the base R functions.
 
 PDFs derived from raster objects tend to be heavy and to be badly rendered by most viewing software, so we recommend you to stick to PNGs.
-Yet, if you must, here is how to create PDFs using Cairo:
+Yet, if you must, here is how to create PDFs using `Cairo`:
 
 ```{r Cairo PDF, results = FALSE, eval = FALSE, results = FALSE}
 CairoPDF(file = "output/Myisoscape.pdf",
@@ -251,17 +256,17 @@ The arguments slightly differ with the function creating PNGs.
 The argument setting the name of the file is now called `file` and not `filename`, the resolution has now to be provided in inches and the argument `res` does not exist for PDFs, but default results are usually fine.
 
 ::: {.rmdnote}
-**Geeky note:** You can also use the Cairo graphics device to improve the rendering of documents produced using [**knitr**](https://github.com/yihui/knitr), which is precisely what we are doing to render the plots of this bookdown.
+**Geeky note:** You can also use the `Cairo` graphics device to improve the rendering of documents produced using [**`knitr`**](https://github.com/yihui/knitr), which is precisely what we are doing to render the plots of this bookdown.
 The trick is to simply add `dev='CairoPNG'` in the option of the chunks producing plots.
 :::
 
 
 ## Exporting spatial objects to GIS {#GIS}
 
-It is straightforward to export all spatial objects created by IsoriX into formats compatible with main software for Geographic Information System (GIS).
+It is straightforward to export all spatial objects created by `IsoriX` into formats compatible with main software for Geographic Information System (GIS).
 This can be done using multiple R packages.
 
-Here is an example of how to export a GTiff raster using the package [**terra**](https://rspatial.org/spatial/5-files.html#writing-raster-data):
+Here is an example of how to export a GTiff raster using the package [**`terra`**](https://rspatial.org/spatial/5-files.html#writing-raster-data):
 
 ```{r save_raster_GIS_fake, eval=FALSE}
 library(terra)
@@ -279,11 +284,11 @@ terra::writeRaster(EuropeIsoscape$isoscapes$mean,
 
 ## Weighted isoscapes {#weighted}
 
-For several applications it is often recommend to produce *weighted isoscapes*.
+For several applications it is often recommended to produce *weighted isoscapes*.
 We consider here the case of *precipitation-weighted annual average isoscapes*, which is often recommended when isoscapes are derived from the isotopic composition measured in precipitation water.
 Yet, the instructions that follow could also be adapted to other type of isoscapes that must be weighted for other reasons.
 
-The rationale for using such precipitation-weighted isoscape is that the amount of precipitation influences how much specific isotopologues of water molecules end up in the soil, with repercussion on the entire food web.
+The rationale for using such precipitation-weighted isoscapes is that the amount of precipitation influences how much specific isotopologues of water molecules end up in the soil, with repercussion on the entire food web.
 Here the weights we will use are the monthly cumulative amount of precipitation water averaged over a year, but you could also adapt the procedure to use a different temporal resolution.
 
 You can follow two different approaches leading to weighted isoscapes.
@@ -296,12 +301,12 @@ In this case, only the step \@ref(sourceprep) & \@ref(processing) must be perfor
 
 It is not clear to us which of these two approaches is better (please let us know if you do!).
 To our knowledge the first approach is the one used by most, but this could be because it is easier to implement.
-We suspect the second approach may be better, but at the time of the writing, IsoriX does not yet allow to use that method in workflows involving assignments.
+We suspect the second approach may be better, but at the time of the writing, `IsoriX` does not yet allow to use that method in workflows involving assignments.
 So for now, we will keep things simple and stick to describing the first method.
 
 Even for this first method though, a key detail remains unclear: what the variance associated with the averages should characterize?
 Other approaches neglect this residual variance, which is why little is known about it.
-Yet, this variance becomes the response variable of the residual dispersion model in IsoriX.
+Yet, this variance becomes the response variable of the residual dispersion model in `IsoriX`.
 So how to compute it does impact the assignments.
 
 Statistically, the variance is internally used to model the variation between new observations that would be drawn from the true unknown isoscape at a given location.
@@ -311,7 +316,7 @@ In practice, however, things are less clear since we often use precipitation dat
 In the example below, we chose to compute the residual variance as the variance between the yearly averages.
 This represents the variation between yearly watershed, themselves produced by summing up the precipitation with their isotopic signature from each month.
 
-Those uncertainties explain why we have not yet fully automated the computation in IsoriX.
+Those uncertainties explain why we have not yet fully automated the computation in `IsoriX`.
 Instead, we want you to think carefully about the meaning of your mean isoscape and its residual variance, and perform the weighting you think is best for your situation.
 
 ### Preparing the source data
@@ -353,7 +358,7 @@ The row number is still high although `r nrow(GNIPData) - nrow(GNIPData_with_pre
 
 We can now process the source data we just prepared.
 For now the function `prepsources()` does not handle the weighting for the reasons stated above. 
-We will use here the package [**dplyr**](https://dplyr.tidyverse.org/) for that since it makes aggregation much more straightforward than otherwise.
+We will use here the package [**`dplyr`**](https://dplyr.tidyverse.org/) for that since it makes aggregation much more straightforward than otherwise.
 We start by aggregating and weighting the data over the different months per year:
 
 ```{r prepsource_precip, message=FALSE}
@@ -383,7 +388,7 @@ GNIPData_with_precipEUagg_yearly
 We then aggregate the data further, for each location, by computing averages over the different years and the between-year variance.
 That way, we attempt to represent an average year with its uncertainty.
 
-We can again use dplyr to do this, as follows:
+We can again use `dplyr` to do this, as follows:
 
 ```{r weighting1}
 GNIPData_with_precipEUagg_yearly |>
@@ -398,7 +403,7 @@ GNIPData_with_precipEUagg_yearly |>
   as.data.frame() -> GNIPData_with_precipEUagg
 ```
 
-Note that since the variance represents variation between years, the locations for which a single year of data were discared.
+Note that since the variance represents variation between years, the locations represented by a single year of data were discarded.
 
 We can check the data we just created:
 
@@ -466,8 +471,8 @@ levelplot(EuropeIsoscape_weighted$isoscapes$mean_residVar - EuropeIsoscape$isosc
   layer(lpolygon(OceanMask, col = "lightgrey"))
 ```
 
-As you can see the residual variance is considerable smaller for the precipitation-weighted annual average isoscape than for the non-weighted isoscape.
-This is because the residual variance now represents the variation in isotopic values _between years_ and no longer the total variation combining both the variation across years and months.
+As you can see the residual variance is considerably smaller for the precipitation-weighted annual average isoscape than for the non-weighted isoscape.
+This is because the residual variance now represents the variation in isotopic values _between years_ and no longer the total variation combining both the variations across years and months.
 
 You could then continue with the calibration and assignment steps exactly as described in the chapters \@ref(calibration) & \@ref(assignment).
 For this you simply need to replace the object `EuropeIsoscape` used in these chapters by the object `EuropeIsoscape_weighted` just created.
