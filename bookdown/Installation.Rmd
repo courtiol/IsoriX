@@ -14,7 +14,7 @@ Once your R and all installed R packages are up to date, you are ready to instal
 When it comes to installing `IsoriX`, you have to choose between installing either the stable version or the development version.
 We recommend you to use the stable version unless advised otherwise by us (e.g. following discussions on our [mailing list](https://groups.google.com/g/IsoriX)).
 
-The stable version doesn’t change often, but as the name suggests, it should be reliable and free of major bugs.
+The stable version doesn’t change often, but as the name suggests, it should be reliable and free of major new bugs.
 The development version changes more often and corresponds to work in progress.
 Once the development version is mature enough, a new stable version is created and a new round of development starts from scratch.
 
