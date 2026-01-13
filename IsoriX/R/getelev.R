@@ -95,6 +95,7 @@ getelev <- function(file = "~/elevation_world_z5.tif",
     margin_long_extra <- (long_max - long_min) * margin_pct / 100
     margin_lat_extra <- (lat_max - lat_min) * margin_pct / 100
 
+    ## correction in case applying margins increase boundaries outside -180 180 -90 90
     if (long_min > -180) {
       long_min <- max(c(-180, long_min - margin_long_extra))
     }
