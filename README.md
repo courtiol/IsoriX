@@ -10,7 +10,7 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 
 
 ## Where to learn about IsoriX?
-You can start by reading our [bookdown](https://bookdown.org/content/782/)!
+You can start by reading our [bookdown](https://courtiol-isorix.share.connect.posit.cloud)!
 
 Then, it may not be a bad idea to also have a look at our papers:
 [here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
@@ -61,7 +61,7 @@ Off course, replace the numbers (`"192.123.4.5:6789"`) with those corresponding 
 
 
 ## How can you contribute?
-There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests (see our [bookdown](https://bookdown.org/content/782/) for details).
+There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests (see our [bookdown](https://courtiol-isorix.share.connect.posit.cloud) for details).
 
 
 ## Main packages behind IsoriX
