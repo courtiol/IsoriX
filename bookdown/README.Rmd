@@ -8,7 +8,7 @@ editor_options:
 
 This is the development folder for the documentation about IsoriX.
 
-You can find the compiled (i.e., readable) version of this documentation [here](https://bookdown.org/content/782/).
+You can find the compiled (i.e., readable) version of this documentation [here](https://courtiol-isorix.share.connect.posit.cloud/).
 
 ## Notes for developers
 
