@@ -50,7 +50,8 @@ Once this is done, you can check the output by opening
 “IsoriX\_project/bookdown/docs/index.html” (if it did not open
 automatically).
 
-Then, if using RStudio, you may serve the book:
+Then, if using RStudio, you may serve the book (it also creates the gif
+of the starting page):
 
     bookdown::serve_book()
 
@@ -59,12 +60,8 @@ you save your edits on a chapter. This is much more convenient than
 calling `render_book()` repeatedly, but it breaks as soon as the
 connection with RStudio Server is interrupted.
 
-Once you are satisfied with the results, you may want to delete once
-again the content of the folder “output” and render (not serve) the book
-again.
-
-Pull, commit and push the changes and then publish the content to update
-the website using:
+Once you are satisfied with the results, pull, commit and push the
+changes and then publish the content to update the website using:
 
     rsconnect::connectCloudUser()
     bookdown::publish_book(name = "IsoriX")
