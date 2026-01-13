@@ -6,6 +6,7 @@ See [main page](https://courtiol-isorix.share.connect.posit.cloud/) for descript
 
 ## Steps before new release
 
+  - run `gitcreds::gitcreds_set()` to enter the GitHub token.
   - run `usethis::use_release_issue(version = "XX")` with `"XX"` the future release number.
   - follow the steps in the issue created by the previous command.
 
