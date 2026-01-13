@@ -14,7 +14,7 @@
 #' performing the construction of an isoscape and the assignment of organisms of
 #' unknown geographic origin(s) based on their isotopic signature. We advise you
 #' to also read the detailed book chapter we wrote (in press), as well as our
-#' [online documentation](https://bookdown.org/content/782/), which essentially
+#' [online documentation](https://courtiol-isorix.share.connect.posit.cloud/), which essentially
 #' cover the same material in a more detailed manner. You should also read the
 #' dedicated help pages of the functions you are using.
 #'

@@ -35,6 +35,7 @@ if (!"dplyr" %in% installed.packages()[, 1]) install.packages("dplyr")
 if (!"sf" %in% installed.packages()[, 1]) install.packages("sf")
 if (!"stars" %in% installed.packages()[, 1]) install.packages("stars")
 if (!"tidyterra" %in% installed.packages()[, 1]) install.packages("tidyterra")
+if (!"Cairo" %in% installed.packages()[, 1]) install.packages("Cairo")
 ```
 
 Then, render the full book once, so as to create all the content stored in the folder "output".
@@ -63,6 +64,7 @@ Once you are satisfied with the results, you may want to delete once again the c
 Pull, commit and push the changes and then publish the content to update the website using:
 
 ```{r, eval = FALSE}
+rsconnect::connectCloudUser()
 bookdown::publish_book(name = "IsoriX")
 ```
 

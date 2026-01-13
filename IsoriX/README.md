@@ -2,7 +2,7 @@
 
 This is the development folder for the R package IsoriX.
 
-See [main page](https://github.com/courtiol/IsoriX) for description and installation procedure.
+See [main page](https://courtiol-isorix.share.connect.posit.cloud/) for description and installation procedure.
 
 ## Steps before new release
 

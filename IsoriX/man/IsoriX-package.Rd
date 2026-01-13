@@ -21,7 +21,7 @@ Below, we describe briefly the main steps of the workflow that aims at
 performing the construction of an isoscape and the assignment of organisms of
 unknown geographic origin(s) based on their isotopic signature. We advise you
 to also read the detailed book chapter we wrote (in press), as well as our
-\href{https://bookdown.org/content/782/}{online documentation}, which essentially
+\href{https://courtiol-isorix.share.connect.posit.cloud/}{online documentation}, which essentially
 cover the same material in a more detailed manner. You should also read the
 dedicated help pages of the functions you are using.
 
@@ -130,7 +130,7 @@ doi: 10.1101/207662, \href{https://www.biorxiv.org/content/10.1101/207662v1}{lin
 Useful links:
 \itemize{
   \item \url{https://github.com/courtiol/IsoriX}
-  \item \url{https://bookdown.org/content/782}
+  \item \url{https://courtiol-isorix.share.connect.posit.cloud/}
   \item Report bugs at \url{https://github.com/courtiol/IsoriX/issues}
 }
 

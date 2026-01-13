@@ -1,5 +1,18 @@
 # IsoriX (development version)
 
+## Main release goal
+
+  * the documentation had to be migrated to another website, so all links were updated.
+
+## Minor changes
+
+  * bookdown.org is being discontinued so the bookdown has been migrated to "https://courtiol-isorix.share.connect.posit.cloud".
+
+## Internal (geeky) changes
+
+  * now explicitly depends on R (>= 4.1.0) since we use pipes (`|>`).
+
+
 # IsoriX 0.9.3
 
 ## New features

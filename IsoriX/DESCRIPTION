@@ -9,7 +9,7 @@ Authors@R: c(
     person("Stephanie", "Kramer-Schadt", role = "aut", comment = c(ORCID = "0000-0002-9269-4446"))
     )
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     graphics,
     grDevices,
@@ -44,8 +44,8 @@ Suggests:
     webshot2,
     withr
 LazyData: true
-URL: https://github.com/courtiol/IsoriX, https://bookdown.org/content/782
+URL: https://github.com/courtiol/IsoriX, https://courtiol-isorix.share.connect.posit.cloud/
 BugReports: https://github.com/courtiol/IsoriX/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Language: en-GB

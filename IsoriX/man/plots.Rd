@@ -149,7 +149,7 @@ These functions plot objects created by IsoriX (with the exception of plot
 method for SpatRaster created using \code{\link[terra:terra-package]{terra::terra}}. All plotting functions
 are based on the powerful package \pkg{lattice}. If instead you want to
 use \pkg{ggplot2}, please follow the instructions on the
-\href{https://bookdown.org/content/782/advanced.html#ggplot}{online tutorial}.
+\href{https://courtiol-isorix.share.connect.posit.cloud/advanced.html#ggplot}{online tutorial}.
 }
 \details{
 \strong{General}
@@ -186,7 +186,7 @@ from CRAN), the user can choose between plotting the mean isotopic value
 When called upon an object of class \emph{ISOFIND}, the plot function draws a
 fine-tuned plot of the assignment. You can use the argument \code{who} to choose
 between plotting the assignment for the group or for some individuals (check
-the \href{https://bookdown.org/content/782/}{online tutorial} for examples).
+the \href{https://courtiol-isorix.share.connect.posit.cloud/}{online tutorial} for examples).
 
 \strong{Info on parameters influencing the rendering of maps}
 

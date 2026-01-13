@@ -9,7 +9,7 @@
     "\n",
     "\n Type:",
     "\n   * `?IsoriX` for a very short description",
-    "\n   * `browseURL('https://bookdown.org/content/782/')` for a longer (online) documentation",
+    "\n   * `browseURL('https://courtiol-isorix.share.connect.posit.cloud/')` for a longer (online) documentation",
     "\n   * `help(package = 'IsoriX', help_type = 'html')` for a list of the package objects and help files",
     "\n   * `citation('IsoriX')` for how to cite IsoriX (i.e. the papers you should read)",
     "\n   * `news(package = 'IsoriX')` for info on changed between versions of IsoriX",
