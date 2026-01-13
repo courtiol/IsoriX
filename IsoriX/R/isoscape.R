@@ -468,7 +468,6 @@ isoscape <- function(raster,
 }
 
 
-
 #' Predicts the average spatial distribution of isotopic values over months,
 #' years...
 #'

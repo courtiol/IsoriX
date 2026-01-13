@@ -738,7 +738,6 @@ plot.ISOFIT <- function(x, cex_scale = 0.2, ...) {
 }
 
 
-
 #' @rdname plots
 #' @method  plot CALIBFIT
 #' @exportS3Method plot CALIBFIT

@@ -9,7 +9,6 @@ grid::gpar
 grid::grid.text
 
 
-
 # reexport from lattice:
 
 #' @importFrom lattice lpolygon
@@ -19,7 +18,6 @@ lattice::lpolygon
 #' @importFrom lattice xyplot
 #' @export
 lattice::xyplot
-
 
 
 # reexport from latticeExtra:
