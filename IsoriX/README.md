@@ -15,5 +15,5 @@ See [main page](https://courtiol-isorix.share.connect.posit.cloud/) for descript
  - [Wickham & Bryan's book *R packages*](https://r-pkgs.org/)
  - [Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
  - [R coding standard](https://style.tidyverse.org/)
- - [Using version control in RStudio](https://support.posit.co/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
+ - [Using version control in RStudio](https://docs.posit.co/ide/user/ide/guide/tools/version-control.html)
  - [Preparing your package for a CRAN submission](https://github.com/ThinkR-open/prepare-for-cran)
