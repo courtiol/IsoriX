@@ -88,11 +88,14 @@ test_that(".points_outside_hull() handles missing values", {
   expect_error(.points_outside_hull(1:2, 1, 0, 0))
 })
 
+## isoscape fit shared by the calibfit() tests below
+set.seed(123)
+sources_extrapolation <- prepsources(GNIPDataDE[sample(seq_len(nrow(GNIPDataDE)), 50), ])
+fit_extrapolation <- isofit(sources_extrapolation)
+
 test_that("calibfit() does not flag calibration sites located at source sites or within their hull", {
-  set.seed(123)
-  index <- sample(seq_len(nrow(GNIPDataDE)), 50)
-  sources <- prepsources(GNIPDataDE[index, ])
-  fit <- isofit(sources)
+  sources <- sources_extrapolation
+  fit <- fit_extrapolation
 
   hull_sources <- sources[grDevices::chull(sources[, c("long", "lat")]), ]
   n <- nrow(hull_sources)
@@ -107,4 +110,46 @@ test_that("calibfit() does not flag calibration sites located at source sites or
   calib_out <- calib
   calib_out$long[1] <- max(sources$long) + 5
   expect_message(calibfit(calib_out, fit), regexp = "\\* 1 correspond to locations outside")
+})
+
+test_that("calibfit() counts the number of calibration samples involving extrapolation correctly", {
+  sources <- sources_extrapolation
+  fit <- fit_extrapolation
+
+  hull_sources <- sources[grDevices::chull(sources[, c("long", "lat")]), ]
+  n_hull <- nrow(hull_sources)
+
+  ## samples inside the hull: one per hull vertex (on the boundary), two at the
+  ## centroid (same site), and one in the middle of the first hull edge
+  long_in <- c(hull_sources$long, rep(mean(sources$long), 2), mean(hull_sources$long[1:2]))
+  lat_in <- c(hull_sources$lat, rep(mean(sources$lat), 2), mean(hull_sources$lat[1:2]))
+  site_in <- c(paste0("in_", seq_len(n_hull)), rep("in_centroid", 2), "in_edge")
+
+  ## samples outside the hull: three at one site east of the hull, one south of it,
+  ## and one just beyond a hull vertex
+  long_out <- c(rep(max(sources$long) + 2, 3), mean(sources$long), hull_sources$long[1])
+  lat_out <- c(rep(mean(sources$lat), 3), min(sources$lat) - 2, hull_sources$lat[1])
+  site_out <- c(rep("out_east", 3), "out_south", "out_vertex")
+  ## move the last sample away from the centroid, beyond the first hull vertex
+  long_out[5] <- long_out[5] + 0.1 * (hull_sources$long[1] - mean(sources$long))
+  lat_out[5] <- lat_out[5] + 0.1 * (hull_sources$lat[1] - mean(sources$lat))
+
+  n_in <- length(long_in)
+  n_out <- length(long_out)
+  calib <- CalibDataBat[seq_len(n_in + n_out), ]
+  calib$long <- c(long_in, long_out)
+  calib$lat <- c(lat_in, lat_out)
+  calib$site_ID <- c(site_in, site_out)
+  calib$elev <- 100 ## same elevation everywhere, so that samples of a site share a location
+
+  ## sanity check that the internal helper agrees with the design
+  expect_identical(
+    .points_outside_hull(sources$long, sources$lat, calib$long, calib$lat),
+    rep(c(FALSE, TRUE), c(n_in, n_out))
+  )
+
+  msgs <- testthat::capture_messages(calibfit(calib, fit))
+  msg <- paste(msgs, collapse = "")
+  expect_match(msg, paste("Out of your", n_in + n_out, "calibration samples"), fixed = TRUE)
+  expect_match(msg, paste("*", n_out, "correspond to locations outside"), fixed = TRUE)
 })
