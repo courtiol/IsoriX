@@ -112,10 +112,9 @@ test_that("calibfit() does not flag calibration sites located at source sites or
   expect_message(calibfit(calib_out, fit), regexp = "\\* 1 correspond to locations outside")
 })
 
-test_that("calibfit() counts the number of calibration samples involving extrapolation correctly", {
-  sources <- sources_extrapolation
-  fit <- fit_extrapolation
-
+## builds calibration data with a known number of samples outside the hull of
+## the source sites: 9 + 3 samples inside (for the seed used here) and 5 outside
+make_calib_count_design <- function(sources) {
   hull_sources <- sources[grDevices::chull(sources[, c("long", "lat")]), ]
   n_hull <- nrow(hull_sources)
 
@@ -141,6 +140,23 @@ test_that("calibfit() counts the number of calibration samples involving extrapo
   calib$lat <- c(lat_in, lat_out)
   calib$site_ID <- c(site_in, site_out)
   calib$elev <- 100 ## same elevation everywhere, so that samples of a site share a location
+  rownames(calib) <- NULL
+  attr(calib, "n_in") <- n_in
+  attr(calib, "n_out") <- n_out
+  calib
+}
+
+## extracts the message about extrapolation produced by calibfit()
+extrapolation_message <- function(calib, fit) {
+  msgs <- testthat::capture_messages(calibfit(calib, fit))
+  paste(grep("extrapolation", msgs, value = TRUE), collapse = "")
+}
+
+test_that("calibfit() counts the number of calibration samples involving extrapolation correctly", {
+  sources <- sources_extrapolation
+  calib <- make_calib_count_design(sources)
+  n_in <- attr(calib, "n_in")
+  n_out <- attr(calib, "n_out")
 
   ## sanity check that the internal helper agrees with the design
   expect_identical(
@@ -148,8 +164,30 @@ test_that("calibfit() counts the number of calibration samples involving extrapo
     rep(c(FALSE, TRUE), c(n_in, n_out))
   )
 
-  msgs <- testthat::capture_messages(calibfit(calib, fit))
-  msg <- paste(msgs, collapse = "")
+  msg <- extrapolation_message(calib, fit_extrapolation)
   expect_match(msg, paste("Out of your", n_in + n_out, "calibration samples"), fixed = TRUE)
   expect_match(msg, paste("*", n_out, "correspond to locations outside"), fixed = TRUE)
+})
+
+test_that("the test of extrapolation in calibfit() works with tibbles", {
+  ## we mimic tibbles as in test_tibbles.R since tibble is not a dependency of IsoriX
+  as_fake_tibble <- function(x) {
+    class(x) <- c("tbl_df", "tbl", "data.frame")
+    x
+  }
+
+  calib_df <- make_calib_count_design(sources_extrapolation)
+  calib_tbl <- as_fake_tibble(calib_df)
+  calib_tbl$site_ID <- as.character(calib_tbl$site_ID)
+
+  sources_tbl <- as_fake_tibble(sources_extrapolation)
+  sources_tbl$source_ID <- as.character(sources_tbl$source_ID)
+  fit_tbl <- isofit(sources_tbl)
+
+  ref <- extrapolation_message(calib_df, fit_extrapolation) ## df and df
+  expect_match(ref, paste("*", attr(calib_df, "n_out"), "correspond to locations outside"), fixed = TRUE)
+
+  expect_identical(extrapolation_message(calib_tbl, fit_extrapolation), ref) ## tbl and df
+  expect_identical(extrapolation_message(calib_df, fit_tbl), ref) ## df and tbl
+  expect_identical(extrapolation_message(calib_tbl, fit_tbl), ref) ## tbl and tbl
 })
