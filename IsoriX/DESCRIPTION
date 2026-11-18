@@ -41,6 +41,7 @@ Suggests:
     rgl,
     spelling,
     testthat,
+    tibble,
     webshot2,
     withr
 LazyData: true

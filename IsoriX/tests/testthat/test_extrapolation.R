@@ -170,17 +170,13 @@ test_that("calibfit() counts the number of calibration samples involving extrapo
 })
 
 test_that("the test of extrapolation in calibfit() works with tibbles", {
-  ## we mimic tibbles as in test_tibbles.R since tibble is not a dependency of IsoriX
-  as_fake_tibble <- function(x) {
-    class(x) <- c("tbl_df", "tbl", "data.frame")
-    x
-  }
+  skip_if_not_installed("tibble")
 
   calib_df <- make_calib_count_design(sources_extrapolation)
-  calib_tbl <- as_fake_tibble(calib_df)
+  calib_tbl <- tibble::as_tibble(calib_df)
   calib_tbl$site_ID <- as.character(calib_tbl$site_ID)
 
-  sources_tbl <- as_fake_tibble(sources_extrapolation)
+  sources_tbl <- tibble::as_tibble(sources_extrapolation)
   sources_tbl$source_ID <- as.character(sources_tbl$source_ID)
   fit_tbl <- isofit(sources_tbl)
 
