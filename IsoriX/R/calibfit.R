@@ -750,32 +750,31 @@ calibfit <- function(data,
   ref <- unique(cbind(x_ref, y_ref))
   hull <- ref[rev(grDevices::chull(ref)), , drop = FALSE] ## counterclockwise
 
-  ## distance from points to a segment (used for degenerate hulls)
-  dist_to_segment <- function(ax, ay, bx, by, px, py) {
-    dx <- bx - ax
-    dy <- by - ay
-    len2 <- dx^2 + dy^2
-    t <- if (len2 > 0) pmin(pmax(((px - ax) * dx + (py - ay) * dy) / len2, 0), 1) else 0
-    sqrt((px - (ax + t * dx))^2 + (py - (ay + t * dy))^2)
-  }
-
+  ## a location is inside the hull if it lies strictly on the left of every
+  ## (counterclockwise) edge, or if it lies within `tol` of an edge (boundary);
+  ## the edges link each vertex to the next one, and the last vertex to the first;
+  ## this handles hulls with any number of vertices: with a single vertex, the
+  ## only edge has a null length, and with two vertices, the two edges are
+  ## opposite, so no location is strictly on the left of all edges and only the
+  ## distance to the point or segment matters
   n_hull <- nrow(hull)
-  if (n_hull == 1L) {
-    out <- dist_to_segment(hull[1, 1], hull[1, 2], hull[1, 1], hull[1, 2], x, y) > tol
-  } else if (n_hull == 2L) {
-    out <- dist_to_segment(hull[1, 1], hull[1, 2], hull[2, 1], hull[2, 2], x, y) > tol
-  } else {
-    ## a point is inside a counterclockwise convex polygon if it lies on the left of
-    ## (or on) every edge; we use the signed distance to each edge
-    out <- rep(FALSE, length(x))
-    for (i in seq_len(n_hull)) {
-      j <- if (i == n_hull) 1L else i + 1L
-      ex <- hull[j, 1] - hull[i, 1]
-      ey <- hull[j, 2] - hull[i, 2]
-      signed_dist <- (ex * (y - hull[i, 2]) - ey * (x - hull[i, 1])) / sqrt(ex^2 + ey^2)
-      out <- out | (signed_dist < -tol)
-    }
+  strictly_left_of_all <- rep(TRUE, length(x))
+  dist_to_boundary <- rep(Inf, length(x))
+  for (i in seq_len(n_hull)) {
+    j <- if (i == n_hull) 1L else i + 1L
+    ax <- hull[i, 1]
+    ay <- hull[i, 2]
+    ex <- hull[j, 1] - ax
+    ey <- hull[j, 2] - ay
+    ## position relative to the edge (> 0 on the left)
+    cross <- ex * (y - ay) - ey * (x - ax)
+    strictly_left_of_all <- strictly_left_of_all & (cross > 0)
+    ## distance to the edge (as a segment)
+    len2 <- ex^2 + ey^2
+    t <- if (len2 > 0) pmin(pmax(((x - ax) * ex + (y - ay) * ey) / len2, 0), 1) else 0
+    dist_to_boundary <- pmin(dist_to_boundary, sqrt((x - (ax + t * ex))^2 + (y - (ay + t * ey))^2))
   }
+  out <- !(strictly_left_of_all | dist_to_boundary <= tol)
 
   out[is.na(x) | is.na(y)] <- NA
   out
