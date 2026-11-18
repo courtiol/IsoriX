@@ -573,16 +573,16 @@ calibfit <- function(data,
     msg <- paste("Note: extrapolation issues\nOut of your", nrow(data), "calibration samples,\n")
 
     ### check if spatial extrapolation occurs
-    coord_points <- isofit$info_fit$data[, c("long", "lat")]
-    points_contour <- grDevices::chull(coord_points)
-    coord_contour <- coord_points[c(points_contour, points_contour[1]), ]
-    points_obj <- terra::vect(x = as.data.frame(data[, c("long", "lat")]), geom = c("long", "lat"), crs = "+proj=longlat +datum=WGS84") ## note: coercion to df only needed for tests since we don't have tibble in DESCRIPTION
-    contour_obj <- terra::vect(x = as.matrix(coord_contour[, c("long", "lat")]), type = "polygons", crs = "+proj=longlat +datum=WGS84")
-    points_out <- !terra::is.related(points_obj, contour_obj, "within")
+    points_out <- .points_outside_hull(
+      long_ref = isofit$info_fit$data$long,
+      lat_ref = isofit$info_fit$data$lat,
+      long = data$long,
+      lat = data$lat
+    )
 
-    if (sum(points_out) > 0) {
+    if (sum(points_out, na.rm = TRUE) > 0) {
       issues_extrapolations <- TRUE
-      msg <- paste(msg, "*", sum(points_out), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
+      msg <- paste(msg, "*", sum(points_out, na.rm = TRUE), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
     }
 
     ## display message if necessary
@@ -707,6 +707,77 @@ calibfit <- function(data,
     "data" = data,
     "sp_points" = list(calibs = calib_points)
   ))
+}
+
+.points_outside_hull <- function(long_ref, lat_ref, long, lat, tol = 1e-8) {
+  ## This function should not be called by the user.
+  ## It tests whether the locations defined by `long` and `lat` fall outside
+  ## the convex hull formed by the reference locations defined by `long_ref`
+  ## and `lat_ref` (in decimal degrees).
+  ## It returns a logical vector (TRUE = outside, NA = missing coordinates).
+  ##
+  ## Notes:
+  ##  - locations on the boundary of the hull (e.g. calibration sites sharing
+  ##    the location of a source site, or lying on a hull edge) are considered
+  ##    to be inside (with a tolerance of `tol` degrees),
+  ##  - longitudes are expressed either within [-180, 180) or within [0, 360),
+  ##    whichever makes the reference locations the most compact, so that
+  ##    hulls straddling the antimeridian (180 degrees) are handled properly,
+  ##  - degenerate hulls (a single location, or aligned locations) are handled.
+
+  if (length(long_ref) != length(lat_ref)) stop("`long_ref` and `lat_ref` must have the same length.")
+  if (length(long) != length(lat)) stop("`long` and `lat` must have the same length.")
+
+  keep_ref <- !is.na(long_ref) & !is.na(lat_ref)
+  long_ref <- long_ref[keep_ref]
+  lat_ref <- lat_ref[keep_ref]
+  if (length(long_ref) == 0) stop("No reference location with non-missing coordinates.")
+
+  ## choose the representation of longitudes:
+  wrap_180 <- function(x) ((x + 180) %% 360) - 180
+  wrap_360 <- function(x) x %% 360
+  if (diff(range(wrap_360(long_ref))) < diff(range(wrap_180(long_ref)))) {
+    wrap <- wrap_360
+  } else {
+    wrap <- wrap_180
+  }
+  x_ref <- wrap(long_ref)
+  y_ref <- lat_ref
+  x <- wrap(long)
+  y <- lat
+
+  ## compute the convex hull (grDevices::chull returns vertices clockwise)
+  ref <- unique(cbind(x_ref, y_ref))
+  hull <- ref[rev(grDevices::chull(ref)), , drop = FALSE] ## counterclockwise
+
+  ## a location is inside the hull if it lies strictly on the left of every
+  ## (counterclockwise) edge, or if it lies within `tol` of an edge (boundary);
+  ## the edges link each vertex to the next one, and the last vertex to the first;
+  ## this handles hulls with any number of vertices: with a single vertex, the
+  ## only edge has a null length, and with two vertices, the two edges are
+  ## opposite, so no location is strictly on the left of all edges and only the
+  ## distance to the point or segment matters
+  n_hull <- nrow(hull)
+  strictly_left_of_all <- rep(TRUE, length(x))
+  dist_to_boundary <- rep(Inf, length(x))
+  for (i in seq_len(n_hull)) {
+    j <- if (i == n_hull) 1L else i + 1L
+    ax <- hull[i, 1]
+    ay <- hull[i, 2]
+    ex <- hull[j, 1] - ax
+    ey <- hull[j, 2] - ay
+    ## position relative to the edge (> 0 on the left)
+    cross <- ex * (y - ay) - ey * (x - ax)
+    strictly_left_of_all <- strictly_left_of_all & (cross > 0)
+    ## distance to the edge (as a segment)
+    len2 <- ex^2 + ey^2
+    t <- if (len2 > 0) pmin(pmax(((x - ax) * ex + (y - ay) * ey) / len2, 0), 1) else 0
+    dist_to_boundary <- pmin(dist_to_boundary, sqrt((x - (ax + t * ex))^2 + (y - (ay + t * ey))^2))
+  }
+  out <- !(strictly_left_of_all | dist_to_boundary <= tol)
+
+  out[is.na(x) | is.na(y)] <- NA
+  out
 }
 
 .calibfit_lab <- function(data,

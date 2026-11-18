@@ -1,5 +1,14 @@
 # IsoriX (development version)
 
+## Bug fixes
+
+  * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
+
+## Internal (geeky) changes
+
+  * **tibble** is now a suggested package, so that the support of tibbles is tested using genuine tibbles.
+
+
 # IsoriX 0.9.4
 
 ## Main release goal

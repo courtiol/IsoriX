@@ -1,10 +1,10 @@
 test_that("The workfow works with tibble", {
+  skip_if_not_installed("tibble")
+
   set.seed(123)
   index <- sample(seq_len(nrow(GNIPDataDE)), 50)
   test_df <- GNIPDataDE[index, ]
-  test_tbl <- test_df
-
-  class(test_tbl) <- c("tbl_df", "tbl", "data.frame")
+  test_tbl <- tibble::as_tibble(test_df)
   test_tbl$source_ID <- as.character(test_tbl$source_ID)
   ref <- prepsources(test_df)
   job <- prepsources(test_tbl)
@@ -18,7 +18,7 @@ test_that("The workfow works with tibble", {
   ref_isofit <- isofit(ref)
   ref_2 <- ref_isofit$mean_fit$fixef
 
-  class(job) <- c("tbl_df", "tbl", "data.frame")
+  job <- tibble::as_tibble(job)
   job_isofit <- isofit(job)
   job_2 <- job_isofit$mean_fit$fixef
 
@@ -26,8 +26,7 @@ test_that("The workfow works with tibble", {
 
   ## calibfit
   test_df2 <- CalibDataBat[1:10, ]
-  test_tbl2 <- test_df2
-  class(test_tbl2) <- c("tbl_df", "tbl", "data.frame")
+  test_tbl2 <- tibble::as_tibble(test_df2)
   test_tbl2$site_ID <- as.character(test_tbl2$site_ID)
 
   ref_calib <- calibfit(test_df2, ref_isofit) ## df and df
