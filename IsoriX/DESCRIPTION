@@ -47,6 +47,6 @@ Suggests:
 LazyData: true
 URL: https://github.com/courtiol/IsoriX, https://courtiol-isorix.share.connect.posit.cloud/
 BugReports: https://github.com/courtiol/IsoriX/issues
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Language: en-GB
+Config/roxygen2/version: 8.1.1

@@ -3,10 +3,18 @@
 ## Bug fixes
 
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
+  * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
+
+## Minor changes
+
+  * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
+  * the link to the IAEA WISER portal no longer points to an `.aspx` page (#186).
 
 ## Internal (geeky) changes
 
   * **tibble** is now a suggested package, so that the support of tibbles is tested using genuine tibbles.
+  * the documentation is now generated using **roxygen2** 8.1.1.
+  * GitHub issue templates have been added (#178).
 
 
 # IsoriX 0.9.4

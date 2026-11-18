@@ -11,7 +11,6 @@
 \alias{levelplot}
 \alias{RdBuTheme}
 \alias{get_ranPars}
-\alias{plot}
 \alias{points}
 \alias{polys}
 \alias{rast}
@@ -31,16 +30,16 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{grid}{\code{\link[grid]{gpar}}, \code{\link[grid]{grid.text}}}
+  \item{grid}{\code{\link[grid:gpar]{gpar()}}, \code{\link[grid:grid.text]{grid.text()}}}
 
-  \item{lattice}{\code{\link[lattice:llines]{lpolygon}}, \code{\link[lattice]{xyplot}}}
+  \item{lattice}{\code{\link[lattice:lpolygon]{lpolygon()}}, \code{\link[lattice:xyplot]{xyplot()}}}
 
-  \item{latticeExtra}{\code{\link[latticeExtra]{layer}}}
+  \item{latticeExtra}{\code{\link[latticeExtra:layer]{layer()}}}
 
-  \item{rasterVis}{\code{\link[rasterVis:levelplot-methods]{levelplot}}, \code{\link[rasterVis:rasterTheme]{RdBuTheme}}}
+  \item{rasterVis}{\code{\link[rasterVis:RdBuTheme]{RdBuTheme()}}, \code{\link[rasterVis:levelplot]{levelplot()}}}
 
-  \item{spaMM}{\code{\link[spaMM:get_fittedPars]{get_ranPars}}}
+  \item{spaMM}{\code{\link[spaMM:get_ranPars]{get_ranPars()}}}
 
-  \item{terra}{\code{\link[terra]{cellSize}}, \code{\link[terra]{crs}}, \code{\link[terra:crs]{crs<-}}, \code{\link[terra]{ext}}, \code{\link[terra:ext]{ext<-}}, \code{\link[terra]{extract}}, \code{\link[terra]{plot}}, \code{\link[terra:lines]{points}}, \code{\link[terra:lines]{polys}}, \code{\link[terra]{rast}}, \code{\link[terra]{shift}}, \code{\link[terra]{values}}, \code{\link[terra]{vect}}}
+  \item{terra}{\code{\link[terra:cellSize]{cellSize()}}, \code{\link[terra:crs]{crs()}}, \code{\link[terra:crs<-]{crs<-()}}, \code{\link[terra:ext]{ext()}}, \code{\link[terra:ext<-]{ext<-()}}, \code{\link[terra:extract]{extract()}}, \code{\link[terra:points]{points()}}, \code{\link[terra:polys]{polys()}}, \code{\link[terra:rast]{rast()}}, \code{\link[terra:shift]{shift()}}, \code{\link[terra:values]{values()}}, \code{\link[terra:vect]{vect()}}}
 }}
 

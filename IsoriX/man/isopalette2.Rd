@@ -89,7 +89,7 @@ pie(1:100,
 
 }
 \seealso{
-\code{\link[grDevices:palettes]{grDevices::rainbow}} for information about R colour palettes
+\code{\link[grDevices:rainbow]{grDevices::rainbow}} for information about R colour palettes
 
 \code{\link[grDevices:colorRamp]{grDevices::colorRamp}} and \code{\link[colorspace:choose_palette]{colorspace::choose_palette}} to create your
 own palettes

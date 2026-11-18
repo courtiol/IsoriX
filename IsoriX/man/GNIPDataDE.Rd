@@ -32,7 +32,7 @@ provide larger GNIP dataset in the package as those are not free to reuse (but
 we do provide aggregated versions of it; see \code{\link{GNIPDataEUagg}}).
 You can still download the complete GNIP dataset for free, but you will have
 to proceed to a registration process with GNIP and use their downloading
-interface WISER (\url{https://nucleus.iaea.org/wiser/index.aspx}).
+interface WISER (\url{https://nucleus.iaea.org/wiser}).
 }
 \details{
 The dataset contains non-aggregated data for 27 weather stations across Germany.

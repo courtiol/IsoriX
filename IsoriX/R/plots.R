@@ -100,8 +100,7 @@
 #' These symbols can be changed as explained above.
 #'
 #' @name plots
-#' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND
-#'   plot.SpatRaster
+#' @aliases plot.ISOFIT plot.ISOSCAPE plot.CALIBFIT plot.ISOFIND plot.SpatRaster
 #' @param x The return object of a call to [`isofit`], [`isoscape`], [`calibfit`],
 #'   [`isofind`], or [`terra::rast`]
 #' @param cex_scale A *numeric* giving a scaling factor for the points in
@@ -128,6 +127,8 @@
 #'   (e.g. a distribution mask) (see details)
 #' @param palette A *list* containing information for the display of the
 #'   colours for the isoscape (see details)
+#' @param y Not used by the plotting methods defined in IsoriX (see [`terra::plot`]
+#'   for the generic function).
 #' @param plot A *logical* indicating whether the plot shall be plotted or
 #'   just returned
 #' @param sphere A *list* containing information whether the raster should
