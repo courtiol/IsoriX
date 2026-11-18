@@ -78,13 +78,17 @@ of each sampling location}
 of each sampling location}
 
 \item{col_elev}{A \emph{string} indicating the column containing the elevation
-of each sampling location}
+of each sampling location. This column is optional: if it is absent from
+\code{data}, the output will not contain any elevation (which is fine as long
+as elevation is not used as a predictor in \code{\link{isofit}}).}
 
 \item{col_month}{A \emph{string} indicating the column containing the month of
-sampling}
+sampling. This column is only required if \code{month} is provided or if
+\code{split_by = "month"}.}
 
 \item{col_year}{A \emph{string} indicating the column containing the year of
-sampling}
+sampling. This column is only required if \code{year} is provided or if
+\code{split_by = "year"}.}
 }
 \value{
 This function returns a \emph{dataframe} containing the filtered data
