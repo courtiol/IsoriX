@@ -38,8 +38,12 @@
 #' considered in both models. By default, none of these fixed effects is
 #' considered. This default is a convenient starting point but it is probably not
 #' the best model for your data, so you should compare alternative fixed-effect
-#' structures. To remind users of this, a message is displayed the first time
-#' the default model is fitted during an R session.
+#' structures (see the
+#' [online documentation](https://courtiol-isorix.share.connect.posit.cloud/isoscape.html#modelselection)
+#' for an example). Note that because the models are fitted by REML, fixed-effect
+#' structures should be compared using the conditional AIC rather than the
+#' marginal AIC. To remind users of all this, a message is displayed the first
+#' time the default model is fitted during an R session.
 #'
 #' In the models, the mean (for the mean model) or the log residual variance
 #' (for the residual dispersion model) follow a Gaussian distribution around a
@@ -270,8 +274,9 @@ isofit <- function(data,
       "You are fitting the default model of isofit(), which contains no fixed-effect predictor ",
       "(e.g. elevation or latitude) in either the mean model or the residual dispersion model. ",
       "This default is a convenient starting point but it is probably not the best model for your data. ",
-      "Please consider comparing alternative models (e.g. using the AIC of `$mean_fit` and `$disp_fit`) ",
-      "by changing the arguments `mean_model_fix` and `disp_model_fix` (see ?isofit). ",
+      "Please consider comparing alternative models by changing the arguments `mean_model_fix` and `disp_model_fix`. ",
+      "See ?isofit and the online documentation: ",
+      "https://courtiol-isorix.share.connect.posit.cloud/isoscape.html#modelselection\n",
       "This message is only displayed once per session."
     )
     .data_IsoriX$default_model_msg_shown <- TRUE

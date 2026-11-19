@@ -170,7 +170,7 @@ Instead, if several datasets have been prepared, then you will have to according
 
 To fit the geostatistical models required to build a single set of isoscapes, you need to use the function `isofit()`. 
 The function `isofit()` has several parameters that can be adjusted to fit different models (see `?isofit`).
-Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting:
+Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting (see section \@ref(modelselection) for how to choose among alternative models):
 
 ```{r isofit fake, eval = FALSE}
 EuropeFit <- isofit(data = GNIPDataEUagg,
@@ -283,6 +283,71 @@ print(AIC(EuropeFit$mean_fit, verbose = FALSE))
 ```
 
 Note that we re-exported some `spaMM` functions for you to use without the need to load the package `spaMM` (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all `spaMM` functions.
+
+
+## Choosing the model {#modelselection}
+
+By default, `isofit()` fits models without any fixed-effect predictor: only an intercept and the random effects (including the spatial autocorrelation) are considered.
+This default is a convenient starting point, but it is probably not the best model for your data.
+This is why `isofit()` displays a message the first time you fit the default model during an R session.
+You should instead fit a few alternative models and compare them.
+
+### Comparing mean models
+
+The fixed effects you can consider are the elevation (`elev`), the absolute latitude (`lat_abs`), the squared latitude (`lat_2`), the longitude (`long`) and the squared longitude (`long_2`); see `?isofit`.
+Here, we compare the model we fitted in section \@ref(isofit) (`EuropeFit`, with `elev` and `lat_abs`) to the default model and to a model with only the elevation:
+
+```{r modelselection fake, eval = FALSE}
+EuropeFit_null <- isofit(data = GNIPDataEUagg)
+EuropeFit_elev <- isofit(data = GNIPDataEUagg,
+                         mean_model_fix = list(elev = TRUE))
+```
+
+```{r modelselection real, echo = FALSE, results = FALSE, message = FALSE}
+if (file.exists("output/EuropeFit_null.rds")) {
+  EuropeFit_null <- readRDS("output/EuropeFit_null.rds")
+} else {
+  EuropeFit_null <- isofit(data = GNIPDataEUagg)
+  saveRDS(EuropeFit_null, file = "output/EuropeFit_null.rds", compress = "xz")
+}
+if (file.exists("output/EuropeFit_elev.rds")) {
+  EuropeFit_elev <- readRDS("output/EuropeFit_elev.rds")
+} else {
+  EuropeFit_elev <- isofit(data = GNIPDataEUagg,
+                           mean_model_fix = list(elev = TRUE))
+  saveRDS(EuropeFit_elev, file = "output/EuropeFit_elev.rds", compress = "xz")
+}
+```
+
+We can then compute the information criteria of the three mean models:
+
+```{r modelselection AIC}
+sapply(list(null = EuropeFit_null,
+            elev = EuropeFit_elev,
+            elev_lat_abs = EuropeFit),
+       \(fit) AIC(fit$mean_fit, verbose = FALSE))
+```
+
+Which criterion to use matters.
+`isofit()` fits the models by REML, and marginal AIC values of models fitted by REML cannot be compared between models with different fixed effects.
+So, to compare models that differ in their fixed effects, use the **conditional AIC** (the second row above).
+As usual with information criteria, lower is better, and small differences (of a couple of units) should not be overinterpreted: in such cases, prefer the simpler model.
+
+Here, adding the elevation considerably improves the mean model compared to the default one.
+In contrast, adding the absolute latitude on top of the elevation only improves the conditional AIC marginally, so a model with the elevation alone would be just as good a choice.
+(We kept `EuropeFit` in the rest of this documentation for consistency with previous versions.)
+
+Note that the mean model relies on the predictions of the residual dispersion model, so make sure that you only change `mean_model_fix` while comparing mean models, and keep everything else identical.
+
+Also note that all the predictors you use must be available for building the isoscapes.
+The latitude and longitude are directly obtained from the coordinates of the structural raster, but the elevation must be provided by the structural raster itself (see section \@ref(structuralraster)).
+
+### Comparing residual dispersion models
+
+You can also change the fixed effects of the residual dispersion model using the argument `disp_model_fix`.
+Comparing residual dispersion models is trickier though, because counting the number of parameters in such models is not straightforward, which affects the computation of information criteria (see [issue #101](https://github.com/courtiol/IsoriX/issues/101)).
+We are planning to provide a function that automates the comparison of all possible models (see [issue #194](https://github.com/courtiol/IsoriX/issues/194)).
+Until then, unless you have good reasons to do otherwise, focus on the selection of the mean model.
 
 
 ## Building the isoscapes
