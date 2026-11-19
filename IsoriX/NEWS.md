@@ -14,6 +14,7 @@
   * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
   * `isofit()` now stops with an informative message if elevation is used as a predictor but is absent from the data.
   * the link to the IAEA WISER portal no longer points to an `.aspx` page (#186).
+  * `isofit()` now displays a message, once per R session, when the default model (without any fixed-effect predictor) is fitted, to encourage users to compare alternative models (#204).
 
 ## Internal (geeky) changes
 

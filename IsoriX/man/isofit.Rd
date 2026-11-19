@@ -103,7 +103,11 @@ lists of booleans (\code{TRUE} or \code{FALSE}), which define which of the follo
 fixed effects must be considered: the elevation (\code{elev}), the absolute value
 of the latitude (\code{lat_abs}), the squared latitude (\code{lat_2}), the longitude
 (\code{long}) and the squared longitude (\code{long_2}). An intercept is always
-considered in both models.
+considered in both models. By default, none of these fixed effects is
+considered. This default is a convenient starting point but it is probably not
+the best model for your data, so you should compare alternative fixed-effect
+structures. To remind users of this, a message is displayed the first time
+the default model is fitted during an R session.
 
 In the models, the mean (for the mean model) or the log residual variance
 (for the residual dispersion model) follow a Gaussian distribution around a

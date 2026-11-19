@@ -35,7 +35,11 @@
 #' fixed effects must be considered: the elevation (`elev`), the absolute value
 #' of the latitude (`lat_abs`), the squared latitude (`lat_2`), the longitude
 #' (`long`) and the squared longitude (`long_2`). An intercept is always
-#' considered in both models.
+#' considered in both models. By default, none of these fixed effects is
+#' considered. This default is a convenient starting point but it is probably not
+#' the best model for your data, so you should compare alternative fixed-effect
+#' structures. To remind users of this, a message is displayed the first time
+#' the default model is fitted during an R session.
 #'
 #' In the models, the mean (for the mean model) or the log residual variance
 #' (for the residual dispersion model) follow a Gaussian distribution around a
@@ -254,6 +258,24 @@ isofit <- function(data,
     stop("In the absence of spatial random effects, only 'lambda' can be used as uncorr_terms.")
   }
 
+
+  ## Inform users fitting the default model (only once per session)
+  if (!isTRUE(.data_IsoriX$default_model_msg_shown) &&
+    .is_default_isofit_model(
+      mean_model_fix = mean_model_fix, disp_model_fix = disp_model_fix,
+      mean_model_rand = mean_model_rand, disp_model_rand = disp_model_rand,
+      uncorr_terms = uncorr_terms
+    )) {
+    message(
+      "You are fitting the default model of isofit(), which contains no fixed-effect predictor ",
+      "(e.g. elevation or latitude) in either the mean model or the residual dispersion model. ",
+      "This default is a convenient starting point but it is probably not the best model for your data. ",
+      "Please consider comparing alternative models (e.g. using the AIC of `$mean_fit` and `$disp_fit`) ",
+      "by changing the arguments `mean_model_fix` and `disp_model_fix` (see ?isofit). ",
+      "This message is only displayed once per session."
+    )
+    .data_IsoriX$default_model_msg_shown <- TRUE
+  }
 
   ## Prepare the dataset
   data <- .prepare_data_sources(data)
@@ -532,6 +554,24 @@ isomultifit <- function(data,
   data$lat_2 <- data$lat^2
   data$long_2 <- data$long^2
   return(data)
+}
+
+
+.is_default_isofit_model <- function(mean_model_fix, disp_model_fix,
+                                     mean_model_rand, disp_model_rand,
+                                     uncorr_terms) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## It tests whether the model structure requested in isofit() is the default one.
+  ## The arguments must have been completed using .complete_args() beforehand.
+  defaults <- formals(isofit)
+  same_as_default <- function(arg_value, arg_name) {
+    isTRUE(all.equal(arg_value, eval(defaults[[arg_name]])))
+  }
+  same_as_default(mean_model_fix, "mean_model_fix") &&
+    same_as_default(disp_model_fix, "disp_model_fix") &&
+    same_as_default(mean_model_rand, "mean_model_rand") &&
+    same_as_default(disp_model_rand, "disp_model_rand") &&
+    same_as_default(uncorr_terms, "uncorr_terms")
 }
 
 
