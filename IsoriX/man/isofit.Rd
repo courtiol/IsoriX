@@ -108,9 +108,9 @@ considered. This default is a convenient starting point but it is probably not
 the best model for your data, so you should compare alternative fixed-effect
 structures (see the
 \href{https://courtiol-isorix.share.connect.posit.cloud/isoscape.html#modelselection}{online documentation}
-for an example). Note that because the models are fitted by REML, fixed-effect
-structures should be compared using the conditional AIC rather than the
-marginal AIC. To remind users of all this, a message is displayed the first
+for an example). Note that fixed-effect structures should be compared using
+the conditional AIC, which measures the predictive power of the fitted
+isoscape. To remind users of all this, a message is displayed the first
 time the default model is fitted during an R session.
 
 In the models, the mean (for the mean model) or the log residual variance

@@ -328,14 +328,14 @@ sapply(list(null = EuropeFit_null,
        \(fit) AIC(fit$mean_fit, verbose = FALSE))
 ```
 
-Which criterion to use matters.
-`isofit()` fits the models by REML, and marginal AIC values of models fitted by REML cannot be compared between models with different fixed effects.
-So, to compare models that differ in their fixed effects, use the **conditional AIC** (the second row above).
-As usual with information criteria, lower is better, and small differences (of a couple of units) should not be overinterpreted: in such cases, prefer the simpler model.
+Which criterion to use matters: to compare mean models, use the **conditional AIC** (the second row above).
+The goal is indeed to select the model that best predicts the true, unobserved isoscape, which the fitted model approximates.
+As long as the random-effect structure is kept identical between the models being compared, the predicted isoscape corresponds to a specific realization of the random effects (in the spirit of BLUPs), and the conditional AIC measures the predictive power of precisely such predictions.
+(In addition, since `isofit()` fits the models by REML, the marginal AIC values of models with different fixed effects would not be comparable anyway.)
+Because the goal is prediction, there is no need to favour simpler models: the lower the conditional AIC, the better.
 
-Here, adding the elevation considerably improves the mean model compared to the default one.
-In contrast, adding the absolute latitude on top of the elevation only improves the conditional AIC marginally, so a model with the elevation alone would be just as good a choice.
-(We kept `EuropeFit` in the rest of this documentation for consistency with previous versions.)
+Here, the elevation is the variable that increases the predictive power the most.
+For `EuropeFit`, we thus selected the mean model with the highest predictive power (i.e. the lowest conditional AIC) among those compared here.
 
 Note that the mean model relies on the predictions of the residual dispersion model, so make sure that you only change `mean_model_fix` while comparing mean models, and keep everything else identical.
 
