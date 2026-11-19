@@ -47,6 +47,7 @@ spaMM::get_ranPars
 
 #' @importFrom terra plot
 #' @export
+#' @rdname plots
 terra::plot
 
 #' @importFrom terra points

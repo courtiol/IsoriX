@@ -60,26 +60,34 @@ exportClasses(ISOFIND)
 exportClasses(ISOSCAPE)
 exportMethods(readRDS)
 exportMethods(saveRDS)
-importFrom(grid,gpar)
-importFrom(grid,grid.text)
-importFrom(lattice,lpolygon)
-importFrom(lattice,xyplot)
+importFrom(grid,
+  gpar,
+  grid.text
+)
+importFrom(lattice,
+  lpolygon,
+  xyplot
+)
 importFrom(latticeExtra,layer)
-importFrom(rasterVis,RdBuTheme)
-importFrom(rasterVis,levelplot)
+importFrom(rasterVis,
+  RdBuTheme,
+  levelplot
+)
 importFrom(spaMM,get_ranPars)
-importFrom(terra,"crs<-")
-importFrom(terra,"ext<-")
-importFrom(terra,cellSize)
-importFrom(terra,crs)
-importFrom(terra,ext)
-importFrom(terra,extract)
-importFrom(terra,plot)
-importFrom(terra,points)
-importFrom(terra,polys)
-importFrom(terra,rast)
-importFrom(terra,readRDS)
-importFrom(terra,saveRDS)
-importFrom(terra,shift)
-importFrom(terra,values)
-importFrom(terra,vect)
+importFrom(terra,
+  "crs<-",
+  "ext<-",
+  cellSize,
+  crs,
+  ext,
+  extract,
+  plot,
+  points,
+  polys,
+  rast,
+  readRDS,
+  saveRDS,
+  shift,
+  values,
+  vect
+)

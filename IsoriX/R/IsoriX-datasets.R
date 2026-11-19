@@ -507,7 +507,7 @@ NULL
 #' we do provide aggregated versions of it; see [`GNIPDataEUagg`]).
 #' You can still download the complete GNIP dataset for free, but you will have
 #' to proceed to a registration process with GNIP and use their downloading
-#' interface WISER (\url{https://nucleus.iaea.org/wiser/index.aspx}).
+#' interface WISER (\url{https://nucleus.iaea.org/wiser}).
 #'
 #' The dataset contains non-aggregated data for 27 weather stations across Germany.
 #'
@@ -564,7 +564,7 @@ NULL
 #' still download the complete GNIP dataset for free, but you will have to
 #' proceed to a registration process with GNIP and use their downloading
 #' interface WISER
-#' (\url{https://nucleus.iaea.org/wiser/index.aspx}).
+#' (\url{https://nucleus.iaea.org/wiser}).
 #'
 #' These datasets have been aggregated and can thus be directly used for fitting
 #' isoscapes.

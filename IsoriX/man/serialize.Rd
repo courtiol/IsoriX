@@ -102,24 +102,24 @@ For \code{saveRDS}, \code{NULL} invisibly.
 For \code{readRDS}, an R object.
 }
 \description{
-Because files created with IsoriX contain \code{\link[terra:SpatRaster-class]{terra::SpatRaster}} and
-\code{\link[terra:SpatVector-class]{terra::SpatVector}} objects, they cannot be saved using \code{\link[base:readRDS]{base::saveRDS}}
-or \code{\link[base:save]{base::save}} functions. The reason is that objects created with \code{\link[terra:terra-package]{terra::terra}}
+Because files created with IsoriX contain \code{\link[terra:SpatRaster]{terra::SpatRaster}} and
+\code{\link[terra:SpatVector]{terra::SpatVector}} objects, they cannot be saved using \code{\link[base:saveRDS]{base::saveRDS}}
+or \code{\link[base:save]{base::save}} functions. The reason is that objects created with \code{\link[terra:terra]{terra::terra}}
 point to data stored in memory which are not contained in the R objects
-themselves. Adapting the approach implemented in the \code{\link[terra:terra-package]{terra::terra}} package, we
-provide a wrapper for \code{\link[base:readRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} functions,
+themselves. Adapting the approach implemented in the \code{\link[terra:terra]{terra::terra}} package, we
+provide a wrapper for \code{\link[base:saveRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} functions,
 which allows one to save and read objects produced with IsoriX by simply
 using \code{saveRDS()} and \code{readRDS()}.
 }
 \details{
-\code{\link[base:readRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} are standard S3 functions. So in
+\code{\link[base:saveRDS]{base::saveRDS}} and \code{\link[base:readRDS]{base::readRDS}} are standard S3 functions. So in
 order to be able to have a specific behaviour for objects produced with
-IsoriX, we imported \code{saveRDS} and \code{readRDS} S4 generics from  \code{\link[terra:terra-package]{terra::terra}} to
+IsoriX, we imported \code{saveRDS} and \code{readRDS} S4 generics from  \code{\link[terra:terra]{terra::terra}} to
 dispatch both S3 and S4 IsoriX-specific methods (see \link{Methods_for_S3}). The
 S3 implementation is consistent with the rest of the package and presents all
 usual benefits associated with S3 methods (e.g. simple access to the code).
 The S4 implementation makes IsoriX methods compatible with the use of
-\code{\link[terra:serialize]{terra::saveRDS}} and \code{\link[terra:serialize]{terra::readRDS}}.
+\code{\link[terra:saveRDS]{terra::saveRDS}} and \code{\link[terra:readRDS]{terra::readRDS}}.
 }
 \section{Functions}{
 \itemize{

@@ -33,7 +33,7 @@ non-aggregate GNIP dataset in the package as it is not free to reuse. You can
 still download the complete GNIP dataset for free, but you will have to
 proceed to a registration process with GNIP and use their downloading
 interface WISER
-(\url{https://nucleus.iaea.org/wiser/index.aspx}).
+(\url{https://nucleus.iaea.org/wiser}).
 }
 \details{
 These datasets have been aggregated and can thus be directly used for fitting

@@ -155,6 +155,20 @@ prepsources <- function(data,
                         col_month = "month",
                         col_year = "year") {
   ## Some checks
+  if (all(c("mean_source_value", "var_source_value", "n_source_value") %in% colnames(data))) {
+    stop("The data seem to have already been aggregated (e.g. by a previous call to prepsources()), so they cannot be aggregated again. You can use these data directly as input for isofit().")
+  }
+
+  required_cols <- c(col_source_value, col_source_ID, col_lat, col_long, col_elev, col_month, col_year)
+  missing_cols <- required_cols[!required_cols %in% colnames(data)]
+  if (length(missing_cols) > 0) {
+    stop(paste0(
+      "The following column(s) could not be found in the data: ",
+      paste(missing_cols, collapse = ", "),
+      ". Please check your data or the `col_*` arguments of prepsources()."
+    ))
+  }
+
   if (any(month %% 1 != 0) || any(month < 1) || any(month > 12)) {
     stop("Months must be provided as a vector of integers and should be between 1 and 12.")
   }
