@@ -368,6 +368,7 @@ release_bullets <- function() {
     "update manual using `devtools::build_manual(path = '../pkg_manuals')`",
     "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (follow instructions in bookdown/README)",
     "update bookdown (after `usethis::use_version('patch'); follow instructions in bookdown/README)",
+    "check that the bookdown links in the default-model message of `isofit()` and in `?isofit` work after updating the bookdown",
     "write email to Google Group (https://groups.google.com/g/IsoriX)"
   )
 }
