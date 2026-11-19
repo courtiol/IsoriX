@@ -333,6 +333,10 @@ The goal is indeed to select the model that best predicts the true, unobserved i
 As long as the random-effect structure is kept identical between the models being compared, the predicted isoscape corresponds to a specific realization of the random effects (in the spirit of BLUPs), and the conditional AIC measures the predictive power of precisely such predictions.
 (In addition, since `isofit()` fits the models by REML, the marginal AIC values of models with different fixed effects would not be comparable anyway.)
 Because the goal is prediction, there is no need to favour simpler models: the lower the conditional AIC, the better.
+However, the conditional AIC only reflects the quality of the predictions at the source locations, so it cannot detect problems arising elsewhere.
+In particular, polynomial terms (e.g. `lat_2`, `long_2`) can produce unrealistic predictions in areas far from the source locations.
+So, always check the isoscapes produced by the selected model.
+Such problems should be visible as areas of large prediction variance, which you can easily map by plotting the isoscape of the prediction variance (`which = "mean_predVar"`; see section \@ref(otherisoscapes)).
 
 Here, the elevation is the variable that increases the predictive power the most.
 For `EuropeFit`, we thus selected the mean model with the highest predictive power (i.e. the lowest conditional AIC) among those compared here.
@@ -502,7 +506,7 @@ This shows the prediction of the average isotope value in space (i.e. the point 
 For more information about how to improve your plots, check the section \@ref(betterplots).
 
 
-### Other isoscapes
+### Other isoscapes {#otherisoscapes}
 
 You can also plot any of the other isoscapes by specifying the name of the raster using the argument `which`.
 As examples, we are now going to plot the residual variation in isotope values predicted at each location, and the prediction variance:
