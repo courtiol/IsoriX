@@ -105,7 +105,7 @@
       if (arg[1] == "list()") {
         arg_input <- mget(names(args), envir = env)[[arg_name]]
         arg_full <- eval(formals(fn)[[arg_name]])
-        if (is.null(names(arg_input))) {
+        if (length(arg_input) > 0 && is.null(names(arg_input))) { ## an empty list means: keep all defaults (#206)
           if (length(arg_input) == length(arg_full)) {
             names(arg_input) <- names(arg_full)
           } else {

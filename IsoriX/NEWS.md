@@ -4,6 +4,7 @@
 
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
+  * passing an empty list to a list argument (e.g. `isofit(data, mean_model_fix = list())`) no longer triggers an error; it now means that all defaults are kept (#206).
 
 ## New features
 
