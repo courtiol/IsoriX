@@ -63,9 +63,9 @@ Stichler
 Stumpp
 VScode
 Voigt
-WGS
 Wassenaar
 WorldClim
+antimeridian
 asl
 bioRxiv
 bookdown
@@ -101,6 +101,7 @@ queryGNIP
 rasterVis
 rcm
 rgdal
+roxygen
 sp
 spaMM
 stat
@@ -114,4 +115,3 @@ usethis
 var
 withr
 xz
-δ
