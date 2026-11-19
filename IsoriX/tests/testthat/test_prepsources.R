@@ -50,6 +50,22 @@ test_that("prepsources() works without elevation", {
   expect_equal(res, ref)
 })
 
+test_that("isofit() works if elevation is absent from both the data and the model", {
+  d <- GNIPDataDE
+  d$elev <- NULL
+  agg <- prepsources(data = d)
+  expect_false("elev" %in% colnames(agg))
+  fit <- isofit(
+    data = agg,
+    mean_model_fix = list(elev = FALSE, lat_abs = TRUE),
+    disp_model_fix = list(elev = FALSE),
+    verbose = FALSE
+  )
+  expect_s3_class(fit, "ISOFIT")
+  expect_false("elev" %in% all.vars(stats::formula(fit$mean_fit)))
+  expect_false("elev" %in% all.vars(stats::formula(fit$disp_fit)))
+})
+
 test_that("isofit() stops if elevation is requested but absent", {
   d <- GNIPDataDE
   d$elev <- NULL
