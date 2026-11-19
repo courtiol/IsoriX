@@ -258,6 +258,11 @@ isofit <- function(data,
   ## Prepare the dataset
   data <- .prepare_data_sources(data)
 
+  ## Check that elevation is available if it is used as a predictor
+  if ((isTRUE(mean_model_fix$elev) || isTRUE(disp_model_fix$elev)) && is.null(data$elev)) {
+    stop("Elevation is used as a predictor but the data contain no column 'elev'. Please add elevation to the data (see prepsources()) or set elev = FALSE in `mean_model_fix` and `disp_model_fix`.")
+  }
+
   ## Define the formulas for each model
   mean_formula <- .prepare_formula("mean_source_value ~ 1",
     fix = mean_model_fix, rand = mean_model_rand,

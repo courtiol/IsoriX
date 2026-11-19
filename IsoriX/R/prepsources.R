@@ -66,11 +66,15 @@
 #' @param col_long A *string* indicating the column containing the longitude
 #'   of each sampling location
 #' @param col_elev A *string* indicating the column containing the elevation
-#'   of each sampling location
+#'   of each sampling location. This column is optional: if it is absent from
+#'   `data`, the output will not contain any elevation (which is fine as long
+#'   as elevation is not used as a predictor in [`isofit`]).
 #' @param col_month A *string* indicating the column containing the month of
-#'   sampling
+#'   sampling. This column is only required if `month` is provided or if
+#'   `split_by = "month"`.
 #' @param col_year A *string* indicating the column containing the year of
-#'   sampling
+#'   sampling. This column is only required if `year` is provided or if
+#'   `split_by = "year"`.
 #' @return This function returns a *dataframe* containing the filtered data
 #'   aggregated by sampling location, or a *list*, see above argument
 #'   `prop_random`. For each sampling location the mean and variance sample
@@ -159,7 +163,16 @@ prepsources <- function(data,
     stop("The data seem to have already been aggregated (e.g. by a previous call to prepsources()), so they cannot be aggregated again. You can use these data directly as input for isofit().")
   }
 
-  required_cols <- c(col_source_value, col_source_ID, col_lat, col_long, col_elev, col_month, col_year)
+  ## Determine which optional columns are present and needed
+  has_elev <- col_elev %in% colnames(data)
+  has_month <- col_month %in% colnames(data)
+  has_year <- col_year %in% colnames(data)
+  need_month <- !missing("month") || identical(split_by, "month")
+  need_year <- !missing("year") || identical(split_by, "year")
+
+  required_cols <- c(col_source_value, col_source_ID, col_lat, col_long)
+  if (need_month) required_cols <- c(required_cols, col_month)
+  if (need_year) required_cols <- c(required_cols, col_year)
   missing_cols <- required_cols[!required_cols %in% colnames(data)]
   if (length(missing_cols) > 0) {
     stop(paste0(
@@ -178,12 +191,14 @@ prepsources <- function(data,
   }
 
   ### Check that source_IDs correspond to unique locations
-  data$.location <- paste(data[, col_lat, drop = TRUE], data[, col_long, drop = TRUE], data[, col_elev, drop = TRUE])
+  loc_cols <- c(col_lat, col_long, if (has_elev) col_elev)
+  loc_label <- if (has_elev) "latitude, longitude and elevation" else "latitude and longitude"
+  data$.location <- do.call(paste, unname(lapply(loc_cols, \(col) data[, col, drop = TRUE])))
   test_unique_locations1 <- tapply(data$.location, as.character(data[, col_source_ID, drop = TRUE]), \(x) length(unique(x)) == 1)
   if (!all(test_unique_locations1)) {
     issues <- names(test_unique_locations1[!test_unique_locations1])
     warning(c(
-      paste("Different combinations of latitude, longitude and elevation share the same source_ID. Please consider fixing the data for the IDs:\n"),
+      paste("Different combinations of", loc_label, "share the same source_ID. Please consider fixing the data for the IDs:\n"),
       paste(issues, collapse = ", ")
     ))
     rm(issues)
@@ -193,9 +208,9 @@ prepsources <- function(data,
     issues_locations <- names(test_unique_locations2[!test_unique_locations2])
     issues_ID <- unique(as.character(data[, col_source_ID, drop = TRUE])[data$.location %in% issues_locations])
     warning(c(
-      paste("The same combination of latitude, longitude and elevation correspond to different source_ID. Please consider fixing the data for the IDs:\n"),
+      paste("The same combination of", loc_label, "correspond to different source_ID. Please consider fixing the data for the IDs:\n"),
       paste(issues_ID, collapse = ", "),
-      paste("\nThese IDs correspond to the following sets of", col_lat, col_long, col_elev, ":\n"),
+      paste("\nThese IDs correspond to the following sets of", paste(loc_cols, collapse = " "), ":\n"),
       paste(issues_locations, collapse = ", ")
     ))
     rm(issues_ID)
@@ -203,15 +218,23 @@ prepsources <- function(data,
   }
   data$.location <- NULL
 
-  ## Handle missing data
-  if (missing("year")) year <- sort(unique(data[, col_year, drop = TRUE], na.rm = TRUE))
+  ## Prepare selection on months (only possible if the month column exists)
+  if (has_month) {
+    data[, col_month] <- .converts_months_to_numbers(data[, col_month, drop = TRUE])
+    month_select <- data[, col_month, drop = TRUE] %in% month
+  } else {
+    month_select <- rep(TRUE, nrow(data))
+  }
 
-  ## Handle the month column and convert all months to numbers
-  data[, col_month] <- .converts_months_to_numbers(data[, col_month, drop = TRUE])
+  ## Prepare selection on years (only possible if the year column exists)
+  if (has_year) {
+    if (missing("year")) year <- sort(unique(data[, col_year, drop = TRUE], na.rm = TRUE))
+    year_select <- data[, col_year, drop = TRUE] %in% year
+  } else {
+    year_select <- rep(TRUE, nrow(data))
+  }
 
-  ## Prepare selection
-  month_select <- data[, col_month, drop = TRUE] %in% month
-  year_select <- data[, col_year, drop = TRUE] %in% year
+  ## Prepare selection on space
   long_select <- data[, col_long, drop = TRUE] >= long_min & data[, col_long, drop = TRUE] <= long_max
   lat_select <- data[, col_lat, drop = TRUE] >= lat_min & data[, col_lat, drop = TRUE] <= lat_max
   all_select <- month_select & year_select & long_select & lat_select
@@ -252,9 +275,11 @@ prepsources <- function(data,
       var_source_value = c(tapply(d[, col_source_value, drop = TRUE], split, stats::var, na.rm = TRUE)),
       n_source_value = c(tapply(d[, col_source_ID, drop = TRUE], split, length)),
       lat = c(tapply(d[, col_lat, drop = TRUE], split, unique2, key = "latitude")),
-      long = c(tapply(d[, col_long, drop = TRUE], split, unique2, key = "longitude")),
-      elev = c(tapply(d[, col_elev, drop = TRUE], split, unique2, key = "elevation"))
+      long = c(tapply(d[, col_long, drop = TRUE], split, unique2, key = "longitude"))
     )
+    if (has_elev) {
+      df$elev <- c(tapply(d[, col_elev, drop = TRUE], split, unique2, key = "elevation"))
+    }
     ## Note that above the c() prevent the creation of 1d arrays that are troublesome in spaMM
 
     null.var <- !is.na(df$var_source_value) & df$var_source_value == 0

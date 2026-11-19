@@ -5,9 +5,14 @@
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
 
+## New features
+
+  * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
+
 ## Minor changes
 
   * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
+  * `isofit()` now stops with an informative message if elevation is used as a predictor but is absent from the data.
   * the link to the IAEA WISER portal no longer points to an `.aspx` page (#186).
 
 ## Internal (geeky) changes
