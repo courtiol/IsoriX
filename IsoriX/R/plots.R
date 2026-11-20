@@ -95,7 +95,9 @@
 #'    - the source data by little red triangles.
 #'    - the calibration data by little blue crosses.
 #'    - the locations where the samples to assign were collected by white
-#'    diamonds.
+#'    diamonds. When individual assignments are plotted, each map only shows
+#'    the location of the sample it corresponds to; the map of the group
+#'    assignment shows the locations of all samples.
 #'
 #' These symbols can be changed as explained above.
 #'
@@ -480,12 +482,17 @@ plot.ISOFIND <- function(x,
     )
   }
 
+  ## identify the sample(s) shown in each panel, so that each panel only shows
+  ## the location of its own sample (all locations are shown for group assignment)
+  assigns_ids <- if ("group" %in% who) NULL else names(x$sample[[what]][[who]])
+
   ## create the additional plot(s)
   decor <- .build_additional_layers(
     x = x,
     sources = sources,
     calibs = calibs,
     assigns = assigns,
+    assigns_ids = assigns_ids,
     borders = borders,
     mask = mask,
     mask2 = mask2
@@ -889,9 +896,24 @@ plot.SpatRaster <- function(x, ...) {
 }
 
 
-.build_additional_layers <- function(x, sources, calibs, assigns = NULL, borders, mask, mask2 = NULL) {
+.select_assign_points <- function(points, ids, packet) {
+  ## This function should not be called by the user.
+  ## It returns the assignment points to draw in a given panel of an assignment plot:
+  ## only the point(s) of the sample shown in that panel, if this can be determined.
+  ## Otherwise (group assignment, or ISOFIND object created by an older version
+  ## of IsoriX in which points are not labelled by sample) all points are returned.
+  if (is.null(ids) || !"ID" %in% names(points)) {
+    return(points)
+  }
+  points[points$ID == ids[packet], ]
+}
+
+
+.build_additional_layers <- function(x, sources, calibs, assigns = NULL, assigns_ids = NULL, borders, mask, mask2 = NULL) {
   ## This function should not be called by the user.
   ## It builds the additional layers for the plots.
+  ## assigns_ids: the sample IDs of the assignment rasters plotted in each panel
+  ## (in panel order), or NULL to draw all assignment points in every panel.
 
   ## layer for sources
   if (!sources$draw) {
@@ -941,14 +963,22 @@ plot.SpatRaster <- function(x, ...) {
       assigns_layer <- latticeExtra::layer()
     } else {
       assigns_layer <- latticeExtra::layer(
-        lattice::lpoints(assigns,
-          col = pt$col,
-          cex = pt$cex,
-          pch = pt$pch,
-          lwd = pt$lwd
-        ),
+        {
+          ## only draw the point(s) of the sample shown in the current panel (#103)
+          points_to_draw <- select_points(assigns, ids = ids, packet = lattice::packet.number())
+          if (nrow(points_to_draw) > 0) {
+            lattice::lpoints(points_to_draw,
+              col = pt$col,
+              cex = pt$cex,
+              pch = pt$pch,
+              lwd = pt$lwd
+            )
+          }
+        },
         data = list(
           assigns = x$sp_points$assigns,
+          ids = assigns_ids,
+          select_points = .select_assign_points,
           pt = assigns
         )
       )
