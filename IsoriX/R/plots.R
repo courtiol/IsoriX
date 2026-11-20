@@ -52,9 +52,12 @@
 #' The argument `y_title` is a list that can be tweaked to customise the title
 #' of isoscapes. Within this list, the element `which` is a logical indicating
 #' if the name of the layer should be displayed or not. The element `title` is a
-#' string or a call used to define the rest of the title. By default it draws
-#' the delta value for hydrogen. Check the syntax of this default before trying
-#' to modify it. If you want to modify it for all plots, see [`getOption_IsoriX`].
+#' string or a call used to define the rest of the title, typically the delta
+#' notation of the isotope considered (e.g. `bquote(delta^2*H)` for hydrogen).
+#' By default, no isotope is mentioned since IsoriX cannot know which one you
+#' are working with. If you want to define it for all plots, see
+#' [`options_IsoriX`] (which also explains what to do if the delta symbol is not
+#' rendered).
 #'
 #' The arguments `cutoff`, `sources`, `calibs`, `assigns`, `borders`, `mask`,
 #' and `mask2` are used to fine-tune additional layers that can be added to the
@@ -242,7 +245,7 @@ plot.ISOSCAPE <- function(x,
   ## define y title
   Title <- ""
   if (simu) Title <- "simulated"
-  if (y_title$which) Title <- paste(Title, sub("_", " ", which, fixed = TRUE))
+  if (y_title$which) Title <- trimws(paste(Title, sub("_", " ", which, fixed = TRUE)))
   if (!is.null(y_title$title)) Title <- bquote(.(Title) ~ .(y_title$title))
 
   ## create the levelplot

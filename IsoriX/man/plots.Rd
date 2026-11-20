@@ -199,9 +199,12 @@ the \href{https://courtiol-isorix.share.connect.posit.cloud/}{online tutorial} f
 The argument \code{y_title} is a list that can be tweaked to customise the title
 of isoscapes. Within this list, the element \code{which} is a logical indicating
 if the name of the layer should be displayed or not. The element \code{title} is a
-string or a call used to define the rest of the title. By default it draws
-the delta value for hydrogen. Check the syntax of this default before trying
-to modify it. If you want to modify it for all plots, see \code{\link{getOption_IsoriX}}.
+string or a call used to define the rest of the title, typically the delta
+notation of the isotope considered (e.g. \code{bquote(delta^2*H)} for hydrogen).
+By default, no isotope is mentioned since IsoriX cannot know which one you
+are working with. If you want to define it for all plots, see
+\code{\link{options_IsoriX}} (which also explains what to do if the delta symbol is not
+rendered).
 
 The arguments \code{cutoff}, \code{sources}, \code{calibs}, \code{assigns}, \code{borders}, \code{mask},
 and \code{mask2} are used to fine-tune additional layers that can be added to the

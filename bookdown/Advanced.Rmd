@@ -261,6 +261,42 @@ The trick is to simply add `dev='CairoPNG'` in the option of the chunks producin
 :::
 
 
+#### When the delta symbol does not show up {#deltasymbol}
+
+By default, the titles of isoscape plots do not mention any isotope since `IsoriX` cannot know which isotope you are working with.
+You can define the delta notation to be used in all titles using the global option `title_delta_notation` (see section \@ref(globaloptions)), e.g. for hydrogen:
+
+```{r delta symbol option, eval = FALSE}
+options_IsoriX(title_delta_notation = bquote(delta^2 * H))
+```
+
+Depending on your system and on the graphic device you use, the delta symbol may however not be drawn.
+This is not a problem with `IsoriX`, but with the font used by the graphic device to draw Greek letters.
+For example, on some computers, the device `CairoPNG()` introduced above produces the plot on the left, in which the delta symbol is missing from the title:
+
+```{r delta symbol figures, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.cap = 'The same isoscape plotted using CairoPNG() before (left) and after (right) telling Cairo which font to use for symbols.'}
+knitr::include_graphics(c("figures/delta_symbol_missing.png", "figures/delta_symbol_fixed.png"))
+```
+
+If this happens to you, you have several options:
+
+- tell `Cairo` which font to use for symbols, choosing a font installed on your system that contains Greek letters (this is how we produced the plot on the right):
+
+```{r CairoFonts, eval = FALSE}
+CairoFonts(symbol = "DejaVu Sans", usePUA = FALSE)
+```
+
+- use another graphic device, such as `png(type = "cairo")`;
+
+- use the Unicode character for delta instead of the symbol (this is what we do for this bookdown):
+
+```{r delta unicode, eval = FALSE}
+options_IsoriX(title_delta_notation = bquote(italic("δ")^2 * H))
+```
+
+Note that this last solution does not work with all devices: for example, `pdf()` replaces the Unicode character by a dot.
+
+
 ## Exporting spatial objects to GIS {#GIS}
 
 It is straightforward to export all spatial objects created by `IsoriX` into formats compatible with main software for Geographic Information System (GIS).
