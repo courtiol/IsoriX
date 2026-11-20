@@ -243,7 +243,9 @@ represent:
 \item the source data by little red triangles.
 \item the calibration data by little blue crosses.
 \item the locations where the samples to assign were collected by white
-diamonds.
+diamonds. When individual assignments are plotted, each map only shows
+the location of the sample it corresponds to; the map of the group
+assignment shows the locations of all samples.
 }
 
 These symbols can be changed as explained above.

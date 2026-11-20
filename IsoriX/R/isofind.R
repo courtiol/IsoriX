@@ -402,6 +402,9 @@ calibfit!"
       lat = data$lat,
       proj = "+proj=longlat +datum=WGS84"
     )
+    ## we store the (possibly modified) sample IDs so that each point can be
+    ## matched to its assignment raster when plotting (#103)
+    assigns$sample_ID <- names_layers
   } else {
     assigns <- NULL
   }
