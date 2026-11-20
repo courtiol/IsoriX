@@ -902,10 +902,10 @@ plot.SpatRaster <- function(x, ...) {
   ## only the point(s) of the sample shown in that panel, if this can be determined.
   ## Otherwise (group assignment, or ISOFIND object created by an older version
   ## of IsoriX in which points are not labelled by sample) all points are returned.
-  if (is.null(ids) || !"sample_ID" %in% names(points)) {
+  if (is.null(ids) || !"ID" %in% names(points)) {
     return(points)
   }
-  points[points$sample_ID == ids[packet], ]
+  points[points$ID == ids[packet], ]
 }
 
 

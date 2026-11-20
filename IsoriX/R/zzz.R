@@ -65,7 +65,7 @@
 }
 
 
-.create_spatial_points <- function(long, lat, values = -9999, proj = "+proj=longlat +datum=WGS84") {
+.create_spatial_points <- function(long, lat, values = -9999, ID = NULL, proj = "+proj=longlat +datum=WGS84") {
   ## This function should not be called by the user.
   ## It creates spatial points.
   ##
@@ -73,12 +73,16 @@
   ##   long: a vector of the longitudes for the spatial points
   ##   lat: a vector of the latitudes for the spatial points
   ##   values: a vector of the values for the spatial points
+  ##   ID: an optional vector of identifiers for the spatial points (stored in the column ID)
   ##   proj: the projection system for the spatial points
   ##
   ## Returns:
   ##   The spatial points
   ##
   data <- data.frame(long = long, lat = lat, values = values)
+  if (!is.null(ID)) {
+    data$ID <- as.character(ID)
+  }
   terra::vect(data, geom = c("long", "lat"), crs = proj)
 }
 

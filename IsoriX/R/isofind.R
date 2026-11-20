@@ -397,14 +397,14 @@ calibfit!"
 
   ### spatial points
   if (!is.null(data$lat) && !is.null(data$long)) {
+    ## the (possibly modified) sample IDs are stored so that each point can be
+    ## matched to its assignment raster when plotting (#103)
     assigns <- .create_spatial_points(
       long = data$long,
       lat = data$lat,
+      ID = names_layers,
       proj = "+proj=longlat +datum=WGS84"
     )
-    ## we store the (possibly modified) sample IDs so that each point can be
-    ## matched to its assignment raster when plotting (#103)
-    assigns$sample_ID <- names_layers
   } else {
     assigns <- NULL
   }
