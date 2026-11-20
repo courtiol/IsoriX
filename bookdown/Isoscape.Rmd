@@ -170,7 +170,7 @@ Instead, if several datasets have been prepared, then you will have to according
 
 To fit the geostatistical models required to build a single set of isoscapes, you need to use the function `isofit()`. 
 The function `isofit()` has several parameters that can be adjusted to fit different models (see `?isofit`).
-Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting:
+Here we will consider two fixed effects (the elevation and the absolute latitude) on top of the default setting (see section \@ref(modelselection) for how to choose among alternative models):
 
 ```{r isofit fake, eval = FALSE}
 EuropeFit <- isofit(data = GNIPDataEUagg,
@@ -283,6 +283,75 @@ print(AIC(EuropeFit$mean_fit, verbose = FALSE))
 ```
 
 Note that we re-exported some `spaMM` functions for you to use without the need to load the package `spaMM` (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all `spaMM` functions.
+
+
+## Choosing the model {#modelselection}
+
+By default, `isofit()` fits models without any fixed-effect predictor: only an intercept and the random effects (including the spatial autocorrelation) are considered.
+This default is a convenient starting point, but it is probably not the best model for your data.
+This is why `isofit()` displays a message the first time you fit the default model during an R session.
+You should instead fit a few alternative models and compare them.
+
+### Comparing mean models
+
+The fixed effects you can consider are the elevation (`elev`), the absolute latitude (`lat_abs`), the squared latitude (`lat_2`), the longitude (`long`) and the squared longitude (`long_2`); see `?isofit`.
+Here, we compare the model we fitted in section \@ref(isofit) (`EuropeFit`, with `elev` and `lat_abs`) to the default model and to a model with only the elevation:
+
+```{r modelselection fake, eval = FALSE}
+EuropeFit_null <- isofit(data = GNIPDataEUagg)
+EuropeFit_elev <- isofit(data = GNIPDataEUagg,
+                         mean_model_fix = list(elev = TRUE))
+```
+
+```{r modelselection real, echo = FALSE, results = FALSE, message = FALSE}
+if (file.exists("output/EuropeFit_null.rds")) {
+  EuropeFit_null <- readRDS("output/EuropeFit_null.rds")
+} else {
+  EuropeFit_null <- isofit(data = GNIPDataEUagg)
+  saveRDS(EuropeFit_null, file = "output/EuropeFit_null.rds", compress = "xz")
+}
+if (file.exists("output/EuropeFit_elev.rds")) {
+  EuropeFit_elev <- readRDS("output/EuropeFit_elev.rds")
+} else {
+  EuropeFit_elev <- isofit(data = GNIPDataEUagg,
+                           mean_model_fix = list(elev = TRUE))
+  saveRDS(EuropeFit_elev, file = "output/EuropeFit_elev.rds", compress = "xz")
+}
+```
+
+We can then compute the information criteria of the three mean models:
+
+```{r modelselection AIC}
+sapply(list(null = EuropeFit_null,
+            elev = EuropeFit_elev,
+            elev_lat_abs = EuropeFit),
+       \(fit) AIC(fit$mean_fit, verbose = FALSE))
+```
+
+Which criterion to use matters: to compare mean models, use the **conditional AIC** (the second row above).
+The goal is indeed to select the model that best predicts the true, unobserved isoscape, which the fitted model approximates.
+As long as the random-effect structure is kept identical between the models being compared, the predicted isoscape corresponds to a specific realization of the random effects (in the spirit of BLUPs), and the conditional AIC measures the predictive power of precisely such predictions.
+(In addition, since `isofit()` fits the models by REML, the marginal AIC values of models with different fixed effects would not be comparable anyway.)
+Because the goal is prediction, there is no need to favour simpler models: the lower the conditional AIC, the better.
+However, the conditional AIC only reflects the quality of the predictions at the source locations, so it cannot detect problems arising elsewhere.
+In particular, polynomial terms (e.g. `lat_2`, `long_2`) can produce unrealistic predictions in areas far from the source locations.
+So, always check the isoscapes produced by the selected model.
+Such problems should be visible as areas of large prediction variance, which you can easily map by plotting the isoscape of the prediction variance (`which = "mean_predVar"`; see section \@ref(otherisoscapes)).
+
+Here, the elevation is the variable that increases the predictive power the most.
+For `EuropeFit`, we thus selected the mean model with the highest predictive power (i.e. the lowest conditional AIC) among those compared here.
+
+Note that the mean model relies on the predictions of the residual dispersion model, so make sure that you only change `mean_model_fix` while comparing mean models, and keep everything else identical.
+
+Also note that all the predictors you use must be available for building the isoscapes.
+The latitude and longitude are directly obtained from the coordinates of the structural raster, but the elevation must be provided by the structural raster itself (see section \@ref(structuralraster)).
+
+### Comparing residual dispersion models
+
+You can also change the fixed effects of the residual dispersion model using the argument `disp_model_fix`.
+Comparing residual dispersion models is trickier though, because counting the number of parameters in such models is not straightforward, which affects the computation of information criteria (see [issue #101](https://github.com/courtiol/IsoriX/issues/101)).
+We are planning to provide a function that automates the comparison of all possible models (see [issue #194](https://github.com/courtiol/IsoriX/issues/194)).
+Until then, unless you have good reasons to do otherwise, focus on the selection of the mean model.
 
 
 ## Building the isoscapes
@@ -437,7 +506,7 @@ This shows the prediction of the average isotope value in space (i.e. the point 
 For more information about how to improve your plots, check the section \@ref(betterplots).
 
 
-### Other isoscapes
+### Other isoscapes {#otherisoscapes}
 
 You can also plot any of the other isoscapes by specifying the name of the raster using the argument `which`.
 As examples, we are now going to plot the residual variation in isotope values predicted at each location, and the prediction variance:

@@ -105,7 +105,7 @@
       if (arg[1] == "list()") {
         arg_input <- mget(names(args), envir = env)[[arg_name]]
         arg_full <- eval(formals(fn)[[arg_name]])
-        if (is.null(names(arg_input))) {
+        if (length(arg_input) > 0 && is.null(names(arg_input))) { ## an empty list means: keep all defaults (#206)
           if (length(arg_input) == length(arg_full)) {
             names(arg_input) <- names(arg_full)
           } else {
@@ -367,7 +367,8 @@ release_bullets <- function() {
     "run `tests/local_tests.R` step-by-step",
     "update manual using `devtools::build_manual(path = '../pkg_manuals')`",
     "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (follow instructions in bookdown/README)",
-    "update bookdown (after `usethis::use_version('patch'); follow instructions in bookdown/README)",
+    "update bookdown (after `usethis::use_version('patch')`; follow instructions in bookdown/README)",
+    "check that the bookdown links in the default-model message of `isofit()` and in `?isofit` work after updating the bookdown",
     "write email to Google Group (https://groups.google.com/g/IsoriX)"
   )
 }
