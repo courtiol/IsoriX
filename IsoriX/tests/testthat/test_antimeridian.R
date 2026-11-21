@@ -124,3 +124,38 @@ test_that("the full workflow works across the antimeridian", {
   expect_no_error(print(plot(iso)))
   expect_no_error(suppressWarnings(print(plot(ass, who = 1:2))))
 })
+
+test_that("spaMM Earth distances do not depend on the representation of longitudes", {
+  skip_on_cran()
+  ## the fits and predictions must be the same whether longitudes are expressed
+  ## within [-180, 180] or within [0, 360], so that expressing them within
+  ## [0, 360] (as done by isofit() when sources straddle the antimeridian) and
+  ## muffling the corresponding spaMM warning is safe
+  set.seed(42)
+  n <- 40
+  d180 <- data.frame(long = c(runif(25, 120, 180), runif(15, -180, -150)), lat = runif(n, -40, 50))
+  d180$y <- -2 * abs(d180$lat) + 5 * sin(d180$long %% 360 / 20) + rnorm(n)
+  d360 <- d180
+  d360$long <- d360$long %% 360
+  formula <- y ~ abs(lat) + Matern(1 | long + lat)
+  fit180 <- spaMM::fitme(formula, data = d180, control.dist = list(dist.method = "Earth"))
+  fit360 <- .muffle_long_warning(spaMM::fitme(formula, data = d360, control.dist = list(dist.method = "Earth")))
+
+  expect_equal(as.numeric(stats::logLik(fit360)), as.numeric(stats::logLik(fit180)), tolerance = 1e-6)
+  expect_equal(spaMM::fixef(fit360), spaMM::fixef(fit180), tolerance = 1e-4)
+  expect_equal(
+    unlist(spaMM::get_ranPars(fit360, which = "corrPars")),
+    unlist(spaMM::get_ranPars(fit180, which = "corrPars")),
+    tolerance = 1e-4
+  )
+
+  new180 <- data.frame(long = c(175, -175, 150, -155, 179.9), lat = c(0, 10, 30, -20, 5))
+  new360 <- new180
+  new360$long <- new360$long %% 360
+  pred180 <- spaMM::predict.HLfit(fit180, newdata = new180, variances = list(predVar = TRUE))
+  pred360 <- .muffle_long_warning(spaMM::predict.HLfit(fit360, newdata = new360, variances = list(predVar = TRUE)))
+  pred_mixed <- .muffle_long_warning(spaMM::predict.HLfit(fit360, newdata = new180, variances = list(predVar = TRUE)))
+  expect_equal(as.numeric(pred360), as.numeric(pred180), tolerance = 1e-4)
+  expect_equal(as.numeric(pred_mixed), as.numeric(pred180), tolerance = 1e-4)
+  expect_equal(attr(pred360, "predVar"), attr(pred180, "predVar"), tolerance = 1e-4)
+})
