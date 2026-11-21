@@ -21,7 +21,7 @@ The following link will bring you to the right place to create an account:
 https://websso.iaea.org/IM/UserRegistrationPage.aspx?returnpage=http://nucleus.iaea.org/wiser
 
 Once your account has been activated, download the data you need from the WISER interface:
-https://nucleus.iaea.org/wiser/index (Tab Datasets)
+https://nucleus.iaea.org/wiser (Tab Datasets)
 
 Last time we checked, downloads were limited to 5,000 records per batch, which makes the compilation of huge databases fastidious.
 GNIP promised to come up, in the future, with datasets directly prepared for `IsoriX` to save you the trouble.
@@ -264,7 +264,7 @@ EuropeFit
 
 The object `EuropeFit` created in section \@ref(isofit) is a list containing the two fits aforementioned: `mean_fit` and `disp_fit`.
 This is why you see information about those two corresponding fits.
-These summary tables are created behind the scenes by [**`spaMM`**](https://gitlab.mbb.univ-montp2.fr/francois/spamm-ref), so, learning a little about `spaMM` and mixed models is useful to derive meanings from these outputs.
+These summary tables are created behind the scenes by [**`spaMM`**](https://gitlab.in2p3.fr/francois.rousset/spamm-ref), so, learning a little about `spaMM` and mixed models is useful to derive meanings from these outputs.
 (We are also planning to write an extensive description of model outputs to guide you.)
 
 

@@ -6,7 +6,7 @@
 \alias{summary.ISOFIT}
 \title{Fit the isoscape models}
 \source{
-\url{https://kimura.univ-montp2.fr/~rousset/spaMM.htm}
+\url{https://gitlab.in2p3.fr/francois.rousset/spamm-ref}
 }
 \usage{
 isofit(
