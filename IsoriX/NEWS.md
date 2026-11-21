@@ -2,6 +2,9 @@
 
 ## Bug fixes
 
+  * `prepraster()` failed to crop the raster according to the sources when given the output of `isomultifit()`, since this type of object was not recognised.
+  * `isomultiscape()` did not check that the names of the layers of the raster used for weighting match those of the fits, since the check looked for an element that does not exist.
+  * `prepraster()` now respects `verbose = FALSE` (it used to always print the raster).
   * the plotting functions for isoscapes and assignments no longer crash when the user provides their own country borders (`borders = list(borders = ...)`) containing more than one polygon.
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
@@ -15,6 +18,7 @@
 
 ## Minor changes
 
+  * the main functions now check the type of the objects given to them and stop with an informative error message saying which function creates the expected object (e.g. when an isoscape is given instead of the output of `isofit()`), or that source data must first be aggregated with `prepsources()` (#164).
   * each reference cited in the documentation now includes a link to its DOI, and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
   * the titles of the help pages of all datasets follow a consistent pattern indicating their role in the workflow (e.g. "Calibration data: ..."), and those of datasets from different studies are no longer identical (#97).
   * outdated links in the documentation were updated (e.g. the homepage of **spaMM** in `?isofit` and the link to the preprint in `citation("IsoriX")`), following the review of all links with the new script `release_checks/list_links.R` (#188).

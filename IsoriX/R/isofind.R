@@ -170,6 +170,15 @@ isofind <- function(data,
                     mask = NA,
                     neglect_covPredCalib = TRUE,
                     verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(data, "data.frame", "data", "isofind")
+  missing_cols <- setdiff(c("sample_ID", "sample_value"), colnames(data))
+  if (length(missing_cols) > 0) {
+    stop(paste0("The argument `data` of isofind() must contain the column(s) ", paste0("'", missing_cols, "'", collapse = " and "), " (see e.g. ?AssignDataAlien)."), call. = FALSE)
+  }
+  .check_input_class(isoscape, "ISOSCAPE", "isoscape", "isofind")
+  .check_input_class(calibfit, "CALIBFIT", "calibfit", "isofind", null_ok = TRUE)
+
   ### Check that sample_IDs correspond to unique locations if lat and long provided (not compulsory since not used to do the assignment but only for plotting)
   if (!is.null(data$lat) && !is.null(data$long)) {
     data$.location <- paste(data[, "lat", drop = TRUE], data[, "long", drop = TRUE], sep = "_")

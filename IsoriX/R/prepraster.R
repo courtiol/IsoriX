@@ -148,10 +148,14 @@ prepraster <- function(raster,
                        manual_crop = NULL,
                        values_to_zero = c(-Inf, 0),
                        verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "prepraster")
+  .check_input_class(isofit, "ISOFIT", "isofit", "prepraster", null_ok = TRUE)
+
   time <- system.time({
     if (!is.null(isofit)) { ## test if cropping is needed
-      if (inherits(isofit, "multiisofit")) {
-        isofit <- isofit$multi.fits[[1]]
+      if (inherits(isofit, "MULTIISOFIT")) {
+        isofit <- isofit$multi_fits[[1]]
       }
       if (!is.null(manual_crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
       if ( ## test if the raster is not smaller than the area covered by the sources.
@@ -210,7 +214,7 @@ prepraster <- function(raster,
       }
     }
     if (aggregation_factor > 1) { ## test if aggregation is needed
-      if (interactive()) {
+      if (verbose) {
         print(paste("aggregating..."))
       }
       raster <- terra::aggregate(raster,
@@ -234,8 +238,8 @@ prepraster <- function(raster,
   if (verbose) {
     print(paste("done!"))
     print(time)
+    print(raster)
   }
 
-  print(raster)
   return(raster)
 }

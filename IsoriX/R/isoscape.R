@@ -129,6 +129,9 @@
 isoscape <- function(raster,
                      isofit,
                      verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "isoscape")
+  .check_input_class(isofit, "ISOFIT", "isofit", "isoscape")
   if (inherits(isofit, "MULTIISOFIT")) {
     stop("Object 'isofit' of class MULTIISOFIT; use isomultiscape instead!")
   }
@@ -552,6 +555,10 @@ isomultiscape <- function(raster, ## change as method?
                           isofit,
                           weighting = NULL,
                           verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "isomultiscape")
+  .check_input_class(isofit, "ISOFIT", "isofit", "isomultiscape")
+
   ## In case the function is called on the output of isofit by mistake
   if (!inherits(isofit, "MULTIISOFIT")) {
     message("Your input for `isofit =` is not of class MULTIISOFIT, so your call to `isomultiscape()` has been automatically converted into a call to `isoscape()`.")
@@ -567,7 +574,7 @@ isomultiscape <- function(raster, ## change as method?
     if (!inherits(weighting, "SpatRaster")) {
       stop("the argument 'weighting' should be a SpatRaster")
     }
-    if (!all(names(isofit$multi.fits) %in% names(weighting))) {
+    if (!all(names(isofit$multi_fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
     if (terra::ext(weighting) != terra::ext(raster)) {

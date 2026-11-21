@@ -225,6 +225,9 @@ isofit <- function(data,
                    control_mean = list(),
                    control_disp = list(),
                    verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_source_data(data, "isofit")
+
   ## Complete the arguments
   .complete_args(isofit)
 
@@ -479,6 +482,9 @@ isomultifit <- function(data,
                         control_mean = list(),
                         control_disp = list(),
                         verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_source_data(data, "isomultifit")
+
   ## Complete the arguments
   .complete_args(isomultifit)
 
