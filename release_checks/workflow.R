@@ -4,7 +4,10 @@
 ## once for each version of IsoriX, each time in a fresh R session where only
 ## the version of IsoriX differs.
 ##
-## Usage: Rscript workflow.R <output_directory>
+## Usage: Rscript workflow.R <output_directory> [library]
+##
+## If `library` is given, IsoriX is loaded from that library (and the workflow
+## stops if it cannot be), whatever the other libraries of the R session.
 ##
 ## It saves all plots as PNG files in <output_directory>/plots, some key numbers
 ## in <output_directory>/summaries.txt and a log of all steps (status, time,
@@ -14,12 +17,17 @@
 ## fails is recorded in the log and the workflow continues.
 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 1) stop("Usage: Rscript workflow.R <output_directory>")
+if (!length(args) %in% 1:2) stop("Usage: Rscript workflow.R <output_directory> [library]")
 out_dir <- args[1]
+lib <- if (length(args) == 2) args[2] else NULL
 plot_dir <- file.path(out_dir, "plots")
 dir.create(plot_dir, recursive = TRUE, showWarnings = FALSE)
 
-suppressPackageStartupMessages(library(IsoriX))
+suppressPackageStartupMessages(library(IsoriX, lib.loc = lib))
+loaded_from <- normalizePath(dirname(find.package("IsoriX")))
+if (!is.null(lib) && loaded_from != normalizePath(lib)) {
+  stop("IsoriX was loaded from ", loaded_from, " instead of ", normalizePath(lib), ": the comparison would not be valid.")
+}
 options_IsoriX(dont_ask = TRUE)
 set.seed(1L)
 
@@ -68,6 +76,7 @@ raster_summary <- function(r) {
 }
 
 add_summary("IsoriX version", as.character(utils::packageVersion("IsoriX")))
+writeLines(c(as.character(utils::packageVersion("IsoriX")), loaded_from), file.path(out_dir, "isorix_loaded.txt"))
 
 ## Sources and isoscape ----------------------------------------------------------
 

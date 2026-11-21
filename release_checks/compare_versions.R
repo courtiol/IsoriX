@@ -50,10 +50,17 @@ install_source <- function(path, lib) {
 lib_previous <- file.path(tempdir(), "lib_previous")
 lib_candidate <- file.path(tempdir(), "lib_candidate")
 
+## returns the version of IsoriX installed in a library, or stops if there is none
+installed_version <- function(lib, label) {
+  desc <- file.path(lib, "IsoriX", "DESCRIPTION")
+  if (!file.exists(desc)) stop("The ", label, " version of IsoriX could not be installed in ", lib, ".")
+  read.dcf(desc, fields = "Version")[1, 1]
+}
+
 message("Installing the previous version (", previous, ")...")
 if (tolower(previous) == "cran") {
   dir.create(lib_previous, recursive = TRUE, showWarnings = FALSE)
-  utils::install.packages("IsoriX", lib = lib_previous, repos = "https://cloud.r-project.org", dependencies = FALSE, quiet = TRUE)
+  utils::install.packages("IsoriX", lib = lib_previous, repos = "https://cloud.r-project.org", dependencies = FALSE, type = "source", quiet = TRUE)
 } else {
   src_previous <- file.path(tempdir(), "src_previous")
   dir.create(src_previous, showWarnings = FALSE)
@@ -65,8 +72,11 @@ if (tolower(previous) == "cran") {
   install_source(file.path(src_previous, "IsoriX"), lib_previous)
 }
 
+message("  -> installed version: ", installed_version(lib_previous, "previous"))
+
 message("Installing the candidate version (", candidate, ")...")
 install_source(candidate, lib_candidate)
+message("  -> installed version: ", installed_version(lib_candidate, "candidate"))
 
 ## Running the workflow with each version ----------------------------------------
 
@@ -74,23 +84,27 @@ run_workflow <- function(lib, label) {
   dir <- file.path(out_dir, label)
   dir.create(dir, showWarnings = FALSE)
   message("Running the workflow with the ", label, " version (this takes a few minutes)...")
-  ## R_LIBS puts the temporary library first, before your usual libraries
-  system2(rscript, c(shQuote(file.path("release_checks", "workflow.R")), shQuote(dir)),
+  ## IsoriX is loaded explicitly from the temporary library by the workflow, which
+  ## checks that it is (other packages come from your usual libraries); the user
+  ## profile (.Rprofile) is not read, so that it cannot interfere
+  system2(rscript, c("--no-init-file", shQuote(file.path("release_checks", "workflow.R")), shQuote(dir), shQuote(lib)),
     env = paste0("R_LIBS=", lib), stdout = file.path(dir, "console.txt"), stderr = file.path(dir, "console.txt")
   )
+  loaded <- tryCatch(readLines(file.path(dir, "isorix_loaded.txt")), error = function(e) character())
+  if (length(loaded) < 2 || normalizePath(loaded[2]) != normalizePath(lib)) {
+    stop("The workflow did not run with the ", label, " version of IsoriX: see ", file.path(dir, "console.txt"))
+  }
   dir
 }
 
 dir_previous <- run_workflow(lib_previous, "previous")
 dir_candidate <- run_workflow(lib_candidate, "candidate")
 
-read_version <- function(dir) {
-  s <- tryCatch(readLines(file.path(dir, "summaries.txt")), error = function(e) character())
-  i <- grep("^## IsoriX version", s)
-  if (length(i)) gsub('^\\[1\\] |"', "", s[i + 1]) else "unknown (see console.txt)"
+version_previous <- readLines(file.path(dir_previous, "isorix_loaded.txt"))[1]
+version_candidate <- readLines(file.path(dir_candidate, "isorix_loaded.txt"))[1]
+if (version_previous == version_candidate) {
+  warning("Both versions have the same version number (", version_previous, "): make sure this is what you intended.")
 }
-version_previous <- read_version(dir_previous)
-version_candidate <- read_version(dir_candidate)
 
 ## Comparison of the plots -------------------------------------------------------
 
