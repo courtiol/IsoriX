@@ -33,8 +33,8 @@
 #' corresponding information for the residual dispersion variance model
 #' (`"disp"`, `"disp_predVar"`, `"disp_residVar"`, or `"disp_respVar"`).
 #'
-#' When used on an isoscape converted into sample values with the function
-#' [`isotranscape`], only the mean isotopic value can be plotted (`which =
+#' When used on a calibrated isoscape (i.e. converted into sample values) produced with the function
+#' [`calibscape`], only the mean isotopic value can be plotted (`which =
 #' "mean"`).
 #'
 #' When used on a simulated isoscape produced with the function `isosim`
@@ -198,7 +198,7 @@ plot.ISOSCAPE <- function(x,
   }
 
   simu <- "ISOSIM" %in% class(x)
-  rescaled <- "ISORESCALED" %in% class(x)
+  calibrated <- "CALIBSCAPE" %in% class(x)
 
   ## complete input with default setting
   .complete_args(plot.ISOSCAPE)
@@ -220,9 +220,9 @@ plot.ISOSCAPE <- function(x,
     mask$mask <- terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX"))
   }
 
-  if (rescaled) {
+  if (calibrated) {
     if (which != "mean") {
-      stop("For isoscapes converted using `isotranscape()`, the argument 'which' must be 'mean'.")
+      stop("For calibrated isoscapes (produced by `calibscape()`), the argument 'which' must be 'mean'.")
     }
   } else if (simu) {
     if (sources$draw) {
@@ -254,7 +254,7 @@ plot.ISOSCAPE <- function(x,
   ## define y title
   Title <- ""
   if (simu) Title <- "simulated"
-  if (rescaled) Title <- "rescaled"
+  if (calibrated) Title <- "calibrated"
   if (y_title$which) Title <- trimws(paste(Title, sub("_", " ", which, fixed = TRUE)))
   if (!is.null(y_title$title)) Title <- bquote(.(Title) ~ .(y_title$title))
 

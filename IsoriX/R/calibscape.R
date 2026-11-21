@@ -1,20 +1,21 @@
-#' Converts isoscapes of sources into isoscapes of samples (e.g. tissues)
+#' Builds calibrated isoscapes, i.e. isoscapes of samples (e.g. tissues)
 #'
 #' This function uses a calibration fit to convert the mean isoscape of
-#' source isotopic values (e.g. precipitation) into the mean isoscape of the
-#' isotopic values expected in the samples (e.g. animal tissues).
+#' source isotopic values (e.g. precipitation) into a calibrated isoscape, i.e.
+#' the mean isoscape of the isotopic values expected in the samples (e.g. animal
+#' tissues).
 #'
 #' For assignments, IsoriX converts the isotopic values of the samples to
 #' assign (e.g. animal tissues) into isotopic values of the sources (e.g.
 #' precipitation), and not the other way around (see [`isofind`]). Yet, it can
 #' be useful to visualise or study what the isoscape would look like in terms of
-#' sample values. This is what `isotranscape()` does.
+#' sample values. This is what `calibscape()` does.
 #'
 #' The calibration fit (see [`calibfit`]) models the relationship
 #' `sample_value = intercept + slope * source_value`, whatever the calibration
 #' method used (for the method `"desk_inverse"`, the inversion of the
 #' regression is already performed by [`calibfit`]). The mean isoscape is thus
-#' simply converted into the isoscape of samples by computing, in each raster
+#' simply calibrated by computing, in each raster
 #' cell, `intercept + slope * mean`, using the estimates of the intercept and
 #' of the slope stored in the calibration fit.
 #'
@@ -34,7 +35,7 @@
 #' @param calibfit The output of the function [`calibfit`] (i.e. an object of
 #'   class *CALIBFIT*)
 #' @return This function returns a *list* of class *ISOSCAPE* and
-#'   *ISORESCALED* containing a *SpatRaster* with a single layer (`mean`)
+#'   *CALIBSCAPE* containing a *SpatRaster* with a single layer (`mean`)
 #'   storing the predicted mean isotopic values of the samples, and the location
 #'   of the sources as spatial points.
 #' @seealso [`isoscape`] and [`isomultiscape`] for the functions building the
@@ -67,21 +68,21 @@
 #'   CalibDataDesk <- data.frame(intercept = -10, slope = 0.8)
 #'   CalibDesk <- calibfit(data = CalibDataDesk, method = "desk")
 #'
-#'   ## We convert the isoscape of sources into an isoscape of tissues
-#'   GermanTissueScape <- isotranscape(isoscape = GermanScape, calibfit = CalibDesk)
+#'   ## We build the calibrated isoscape (i.e. the isoscape of tissues)
+#'   GermanCalibScape <- calibscape(isoscape = GermanScape, calibfit = CalibDesk)
 #'
-#'   GermanTissueScape
-#'   plot(GermanTissueScape)
+#'   GermanCalibScape
+#'   plot(GermanCalibScape)
 #' }
 #'
 #' @export
-isotranscape <- function(isoscape, calibfit) {
+calibscape <- function(isoscape, calibfit) {
   if (!inherits(isoscape, "ISOSCAPE")) {
     stop("The argument `isoscape` must be an object of class ISOSCAPE (i.e. created by `isoscape()` or `isomultiscape()`).")
   }
 
-  if (inherits(isoscape, "ISORESCALED")) {
-    stop("The argument `isoscape` has already been converted by `isotranscape()`; it cannot be converted again.")
+  if (inherits(isoscape, "CALIBSCAPE")) {
+    stop("The argument `isoscape` has already been calibrated by `calibscape()`; it cannot be calibrated again.")
   }
 
   if (!inherits(calibfit, "CALIBFIT")) {
@@ -91,27 +92,27 @@ isotranscape <- function(isoscape, calibfit) {
   intercept <- calibfit$param[["intercept"]]
   slope <- calibfit$param[["slope"]]
 
-  mean_rescaled <- intercept + slope * isoscape$isoscapes[["mean"]]
-  names(mean_rescaled) <- "mean"
+  mean_calibrated <- intercept + slope * isoscape$isoscapes[["mean"]]
+  names(mean_calibrated) <- "mean"
 
   out <- list(
-    isoscapes = mean_rescaled,
+    isoscapes = mean_calibrated,
     sp_points = isoscape$sp_points
   )
 
-  class(out) <- c("ISOSCAPE", "ISORESCALED", "list")
+  class(out) <- c("ISOSCAPE", "CALIBSCAPE", "list")
 
   return(out)
 }
 
 
-.stop_if_rescaled <- function(isoscape, fn) {
+.stop_if_calibscape <- function(isoscape, fn) {
   ## This function should not be called by the user.
-  ## It prevents the use of isoscapes produced by isotranscape() in functions
+  ## It prevents the use of calibrated isoscapes (produced by calibscape()) in functions
   ## requiring isoscapes of source isotopic values.
-  if (inherits(isoscape, "ISORESCALED")) {
+  if (inherits(isoscape, "CALIBSCAPE")) {
     stop(paste0(
-      "The isoscape provided has been converted into sample values by `isotranscape()`, so it cannot be used by `",
+      "The isoscape provided has been calibrated by `calibscape()`, so it cannot be used by `",
       fn, "()`, which requires an isoscape of source values (as produced by `isoscape()` or `isomultiscape()`)."
     ), call. = FALSE)
   }
