@@ -330,7 +330,8 @@ The column `cAIC` gives the **conditional AIC** of each fit, which is the criter
 The goal is indeed to select the model that best predicts the true, unobserved isoscape, which the fitted model approximates.
 As long as the random-effect structure is kept identical between the models being compared, the predicted isoscape corresponds to a specific realization of the random effects (in the spirit of BLUPs), and the conditional AIC measures the predictive power of precisely such predictions.
 (In addition, since `isofit()` fits the models by REML, the marginal AIC values of models with different fixed effects would not be comparable anyway.)
-Because the goal is prediction, there is no need to favour simpler models: the lower the conditional AIC, the better.
+Because the goal is prediction, there is no need to favour simpler models for their own sake: the lower the conditional AIC, the better.
+Keep in mind, however, that the conditional AIC computed here is only an estimate (see below), so small differences between models (e.g. less than 2 units) should not be over-interpreted [@burnham2003model; @overholser2014effective].
 However, the conditional AIC only reflects the quality of the predictions at the source locations, so it cannot detect problems arising elsewhere.
 In particular, polynomial terms (e.g. `lat_2`, `long_2`) can produce unrealistic predictions in areas far from the source locations.
 So, always check the isoscapes produced by the selected model.
@@ -343,6 +344,7 @@ The other columns detail how the conditional AIC is computed.
 The mean model relies on the predictions of the residual dispersion model, which it treats as known.
 The conditional AIC computed by `spaMM` for the mean model (`cAIC_uncorrected`, which is also what you would get by calling `AIC(EuropeFit$mean_fit)`) thus ignores that the parameters of the residual dispersion model have been estimated.
 `AIC()` corrects for that by adding twice the number of parameters estimated in the residual dispersion model (`K_disp`) to it.
+This follows @overholser2014effective, who showed that, in linear mixed models whose residual variance depends on $r$ unknown parameters, the conditional AIC must be penalised by $2r$ on top of twice the effective degrees of freedom of the fixed and random effects; here, the parameters of the residual dispersion model play the role of these $r$ parameters.
 `K_mean` gives, for information, the number of parameters estimated in the mean model, which is already accounted for in `cAIC_uncorrected`.
 When you compare mean models fitted with the same residual dispersion model, as we did here, the correction is the same for all fits, so it does not change the ranking of the models.
 
@@ -362,6 +364,16 @@ AIC(EuropeFit, EuropeFit_disp_elev)
 ```
 
 Indeed, the residual dispersion model influences the fit of the mean model (it determines how much weight each source receives), and thus the predictive power of the isoscape.
+
+Such comparisons should nonetheless be interpreted with more caution than comparisons of mean models, because the correction is only an approximation:
+
+- the result of @overholser2014effective is asymptotic, and the plug-in conditional AIC can be biased in small samples;
+- it assumes that the parameters of the residual variance are estimated jointly with those of the mean model, whereas `isofit()` estimates them in a separate fit;
+- the residual variances predicted by the residual dispersion model also depend on the predicted values of its random effects, which are not counted in `K_disp`, so the complexity of residual dispersion models with random effects is probably underestimated;
+- the conditional AIC tends to favour models with additional random effects [@greven2010behaviour; @overholser2014effective].
+
+So, we recommend comparing residual dispersion models that differ in their fixed effects (`disp_model_fix`) while keeping their random effects (`disp_model_rand`) identical, and not to give much weight to small differences in conditional AIC.
+When the decision matters for your application, consider also checking the predictive power of the competing models by cross-validation.
 We are planning to provide a function that automates the comparison of all possible models (see [issue #194](https://github.com/courtiol/IsoriX/issues/194)).
 
 
