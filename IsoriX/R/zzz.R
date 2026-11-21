@@ -204,8 +204,8 @@
   if (!valid) {
     stop("The SpatRaster passed to the argument '", arg, "' is no longer valid in this R session ",
       "(it was probably restored from a saved workspace or from another R session). ",
-      "Please re-create it, e.g. using terra::rast() on the file it comes from ",
-      "(such as the elevation raster downloaded with getelev(); see ?getelev).",
+      "Please re-create it using terra::rast() on the file downloaded with getelev() ",
+      "(see ?getelev).",
       call. = FALSE
     )
   }
