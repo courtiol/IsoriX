@@ -369,6 +369,8 @@ release_bullets <- function() {
     "run `make build` & `make check` in terminal (at the root of the repo)",
     "check folder `IsoriX.Rcheck` and file in there",
     "run `tests/local_tests.R` step-by-step",
+    "run `devtools::test()` (which also runs the plot snapshot tests, skipped otherwise) and review any intended change in plots with `testthat::snapshot_review()`",
+    "from the root of the repo, run `Rscript release_checks/compare_versions.R` to compare all plots and key numbers of the full workflow between the CRAN version and the candidate version; review `report.html` (see release_checks/README.md)",
     "update manual using `devtools::build_manual(path = '../pkg_manuals')`",
     "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (follow instructions in bookdown/README)",
     "update bookdown (after `usethis::use_version('patch')`; follow instructions in bookdown/README)",
