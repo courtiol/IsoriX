@@ -13,8 +13,54 @@ To do all this, the best is to use the GitHub interface https://github.com/court
 On these GitHub pages you will be able to access all the code and to leave feedback in the page called "Issues".
 According to GitHub, new features are also considered as "issues" (for programmers it actually makes sense).
 
-From our perspective, the easiest way for you to make `IsoriX` better is to create so-called *pull requests* on GitHub (check this [short tutorial](https://www.r-bloggers.com/2019/01/a-newbies-guide-to-making-a-pull-request-for-an-r-package/) for how to).
-If that seems too complicated and intimidating, feel free to directly send us code or text.
+From our perspective, the easiest way for you to make `IsoriX` better is to create so-called *pull requests* on GitHub.
+A pull request is a proposal of changes (to the code, the documentation or this bookdown) that we can review, discuss with you, and then integrate.
+If that seems too complicated and intimidating, feel free to directly send us code or text (see below).
+
+## Proposing changes with a pull request {#pullrequest}
+
+The package [**`usethis`**](https://usethis.r-lib.org) makes it possible to do everything from R.
+You will need a (free) GitHub account and to have [**`git`**](https://git-scm.com) installed on your computer.
+
+**Step 0 (only once):** let R talk to GitHub on your behalf by creating a GitHub token and storing it:
+
+```{r contrib token, eval = FALSE}
+usethis::create_github_token() ## opens GitHub in your browser to create the token
+gitcreds::gitcreds_set()        ## paste the token here
+```
+
+**Step 1 (only once): fork and clone `IsoriX`.**
+This creates your own copy (*fork*) of `IsoriX` on GitHub, and downloads it (*clone*) on your computer:
+
+```{r contrib fork, eval = FALSE}
+usethis::create_from_github("courtiol/IsoriX", fork = TRUE)
+```
+
+Note that the repository contains several folders: the R package itself is in the folder `IsoriX` (open the RStudio project `IsoriX/IsoriX.Rproj` to work on it) and this bookdown is in the folder `bookdown`.
+
+**Step 2: create a branch for your changes**, giving it a short descriptive name:
+
+```{r contrib branch, eval = FALSE}
+usethis::pr_init("fix-typo-in-isofit")
+```
+
+**Step 3: make your changes** and check that they work.
+For changes to the package, you can load your modified version of `IsoriX` without installing it, by running `devtools::load_all()` from within the folder `IsoriX`.
+Then record your changes using git (e.g. using the "Git" panel of RStudio: tick the files you changed, click on "Commit" and write a short message describing your changes).
+
+**Step 4: send us your changes:**
+
+```{r contrib push, eval = FALSE}
+usethis::pr_push()
+```
+
+This sends your changes to your fork on GitHub and opens your browser on the page creating the pull request: describe what you did (and why) and confirm.
+We will then try your changes on our side, perhaps ask you some questions or suggest some modifications (just commit them and call `usethis::pr_push()` again to update your pull request), and integrate them.
+
+Once your pull request has been integrated, you can clean things up and get back to the main version of `IsoriX` with `usethis::pr_finish()`.
+For a new contribution, simply start again from step 2.
+
+## Other ways to contribute
 
 Feel free to send anything you think would benefit the package.
 We will check the content and if we think it is a good idea (it probably is), we will integrate and credit your changes.

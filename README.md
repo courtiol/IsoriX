@@ -61,7 +61,27 @@ Off course, replace the numbers (`"192.123.4.5:6789"`) with those corresponding 
 
 
 ## How can you contribute?
-There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests (see our [bookdown](https://courtiol-isorix.share.connect.posit.cloud) for details).
+There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests (see the [chapter on contributing](https://courtiol-isorix.share.connect.posit.cloud/contrib.html) of our bookdown for details, including the simple steps to propose changes using pull requests).
+
+
+## For the maintainer
+
+### Testing a pull request locally
+From the RStudio project of the package (`IsoriX/IsoriX.Rproj`), with `123` replaced by the number of the pull request:
+```r
+usethis::pr_fetch(123) ## checks out the branch of the pull request
+devtools::load_all()   ## loads the version of IsoriX proposed in the pull request
+devtools::test()       ## runs the tests, including the plot snapshot tests
+usethis::pr_finish()   ## once done (or merged): goes back to the main branch and deletes the local branch
+```
+Use `usethis::pr_pause()` instead of `usethis::pr_finish()` to go back to the main branch while keeping the branch of the pull request for later.
+
+### Preparing a release
+Run `usethis::use_release_issue()`: it creates a GitHub issue with the checklist for the release, which includes the steps specific to IsoriX defined in `release_bullets()` (in `IsoriX/R/zzz.R`).
+Some of these steps use the scripts stored in the folder `release_checks` (see the README in there).
+
+### Recreating the datasets
+The script creating the datasets stored in IsoriX is `material_for_maintainer/sources_for_datasets/create_rda.R` (most of the source files it uses are not stored in the repository).
 
 
 ## Main packages behind IsoriX
