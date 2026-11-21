@@ -12,7 +12,8 @@ See example for details on how we created the dataset.
 }
 \description{
 This dataset contains a polygon SpatVector (from \pkg{terra}).
-It can be used to mask large bodies of water.
+It can be used to mask large bodies of water. It is the complement of the
+polygons stored in \code{\link{CountryBorders}} within their extent.
 }
 \examples{
 
@@ -21,11 +22,12 @@ plot(OceanMask, col = "blue")
 ## How did we create this file?
 
 ## Uncomment the following to create the file as we did
+## (after having created CountryBorders, see ?CountryBorders)
 # if (require(terra)) {
-#   worldlimit <- vect(ext(CountryBorders))
+#   worldlimit <- as.polygons(ext(CountryBorders))
 #   crs(worldlimit) <- crs(CountryBorders)
 #   OceanMask <- worldlimit - CountryBorders
-#   #saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+#   #terra::saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
 # }
 
 }

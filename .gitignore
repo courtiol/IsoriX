@@ -32,7 +32,8 @@
 CRAN_releases/
 material_for_maintainer/local_trials/
 material_for_maintainer/biblio_nonshared/
-material_for_maintainer/sources_for_datasets/
+material_for_maintainer/sources_for_datasets/*
+!material_for_maintainer/sources_for_datasets/create_rda.R
 IsoriX.Rcheck
 
 # Files in vignettes that can easily be generated locally
