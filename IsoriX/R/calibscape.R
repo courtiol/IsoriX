@@ -79,17 +79,12 @@
 #'
 #' @export
 calibscape <- function(isoscape, calibfit) {
-  if (!inherits(isoscape, "ISOSCAPE")) {
-    stop("The argument `isoscape` must be an object of class ISOSCAPE (i.e. created by `isoscape()` or `isomultiscape()`).")
-  }
-
+  ## Check the inputs (#164)
+  .check_input_class(isoscape, "ISOSCAPE", "isoscape", "calibscape")
   if (inherits(isoscape, "CALIBSCAPE")) {
-    stop("The argument `isoscape` has already been calibrated by `calibscape()`; it cannot be calibrated again.")
+    stop("The argument `isoscape` of calibscape() has already been calibrated by calibscape(); it cannot be calibrated again.", call. = FALSE)
   }
-
-  if (!inherits(calibfit, "CALIBFIT")) {
-    stop("The argument `calibfit` must be an object of class CALIBFIT (i.e. created by `calibfit()`).")
-  }
+  .check_input_class(calibfit, "CALIBFIT", "calibfit", "calibscape")
 
   intercept <- calibfit$param[["intercept"]]
   slope <- calibfit$param[["slope"]]

@@ -102,6 +102,14 @@
 #' alternative "Euclidean" distances do not. For studies performed on a small
 #' geographic scale, both distance methods should lead to similar results.
 #'
+#' If the sources straddle the antimeridian (i.e. the International Date Line,
+#' 180 degrees), e.g. for studies centred on the Pacific, their longitudes are
+#' automatically expressed within 0 and 360 (instead of -180 and 180) so that
+#' the area they cover is continuous (a message is then displayed). This
+#' matters for fixed effects involving longitude, for cropping the structural
+#' raster (see [`prepraster`]) and for plotting. The "Earth" distances are not
+#' affected by this change of representation.
+#'
 #' The arguments `control_mean` and `control_dist` are lists that are
 #' transmitted to the [`spaMM::spaMM`] fitting functions (defined by
 #' `spaMM_method`). These lists can be used to finely control the fitting
@@ -225,6 +233,9 @@ isofit <- function(data,
                    control_mean = list(),
                    control_disp = list(),
                    verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_source_data(data, "isofit")
+
   ## Complete the arguments
   .complete_args(isofit)
 
@@ -282,6 +293,9 @@ isofit <- function(data,
     )
     .data_IsoriX$default_model_msg_shown <- TRUE
   }
+
+  ## Express longitudes continuously if the sources straddle the antimeridian
+  data <- .make_long_continuous(data)
 
   ## Prepare the dataset
   data <- .prepare_data_sources(data)
@@ -366,10 +380,10 @@ isofit <- function(data,
   }
 
   ## Fit disp_fit
-  time_disp <- system.time(disp_fit <- do.call(
+  time_disp <- system.time(disp_fit <- .muffle_long_warning(do.call(
     eval(parse(text = paste0("spaMM::", spaMM_method$disp_model))),
     c(args_dispfit, control_disp)
-  ))
+  )))
 
   ## Predict the values for the residual variance
   pred_disp_obj <- .safe_and_quiet_predictions(disp_fit, newdata = data)
@@ -394,10 +408,10 @@ isofit <- function(data,
   }
 
   ## Fit mean_fit
-  time_mean <- system.time(mean_fit <- do.call(
+  time_mean <- system.time(mean_fit <- .muffle_long_warning(do.call(
     eval(parse(text = paste0("spaMM::", spaMM_method$mean_model))),
     c(args_meanfit, control_mean)
-  ))
+  )))
 
   ## Interactive display of fit time duration
   total_time <- round(as.numeric((time_mean + time_disp)[3]))
@@ -479,6 +493,9 @@ isomultifit <- function(data,
                         control_mean = list(),
                         control_disp = list(),
                         verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_source_data(data, "isomultifit")
+
   ## Complete the arguments
   .complete_args(isomultifit)
 
@@ -490,6 +507,11 @@ isomultifit <- function(data,
   if (is.null(data[, split_by])) {
     stop(paste("You used 'split_by =", split_by, "' but no column called ',", split_by, "' is found in 'data'..."))
   }
+
+  ## Express longitudes continuously if the sources straddle the antimeridian
+  ## (done before splitting so that all fits share the same representation)
+  data <- .make_long_continuous(data)
+  info_fit$data <- data
 
   ## Prepare arguments for call(s) to isofit
   info_fit$split_by <- info_fit$weighting <- NULL ## removes arguments unknown to isofit
@@ -534,6 +556,25 @@ isomultifit <- function(data,
   class(out) <- c("MULTIISOFIT", "ISOFIT", "list")
 
   return(invisible(out))
+}
+
+
+.make_long_continuous <- function(data) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## If the sources straddle the antimeridian (International Date Line), it
+  ## expresses longitudes within [0, 360] instead of [-180, 180] so that the
+  ## area covered by the sources is continuous (#180). This matters for
+  ## fixed effects involving longitude, for cropping structural rasters and
+  ## for plotting.
+  long <- data$long[!is.na(data$long)]
+  straddles <- length(long) > 1 && all(long >= -180 & long <= 180) &&
+    diff(range(long %% 360)) < diff(range(long)) ## more compact within [0, 360]
+  if (!straddles) {
+    return(data)
+  }
+  data$long <- data$long %% 360
+  message("The sources straddle the antimeridian (International Date Line): longitudes are thus expressed within [0, 360] instead of [-180, 180] so that the area covered by the sources is continuous.")
+  data
 }
 
 

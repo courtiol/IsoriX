@@ -170,8 +170,15 @@ isofind <- function(data,
                     mask = NA,
                     neglect_covPredCalib = TRUE,
                     verbose = interactive()) {
-  ### Check that the isoscape is an isoscape of sources
+  ## Check the inputs (#164)
+  .check_input_class(data, "data.frame", "data", "isofind")
+  missing_cols <- setdiff(c("sample_ID", "sample_value"), colnames(data))
+  if (length(missing_cols) > 0) {
+    stop(paste0("The argument `data` of isofind() must contain the column(s) ", paste0("'", missing_cols, "'", collapse = " and "), " (see e.g. ?AssignDataAlien)."), call. = FALSE)
+  }
+  .check_input_class(isoscape, "ISOSCAPE", "isoscape", "isofind")
   .stop_if_calibscape(isoscape, fn = "isofind")
+  .check_input_class(calibfit, "CALIBFIT", "calibfit", "isofind", null_ok = TRUE)
 
   ### Check that sample_IDs correspond to unique locations if lat and long provided (not compulsory since not used to do the assignment but only for plotting)
   if (!is.null(data$lat) && !is.null(data$long)) {
@@ -384,7 +391,8 @@ calibfit!"
     }
 
     ## turn mask into raster with NA inside polygons
-    raster_mask <- is.na(terra::rasterize(mask, stat_brick))
+    ## (the mask is shifted if the isoscape crosses the antimeridian, #180)
+    raster_mask <- is.na(terra::rasterize(.wrap_vector_to_extent(mask, terra::ext(stat_brick)), stat_brick))
 
     ## multiplying rasters by the raster_mask
     stat_brick <- stat_brick * raster_mask

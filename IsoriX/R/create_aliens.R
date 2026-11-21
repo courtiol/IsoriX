@@ -118,11 +118,13 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
                           n_sites = NA,
                           min_n_samples = 1,
                           max_n_samples = 10) {
+  ## Check the inputs (#164)
+  .check_input_class(isoscape, "ISOSCAPE", "isoscape", "create_aliens")
+  .stop_if_calibscape(isoscape, fn = "create_aliens")
+  .check_input_class(raster, "SpatRaster", "raster", "create_aliens")
+
   ## Complete the arguments
   .complete_args(create_aliens)
-
-  ## Check that the isoscape is an isoscape of sources
-  .stop_if_calibscape(isoscape, fn = "create_aliens")
 
   ## Choose location for the aliens
   if (length(coordinates) == 1 && is.na(coordinates)) {

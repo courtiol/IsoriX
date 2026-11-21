@@ -170,6 +170,14 @@ called orthodromic distances. They account for earth curvature. The
 alternative "Euclidean" distances do not. For studies performed on a small
 geographic scale, both distance methods should lead to similar results.
 
+If the sources straddle the antimeridian (i.e. the International Date Line,
+180 degrees), e.g. for studies centred on the Pacific, their longitudes are
+automatically expressed within 0 and 360 (instead of -180 and 180) so that
+the area they cover is continuous (a message is then displayed). This
+matters for fixed effects involving longitude, for cropping the structural
+raster (see \code{\link{prepraster}}) and for plotting. The "Earth" distances are not
+affected by this change of representation.
+
 The arguments \code{control_mean} and \code{control_dist} are lists that are
 transmitted to the \code{\link[spaMM:spaMM]{spaMM::spaMM}} fitting functions (defined by
 \code{spaMM_method}). These lists can be used to finely control the fitting

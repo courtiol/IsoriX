@@ -414,6 +414,11 @@ Here, the structural raster downloaded with `getelev()` covers the entire planet
 To crop the elevation raster to a particular size, you can either provide a set of coordinates to `prepraster()`by means of the argument `manual_crop`.
 Alternatively, you can simply provide a fitted model to the function `prepraster()` by means of the argument `isofit`.
 In this latter case, the function will automatically determine the coordinates required for the cropping, from the coordinates of the weather stations used during the fitting procedure.
+
+Note that areas crossing the International Date Line (i.e. the antimeridian, 180 degrees), such as areas centred on the Pacific, are handled automatically by IsoriX.
+To select the source data for such an area, simply use a value for `long_max` smaller than the one for `long_min` in `prepsources()` (e.g. `long_min = 70, long_max = -150`); the same works in `getelev()` to download the elevation raster for such an area only.
+`isofit()` then detects that the sources straddle the International Date Line and expresses their longitudes within 0 and 360 so that the area is continuous, and `prepraster()` crops the structural raster accordingly (you can also do this manually, e.g. `manual_crop = c(70, -150, -50, 70)`).
+The resulting isoscapes and assignments can be plotted as usual: country borders, masks and points are shifted automatically.
 We choose here to use this simpler way of defining the cropping area:
 
 ```{r build ElevEurope fake, eval = FALSE}
