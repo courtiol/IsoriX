@@ -125,7 +125,7 @@
 #' Wassenaar LI & Kramer-Schadt S (2019). "Isoscape computation and inference of
 #' spatial origins with mixed models using the R package IsoriX." In Hobson KA,
 #' Wassenaar LI (eds.), Tracking Animal Migration with Stable Isotopes, second
-#' edition. Academic Press, London.
+#' edition. Academic Press, London, pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 #'
 #' Courtiol A, Rousset F (2017). "Modelling isoscapes using mixed models." bioRxiv.
 #' doi: 10.1101/207662, [link](https://www.biorxiv.org/content/10.1101/207662v1).

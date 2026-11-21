@@ -396,7 +396,7 @@ Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC,
 Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape computation and
 inference of spatial origins with mixed models using the R package IsoriX.
 In Hobson KA & Wassenaar LI (eds.), Tracking Animal Migration with Stable
-Isotopes, second edition. Academic Press, London.
+Isotopes, second edition. Academic Press, London, pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 }
 \seealso{
 see \code{\link{plot}} for the help on how to plot the calibration

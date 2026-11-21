@@ -3,7 +3,7 @@
 \docType{data}
 \name{ElevRasterDE}
 \alias{ElevRasterDE}
-\title{The raster of elevation for Germany}
+\title{Raster data: elevation in Germany}
 \format{
 A \emph{SpatRaster} object
 }

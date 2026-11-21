@@ -4,7 +4,7 @@
 \name{AssignDataBat}
 \alias{AssignDataBat}
 \alias{AssignDataBatRev}
-\title{Assignment datasets for bat species}
+\title{Assignment data: hydrogen delta values of common noctule bats (Voigt & Lehnert 2019)}
 \format{
 Two \emph{dataframes} with 14 observations and 4 variables:\tabular{lll}{
     \tab  \tab  \cr
@@ -18,7 +18,7 @@ Two \emph{dataframes} with 14 observations and 4 variables:\tabular{lll}{
 data provided by  Voigt CC & Lehnert L.
 }
 \description{
-These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
+These datasets contain data from Voigt & Lehnert (2019). They contain hydrogen
 delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 killed at wind turbines in northern Germany. These data can be used as an
 example to perform assignments using the function \code{\link{isofind}}. The difference
@@ -36,12 +36,13 @@ str(AssignDataBat)
 \references{
 Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
-Migration with Stable Isotopes, second edition. Academic Press, London.
+Migration with Stable Isotopes, second edition. Academic Press, London, pp. 117-136.
+\doi{10.1016/B978-0-12-814723-8.00005-2}.
 
 Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 isotopic composition of keratin calibration standards for wildlife and forensic
 science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-doi: 10.1002/rcm.7893. PMID: 28475227.
+\doi{10.1002/rcm.7893}. PMID: 28475227.
 }
 \seealso{
 \code{\link{isofind}} to perform assignments

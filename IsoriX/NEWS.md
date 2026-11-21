@@ -11,10 +11,13 @@
 ## New features
 
   * new function `calibscape()` to build calibrated isoscapes, i.e. to convert an isoscape of source isotopic values (e.g. precipitation) into an isoscape of sample isotopic values (e.g. animal tissues) using a calibration fit. Only the mean isoscape is calibrated. The output, of class `CALIBSCAPE` (in addition to `ISOSCAPE`), can be plotted (`which = "mean"` only; by default, the plot shows the location of the calibration samples instead of that of the sources, see the new argument `calibs` of `plot.ISOSCAPE()`) but cannot be used by `isofind()` or `create_aliens()` (#191).
+  * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
 
 ## Minor changes
 
+  * each reference cited in the documentation now includes a link to its DOI, and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
+  * the titles of the help pages of all datasets follow a consistent pattern indicating their role in the workflow (e.g. "Calibration data: ..."), and those of datasets from different studies are no longer identical (#97).
   * outdated links in the documentation were updated (e.g. the homepage of **spaMM** in `?isofit` and the link to the preprint in `citation("IsoriX")`), following the review of all links with the new script `release_checks/list_links.R` (#188).
   * the dataset `CountryBorders` contains again the names of the countries (column `name`), so that countries can be selected by name, e.g. `CountryBorders[CountryBorders$name == "Germany", ]` (#183). `CountryBorders` and `OceanMask` have been recreated from the current version of the Natural Earth data (same resolution as before), which leads to minor changes in borders (e.g. Tuvalu is now included).
   * the titles of isoscape plots no longer refer to hydrogen by default, since IsoriX cannot know which isotope is being studied: the default of the global option `title_delta_notation` is now `NULL`. Use e.g. `options_IsoriX(title_delta_notation = bquote(delta^2*H))` to restore the previous titles. The documentation (`?options_IsoriX` and the bookdown) now also explains what to do when the delta symbol is not rendered by the graphic device (#155).
