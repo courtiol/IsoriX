@@ -9,6 +9,10 @@ test_that("plot_sources() returns one map per statistic", {
 
   maps <- plot_sources(agg, which = c("n", "mean"), plot = FALSE)
   expect_named(maps, c("n", "mean"))
+
+  ## counts are shown without decimals in the colour key
+  key_labels <- maps$n$legend$right$args$key$labels$labels
+  expect_false(any(grepl(".", key_labels, fixed = TRUE)))
 })
 
 test_that("plot_sources() draws points, labels and works without borders", {

@@ -144,12 +144,13 @@ plot_sources <- function(data,
   long <- long[keep]
   lat <- lat[keep]
   values <- values[keep]
+  whole_values <- all(values %% 1 == 0) ## e.g. counts, shown without decimals
 
   ## colours (not used for labels) and colour key
   colours <- if (!labels) {
     .cut_and_color(
       var = values, step = palette$step, range = palette$range, palette = palette$fn,
-      n_labels = palette$n_labels, digits = palette$digits
+      n_labels = palette$n_labels, digits = if (whole_values) 0 else palette$digits
     )
   }
   legend <- if (!labels) {
@@ -171,9 +172,8 @@ plot_sources <- function(data,
         lattice::lpolygon(borders$borders, border = borders$col, lwd = borders$lwd)
       }
       if (labels) {
-        digits <- if (all(values %% 1 == 0)) 0 else points$digits ## e.g. no decimals for counts
         lattice::ltext(x, y,
-          labels = formatC(values, digits = digits, format = "f"),
+          labels = formatC(values, digits = if (whole_values) 0 else points$digits, format = "f"),
           cex = points$cex, col = points$col
         )
       } else {
