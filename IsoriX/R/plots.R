@@ -203,7 +203,7 @@ plot.ISOSCAPE <- function(x,
   }
 
   ## importing country borders if missing
-  if (!is.null(borders$borders) && is.na(borders$borders)) {
+  if (!is.null(borders$borders) && !inherits(borders$borders, "SpatVector") && is.na(borders$borders)) {
     borders$borders <- terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX"))
   }
 
@@ -399,7 +399,7 @@ plot.ISOFIND <- function(x,
   }
 
   ## importing country borders if missing
-  if (!is.null(borders$borders) && is.na(borders$borders)) {
+  if (!is.null(borders$borders) && !inherits(borders$borders, "SpatVector") && is.na(borders$borders)) {
     borders$borders <- terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX"))
   }
 
