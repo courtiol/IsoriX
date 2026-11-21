@@ -88,14 +88,26 @@ test_that(".points_outside_hull() handles missing values", {
   expect_error(.points_outside_hull(1:2, 1, 0, 0))
 })
 
-## isoscape fit shared by the calibfit() tests below
+## isoscape fit shared by the tests below
 set.seed(123)
 sources_extrapolation <- prepsources(GNIPDataDE[sample(seq_len(nrow(GNIPDataDE)), 50), ])
-fit_extrapolation <- isofit(sources_extrapolation)
+fit_extrapolation <- suppressMessages(isofit(sources_extrapolation, verbose = FALSE))
 
-test_that("calibfit() does not flag calibration sites located at source sites or within their hull", {
+## Note: calibfit() is slow since it optimises the calibration function, so the
+## check of extrapolation is mostly tested by calling the internal function
+## used by calibfit() directly, on data prepared the same way as in calibfit().
+## A single call to calibfit() (with a capped optimisation) checks that
+## calibfit() displays the same message.
+
+## extracts the message about extrapolation produced by the check used in calibfit()
+extrapolation_message <- function(calib, fit) {
+  data <- .prepare_data_calib(calib, method = "wild")
+  msgs <- testthat::capture_messages(.check_extrapolation_calib(data = data, isofit = fit))
+  paste(grep("extrapolation", msgs, value = TRUE), collapse = "")
+}
+
+test_that("the check of extrapolation does not flag calibration sites located at source sites or within their hull", {
   sources <- sources_extrapolation
-  fit <- fit_extrapolation
 
   hull_sources <- sources[grDevices::chull(sources[, c("long", "lat")]), ]
   n <- nrow(hull_sources)
@@ -104,12 +116,12 @@ test_that("calibfit() does not flag calibration sites located at source sites or
   calib$lat <- c(hull_sources$lat, mean(sources$lat))
   calib$site_ID <- paste0("site_", seq_len(n + 1))
 
-  expect_no_message(calibfit(calib, fit), message = "extrapolation")
+  expect_identical(extrapolation_message(calib, fit_extrapolation), "")
 
   ## a calibration site far away should be flagged
   calib_out <- calib
   calib_out$long[1] <- max(sources$long) + 5
-  expect_message(calibfit(calib_out, fit), regexp = "\\* 1 correspond to locations outside")
+  expect_match(extrapolation_message(calib_out, fit_extrapolation), "* 1 correspond to locations outside", fixed = TRUE)
 })
 
 ## builds calibration data with a known number of samples outside the hull of
@@ -146,13 +158,7 @@ make_calib_count_design <- function(sources) {
   calib
 }
 
-## extracts the message about extrapolation produced by calibfit()
-extrapolation_message <- function(calib, fit) {
-  msgs <- testthat::capture_messages(calibfit(calib, fit))
-  paste(grep("extrapolation", msgs, value = TRUE), collapse = "")
-}
-
-test_that("calibfit() counts the number of calibration samples involving extrapolation correctly", {
+test_that("the check of extrapolation counts the number of calibration samples involved correctly", {
   sources <- sources_extrapolation
   calib <- make_calib_count_design(sources)
   n_in <- attr(calib, "n_in")
@@ -169,7 +175,19 @@ test_that("calibfit() counts the number of calibration samples involving extrapo
   expect_match(msg, paste("*", n_out, "correspond to locations outside"), fixed = TRUE)
 })
 
-test_that("the test of extrapolation in calibfit() works with tibbles", {
+test_that("calibfit() displays the message about extrapolation", {
+  calib <- make_calib_count_design(sources_extrapolation)
+  ## maxit = 1 to save time: the message is produced before the calibration
+  ## function is optimised, so the quality of the fit does not matter here
+  msgs <- suppressWarnings(testthat::capture_messages(
+    calibfit(calib, fit_extrapolation, control_optim = list(maxit = 1))
+  ))
+  msg <- paste(grep("extrapolation", msgs, value = TRUE), collapse = "")
+  expect_identical(msg, extrapolation_message(calib, fit_extrapolation))
+  expect_match(msg, paste("*", attr(calib, "n_out"), "correspond to locations outside"), fixed = TRUE)
+})
+
+test_that("the check of extrapolation works with tibbles", {
   skip_if_not_installed("tibble")
 
   calib_df <- make_calib_count_design(sources_extrapolation)
@@ -178,7 +196,7 @@ test_that("the test of extrapolation in calibfit() works with tibbles", {
 
   sources_tbl <- tibble::as_tibble(sources_extrapolation)
   sources_tbl$source_ID <- as.character(sources_tbl$source_ID)
-  fit_tbl <- isofit(sources_tbl)
+  fit_tbl <- suppressMessages(isofit(sources_tbl, verbose = FALSE))
 
   ref <- extrapolation_message(calib_df, fit_extrapolation) ## df and df
   expect_match(ref, paste("*", attr(calib_df, "n_out"), "correspond to locations outside"), fixed = TRUE)
