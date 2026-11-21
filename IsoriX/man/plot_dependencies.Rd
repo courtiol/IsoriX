@@ -4,15 +4,17 @@
 \alias{plot_dependencies}
 \title{Plot the dependencies of IsoriX}
 \usage{
-plot_dependencies(plot = TRUE, seed = 1L)
+plot_dependencies(suggests = FALSE, seed = 1L)
 }
 \arguments{
-\item{plot}{A \emph{logical} indicating whether the graph should be plotted
-(default) or only returned.}
+\item{suggests}{A \emph{logical} indicating whether the packages suggested by
+\pkg{IsoriX} should also be shown (default = \code{FALSE}).}
 
 \item{seed}{An \emph{integer} used to set the seed of the random number generator
 that controls the layout of the plot (the state of the random number
-generator is restored afterwards, so that it is not altered by the call).}
+generator is restored afterwards, so that it is not altered by the call).
+If some packages or arrows overlap, try another value to get another
+layout.}
 }
 \value{
 The graph of the dependencies (an object of class \emph{igraph}),
@@ -23,22 +25,30 @@ This function plots the packages that \pkg{IsoriX} directly requires (i.e.
 the packages it imports), as well as the dependencies among these packages.
 This can help to understand where an installation problem comes from, since
 if one of these packages cannot be installed, \pkg{IsoriX} cannot be
-installed either.
+installed either. The packages suggested by \pkg{IsoriX}, which are only
+needed for some extra functionalities, can also be displayed.
 }
 \details{
 The dependencies are those of the installed version of \pkg{IsoriX} and of the
-installed versions of the packages it imports, so no internet connection is
+installed versions of the other packages, so no internet connection is
 required. Base packages (e.g. \pkg{stats}) are not shown.
 
 In the plot, an arrow going from a package to another means that the first
-package depends on the second one.
+package depends on the second one. When suggested packages are shown, dashed
+arrows go from \pkg{IsoriX} to its suggested packages. If some suggested
+packages are not installed, they are shown in white: since they are not
+installed, their own dependencies are not known and thus not displayed.
 
 This function requires the package \pkg{igraph} to be installed.
 }
 \examples{
 
 if (requireNamespace("igraph", quietly = TRUE)) {
+  ## packages required by IsoriX:
   plot_dependencies()
+
+  ## packages required or suggested by IsoriX:
+  plot_dependencies(suggests = TRUE)
 }
 
 }

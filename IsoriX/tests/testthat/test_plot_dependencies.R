@@ -1,12 +1,23 @@
-test_that("plot_dependencies() returns the graph of the dependencies of IsoriX (#171)", {
+## draws the plots of a test on a null device, closed at the end of the test
+local_null_device <- function(env = parent.frame()) {
+  grDevices::pdf(NULL)
+  withr::defer(grDevices::dev.off(), envir = env)
+}
+
+pkg_base <- rownames(utils::installed.packages(priority = "base"))
+direct_deps <- function(which) {
+  deps <- tools::package_dependencies("IsoriX", db = utils::installed.packages(), which = which)$IsoriX
+  sort(setdiff(deps, pkg_base))
+}
+
+test_that("plot_dependencies() returns the graph of the packages required by IsoriX (#171)", {
   skip_if_not_installed("igraph")
-  graph <- plot_dependencies(plot = FALSE)
+  local_null_device()
+  graph <- plot_dependencies()
   expect_s3_class(graph, "igraph")
 
   ## vertices: IsoriX and the non-base packages it imports
-  pkg_base <- rownames(utils::installed.packages(priority = "base"))
-  imports <- tools::package_dependencies("IsoriX", db = utils::installed.packages(), which = "Imports")$IsoriX
-  expected <- c("IsoriX", sort(setdiff(imports, pkg_base)))
+  expected <- c("IsoriX", direct_deps("Imports"))
   expect_setequal(igraph::V(graph)$name, expected)
   expect_true("spaMM" %in% igraph::V(graph)$name)
   expect_false("stats" %in% igraph::V(graph)$name)
@@ -14,12 +25,28 @@ test_that("plot_dependencies() returns the graph of the dependencies of IsoriX (
   ## IsoriX depends on all the other vertices
   edges <- igraph::as_data_frame(graph, what = "edges")
   expect_setequal(edges$to[edges$from == "IsoriX"], setdiff(expected, "IsoriX"))
+  expect_true(all(edges$type == "imports"))
 })
 
-test_that("plot_dependencies() plots without altering the random number generator", {
+test_that("plot_dependencies() can also show the suggested packages", {
   skip_if_not_installed("igraph")
-  grDevices::pdf(NULL)
-  on.exit(grDevices::dev.off(), add = TRUE)
+  local_null_device()
+  graph <- plot_dependencies(suggests = TRUE)
+  imports <- direct_deps("Imports")
+  suggests <- setdiff(direct_deps("Suggests"), imports)
+  expect_setequal(igraph::V(graph)$name, c("IsoriX", imports, suggests))
+  expect_true("testthat" %in% igraph::V(graph)$name)
+
+  ## edges from IsoriX: "imports" towards imported packages, "suggests" towards suggested ones
+  edges <- igraph::as_data_frame(graph, what = "edges")
+  from_IsoriX <- edges[edges$from == "IsoriX", ]
+  expect_setequal(from_IsoriX$to[from_IsoriX$type == "imports"], imports)
+  expect_setequal(from_IsoriX$to[from_IsoriX$type == "suggests"], suggests)
+})
+
+test_that("plot_dependencies() does not alter the random number generator", {
+  skip_if_not_installed("igraph")
+  local_null_device()
 
   ## with an existing seed
   set.seed(42)
