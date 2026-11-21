@@ -1,0 +1,14 @@
+<script>
+  // Open links to external websites in a new tab (see issue #187).
+  // Links within the book are not affected. The check is done when a link is
+  // clicked, so that it also applies to content loaded after the page itself.
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest ? event.target.closest("a[href]") : null;
+    if (!link) return;
+    var is_web = link.protocol === "http:" || link.protocol === "https:";
+    if (is_web && link.hostname !== window.location.hostname) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+  });
+</script>

@@ -27,3 +27,4 @@ Documentation\_for\_IsoriX.Rmd
 *.Rproj
 *.csl
 *.html
+!external_links.html
