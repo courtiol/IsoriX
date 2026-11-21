@@ -380,6 +380,15 @@ calibfit <- function(data,
 
   method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
 
+  ## Check the inputs (#164)
+  .check_input_class(data, "data.frame", "data", "calibfit")
+  if (method == "wild") {
+    if (is.null(isofit)) {
+      stop("The calibration method 'wild' (default) requires the argument `isofit` (the output of isofit()).", call. = FALSE)
+    }
+    .check_input_class(isofit, "ISOFIT", "isofit", "calibfit")
+  }
+
   ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
   ## That would allow to fit species as a random effect in the model
   ## However, it is not obvious that it would make sense to do that as it may
@@ -518,7 +527,8 @@ calibfit <- function(data,
   data <- droplevels(data)
 
   if (!is.null(weighting)) {
-    precipitations <- terra::extract(weighting, cbind(data$long, data$lat))[[1]]
+    long_weighting <- .wrap_long_like(data$long, long_ref = c(terra::xmin(weighting), terra::xmax(weighting)))
+    precipitations <- terra::extract(weighting, cbind(long_weighting, data$lat))[[1]]
     if (anyNA(precipitations)) {
       message("NA values in precipitation cannot be handled and were thus replaced by 0.0001. If this does not make sense in your case, please contact the maintainer of this package.")
       precipitations[is.na(precipitations)] <- 0.0001 ## remove NA to prevent crashes --> dangerous?
@@ -539,6 +549,11 @@ calibfit <- function(data,
   if (verbose) {
     print("starting calibration method 'wild'")
   }
+
+  ## express longitudes as in the fitted isoscape model (e.g. within [0, 360]
+  ## if the sources straddle the antimeridian, #180)
+  data$long <- .wrap_long_like(data$long, long_ref = isofit$mean_fit$data$long)
+  data$long_2 <- data$long^2
 
   time <- system.time({
     ## predict isoscape and associated prediction

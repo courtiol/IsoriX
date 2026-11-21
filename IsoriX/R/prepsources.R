@@ -37,7 +37,12 @@
 #' @param long_min A *numeric* indicating the minimum longitude to select
 #'   from. Should be a number between -180 and 180 (default = -180).
 #' @param long_max A *numeric* indicating the maximal longitude to select
-#'   from. Should be a number between -180 and 180 (default = 180).
+#'   from. Should be a number between -180 and 180 (default = 180). To select
+#'   an area crossing the antimeridian (i.e. the International Date Line, 180
+#'   degrees), use a value of `long_max` smaller than `long_min` (e.g.
+#'   `long_min = 70` and `long_max = -150` selects longitudes from 70 to 180
+#'   and from -180 to -150) or, equivalently, a value of `long_max` above 180
+#'   (e.g. `long_max = 210`).
 #' @param lat_min A *numeric* indicating the minimum latitude to select
 #'   from. Should be a number between -90 and 90 (default = -90).
 #' @param lat_max A *numeric* indicating the maximal latitude to select
@@ -235,7 +240,7 @@ prepsources <- function(data,
   }
 
   ## Prepare selection on space
-  long_select <- data[, col_long, drop = TRUE] >= long_min & data[, col_long, drop = TRUE] <= long_max
+  long_select <- .select_long(data[, col_long, drop = TRUE], long_min = long_min, long_max = long_max)
   lat_select <- data[, col_lat, drop = TRUE] >= lat_min & data[, col_lat, drop = TRUE] <= lat_max
   all_select <- month_select & year_select & long_select & lat_select
 
@@ -338,4 +343,20 @@ prepsources <- function(data,
 
   ## Display error if no return encountered before
   stop("The argument you chose for random_level is unknown.")
+}
+
+
+.select_long <- function(long, long_min, long_max) {
+  ## This function should not be called by the user.
+  ## It returns a logical vector indicating which longitudes are within the
+  ## range defined by `long_min` and `long_max`. Ranges crossing the
+  ## antimeridian (180 degrees) are supported: they can be defined either with
+  ## `long_min > long_max` (e.g. 70 and -150) or with bounds beyond 180 (e.g.
+  ## 70 and 210).
+  if (long_max - long_min >= 360) {
+    return(rep(TRUE, length(long)))
+  }
+  long_range <- .continuous_long_range(long_min, long_max)
+  in_range <- function(x) x >= long_range[1] & x <= long_range[2]
+  in_range(long) | in_range(long + 360)
 }

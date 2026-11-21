@@ -129,6 +129,10 @@
 isoscape <- function(raster,
                      isofit,
                      verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "isoscape")
+  .check_input_class(isofit, "ISOFIT", "isofit", "isoscape")
+  .check_raster_valid(raster)
   if (inherits(isofit, "MULTIISOFIT")) {
     stop("Object 'isofit' of class MULTIISOFIT; use isomultiscape instead!")
   }
@@ -198,6 +202,12 @@ isoscape <- function(raster,
 
       ## we select the chunk of the design matrix required for the loop
       xs_small <- xs[within_steps, ]
+
+      ## we express longitudes as in the fitted models, which matters for fixed
+      ## effects involving longitudes when the structural raster and the
+      ## sources use different representations around the antimeridian (#180)
+      xs_small$long <- .wrap_long_like(xs_small$long, long_ref = isofit$mean_fit$data$long)
+      xs_small$long_2 <- xs_small$long^2
 
       ## predictions from disp_fit
       pred_dispfit <- .safe_and_quiet_predictions(
@@ -552,6 +562,10 @@ isomultiscape <- function(raster, ## change as method?
                           isofit,
                           weighting = NULL,
                           verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "isomultiscape")
+  .check_input_class(isofit, "ISOFIT", "isofit", "isomultiscape")
+
   ## In case the function is called on the output of isofit by mistake
   if (!inherits(isofit, "MULTIISOFIT")) {
     message("Your input for `isofit =` is not of class MULTIISOFIT, so your call to `isomultiscape()` has been automatically converted into a call to `isoscape()`.")
@@ -567,7 +581,7 @@ isomultiscape <- function(raster, ## change as method?
     if (!inherits(weighting, "SpatRaster")) {
       stop("the argument 'weighting' should be a SpatRaster")
     }
-    if (!all(names(isofit$multi.fits) %in% names(weighting))) {
+    if (!all(names(isofit$multi_fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
     if (terra::ext(weighting) != terra::ext(raster)) {

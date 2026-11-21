@@ -21,15 +21,23 @@
 #' (default).
 #'
 #' This function relies on calls to the functions [`terra::aggregate`] and
-#' [`terra::crop`] from the package \pkg{terra}. It thus share the limitations
-#' of these functions. In particular, [`terra::crop`] expects extents with
-#' increasing longitudes and latitudes. We have tried to partially relax this
-#' constrains for longitude and you can use the argument \code{manual_crop} to
-#' provide longitudes in decreasing order, which is useful to centre a isoscape
-#' around the pacific for instance. But this fix does not solve all the
-#' limitations as plotting polygons or points on top of that remains problematic
-#' (see example bellow). We will work on this on the future but we have other
-#' priorities for now (let us know if you really need this feature).
+#' [`terra::crop`] from the package \pkg{terra}.
+#'
+#' Areas crossing the antimeridian (i.e. the International Date Line, 180
+#' degrees), such as areas centred on the Pacific, are supported provided that
+#' the structural raster covers all longitudes (e.g. a world elevation raster
+#' downloaded using [`getelev`]). Such areas can be defined using
+#' `manual_crop` with a first longitude greater than the second one (e.g.
+#' `manual_crop = c(70, -150, -50, 70)`) or with a second longitude above 180
+#' (e.g. `manual_crop = c(70, 210, -50, 70)`). If cropping is done according to
+#' a fitted isoscape model, crossing the antimeridian is automatic when the
+#' sources straddle it (see [`isofit`]). In all these cases, the longitudes of
+#' the prepared raster are expressed continuously (e.g. from 70 to 210) instead
+#' of within -180 and 180. All the functions of IsoriX handle this
+#' representation, including the plotting functions which automatically shift
+#' country borders, masks and points accordingly. If you add layers yourself
+#' on such maps, you may need to shift them using [`terra::shift`] (see example
+#' below).
 #'
 #' @inheritParams getelev
 #' @param raster The structural raster (*SpatRaster*)
@@ -148,16 +156,22 @@ prepraster <- function(raster,
                        manual_crop = NULL,
                        values_to_zero = c(-Inf, 0),
                        verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "prepraster")
+  .check_input_class(isofit, "ISOFIT", "isofit", "prepraster", null_ok = TRUE)
+  .check_raster_valid(raster)
+
   time <- system.time({
     if (!is.null(isofit)) { ## test if cropping is needed
-      if (inherits(isofit, "multiisofit")) {
-        isofit <- isofit$multi.fits[[1]]
+      if (inherits(isofit, "MULTIISOFIT")) {
+        isofit <- isofit$multi_fits[[1]]
       }
       if (!is.null(manual_crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
+      long_sources <- isofit$mean_fit$data$long
       if ( ## test if the raster is not smaller than the area covered by the sources.
         ## If yes crop will not proceed!
-        terra::xmin(raster) > min(isofit$mean_fit$data$long) |
-          terra::xmax(raster) < max(isofit$mean_fit$data$long) |
+        (!.is_global_raster(raster) && (terra::xmin(raster) > min(long_sources) |
+          terra::xmax(raster) < max(long_sources))) |
           terra::ymin(raster) > min(isofit$mean_fit$data$lat) |
           terra::ymax(raster) < max(isofit$mean_fit$data$lat)
       ) {
@@ -178,39 +192,16 @@ prepraster <- function(raster,
       )
     } else {
       if (length(manual_crop) == 4) {
-        if ((manual_crop[1] > manual_crop[2]) && (manual_crop[3] < manual_crop[4])) {
-          crop1 <- terra::crop(
-            raster,
-            terra::ext(
-              terra::xmin(terra::ext(raster)),
-              manual_crop[2],
-              manual_crop[3],
-              manual_crop[4]
-            )
-          )
-          crop2 <- terra::crop(
-            raster,
-            terra::ext(
-              manual_crop[1],
-              terra::xmax(terra::ext(raster)),
-              manual_crop[3],
-              manual_crop[4]
-            )
-          )
-          raster <- terra::shift(
-            terra::merge(crop1, terra::shift(crop2,
-              dx = -360
-            )),
-            dx = 360
-          )
-          warning("The first longitude is greater than the second one. You may want this to study something around the pacific. This feature is not fully supported... but... the function prepraster() tried to cope with this. That implies a change in the coordinate system (0:360 instead of -180:180). This should create no problem for ploting isoscapes but this can create troubles to add polygons or points on the maps. If that is the case, you need to add 360 degree to the longitudes... If all that sounds complicated, just stick to a first longitude SMALLER than the second one.")
-        } else {
-          raster <- terra::crop(raster, manual_crop)
-        }
+        raster <- .crop_long(raster,
+          xmin = manual_crop[1],
+          xmax = manual_crop[2],
+          ymin = manual_crop[3],
+          ymax = manual_crop[4]
+        )
       }
     }
     if (aggregation_factor > 1) { ## test if aggregation is needed
-      if (interactive()) {
+      if (verbose) {
         print(paste("aggregating..."))
       }
       raster <- terra::aggregate(raster,
@@ -234,8 +225,8 @@ prepraster <- function(raster,
   if (verbose) {
     print(paste("done!"))
     print(time)
+    print(raster)
   }
 
-  print(raster)
   return(raster)
 }

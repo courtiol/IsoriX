@@ -268,7 +268,8 @@ plot.ISOSCAPE <- function(x,
     sources = sources,
     calibs = NULL,
     borders = borders,
-    mask = mask
+    mask = mask,
+    extent = terra::ext(x$isoscapes)
   )
 
 
@@ -498,7 +499,8 @@ plot.ISOFIND <- function(x,
     assigns_ids = assigns_ids,
     borders = borders,
     mask = mask,
-    mask2 = mask2
+    mask2 = mask2,
+    extent = terra::ext(x$group$pv)
   )
 
   ## changing the colour below the threshold
@@ -912,11 +914,18 @@ plot.SpatRaster <- function(x, ...) {
 }
 
 
-.build_additional_layers <- function(x, sources, calibs, assigns = NULL, assigns_ids = NULL, borders, mask, mask2 = NULL) {
+.build_additional_layers <- function(x, sources, calibs, assigns = NULL, assigns_ids = NULL, borders, mask, mask2 = NULL, extent = NULL) {
   ## This function should not be called by the user.
   ## It builds the additional layers for the plots.
   ## assigns_ids: the sample IDs of the assignment rasters plotted in each panel
   ## (in panel order), or NULL to draw all assignment points in every panel.
+  ## extent: the extent of the map, used to draw borders, masks and points
+  ## properly on maps crossing the antimeridian (#180).
+
+  borders$borders <- .wrap_vector_to_extent(borders$borders, extent)
+  mask$mask <- .wrap_vector_to_extent(mask$mask, extent)
+  mask2$mask <- .wrap_vector_to_extent(mask2$mask, extent)
+  x$sp_points <- lapply(x$sp_points, .wrap_vector_to_extent, extent = extent)
 
   ## layer for sources
   if (!sources$draw) {

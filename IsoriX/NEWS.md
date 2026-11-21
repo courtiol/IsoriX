@@ -3,6 +3,9 @@
 ## Bug fixes
 
   * printing (or summarising) isoscapes, fitted isoscapes, calibration fits and assignments no longer displays stray `NULL` lines (#220).
+  * `prepraster()` failed to crop the raster according to the sources when given the output of `isomultifit()`, since this type of object was not recognised.
+  * `isomultiscape()` did not check that the names of the layers of the raster used for weighting match those of the fits, since the check looked for an element that does not exist.
+  * `prepraster()` now respects `verbose = FALSE` (it used to always print the raster).
   * the plotting functions for isoscapes and assignments no longer crash when the user provides their own country borders (`borders = list(borders = ...)`) containing more than one polygon.
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
@@ -13,9 +16,17 @@
 
   * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
+  * IsoriX now handles areas crossing the International Date Line (antimeridian) out of the box, e.g. for studies centred on the Pacific (#180):
+    - `prepsources()` can select sources across the International Date Line using `long_min > long_max` (e.g. `long_min = 70, long_max = -150`);
+    - `getelev()` can download elevation across the International Date Line using `long_min > long_max`: since **elevatr** only handles longitudes within [-180, 180], the area is downloaded in two parts which are assembled into a single raster with continuous longitudes (e.g. from 70 to 210);
+    - `isofit()` and `isomultifit()` express longitudes within [0, 360] instead of [-180, 180] when the sources straddle the International Date Line, so that the area they cover is continuous (a message is displayed);
+    - `prepraster()` crops structural rasters across the International Date Line, both manually (`manual_crop` with a first longitude greater than the second one, which no longer triggers a warning) and automatically from a fitted model;
+    - `isoscape()`, `calibfit()`, `isofind()` and `prepcipitate()` handle such rasters and express locations consistently (e.g. the ocean mask of `isofind()` now also applies beyond 180 degrees);
+    - the plotting functions automatically shift country borders, masks and the locations of sources, calibration and assignment samples, so that they are drawn properly on maps crossing the International Date Line.
 
 ## Minor changes
 
+  * the main functions now check the type of the objects given to them and stop with an informative error message saying which function creates the expected object (e.g. when an isoscape is given instead of the output of `isofit()`), or that source data must first be aggregated with `prepsources()` (#164).
   * each reference cited in the documentation now includes a link to its DOI, and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
   * the titles of the help pages of all datasets follow a consistent pattern indicating their role in the workflow (e.g. "Calibration data: ..."), and those of datasets from different studies are no longer identical (#97).
   * outdated links in the documentation were updated (e.g. the homepage of **spaMM** in `?isofit` and the link to the preprint in `citation("IsoriX")`), following the review of all links with the new script `release_checks/list_links.R` (#188).
@@ -23,6 +34,7 @@
   * the titles of isoscape plots no longer refer to hydrogen by default, since IsoriX cannot know which isotope is being studied: the default of the global option `title_delta_notation` is now `NULL`. Use e.g. `options_IsoriX(title_delta_notation = bquote(delta^2*H))` to restore the previous titles. The documentation (`?options_IsoriX` and the bookdown) now also explains what to do when the delta symbol is not rendered by the graphic device (#155).
   * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
   * `isofit()` now stops with an informative message if elevation is used as a predictor but is absent from the data.
+  * `prepraster()` and `isoscape()` now stop with an informative message when the structural raster is no longer valid in the current R session (e.g. a raster read from a file and restored from a saved workspace), instead of the obscure error "NULL value passed as symbol address" produced by **terra**.
   * the link to the IAEA WISER portal no longer points to an `.aspx` page (#186).
   * `isofit()` now displays a message, once per R session, when the default model (without any fixed-effect predictor) is fitted, to encourage users to compare alternative models; a new section of the online documentation explains how to do so (#204).
 
