@@ -17,7 +17,8 @@ class \emph{CALIBFIT})}
 This function returns a \emph{list} of class \emph{ISOSCAPE} and
 \emph{CALIBSCAPE} containing a \emph{SpatRaster} with a single layer (\code{mean})
 storing the predicted mean isotopic values of the samples, and the location
-of the sources as spatial points.
+of the sources and of the calibration samples (except for the calibration
+method "desk") as spatial points.
 }
 \description{
 This function uses a calibration fit to convert the mean isoscape of
@@ -47,7 +48,8 @@ on the calibration method being used. The isoscapes related to the residual
 dispersion are not returned either.
 
 The output can be plotted using \code{\link{plot.ISOSCAPE}} (with \code{which = "mean"}
-only), but it cannot be used for assignments (\code{\link{isofind}}) or to simulate
+only; by default, the plot shows the location of the calibration samples
+instead of that of the sources), but it cannot be used for assignments (\code{\link{isofind}}) or to simulate
 data (\code{\link{create_aliens}}), since these functions require isoscapes of source
 isotopic values.
 }

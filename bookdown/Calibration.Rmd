@@ -146,6 +146,9 @@ Since the values no longer correspond to precipitation but to fur, we also adapt
 plot(EuropeCalibScape, y_title = list(title = bquote(italic("\u03B4")**2*H[f])))
 ```
 
+By default, the plot of a calibrated isoscape shows the locations of the calibration samples (blue crosses) instead of those of the sources.
+You can change this using the arguments `sources` and `calibs`, e.g. `plot(EuropeCalibScape, sources = list(draw = TRUE), calibs = list(draw = FALSE))`.
+
 Note that only the mean isoscape is calibrated.
 The variances (prediction, residual and response variances) are not, since calibrating them would require to account for the uncertainty of the calibration fit, which depends on the calibration method being used.
 As a consequence, calibrated isoscapes are meant for visualisation and exploration only: they cannot be used to perform assignments (`isofind()` will refuse them).

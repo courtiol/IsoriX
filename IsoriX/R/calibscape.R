@@ -26,7 +26,8 @@
 #' dispersion are not returned either.
 #'
 #' The output can be plotted using [`plot.ISOSCAPE`] (with `which = "mean"`
-#' only), but it cannot be used for assignments ([`isofind`]) or to simulate
+#' only; by default, the plot shows the location of the calibration samples
+#' instead of that of the sources), but it cannot be used for assignments ([`isofind`]) or to simulate
 #' data ([`create_aliens`]), since these functions require isoscapes of source
 #' isotopic values.
 #'
@@ -37,7 +38,8 @@
 #' @return This function returns a *list* of class *ISOSCAPE* and
 #'   *CALIBSCAPE* containing a *SpatRaster* with a single layer (`mean`)
 #'   storing the predicted mean isotopic values of the samples, and the location
-#'   of the sources as spatial points.
+#'   of the sources and of the calibration samples (except for the calibration
+#'   method "desk") as spatial points.
 #' @seealso [`isoscape`] and [`isomultiscape`] for the functions building the
 #'   isoscapes of sources
 #'
@@ -99,6 +101,11 @@ calibscape <- function(isoscape, calibfit) {
     isoscapes = mean_calibrated,
     sp_points = isoscape$sp_points
   )
+
+  ## we add the location of the calibration samples (not available for method "desk")
+  if (!is.null(calibfit$sp_points$calibs)) {
+    out$sp_points$calibs <- calibfit$sp_points$calibs
+  }
 
   class(out) <- c("ISOSCAPE", "CALIBSCAPE", "list")
 

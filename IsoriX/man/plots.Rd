@@ -16,6 +16,7 @@
   which = "mean",
   y_title = list(which = TRUE, title = getOption_IsoriX("title_delta_notation")),
   sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
+  calibs = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
   borders = list(borders = NA, lwd = 0.5, col = "black"),
   mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
   palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
@@ -83,6 +84,9 @@ title (see details)}
 \item{sources}{A \emph{list} containing information for the display of the
 location of the sources (see details)}
 
+\item{calibs}{A \emph{list} containing information for the display of the
+location of the calibration sampling location (see details)}
+
 \item{borders}{A \emph{list} containing information for the display of borders
 (e.g. country borders) (see details)}
 
@@ -108,9 +112,6 @@ individuals (e.g. c("Mbe_1", "Mbe_3")) to be considered in assignment plots}
 
 \item{cutoff}{A \emph{list} containing information for the display of the
 region outside the prediction interval (see details)}
-
-\item{calibs}{A \emph{list} containing information for the display of the
-location of the calibration sampling location (see details)}
 
 \item{assigns}{A \emph{list} containing information for the display of the
 location of the assignment sampling location (see details)}
@@ -183,7 +184,10 @@ corresponding information for the residual dispersion variance model
 (\code{"disp"}, \code{"disp_predVar"}, \code{"disp_residVar"}, or \code{"disp_respVar"}).
 
 When used on a calibrated isoscape (i.e. converted into sample values) produced with the function
-\code{\link{calibscape}}, only the mean isotopic value can be plotted (\code{which = "mean"}).
+\code{\link{calibscape}}, only the mean isotopic value can be plotted (\code{which = "mean"}). By default, the location of the calibration samples is then drawn
+(if available, i.e. not for the calibration method "desk") instead of the
+location of the sources (use \code{sources = list(draw = TRUE)} to draw the latter
+and \code{calibs = list(draw = FALSE)} to hide the former).
 
 When used on a simulated isoscape produced with the function \code{isosim}
 (currently dropped due to the package RandomFields being temporarily retired
