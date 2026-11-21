@@ -372,6 +372,7 @@ release_bullets <- function() {
     "run `devtools::test()` (which also runs the plot snapshot tests, skipped otherwise) and review any intended change in plots with `testthat::snapshot_review()`",
     "from the root of the repo, run `Rscript release_checks/compare_versions.R` to compare all plots and key numbers of the full workflow between the CRAN version and the candidate version; review `report.html` (see release_checks/README.md)",
     "update manual using `devtools::build_manual(path = '../pkg_manuals')`",
+    "from the root of the repo, run `Rscript release_checks/list_links.R` and review `report.html`: fix broken links and update redirected (possibly outdated) ones in the bookdown and in the documentation",
     "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (follow instructions in bookdown/README)",
     "update bookdown (after `usethis::use_version('patch')`; follow instructions in bookdown/README)",
     "check that the bookdown links in the default-model message of `isofit()` and in `?isofit` work after updating the bookdown",
