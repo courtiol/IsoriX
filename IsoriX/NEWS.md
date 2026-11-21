@@ -7,10 +7,17 @@
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
   * passing an empty list to a list argument (e.g. `isofit(data, mean_model_fix = list())`) no longer triggers an error; it now means that all defaults are kept (#206).
   * when plotting individual assignments, each map now only shows the location of the sample it corresponds to, instead of the locations of all samples (#103).
+  * `prepraster()` now properly crops the structural raster according to the first fit when the argument `isofit` receives the output of `isomultifit()`.
 
 ## New features
 
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
+  * IsoriX now handles areas crossing the International Date Line (antimeridian) out of the box, e.g. for studies centred on the Pacific (#180):
+    - `prepsources()` can select sources across the International Date Line using `long_min > long_max` (e.g. `long_min = 70, long_max = -150`);
+    - `isofit()` and `isomultifit()` express longitudes within [0, 360] instead of [-180, 180] when the sources straddle the International Date Line, so that the area they cover is continuous (a message is displayed);
+    - `prepraster()` crops structural rasters across the International Date Line, both manually (`manual_crop` with a first longitude greater than the second one, which no longer triggers a warning) and automatically from a fitted model;
+    - `isoscape()`, `calibfit()`, `isofind()` and `prepcipitate()` handle such rasters and express locations consistently (e.g. the ocean mask of `isofind()` now also applies beyond 180 degrees);
+    - the plotting functions automatically shift country borders, masks and the locations of sources, calibration and assignment samples, so that they are drawn properly on maps crossing the International Date Line.
 
 ## Minor changes
 

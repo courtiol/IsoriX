@@ -30,6 +30,11 @@
 #' there to know how to cite them.
 #'
 #' @inheritParams prepsources
+#' @param long_max A *numeric* indicating the maximal longitude to select
+#'   from. Should be a number between -180 and 180 (default = 180). To work on
+#'   an area crossing the antimeridian (i.e. the International Date Line, 180
+#'   degrees), download the elevation for all longitudes and crop it using
+#'   [`prepraster`].
 #' @param file A *string* indicating where to store the file on the hard
 #'   drive (default = `~/elevation_world_z5.tif`)
 #' @param z An *integer* between 1 and 14 indicating the resolution of the

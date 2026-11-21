@@ -30,7 +30,10 @@ file do be downloaded (1 = lowest, 14 = highest; default = 5)}
 from. Should be a number between -180 and 180 (default = -180).}
 
 \item{long_max}{A \emph{numeric} indicating the maximal longitude to select
-from. Should be a number between -180 and 180 (default = 180).}
+from. Should be a number between -180 and 180 (default = 180). To work on
+an area crossing the antimeridian (i.e. the International Date Line, 180
+degrees), download the elevation for all longitudes and crop it using
+\code{\link{prepraster}}.}
 
 \item{lat_min}{A \emph{numeric} indicating the minimum latitude to select
 from. Should be a number between -90 and 90 (default = -90).}

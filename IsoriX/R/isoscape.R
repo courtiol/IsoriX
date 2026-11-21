@@ -198,6 +198,12 @@ isoscape <- function(raster,
       ## we select the chunk of the design matrix required for the loop
       xs_small <- xs[within_steps, ]
 
+      ## we express longitudes as in the fitted models, which matters for fixed
+      ## effects involving longitudes when the structural raster and the
+      ## sources use different representations around the antimeridian (#180)
+      xs_small$long <- .wrap_long_like(xs_small$long, long_ref = isofit$mean_fit$data$long)
+      xs_small$long_2 <- xs_small$long^2
+
       ## predictions from disp_fit
       pred_dispfit <- .safe_and_quiet_predictions(
         object = isofit$disp_fit,

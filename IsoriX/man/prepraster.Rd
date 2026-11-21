@@ -69,15 +69,23 @@ below). An aggregation factor of zero (or one) keeps the resolution constant
 (default).
 
 This function relies on calls to the functions \code{\link[terra:aggregate]{terra::aggregate}} and
-\code{\link[terra:crop]{terra::crop}} from the package \pkg{terra}. It thus share the limitations
-of these functions. In particular, \code{\link[terra:crop]{terra::crop}} expects extents with
-increasing longitudes and latitudes. We have tried to partially relax this
-constrains for longitude and you can use the argument \code{manual_crop} to
-provide longitudes in decreasing order, which is useful to centre a isoscape
-around the pacific for instance. But this fix does not solve all the
-limitations as plotting polygons or points on top of that remains problematic
-(see example bellow). We will work on this on the future but we have other
-priorities for now (let us know if you really need this feature).
+\code{\link[terra:crop]{terra::crop}} from the package \pkg{terra}.
+
+Areas crossing the antimeridian (i.e. the International Date Line, 180
+degrees), such as areas centred on the Pacific, are supported provided that
+the structural raster covers all longitudes (e.g. a world elevation raster
+downloaded using \code{\link{getelev}}). Such areas can be defined using
+\code{manual_crop} with a first longitude greater than the second one (e.g.
+\code{manual_crop = c(70, -150, -50, 70)}) or with a second longitude above 180
+(e.g. \code{manual_crop = c(70, 210, -50, 70)}). If cropping is done according to
+a fitted isoscape model, crossing the antimeridian is automatic when the
+sources straddle it (see \code{\link{isofit}}). In all these cases, the longitudes of
+the prepared raster are expressed continuously (e.g. from 70 to 210) instead
+of within -180 and 180. All the functions of IsoriX handle this
+representation, including the plotting functions which automatically shift
+country borders, masks and points accordingly. If you add layers yourself
+on such maps, you may need to shift them using \code{\link[terra:shift]{terra::shift}} (see example
+below).
 }
 \note{
 Aggregating the raster may lead to different results for the
