@@ -34,6 +34,7 @@ load them):
     if (!"stars" %in% installed.packages()[, 1]) install.packages("stars")
     if (!"tidyterra" %in% installed.packages()[, 1]) install.packages("tidyterra")
     if (!"Cairo" %in% installed.packages()[, 1]) install.packages("Cairo")
+    if (!"igraph" %in% installed.packages()[, 1]) install.packages("igraph")
 
 Then, render the full book once, so as to create all the content stored
 in the folder “output”.
