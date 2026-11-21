@@ -156,6 +156,8 @@ prepraster <- function(raster,
                        manual_crop = NULL,
                        values_to_zero = c(-Inf, 0),
                        verbose = interactive()) {
+  .check_raster_valid(raster)
+
   time <- system.time({
     if (!is.null(isofit)) { ## test if cropping is needed
       if (inherits(isofit, "MULTIISOFIT")) {

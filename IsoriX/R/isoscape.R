@@ -132,6 +132,8 @@ isoscape <- function(raster,
     stop("Object 'isofit' of class MULTIISOFIT; use isomultiscape instead!")
   }
 
+  .check_raster_valid(raster)
+
   if (verbose) {
     print("Building the isoscapes... ", quote = FALSE)
     print("(this may take a while)", quote = FALSE)

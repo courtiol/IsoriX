@@ -26,6 +26,7 @@
   * the titles of isoscape plots no longer refer to hydrogen by default, since IsoriX cannot know which isotope is being studied: the default of the global option `title_delta_notation` is now `NULL`. Use e.g. `options_IsoriX(title_delta_notation = bquote(delta^2*H))` to restore the previous titles. The documentation (`?options_IsoriX` and the bookdown) now also explains what to do when the delta symbol is not rendered by the graphic device (#155).
   * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
   * `isofit()` now stops with an informative message if elevation is used as a predictor but is absent from the data.
+  * `prepraster()` and `isoscape()` now stop with an informative message when the structural raster is no longer valid in the current R session (e.g. a raster read from a file and restored from a saved workspace), instead of the obscure error "NULL value passed as symbol address" produced by **terra**.
   * the link to the IAEA WISER portal no longer points to an `.aspx` page (#186).
   * `isofit()` now displays a message, once per R session, when the default model (without any fixed-effect predictor) is fitted, to encourage users to compare alternative models; a new section of the online documentation explains how to do so (#204).
 

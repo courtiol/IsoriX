@@ -184,6 +184,35 @@
 }
 
 
+.check_raster_valid <- function(raster, arg = "raster") {
+  ## This function should not be called by the user.
+  ## It stops with an informative error if `raster` is not a SpatRaster or is a
+  ## SpatRaster that can no longer be used, e.g. because it was restored from
+  ## a saved workspace (.RData) or from another R session: the data of such
+  ## objects (stored by terra outside of R) are then lost, which otherwise
+  ## leads to obscure errors such as "NULL value passed as symbol address".
+  if (!inherits(raster, "SpatRaster")) {
+    stop("The argument '", arg, "' must be a SpatRaster (see ?terra::rast).", call. = FALSE)
+  }
+  valid <- tryCatch(
+    {
+      terra::ext(raster)
+      TRUE
+    },
+    error = function(e) FALSE
+  )
+  if (!valid) {
+    stop("The SpatRaster passed to the argument '", arg, "' is no longer valid in this R session ",
+      "(it was probably restored from a saved workspace or from another R session). ",
+      "Please re-create it, e.g. using terra::rast() on the file it comes from ",
+      "(such as the elevation raster downloaded with getelev(); see ?getelev).",
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
+}
+
+
 .crop_withmargin <- function(raster, xmin, xmax, ymin, ymax, margin_pct = 5) {
   ## This function should not be called by the user.
   ## It crops a raster using a safety margin.
