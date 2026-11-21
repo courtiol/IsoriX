@@ -8,7 +8,7 @@
 #' @export
 #' @rdname ISOSCAPE-class
 #'
-setClass("ISOSCAPE", slots = c(
+methods::setClass("ISOSCAPE", slots = c(
   isoscapes = "SpatRaster",
   sp_points = "list"
 ))
@@ -30,7 +30,7 @@ setClass("ISOSCAPE", slots = c(
 #' @export
 #' @rdname CALIBFIT-class
 #'
-setClass("CALIBFIT", slots = c(
+methods::setClass("CALIBFIT", slots = c(
   method = "character",
   species_rand = "logical",
   site_rand = "logical",
@@ -53,7 +53,7 @@ setClass("CALIBFIT", slots = c(
 #' @export
 #' @rdname ISOFIND-class
 #'
-setClass("ISOFIND", slots = c(
+methods::setClass("ISOFIND", slots = c(
   sample = "list",
   group = "SpatRaster",
   sp_points = "list"

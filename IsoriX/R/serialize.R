@@ -200,7 +200,7 @@ readRDS.character <- function(file, refhook = NULL) {
 #' @method saveRDS ISOSCAPE
 #' @export
 #'
-setMethod("saveRDS", signature(object = "ISOSCAPE"), saveRDS.ISOSCAPE)
+methods::setMethod("saveRDS", methods::signature(object = "ISOSCAPE"), saveRDS.ISOSCAPE)
 
 
 #' @describeIn serialize S4 method to save an `CALIBFIT` object into a RDS file
@@ -208,7 +208,7 @@ setMethod("saveRDS", signature(object = "ISOSCAPE"), saveRDS.ISOSCAPE)
 #' @method saveRDS CALIBFIT
 #' @export
 #'
-setMethod("saveRDS", signature(object = "CALIBFIT"), saveRDS.CALIBFIT)
+methods::setMethod("saveRDS", methods::signature(object = "CALIBFIT"), saveRDS.CALIBFIT)
 
 
 #' @describeIn serialize S4 method to save an `ISOFIND` object into a RDS file
@@ -216,7 +216,7 @@ setMethod("saveRDS", signature(object = "CALIBFIT"), saveRDS.CALIBFIT)
 #' @method saveRDS ISOFIND
 #' @export
 #'
-setMethod("saveRDS", signature(object = "ISOFIND"), saveRDS.ISOFIND)
+methods::setMethod("saveRDS", methods::signature(object = "ISOFIND"), saveRDS.ISOFIND)
 
 
 #' @describeIn serialize S4 method to read an object produced with IsoriX (or other) stored in a RDS file
@@ -224,4 +224,4 @@ setMethod("saveRDS", signature(object = "ISOFIND"), saveRDS.ISOFIND)
 #' @method readRDS character
 #' @export
 #'
-setMethod("readRDS", signature(file = "character"), readRDS.character)
+methods::setMethod("readRDS", methods::signature(file = "character"), readRDS.character)
