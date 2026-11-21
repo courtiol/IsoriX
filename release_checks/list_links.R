@@ -85,9 +85,14 @@ check_link <- function(url) {
   data.frame(http_status = res$status_code, final_url = res$url, error = "")
 }
 
-## minor redirections: only the scheme (http -> https), "www." or a trailing slash differ
+## minor redirections: only the scheme (http -> https), "www.", a default port
+## (:80 or :443) or a trailing slash differ
 is_minor_redirection <- function(url, final_url) {
-  simplify <- function(x) sub("/$", "", sub("^https?://(www\\.)?", "", x))
+  simplify <- function(x) {
+    x <- sub("^https?://(www\\.)?", "", x)
+    x <- sub("^([^/]+):(80|443)(/|$)", "\\1\\3", x)
+    sub("/$", "", x)
+  }
   simplify(url) == simplify(final_url)
 }
 
@@ -95,13 +100,17 @@ if (check) {
   message("Checking the links (this may take a minute)...")
   checks <- do.call(rbind, lapply(links$url, check_link))
   links <- cbind(links, checks)
-  links$status <- ifelse(
-    is.na(links$http_status) | links$http_status >= 400, "broken",
-    ifelse(links$final_url == links$url, "ok",
-      ifelse(is_minor_redirection(links$url, links$final_url), "redirected (minor)", "redirected")
+  ## many websites (e.g. publishers, Stack Overflow) refuse automated requests
+  ## while working fine in a browser: these links must be checked manually
+  denied <- !is.na(links$http_status) & links$http_status %in% c(401, 403, 429)
+  links$status <- ifelse(denied, "access denied",
+    ifelse(is.na(links$http_status) | links$http_status >= 400, "broken",
+      ifelse(links$final_url == links$url, "ok",
+        ifelse(is_minor_redirection(links$url, links$final_url), "redirected (minor)", "redirected")
+      )
     )
   )
-  order_status <- c("broken", "redirected", "redirected (minor)", "ok")
+  order_status <- c("broken", "access denied", "redirected", "redirected (minor)", "ok")
   links <- links[order(match(links$status, order_status), links$url), ]
 } else {
   links$status <- "not checked"
@@ -120,17 +129,20 @@ esc <- function(x) {
 }
 a <- function(url) sprintf('<a href="%s" target="_blank" rel="noopener">%s</a>', esc(url), esc(url))
 
-counts <- table(factor(links$status, levels = unique(c("broken", "redirected", "redirected (minor)", "ok", links$status))))
+counts <- table(factor(links$status, levels = unique(c("broken", "access denied", "redirected", "redirected (minor)", "ok", links$status))))
 rows <- vapply(seq_len(nrow(links)), function(i) {
   l <- links[i, ]
   detail <- if (!check) {
     ""
-  } else if (l$status == "broken") {
-    esc(if (is.na(l$http_status)) l$error else paste("HTTP status", l$http_status))
-  } else if (startsWith(l$status, "redirected")) {
-    paste("&rarr;", a(l$final_url))
   } else {
-    ""
+    problem <- if (l$status %in% c("broken", "access denied")) {
+      esc(if (is.na(l$http_status)) l$error else paste("HTTP status", l$http_status))
+    } else {
+      ""
+    }
+    ## show where the link leads whenever this differs from the link itself
+    moved <- if (!is.na(l$final_url) && l$final_url != l$url) paste("&rarr;", a(l$final_url)) else ""
+    paste(c(problem, moved)[c(problem, moved) != ""], collapse = "<br>")
   }
   sprintf(
     "<tr class='%s'><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td class='loc'>%s</td></tr>",
@@ -142,12 +154,12 @@ html <- c(
   "<!doctype html><html><head><meta charset='utf-8'><title>IsoriX links</title><style>",
   "body{font-family:sans-serif;margin:24px} table{border-collapse:collapse}",
   "td,th{border:1px solid #ccc;padding:4px 8px;vertical-align:top;text-align:left}",
-  ".broken{background:#fde2e2} .redirected{background:#fff3cd} .redirectedminor{background:#fdf8e6} .ok{background:#e6f4e6}",
+  ".broken{background:#fde2e2} .accessdenied{background:#e8e8f8} .redirected{background:#fff3cd} .redirectedminor{background:#fdf8e6} .ok{background:#e6f4e6}",
   ".loc{white-space:pre;font-family:monospace;font-size:12px}",
   "</style></head><body>",
   "<h1>Links in the bookdown and in the documentation of IsoriX</h1>",
   sprintf("<p>Generated on %s. %d unique links: %s.</p>", format(Sys.time()), nrow(links), paste(names(counts), counts, sep = ": ", collapse = ", ")),
-  "<p>Review in particular the links that are broken or redirected: a redirected link still works, but may be outdated (e.g. a renamed repository or a website that moved). Also check that the remaining links still point to the most relevant pages.</p>",
+  "<p>Review in particular the links that are broken or redirected: a redirected link still works, but may be outdated (e.g. a renamed repository or a website that moved). Links with access denied are refused to scripts by their website (common for publishers and some large websites) and must be opened in a browser to be checked. Also check that the remaining links still point to the most relevant pages.</p>",
   "<table><tr><th>link</th><th>status</th><th>details</th><th>source</th><th>used in (file:line)</th></tr>",
   rows,
   "</table></body></html>"

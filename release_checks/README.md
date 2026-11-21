@@ -86,10 +86,15 @@ outdated while still working: they then usually work through a redirection
 (`release_checks/output/links-<date-time>/report.html`) therefore classifies
 each link as:
 
-- **broken**: the link does not work (error or HTTP status >= 400);
+- **broken**: the link does not work (error, or HTTP status >= 400 other than
+  the following ones);
+- **access denied**: the website refuses requests from scripts (HTTP status
+  401, 403 or 429), which is common for publishers and some large websites
+  while the link works fine in a browser: open it to check;
 - **redirected**: the link works but leads elsewhere (the final address is
-  shown): check whether the link should be updated;
-- **redirected (minor)**: only `http` vs `https`, `www.` or a trailing slash
-  differ (usually harmless);
+  shown, as for any link leading elsewhere): check whether the link should be
+  updated;
+- **redirected (minor)**: only `http` vs `https`, `www.`, a default port or a
+  trailing slash differ (usually harmless);
 - **ok**: the link works directly (it may still be worth checking that it
   points to the most relevant page).
