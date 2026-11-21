@@ -186,7 +186,7 @@
 #'  Bowen, G. J., Wassenaar, L. I., Hobson, K. A. (2005). Global application of
 #'  stable hydrogen and oxygen isotopes to wildlife forensics. Oecologia,
 #'  143(3):337-348.
-#' @source \url{https://kimura.univ-montp2.fr/~rousset/spaMM.htm}
+#' @source \url{https://gitlab.in2p3.fr/francois.rousset/spamm-ref}
 #' @keywords models regression
 #' @examples
 #'

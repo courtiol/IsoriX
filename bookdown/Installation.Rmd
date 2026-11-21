@@ -144,7 +144,7 @@ This will show you what we have changed since the last version!
 
 Don't forget to set up your working directory, that is to tell R in which folder you want to work.
 This matters because you will have to read and write files in this directory while using `IsoriX`.
-If you are using RStudio, the best is to let RStudio handle that automatically by using an [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects).
+If you are using RStudio, the best is to let RStudio handle that automatically by using an [RStudio project](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects).
 
 Otherwise, you can set the working directory by hand using the R command `setwd()`.
 You can also use the RStudio menu for that or the shortcut that seems to be (as default) CTRL-SHIFT-H.

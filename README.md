@@ -1,6 +1,6 @@
 # Welcome to IsoriX
 [![CRAN](https://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
-[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](http://www.r-pkg.org/pkg/IsoriX)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](https://www.r-pkg.org/pkg/IsoriX)
 [![Dependencies](https://tinyverse.netlify.app/badge/IsoriX)](https://cran.r-project.org/package=IsoriX)
 
 
@@ -13,7 +13,7 @@ This is the development repository of __IsoriX__, an [R](https://www.r-project.o
 You can start by reading our [bookdown](https://courtiol-isorix.share.connect.posit.cloud)!
 
 Then, it may not be a bad idea to also have a look at our papers:
-[here](https://www.biorxiv.org/content/early/2017/10/23/207662) and [there](https://www.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
+[here](https://www.biorxiv.org/content/10.1101/207662v1) and [there](https://shop.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
 
 Another great source of help is [our mailing list](https://groups.google.com/g/IsoriX).
 First register for free (using your Google account) and then feel free to send us questions.
@@ -65,4 +65,4 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 
 
 ## Main packages behind IsoriX
-IsoriX heavily depends on two R packages: [spaMM](https://gitlab.mbb.univ-montp2.fr/francois/spamm-ref) & [rasterVis](https://oscarperpinan.github.io/rastervis/).
+IsoriX heavily depends on two R packages: [spaMM](https://gitlab.in2p3.fr/francois.rousset/spamm-ref) & [rasterVis](https://oscarperpinan.github.io/rastervis/).
