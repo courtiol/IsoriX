@@ -70,12 +70,12 @@ Popa-Lisseanu AG, Soergel K, Luckner A, Wassenaar LI, Ibanez C,
 Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G,
 Myslajek RW, Juste J, Fonderflick J, Kelm D & Voigt CC (2012).
 A triple isotope approach to predict the breeding origins of European bats.
-PLoS ONE 7(1):e30388.
+PLoS ONE 7(1):e30388. \doi{10.1371/journal.pone.0030388}.
 
 Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 isotopic composition of keratin calibration standards for wildlife and forensic
 science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-doi: 10.1002/rcm.7893. PMID: 28475227.
+\doi{10.1002/rcm.7893}. PMID: 28475227.
 }
 \seealso{
 \code{\link{CalibDataBat}} for another (related) calibration dataset

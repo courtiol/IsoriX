@@ -36,12 +36,12 @@ str(AssignDataBat2)
 \references{
 Voigt CC, Lehmann D & Greif S (2015). Stable isotope
 ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
-Methods in Ecology and Evolution 6(11).
+Methods in Ecology and Evolution 6(11):1332-1340. \doi{10.1111/2041-210X.12414}.
 
 Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 isotopic composition of keratin calibration standards for wildlife and forensic
 science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-doi: 10.1002/rcm.7893. PMID: 28475227.
+\doi{10.1002/rcm.7893}. PMID: 28475227.
 }
 \seealso{
 \code{\link{isofind}} to perform assignments

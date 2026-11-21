@@ -23,7 +23,7 @@ data provided by Voigt CC & Lehnert L.
 \description{
 These datasets contain hydrogen delta values of fur keratin from 6 sedentary
 bat species. They correspond to the combination of several studies as detailed
-in Voigt & Lenhert 2019. \code{CalibDataBat} is the dataset used in Courtiol et al. 2019.
+in Voigt & Lehnert 2019. \code{CalibDataBat} is the dataset used in Courtiol et al. 2019.
 The data can be used as an example to fit a calibration model using the
 function \code{\link{calibfit}}. \code{CalibDataBatRev} is the same data but the bat
 fur isotope values were corrected to align with the current delta values for deuterium
@@ -51,12 +51,12 @@ Migration with Stable Isotopes, second edition. Academic Press, London.
 
 Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
 computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
-Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London, pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 
 Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 isotopic composition of keratin calibration standards for wildlife and forensic
 science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-doi: 10.1002/rcm.7893. PMID: 28475227.
+\doi{10.1002/rcm.7893}. PMID: 28475227.
 }
 \seealso{
 \code{\link{CalibDataBat2}} for another (related) calibration dataset

@@ -1,6 +1,6 @@
 #' Assignment data: hydrogen delta values of common noctule bats (Voigt & Lehnert 2019)
 #'
-#' These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
+#' These datasets contain data from Voigt & Lehnert (2019). They contain hydrogen
 #' delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 #' killed at wind turbines in northern Germany. These data can be used as an
 #' example to perform assignments using the function [`isofind`]. The difference
@@ -28,7 +28,7 @@
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 #'
 #' @source data provided by  Voigt CC & Lehnert L.
 #' @keywords datasets
@@ -65,12 +65,12 @@ NULL
 #' @seealso [`isofind`] to perform assignments
 #' @references Voigt CC, Lehmann D & Greif S (2015). Stable isotope
 #' ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
-#' Methods in Ecology and Evolution 6(11).
+#' Methods in Ecology and Evolution 6(11):1332-1340. \doi{10.1111/2041-210X.12414}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 #'
 #' @source data provided by Voigt CC, Lehmann D & Greif S.
 #' @keywords datasets
@@ -87,7 +87,7 @@ NULL
 #'
 #' These datasets contain hydrogen delta values of fur keratin from 6 sedentary
 #' bat species. They correspond to the combination of several studies as detailed
-#' in Voigt & Lenhert 2019. `CalibDataBat` is the dataset used in Courtiol et al. 2019.
+#' in Voigt & Lehnert 2019. `CalibDataBat` is the dataset used in Courtiol et al. 2019.
 #' The data can be used as an example to fit a calibration model using the
 #' function [`calibfit`]. `CalibDataBatRev` is the same data but the bat
 #' fur isotope values were corrected to align with the current delta values for deuterium
@@ -126,12 +126,12 @@ NULL
 #'
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
-#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London, pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 #'
 #' @keywords datasets
 #' @examples
@@ -180,12 +180,12 @@ NULL
 #' Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G,
 #' Myslajek RW, Juste J, Fonderflick J, Kelm D & Voigt CC (2012).
 #' A triple isotope approach to predict the breeding origins of European bats.
-#' PLoS ONE 7(1):e30388.
+#' PLoS ONE 7(1):e30388. \doi{10.1371/journal.pone.0030388}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 
 #' @source data provided by Popa-Lisseanu AG et al.
 #' @keywords datasets
@@ -556,9 +556,9 @@ NULL
 #' to filter by time and location.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #'
-#' Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
+#' Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of Hydrology, 517, 351-361. \doi{10.1016/j.jhydrol.2014.05.034}.
 #'
-#' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
+#' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680. \doi{10.1002/hyp.10395}.
 #'
 #' @source data provided by the IAEA.
 #' @keywords datasets

@@ -18,7 +18,7 @@ Two \emph{dataframes} with 14 observations and 4 variables:\tabular{lll}{
 data provided by  Voigt CC & Lehnert L.
 }
 \description{
-These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
+These datasets contain data from Voigt & Lehnert (2019). They contain hydrogen
 delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 killed at wind turbines in northern Germany. These data can be used as an
 example to perform assignments using the function \code{\link{isofind}}. The difference
@@ -41,7 +41,7 @@ Migration with Stable Isotopes, second edition. Academic Press, London.
 Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 isotopic composition of keratin calibration standards for wildlife and forensic
 science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-doi: 10.1002/rcm.7893. PMID: 28475227.
+\doi{10.1002/rcm.7893}. PMID: 28475227.
 }
 \seealso{
 \code{\link{isofind}} to perform assignments
