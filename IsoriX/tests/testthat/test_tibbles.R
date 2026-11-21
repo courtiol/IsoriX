@@ -1,3 +1,5 @@
+## (the informative messages displayed by IsoriX are not tested here, so they are suppressed)
+
 test_that("The workfow works with tibble", {
   skip_if_not_installed("tibble")
 
@@ -15,11 +17,11 @@ test_that("The workfow works with tibble", {
   ## Test that spaMM works correctly with tibbles
   ## Isofit
 
-  ref_isofit <- isofit(ref)
+  ref_isofit <- suppressMessages(isofit(ref))
   ref_2 <- ref_isofit$mean_fit$fixef
 
   job <- tibble::as_tibble(job)
-  job_isofit <- isofit(job)
+  job_isofit <- suppressMessages(isofit(job))
   job_2 <- job_isofit$mean_fit$fixef
 
   expect_equal(ref_2, job_2)
@@ -31,13 +33,13 @@ test_that("The workfow works with tibble", {
   test_tbl2 <- tibble::as_tibble(test_df2)
   test_tbl2$site_ID <- as.character(test_tbl2$site_ID)
 
-  ref_calib <- calibfit(test_df2, ref_isofit, control_optim = list(maxit = 1)) ## df and df
+  ref_calib <- suppressMessages(calibfit(test_df2, ref_isofit, control_optim = list(maxit = 1))) ## df and df
   ref_3 <- ref_calib$fixefCov
 
-  job_calib <- calibfit(test_tbl2, ref_isofit, control_optim = list(maxit = 1)) ## tbl and df
+  job_calib <- suppressMessages(calibfit(test_tbl2, ref_isofit, control_optim = list(maxit = 1))) ## tbl and df
   job_3 <- job_calib$fixefCov
 
-  job_calib2 <- calibfit(test_tbl2, job_isofit, control_optim = list(maxit = 1)) ## tbl and tbl
+  job_calib2 <- suppressMessages(calibfit(test_tbl2, job_isofit, control_optim = list(maxit = 1))) ## tbl and tbl
   job_33 <- job_calib2$fixefCov
   expect_equal(job_3, ref_3)
   expect_equal(job_33, ref_3)

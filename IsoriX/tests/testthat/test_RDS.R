@@ -14,7 +14,10 @@ test_that("saveRDS() and readRDS() can handle ISOSCAPE objects", {
   GermanScape <<- fixture_german()$scape
   saveRDS(GermanScape, file = tempfile_isoscape)
   GermanScape2 <- readRDS(tempfile_isoscape)
-  expect_equal(GermanScape2$mean_scape, GermanScape$mean_scape)
+  expect_s3_class(GermanScape2, "ISOSCAPE")
+  expect_equal(names(GermanScape2$isoscapes), names(GermanScape$isoscapes))
+  expect_equal(terra::values(GermanScape2$isoscapes), terra::values(GermanScape$isoscapes))
+  expect_equal(terra::geom(GermanScape2$sp_points$sources), terra::geom(GermanScape$sp_points$sources))
 })
 
 test_that("saveRDS() and readRDS() can handle ISOFIND objects", {
@@ -22,7 +25,16 @@ test_that("saveRDS() and readRDS() can handle ISOFIND objects", {
   suppressWarnings(AssignmentDry <<- isofind(data = AssignDataAlien, isoscape = GermanScape, calibfit = NULL))
   saveRDS(AssignmentDry, file = tempfile_isofind)
   AssignmentDry2 <- readRDS(tempfile_isofind)
-  expect_equal(AssignmentDry2, AssignmentDry)
+  ## (terra objects are compared through their content, since comparing them
+  ## directly also compares their internal pointers, which differ once reloaded)
+  expect_s3_class(AssignmentDry2, "ISOFIND")
+  for (part in c("sample", "group")) {
+    expect_equal(names(AssignmentDry2[[part]]), names(AssignmentDry[[part]]))
+    for (layer in names(AssignmentDry[[part]])) {
+      expect_equal(terra::values(AssignmentDry2[[part]][[layer]]), terra::values(AssignmentDry[[part]][[layer]]))
+    }
+  }
+  expect_equal(terra::geom(AssignmentDry2$sp_points$assigns), terra::geom(AssignmentDry$sp_points$assigns))
 })
 
 test_that("saveRDS() and readRDS() can handle SpatRaster objects", {
