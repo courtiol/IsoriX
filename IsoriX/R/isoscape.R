@@ -664,8 +664,8 @@ isomultiscape <- function(raster, ## change as method?
 #' @export
 #' @method print ISOSCAPE
 print.ISOSCAPE <- function(x, ...) {
-  print(summary(x))
-  return(invisible(NULL))
+  summary(x)
+  return(invisible(x))
 }
 
 #' @export
@@ -686,7 +686,7 @@ summary.ISOSCAPE <- function(object, ...) {
   cat("\n")
   if (length(object) > 1) {
     cat("### Points of the sampled sources", "\n")
-    print(methods::show(object[[2]][[1]]))
+    print(object[[2]][[1]])
   }
   return(invisible(NULL))
 }

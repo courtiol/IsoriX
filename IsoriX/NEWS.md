@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+  * printing (or summarising) isoscapes, fitted isoscapes, calibration fits and assignments no longer displays stray `NULL` lines (#220).
   * `prepraster()` failed to crop the raster according to the sources when given the output of `isomultifit()`, since this type of object was not recognised.
   * `isomultiscape()` did not check that the names of the layers of the raster used for weighting match those of the fits, since the check looked for an element that does not exist.
   * `prepraster()` now respects `verbose = FALSE` (it used to always print the raster).

@@ -653,8 +653,8 @@ isomultifit <- function(data,
 #' @export
 #' @method print ISOFIT
 print.ISOFIT <- function(x, ...) {
-  print(summary(x))
-  return(invisible(NULL))
+  summary(x)
+  return(invisible(x))
 }
 
 #' @export
@@ -664,12 +664,12 @@ summary.ISOFIT <- function(object, ...) {
     cat("\n")
     cat("### spaMM summary of the fit of the mean model ###", "\n")
     cat("\n")
-    print(spaMM::summary.HLfit(object$mean_fit)$summ)
+    spaMM::summary.HLfit(object$mean_fit)
     cat("\n")
     cat("\n")
     cat("### spaMM summary of the fit of the residual dispersion model ###", "\n")
     cat("\n")
-    print(spaMM::summary.HLfit(object$disp_fit)$summ)
+    spaMM::summary.HLfit(object$disp_fit)
     cat("\n")
     cat(paste("[models fitted with spaMM version ", object$mean_fit$spaMM.version, "]", sep = ""), "\n")
     cat("\n")
