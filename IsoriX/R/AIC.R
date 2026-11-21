@@ -9,14 +9,20 @@
 #' not only in the structure of their mean model but also in the structure of
 #' their residual dispersion model.
 #'
-#' The cAIC computed by \pkg{spaMM} for the mean model (`mean_fit`) treats the
-#' residual dispersion variance (`pred_disp`) as known, while it has been
-#' predicted from the fit of the residual dispersion model (`disp_fit`). This
-#' cAIC thus does not account for the uncertainty stemming from the estimation
-#' of the parameters of the residual dispersion model. Following Courtiol &
-#' Rousset (2017), we correct for that by adding twice the number of parameters
-#' estimated in the residual dispersion model (`K_disp`) to the cAIC of the mean
-#' model (see equation 6 in Overholser & Xu 2014):
+#' For linear mixed models whose residual errors have a variance (or
+#' covariance) depending on \eqn{r} unknown parameters, Overholser & Xu (2014,
+#' theorem 1 and equation 6) showed that the plug-in estimate of the cAIC is
+#' \eqn{-2 \log L_c + 2 (\textrm{tr}(H) + r)}{-2 log Lc + 2 (tr(H) + r)}, where
+#' \eqn{\log L_c}{log Lc} is the conditional log-likelihood and
+#' \eqn{\textrm{tr}(H)}{tr(H)} is the effective number of degrees of freedom of
+#' the fixed and random effects (the trace of the "hat" matrix). The cAIC
+#' computed by \pkg{spaMM} for the mean model (`mean_fit`) is
+#' \eqn{-2 \log L_c + 2 \textrm{tr}(H)}{-2 log Lc + 2 tr(H)}: it treats the
+#' residual variances (`pred_disp`) as known, while they have been predicted
+#' from the fit of the residual dispersion model (`disp_fit`). Following
+#' Courtiol & Rousset (2017), we thus add the missing term by considering the
+#' parameters estimated in the residual dispersion model (`K_disp`) as the
+#' parameters of the residual variance of the mean model (i.e. \eqn{r = K_{disp}}{r = K_disp}):
 #'
 #' \deqn{cAIC = cAIC_{mean\_fit} + 2 \times K_{disp}}
 #'
@@ -41,6 +47,18 @@
 #' source locations, so always check the isoscapes produced by the selected
 #' model (e.g. by plotting the prediction variance; see [`isoscape`]).
 #'
+#' This correction should be seen as an approximation. First, the result of
+#' Overholser & Xu (2014) is asymptotic and the plug-in cAIC can be biased in
+#' small samples (they also discuss alternative corrections for small samples).
+#' Second, their result assumes that the parameters of the residual variance
+#' are estimated jointly with the other parameters of the model, whereas
+#' \pkg{IsoriX} estimates them in a separate fit (`disp_fit`). Third, the
+#' residual variances predicted by `disp_fit` also depend on the predicted
+#' values of its random effects, which are not counted in `K_disp`. Finally,
+#' the cAIC has been shown to tend to favour models with additional random
+#' effects (Greven & Kneib 2010; Overholser & Xu 2014), so comparisons of models
+#' differing in their random-effect structure should be interpreted with care.
+#'
 #' @param object The output of a call to [`isofit`] or [`isomultifit`].
 #' @param ... Optionally, more fitted objects created by [`isofit`] or
 #'   [`isomultifit`].
@@ -64,6 +82,10 @@
 #'
 #' @references Courtiol, A., Rousset, F. (2017). Modelling isoscapes using mixed
 #'   models. \url{https://www.biorxiv.org/content/10.1101/207662v1}
+#'
+#'   Greven, S., Kneib, T. (2010). On the behaviour of marginal and conditional
+#'   AIC in linear mixed models. Biometrika, 97(4):773-789.
+#'   \doi{10.1093/biomet/asq042}.
 #'
 #'   Overholser, R., Xu, R. (2014). Effective degrees of freedom and its
 #'   application to conditional AIC for linear mixed-effects models with

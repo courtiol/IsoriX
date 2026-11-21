@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+  * `isofit()` (and thus `isomultifit()`) did not fix the residual variance of the residual dispersion model to its theoretical expectation (`phi = 2`) when `spaMM_method = list(disp_model = "HLfit")`, so this variance was estimated instead, contrary to what happens with the other fitting methods and to what the documentation states. Fits obtained with `"HLfit"` and `"fitme"` are now identical.
   * printing (or summarising) isoscapes, fitted isoscapes, calibration fits and assignments no longer displays stray `NULL` lines (#220).
   * `prepraster()` failed to crop the raster according to the sources when given the output of `isomultifit()`, since this type of object was not recognised.
   * `isomultiscape()` did not check that the names of the layers of the raster used for weighting match those of the fits, since the check looked for an element that does not exist.

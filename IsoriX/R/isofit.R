@@ -380,6 +380,15 @@ isofit <- function(data,
     }
   }
 
+  ## Inclusion of additional arguments for HLfit, if necessary
+  if (spaMM_method[2] == "HLfit") {
+    args_dispfit[["method"]] <- "REML"
+    args_dispfit[["fixed"]] <- list(phi = 2)
+  }
+  if (spaMM_method[1] == "HLfit") {
+    args_meanfit[["method"]] <- "REML"
+  }
+
   ## Interactive display
   if (verbose) {
     nug_string <- ifelse(uncorr_terms$disp_model == "nugget", "with a Nugget", "")
