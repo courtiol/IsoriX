@@ -11,7 +11,8 @@ plot_sources(
   points = list(pch = 21, cex = 1, lwd = 0.5, col = "black", digits = 1),
   borders = list(borders = NA, lwd = 0.5, col = "darkgrey"),
   palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
-  plot = TRUE
+  plot = TRUE,
+  ask = length(which) > 1 && grDevices::dev.interactive()
 )
 }
 \arguments{
@@ -22,7 +23,7 @@ source location)}
 \item{which}{A \emph{vector of strings} indicating which statistics to map, among
 \code{"mean"} (mean of the isotopic values), \code{"sd"} (standard deviation of the
 isotopic values) and \code{"n"} (number of measurements). By default, all three
-are mapped, side by side.}
+are mapped, one after the other.}
 
 \item{labels}{A \emph{logical} indicating whether the values should be written on
 the maps instead of being represented by coloured points (default =
@@ -39,6 +40,10 @@ or labels (see details)}
 
 \item{plot}{A \emph{logical} indicating whether the maps should be drawn (default
 = \code{TRUE}); if \code{FALSE}, the maps are only returned}
+
+\item{ask}{A \emph{logical} indicating whether the user should be asked to press
+\if{html}{\out{<Return>}} before each new map. By default, this is the case when several
+maps are drawn on an interactive graphic device.}
 }
 \value{
 A named \emph{list} of maps (objects of class \emph{trellis}, one per
@@ -54,7 +59,10 @@ the isoscape: e.g. to see where sources are, which areas are poorly covered,
 which locations rely on few measurements, or which values look unusual.
 }
 \details{
-Each statistic is shown on its own map. By default, the value of each source
+Each statistic is shown on its own map. When several maps are drawn in an
+interactive session, you are asked to press \if{html}{\out{<Return>}} before each new map (as
+for \code{plot()} called on the output of \code{\link[stats:lm]{stats::lm}}); see the argument \code{ask}.
+By default, the value of each source
 location is represented by the colour of a point (see the colour key on the
 right side of each map). For datasets containing few source locations, you
 can instead write the values on the maps by setting \code{labels = TRUE}.

@@ -7,7 +7,10 @@
 #' the isoscape: e.g. to see where sources are, which areas are poorly covered,
 #' which locations rely on few measurements, or which values look unusual.
 #'
-#' Each statistic is shown on its own map. By default, the value of each source
+#' Each statistic is shown on its own map. When several maps are drawn in an
+#' interactive session, you are asked to press <Return> before each new map (as
+#' for `plot()` called on the output of [`stats::lm`]); see the argument `ask`.
+#' By default, the value of each source
 #' location is represented by the colour of a point (see the colour key on the
 #' right side of each map). For datasets containing few source locations, you
 #' can instead write the values on the maps by setting `labels = TRUE`.
@@ -33,7 +36,7 @@
 #' @param which A *vector of strings* indicating which statistics to map, among
 #'   `"mean"` (mean of the isotopic values), `"sd"` (standard deviation of the
 #'   isotopic values) and `"n"` (number of measurements). By default, all three
-#'   are mapped, side by side.
+#'   are mapped, one after the other.
 #' @param labels A *logical* indicating whether the values should be written on
 #'   the maps instead of being represented by coloured points (default =
 #'   `FALSE`)
@@ -45,6 +48,9 @@
 #'   (see details)
 #' @param plot A *logical* indicating whether the maps should be drawn (default
 #'   = `TRUE`); if `FALSE`, the maps are only returned
+#' @param ask A *logical* indicating whether the user should be asked to press
+#'   <Return> before each new map. By default, this is the case when several
+#'   maps are drawn on an interactive graphic device.
 #'
 #' @return A named *list* of maps (objects of class *trellis*, one per
 #'   statistic), returned invisibly. Each map can be drawn again using
@@ -75,7 +81,8 @@ plot_sources <- function(data,
                          points = list(pch = 21, cex = 1, lwd = 0.5, col = "black", digits = 1),
                          borders = list(borders = NA, lwd = 0.5, col = "darkgrey"),
                          palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
-                         plot = TRUE) {
+                         plot = TRUE,
+                         ask = length(which) > 1 && grDevices::dev.interactive()) {
   ## Check the inputs
   .check_source_data(data, "plot_sources")
   which <- match.arg(which, several.ok = TRUE)
@@ -113,8 +120,8 @@ plot_sources <- function(data,
   ## Compute the statistics
   stats <- list(
     mean = list(values = data$mean_source_value, title = "Mean"),
-    sd = list(values = sqrt(data$var_source_value), title = "Standard deviation"),
-    n = list(values = data$n_source_value, title = "Number of measurements")
+    sd = list(values = sqrt(data$var_source_value), title = "SD"),
+    n = list(values = data$n_source_value, title = "N")
   )[which]
 
   ## Build one map per statistic
@@ -126,11 +133,14 @@ plot_sources <- function(data,
     )
   })
 
-  ## Draw the maps side by side
+  ## Draw the maps one after the other (asking before each new map if needed,
+  ## as plot() does for the output of lm())
   if (plot) {
-    for (i in seq_along(maps)) {
-      print(maps[[i]], split = c(i, 1, length(maps), 1), more = i < length(maps))
+    if (ask && !getOption_IsoriX("dont_ask")) {
+      old_ask <- grDevices::devAskNewPage(TRUE)
+      on.exit(grDevices::devAskNewPage(old_ask))
     }
+    for (map in maps) print(map)
   }
 
   invisible(maps)

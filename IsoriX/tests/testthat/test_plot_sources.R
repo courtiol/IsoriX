@@ -5,7 +5,7 @@ test_that("plot_sources() returns one map per statistic", {
   maps <- plot_sources(agg, plot = FALSE)
   expect_named(maps, c("mean", "sd", "n"))
   expect_true(all(vapply(maps, inherits, logical(1), what = "trellis")))
-  expect_equal(maps$mean$main, "Mean")
+  expect_equal(vapply(maps, function(map) map$main, character(1)), c(mean = "Mean", sd = "SD", n = "N"))
 
   maps <- plot_sources(agg, which = c("n", "mean"), plot = FALSE)
   expect_named(maps, c("n", "mean"))
@@ -23,6 +23,8 @@ test_that("plot_sources() draws points, labels and works without borders", {
   expect_no_error(plot_sources(agg, labels = TRUE))
   expect_no_error(plot_sources(agg, which = "n", borders = list(borders = NULL), palette = list(fn = NULL)))
   expect_no_error(plot_sources(tibble::as_tibble(agg), which = "mean"))
+  ## no prompt on non-interactive devices, and the setting of the device is kept
+  expect_false(grDevices::devAskNewPage())
 })
 
 test_that("plot_sources() stops with informative messages on wrong inputs", {
