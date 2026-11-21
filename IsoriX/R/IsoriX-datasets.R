@@ -23,7 +23,7 @@
 #' @seealso [`isofind`] to perform assignments
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 #' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
-#' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' Migration with Stable Isotopes, second edition. Academic Press, London, pp. 117-136.
 #' \doi{10.1016/B978-0-12-814723-8.00005-2}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
@@ -123,7 +123,7 @@ NULL
 
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 #' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
-#' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' Migration with Stable Isotopes, second edition. Academic Press, London, pp. 117-136.
 #' \doi{10.1016/B978-0-12-814723-8.00005-2}.
 #'
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
