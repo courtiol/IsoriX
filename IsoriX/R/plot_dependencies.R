@@ -4,8 +4,8 @@
 #' the packages it imports), as well as the dependencies among these packages.
 #' This can help to understand where an installation problem comes from, since
 #' if one of these packages cannot be installed, \pkg{IsoriX} cannot be
-#' installed either. The packages suggested by \pkg{IsoriX}, which are only
-#' needed for some extra functionalities, can also be displayed.
+#' installed either. By default, the packages suggested by \pkg{IsoriX}, which
+#' are only needed for some extra functionalities, are also displayed.
 #'
 #' The dependencies are those of the installed version of \pkg{IsoriX} and of the
 #' installed versions of the other packages, so no internet connection is
@@ -20,7 +20,7 @@
 #' This function requires the package \pkg{igraph} to be installed.
 #'
 #' @param suggests A *logical* indicating whether the packages suggested by
-#'   \pkg{IsoriX} should also be shown (default = `FALSE`).
+#'   \pkg{IsoriX} should also be shown (default = `TRUE`).
 #' @param seed An *integer* used to set the seed of the random number generator
 #'   that controls the layout of the plot (the state of the random number
 #'   generator is restored afterwards, so that it is not altered by the call).
@@ -35,14 +35,14 @@
 #' @examples
 #'
 #' if (requireNamespace("igraph", quietly = TRUE)) {
-#'   ## packages required by IsoriX:
+#'   ## packages required or suggested by IsoriX:
 #'   plot_dependencies()
 #'
-#'   ## packages required or suggested by IsoriX:
-#'   plot_dependencies(suggests = TRUE)
+#'   ## packages required by IsoriX only:
+#'   plot_dependencies(suggests = FALSE)
 #' }
 #'
-plot_dependencies <- function(suggests = FALSE, seed = 1L) {
+plot_dependencies <- function(suggests = TRUE, seed = 1L) {
   if (!requireNamespace("igraph", quietly = TRUE)) {
     stop("You must install the package igraph for this function to run: `install.packages('igraph')`")
   }

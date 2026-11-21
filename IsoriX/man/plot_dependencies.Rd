@@ -4,11 +4,11 @@
 \alias{plot_dependencies}
 \title{Plot the dependencies of IsoriX}
 \usage{
-plot_dependencies(suggests = FALSE, seed = 1L)
+plot_dependencies(suggests = TRUE, seed = 1L)
 }
 \arguments{
 \item{suggests}{A \emph{logical} indicating whether the packages suggested by
-\pkg{IsoriX} should also be shown (default = \code{FALSE}).}
+\pkg{IsoriX} should also be shown (default = \code{TRUE}).}
 
 \item{seed}{An \emph{integer} used to set the seed of the random number generator
 that controls the layout of the plot (the state of the random number
@@ -25,8 +25,8 @@ This function plots the packages that \pkg{IsoriX} directly requires (i.e.
 the packages it imports), as well as the dependencies among these packages.
 This can help to understand where an installation problem comes from, since
 if one of these packages cannot be installed, \pkg{IsoriX} cannot be
-installed either. The packages suggested by \pkg{IsoriX}, which are only
-needed for some extra functionalities, can also be displayed.
+installed either. By default, the packages suggested by \pkg{IsoriX}, which
+are only needed for some extra functionalities, are also displayed.
 }
 \details{
 The dependencies are those of the installed version of \pkg{IsoriX} and of the
@@ -44,11 +44,11 @@ This function requires the package \pkg{igraph} to be installed.
 \examples{
 
 if (requireNamespace("igraph", quietly = TRUE)) {
-  ## packages required by IsoriX:
+  ## packages required or suggested by IsoriX:
   plot_dependencies()
 
-  ## packages required or suggested by IsoriX:
-  plot_dependencies(suggests = TRUE)
+  ## packages required by IsoriX only:
+  plot_dependencies(suggests = FALSE)
 }
 
 }

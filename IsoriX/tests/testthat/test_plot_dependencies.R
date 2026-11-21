@@ -10,10 +10,10 @@ direct_deps <- function(which) {
   sort(setdiff(deps, pkg_base))
 }
 
-test_that("plot_dependencies() returns the graph of the packages required by IsoriX (#171)", {
+test_that("plot_dependencies() can show only the packages required by IsoriX (#171)", {
   skip_if_not_installed("igraph")
   local_null_device()
-  graph <- plot_dependencies()
+  graph <- plot_dependencies(suggests = FALSE)
   expect_s3_class(graph, "igraph")
 
   ## vertices: IsoriX and the non-base packages it imports
@@ -28,10 +28,10 @@ test_that("plot_dependencies() returns the graph of the packages required by Iso
   expect_true(all(edges$type == "imports"))
 })
 
-test_that("plot_dependencies() can also show the suggested packages", {
+test_that("plot_dependencies() shows the suggested packages by default", {
   skip_if_not_installed("igraph")
   local_null_device()
-  graph <- plot_dependencies(suggests = TRUE)
+  graph <- plot_dependencies()
   imports <- direct_deps("Imports")
   suggests <- setdiff(direct_deps("Suggests"), imports)
   expect_setequal(igraph::V(graph)$name, c("IsoriX", imports, suggests))

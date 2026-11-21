@@ -102,11 +102,14 @@ Despite these efforts, for `IsoriX` to work we do rely on `r length(pkg_IsoriX_I
 - `r length(pkg_IsoriX_Imports)` packages are required for the key functionalities of `IsoriX` (they are *imported*): `r format_pkgs(pkg_IsoriX_Imports)`;
 - `r length(pkg_IsoriX_Suggests)` packages add extra functionalities to `IsoriX` (they are *suggested*): `r format_pkgs(pkg_IsoriX_Suggests)`.
 
-We can visualise the dependencies among the core packages required by `IsoriX` (an arrow from a package to another means that the first one depends on the second one):
+We can visualise these packages and the dependencies among them using the function `plot_dependencies()`:
 
-```{r dependency_graph, message=FALSE}
+```{r dependency_graph, message=FALSE, fig.width=8, fig.height=8, out.width='100%'}
 plot_dependencies()
 ```
+
+The packages required by `IsoriX` are shown in blue and those it suggests in yellow.
+A plain arrow going from a package to another means that the first package depends on the second one, while a dashed arrow means that `IsoriX` suggests the package (use `plot_dependencies(suggests = FALSE)` to only show the packages required by `IsoriX`).
 
 While the number of dependencies is reasonable, since each package depends on other packages, this version of `IsoriX` indirectly uses `r length(pkg_IsoriX_all_required)` packages (on top of some R base packages) and `r length(pkg_IsoriX_optional)` more packages can optionally be used to increase functionalities.
 
