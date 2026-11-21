@@ -323,7 +323,8 @@ if (file.exists("output/EuropeFit_elev.rds")) {
 We can then compare the three fitted isoscapes using the function `AIC()`:
 
 ```{r modelselection AIC}
-AIC(EuropeFit_null, EuropeFit_elev, EuropeFit)
+AIC_mean <- AIC(EuropeFit_null, EuropeFit_elev, EuropeFit)
+AIC_mean
 ```
 
 The column `cAIC` gives the **conditional AIC** of each fit, which is the criterion to use for comparing isoscape models.
@@ -337,8 +338,9 @@ In particular, polynomial terms (e.g. `lat_2`, `long_2`) can produce unrealistic
 So, always check the isoscapes produced by the selected model.
 Such problems should be visible as areas of large prediction variance, which you can easily map by plotting the isoscape of the prediction variance (`which = "mean_predVar"`; see section \@ref(otherisoscapes)).
 
-Here, the elevation is the variable that increases the predictive power the most.
-For `EuropeFit`, we thus selected the mean model with the highest predictive power (i.e. the lowest conditional AIC) among those compared here.
+Here, the elevation is the variable that increases the predictive power the most: adding it to the default model decreases the conditional AIC by `r round(AIC_mean["EuropeFit_null", "cAIC"] - AIC_mean["EuropeFit_elev", "cAIC"], 1)` units.
+Adding the absolute latitude on top of it only decreases the conditional AIC by a further `r round(AIC_mean["EuropeFit_elev", "cAIC"] - AIC_mean["EuropeFit", "cAIC"], 1)` units, so these two models predict the isotopic values at the source locations about equally well.
+For `EuropeFit`, we kept the model with the lowest conditional AIC (i.e. with both `elev` and `lat_abs`), but the model with only the elevation would have been an equally sensible choice.
 
 The other columns detail how the conditional AIC is computed.
 The mean model relies on the predictions of the residual dispersion model, which it treats as known.
@@ -354,16 +356,35 @@ The latitude and longitude are directly obtained from the coordinates of the str
 ### Comparing residual dispersion models
 
 You can also change the fixed effects (`disp_model_fix`) and the random effects (`disp_model_rand`) of the residual dispersion model.
-Thanks to the correction described above, the conditional AIC returned by `AIC()` also allows you to compare models that differ in their residual dispersion model, e.g.:
+The residual dispersion model influences the fit of the mean model (it determines how much weight each source receives), and thus the predictive power of the isoscape.
+Thanks to the correction described above, the conditional AIC returned by `AIC()` also allows you to compare models that differ in their residual dispersion model.
+For example, we can add the elevation to the residual dispersion model of `EuropeFit`:
 
-```{r modelselection disp, eval = FALSE}
+```{r modelselection disp fake, eval = FALSE}
 EuropeFit_disp_elev <- isofit(data = GNIPDataEUagg,
                               mean_model_fix = list(elev = TRUE, lat_abs = TRUE),
                               disp_model_fix = list(elev = TRUE))
-AIC(EuropeFit, EuropeFit_disp_elev)
 ```
 
-Indeed, the residual dispersion model influences the fit of the mean model (it determines how much weight each source receives), and thus the predictive power of the isoscape.
+```{r modelselection disp real, echo = FALSE, results = FALSE, message = FALSE}
+if (file.exists("output/EuropeFit_disp_elev.rds")) {
+  EuropeFit_disp_elev <- readRDS("output/EuropeFit_disp_elev.rds")
+} else {
+  EuropeFit_disp_elev <- isofit(data = GNIPDataEUagg,
+                                mean_model_fix = list(elev = TRUE, lat_abs = TRUE),
+                                disp_model_fix = list(elev = TRUE))
+  saveRDS(EuropeFit_disp_elev, file = "output/EuropeFit_disp_elev.rds", compress = "xz")
+}
+```
+
+```{r modelselection disp AIC}
+AIC_disp <- AIC(EuropeFit, EuropeFit_disp_elev)
+AIC_disp
+```
+
+Adding the elevation to the residual dispersion model slightly decreases the uncorrected conditional AIC (by `r round(AIC_disp["EuropeFit", "cAIC_uncorrected"] - AIC_disp["EuropeFit_disp_elev", "cAIC_uncorrected"], 2)` units), but once the additional parameter estimated in the residual dispersion model is accounted for, the conditional AIC increases (by `r round(AIC_disp["EuropeFit_disp_elev", "cAIC"] - AIC_disp["EuropeFit", "cAIC"], 2)` units).
+So, we kept the simpler residual dispersion model of `EuropeFit`.
+This example illustrates why the correction matters: without it, models with more complex residual dispersion models would be favoured since the cost of estimating their parameters would be ignored.
 
 Such comparisons should nonetheless be interpreted with more caution than comparisons of mean models, because the correction is only an approximation:
 
