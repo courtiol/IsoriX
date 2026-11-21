@@ -462,8 +462,8 @@ calibfit!"
 #' @export
 #' @method print ISOFIND
 print.ISOFIND <- function(x, ...) {
-  print(summary(x))
-  return(invisible(NULL))
+  summary(x)
+  return(invisible(x))
 }
 
 #' @export

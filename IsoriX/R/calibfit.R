@@ -975,7 +975,7 @@ print.CALIBFIT <- function(x, ...) {
   cat("[for more information, use summary()]", "\n")
   cat("\n")
 
-  return(invisible(NULL))
+  return(invisible(x))
 }
 
 #' @export
@@ -996,7 +996,7 @@ summary.CALIBFIT <- function(object, ...) {
     cat("### spaMM summary of the fit of the calibration model ###", "\n")
     cat("#########################################################", "\n")
     cat("\n")
-    print(spaMM::summary.HLfit(object$calib_fit)$summ)
+    spaMM::summary.HLfit(object$calib_fit)
     cat("\n")
     cat(paste("[model fitted with spaMM version ", object$calib_fit$spaMM.version, "]", sep = ""), "\n")
     cat("\n")

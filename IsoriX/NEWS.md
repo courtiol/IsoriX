@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+  * printing (or summarising) isoscapes, fitted isoscapes, calibration fits and assignments no longer displays stray `NULL` lines (#220).
   * the plotting functions for isoscapes and assignments no longer crash when the user provides their own country borders (`borders = list(borders = ...)`) containing more than one polygon.
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
