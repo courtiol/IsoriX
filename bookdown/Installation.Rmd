@@ -86,26 +86,42 @@ data.frame(Imported_packages = sort(setdiff(pkg_IsoriX_Imports, pkg_base)))
 data.frame(Suggested_packages = sort(setdiff(pkg_IsoriX_Suggests, pkg_base)))
 ```
 
-We can use a modified version of **`miniCRAN`** to visualise dependencies among the core packages required by `IsoriX`:
+We can visualise the dependencies among the core packages required by `IsoriX` (an arrow from a package to another means that the first one depends on the second one):
 
-```{r mini_CRAN, message=FALSE}
-## install special fork from miniCRAN
-if (!"miniCRAN" %in% installed.packages()[, 1]) {
-  remotes::install_github("courtiol/miniCRAN@Recursion_optional")
-}
-  
-## setting the RNG seed controls the rotation in the plot
+```{r dependency_graph, message=FALSE}
+## the core packages: IsoriX and the packages it imports
+pkg_core <- c("IsoriX", sort(setdiff(pkg_IsoriX_Imports, pkg_base)))
+
+## the dependencies of each of these packages, restricted to the core packages
+deps_core <- tools::package_dependencies(pkg_core, recursive = FALSE)
+edges <- do.call(rbind, lapply(pkg_core, function(pkg) {
+  deps <- intersect(deps_core[[pkg]], pkg_core)
+  if (length(deps) > 0) data.frame(from = pkg, to = deps)
+}))
+
+## plotting the dependencies (setting the RNG seed controls the layout)
+graph_core <- igraph::graph_from_data_frame(edges, vertices = pkg_core)
 set.seed(1)
-
-## plotting dependencies
-plot(miniCRAN::makeDepGraph("IsoriX", recursive = FALSE, suggests = FALSE))
+plot(graph_core,
+     vertex.color = ifelse(igraph::V(graph_core)$name == "IsoriX", "orange", "lightblue"),
+     vertex.size = 38, vertex.label.color = "black", vertex.label.cex = 0.75,
+     edge.arrow.size = 0.4)
 ```
 
-::: rmdnote
-**Geeky note**: We are not using the original version of the package `miniCRAN` because it would also display the dependencies of each dependency of `IsoriX`.
-:::
+```{r dependencies_recursive, echo=FALSE}
+## all packages required, directly or indirectly, by IsoriX:
+pkg_IsoriX_all_required <- setdiff(tools::package_dependencies("IsoriX", recursive = TRUE)$IsoriX, pkg_base)
 
-While the number of dependencies is reasonable, since each package depends on other packages, the current stable release of `IsoriX` indirectly uses `r length(miniCRAN::pkgDep("IsoriX", suggests = FALSE)) - 1` packages (on top of some R base packages) and `r length(miniCRAN::pkgDep("IsoriX", suggests = TRUE)) - length(miniCRAN::pkgDep("IsoriX", suggests = FALSE))` more packages can optionally be used to increase functionalities.
+## all packages that IsoriX can optionally use (the suggested packages and the
+## packages they require), on top of those required:
+pkg_IsoriX_optional <- setdiff(
+  union(pkg_IsoriX_Suggests,
+        unlist(tools::package_dependencies(pkg_IsoriX_Suggests, recursive = TRUE))),
+  c(pkg_base, pkg_IsoriX_all_required, "IsoriX")
+)
+```
+
+While the number of dependencies is reasonable, since each package depends on other packages, the current stable release of `IsoriX` indirectly uses `r length(pkg_IsoriX_all_required)` packages (on top of some R base packages) and `r length(pkg_IsoriX_optional)` more packages can optionally be used to increase functionalities.
 
 All in all, this represents quite a lot of dependencies, and problems can thus happen.
 
@@ -115,7 +131,7 @@ A work around is to simply not rely on the problematic packages.
 That is possible as long as the problematic packages are among those that `IsoriX` "suggests" (or among those that are required by such suggested packages) and not packages that `IsoriX` "imports".
 
 The list of such packages that are not crucial for `IsoriX` (but that offer additional functionalities) is this:
-`r paste0("\x60", sort(setdiff(miniCRAN::pkgDep("IsoriX", suggests = TRUE), miniCRAN::pkgDep("IsoriX", suggests = FALSE))), "\x60")`.
+`r paste0("\x60", sort(pkg_IsoriX_optional), "\x60")`.
 
 Since `IsoriX` could live without them and still perform all essential tasks, to circumvent installation issues on your system you may try to install `IsoriX` again without them:
 
