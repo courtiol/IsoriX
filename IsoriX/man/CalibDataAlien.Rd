@@ -3,7 +3,7 @@
 \docType{data}
 \name{CalibDataAlien}
 \alias{CalibDataAlien}
-\title{Simulated calibration dataset}
+\title{Calibration data: simulated hydrogen delta values}
 \format{
 A \emph{dataframe} with x observations and 6 variables:\tabular{lll}{
     \tab  \tab  \cr

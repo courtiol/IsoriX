@@ -67,7 +67,8 @@
 #'
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
-#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London,
+#' pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 #'
 #' @keywords models regression prediction predict
 #' @examples
@@ -128,11 +129,13 @@
 isoscape <- function(raster,
                      isofit,
                      verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "isoscape")
+  .check_input_class(isofit, "ISOFIT", "isofit", "isoscape")
+  .check_raster_valid(raster)
   if (inherits(isofit, "MULTIISOFIT")) {
     stop("Object 'isofit' of class MULTIISOFIT; use isomultiscape instead!")
   }
-
-  .check_raster_valid(raster)
 
   if (verbose) {
     print("Building the isoscapes... ", quote = FALSE)
@@ -559,6 +562,10 @@ isomultiscape <- function(raster, ## change as method?
                           isofit,
                           weighting = NULL,
                           verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "isomultiscape")
+  .check_input_class(isofit, "ISOFIT", "isofit", "isomultiscape")
+
   ## In case the function is called on the output of isofit by mistake
   if (!inherits(isofit, "MULTIISOFIT")) {
     message("Your input for `isofit =` is not of class MULTIISOFIT, so your call to `isomultiscape()` has been automatically converted into a call to `isoscape()`.")
@@ -574,7 +581,7 @@ isomultiscape <- function(raster, ## change as method?
     if (!inherits(weighting, "SpatRaster")) {
       stop("the argument 'weighting' should be a SpatRaster")
     }
-    if (!all(names(isofit$multi.fits) %in% names(weighting))) {
+    if (!all(names(isofit$multi_fits) %in% names(weighting))) {
       stop("the names of the layer in the object 'weighting' do not match those of your pairs of fits...")
     }
     if (terra::ext(weighting) != terra::ext(raster)) {

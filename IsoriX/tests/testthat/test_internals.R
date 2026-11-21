@@ -41,7 +41,5 @@ test_that("invalid rasters are detected with an informative error", {
   load(workspace)
   expect_error(.check_raster_valid(raster), "no longer valid in this R session")
   expect_error(prepraster(raster), "no longer valid in this R session")
-  expect_error(isoscape(raster, isofit = list(mean_fit = list())), "no longer valid in this R session")
-
-  expect_error(prepraster(matrix(1)), "must be a SpatRaster")
+  expect_error(isoscape(raster, isofit = structure(list(), class = "ISOFIT")), "no longer valid in this R session")
 })

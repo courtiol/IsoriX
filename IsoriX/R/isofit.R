@@ -186,7 +186,8 @@
 #'
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
-#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London,
+#' pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 #'
 #'  Rousset, F., Ferdy, J. B. (2014). Testing environmental and genetic effects
 #'  in the presence of spatial autocorrelation. Ecography, 37(8):781-790.
@@ -232,6 +233,9 @@ isofit <- function(data,
                    control_mean = list(),
                    control_disp = list(),
                    verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_source_data(data, "isofit")
+
   ## Complete the arguments
   .complete_args(isofit)
 
@@ -489,6 +493,9 @@ isomultifit <- function(data,
                         control_mean = list(),
                         control_disp = list(),
                         verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_source_data(data, "isomultifit")
+
   ## Complete the arguments
   .complete_args(isomultifit)
 

@@ -3,7 +3,7 @@
 \docType{data}
 \name{CountryBorders}
 \alias{CountryBorders}
-\title{Borders of world CountryBorders}
+\title{Polygon data: borders of world countries}
 \format{
 A \emph{SpatVector} object with 242 polygons and one column (\code{name})
 }

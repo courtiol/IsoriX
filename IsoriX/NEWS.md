@@ -2,15 +2,18 @@
 
 ## Bug fixes
 
+  * `prepraster()` failed to crop the raster according to the sources when given the output of `isomultifit()`, since this type of object was not recognised.
+  * `isomultiscape()` did not check that the names of the layers of the raster used for weighting match those of the fits, since the check looked for an element that does not exist.
+  * `prepraster()` now respects `verbose = FALSE` (it used to always print the raster).
   * the plotting functions for isoscapes and assignments no longer crash when the user provides their own country borders (`borders = list(borders = ...)`) containing more than one polygon.
   * the test of spatial extrapolation performed by `calibfit()` no longer produces false positives: calibration sites located on the boundary of the convex hull formed by the source sites (e.g. sharing the location of a source site) are now considered to be inside, longitudes are handled consistently whether expressed within [-180, 180) or [0, 360) and hulls straddling the antimeridian (180 degrees) are now handled correctly (#200).
   * `?plot` now opens the documentation of the IsoriX plotting functions instead of the generic page listing re-exported functions (#193).
   * passing an empty list to a list argument (e.g. `isofit(data, mean_model_fix = list())`) no longer triggers an error; it now means that all defaults are kept (#206).
   * when plotting individual assignments, each map now only shows the location of the sample it corresponds to, instead of the locations of all samples (#103).
-  * `prepraster()` now properly crops the structural raster according to the first fit when the argument `isofit` receives the output of `isomultifit()`.
 
 ## New features
 
+  * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
   * IsoriX now handles areas crossing the International Date Line (antimeridian) out of the box, e.g. for studies centred on the Pacific (#180):
     - `prepsources()` can select sources across the International Date Line using `long_min > long_max` (e.g. `long_min = 70, long_max = -150`);
@@ -22,6 +25,9 @@
 
 ## Minor changes
 
+  * the main functions now check the type of the objects given to them and stop with an informative error message saying which function creates the expected object (e.g. when an isoscape is given instead of the output of `isofit()`), or that source data must first be aggregated with `prepsources()` (#164).
+  * each reference cited in the documentation now includes a link to its DOI, and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
+  * the titles of the help pages of all datasets follow a consistent pattern indicating their role in the workflow (e.g. "Calibration data: ..."), and those of datasets from different studies are no longer identical (#97).
   * outdated links in the documentation were updated (e.g. the homepage of **spaMM** in `?isofit` and the link to the preprint in `citation("IsoriX")`), following the review of all links with the new script `release_checks/list_links.R` (#188).
   * the dataset `CountryBorders` contains again the names of the countries (column `name`), so that countries can be selected by name, e.g. `CountryBorders[CountryBorders$name == "Germany", ]` (#183). `CountryBorders` and `OceanMask` have been recreated from the current version of the Natural Earth data (same resolution as before), which leads to minor changes in borders (e.g. Tuvalu is now included).
   * the titles of isoscape plots no longer refer to hydrogen by default, since IsoriX cannot know which isotope is being studied: the default of the global option `title_delta_notation` is now `NULL`. Use e.g. `options_IsoriX(title_delta_notation = bquote(delta^2*H))` to restore the previous titles. The documentation (`?options_IsoriX` and the bookdown) now also explains what to do when the delta symbol is not rendered by the graphic device (#155).

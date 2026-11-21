@@ -156,6 +156,9 @@ prepraster <- function(raster,
                        manual_crop = NULL,
                        values_to_zero = c(-Inf, 0),
                        verbose = interactive()) {
+  ## Check the inputs (#164)
+  .check_input_class(raster, "SpatRaster", "raster", "prepraster")
+  .check_input_class(isofit, "ISOFIT", "isofit", "prepraster", null_ok = TRUE)
   .check_raster_valid(raster)
 
   time <- system.time({
@@ -198,7 +201,7 @@ prepraster <- function(raster,
       }
     }
     if (aggregation_factor > 1) { ## test if aggregation is needed
-      if (interactive()) {
+      if (verbose) {
         print(paste("aggregating..."))
       }
       raster <- terra::aggregate(raster,
@@ -222,8 +225,8 @@ prepraster <- function(raster,
   if (verbose) {
     print(paste("done!"))
     print(time)
+    print(raster)
   }
 
-  print(raster)
   return(raster)
 }

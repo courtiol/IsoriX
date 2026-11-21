@@ -3,7 +3,7 @@
 \docType{data}
 \name{PrecipBrickDE}
 \alias{PrecipBrickDE}
-\title{The precipitation monthly amounts for Germany}
+\title{Raster data: monthly precipitation amounts in Germany}
 \format{
 A \emph{SpatRaster} with 12 layers
 }

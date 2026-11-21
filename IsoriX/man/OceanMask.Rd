@@ -3,7 +3,7 @@
 \docType{data}
 \name{OceanMask}
 \alias{OceanMask}
-\title{Mask of world oceans}
+\title{Polygon data: mask of world oceans}
 \format{
 A \emph{SpatVector} object
 }
