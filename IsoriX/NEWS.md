@@ -10,6 +10,7 @@
 
 ## New features
 
+  * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
 
 ## Minor changes
