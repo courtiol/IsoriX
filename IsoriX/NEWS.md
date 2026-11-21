@@ -41,6 +41,7 @@
 
 ## Internal (geeky) changes
 
+  * the tests now use the third edition of **testthat** and run in parallel (using 2 processes by default; see the README of the GitHub repository to use more), which makes them about twice as fast.
   * **tibble** is now a suggested package, so that the support of tibbles is tested using genuine tibbles.
   * the documentation is now generated using **roxygen2** 8.1.1.
   * GitHub issue templates have been added (#178).
