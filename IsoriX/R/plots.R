@@ -956,7 +956,8 @@ plot.SpatRaster <- function(x, ...) {
   }
 
   ## layer for assignment points
-  if (is.null(assigns)) {
+  ## (no layer if the assignment data contained no coordinates)
+  if (is.null(assigns) || is.null(x$sp_points$assigns)) {
     assigns_layer <- latticeExtra::layer()
   } else {
     if (!assigns$draw) {
