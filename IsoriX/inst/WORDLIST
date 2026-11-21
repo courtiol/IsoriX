@@ -48,6 +48,7 @@ RW
 RandomFields
 RasterBrick
 Roemer
+Rohw
 Rohwäder
 Roxygen
 Rproj
@@ -83,6 +84,7 @@ elipsis
 geostatistical
 ggplot
 graphClick
+igraph
 inMemory
 isofind
 isofit
@@ -94,6 +96,7 @@ md
 metaDigitse
 noctula
 noctule
+ois
 org
 pch
 pv
@@ -101,6 +104,7 @@ queryGNIP
 rasterVis
 rcm
 rgdal
+rn
 roxygen
 sp
 spaMM
