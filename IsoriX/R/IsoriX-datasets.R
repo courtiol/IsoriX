@@ -354,13 +354,15 @@ NULL
 
 #' Borders of world CountryBorders
 #'
-#' This dataset contains a polygon polygon SpatVector (from \pkg{terra}).
-#' It can be used to draw the borders of world countries.
+#' This dataset contains a polygon SpatVector (from \pkg{terra}).
+#' It can be used to draw the borders of world countries. Each polygon corresponds
+#' to a country (or territory) whose name is stored in the column `name`, so that
+#' countries can be selected by name (see examples).
 #'
 #'
 #' @name CountryBorders
 #' @docType data
-#' @format A *SpatVector* object
+#' @format A *SpatVector* object with 242 polygons and one column (`name`)
 #' @seealso
 #' - [`OceanMask`] for another polygon used to embellish the plots
 #' @source This *SpatVector* is derived from the package
@@ -372,13 +374,28 @@ NULL
 #'
 #' plot(CountryBorders, border = "red", col = "darkgrey")
 #'
+#' ## Selecting a country by name:
+#' head(CountryBorders$name)
+#' Germany <- CountryBorders[CountryBorders$name == "Germany", ]
+#' plot(Germany)
+#'
+#' ## This can be used, for example, to download elevation data for a given
+#' ## country only:
+#' terra::ext(Germany)
+#' # getelev(
+#' #   file = "elevation_DE_z5.tif",
+#' #   long_min = terra::xmin(Germany), long_max = terra::xmax(Germany),
+#' #   lat_min = terra::ymin(Germany), lat_max = terra::ymax(Germany)
+#' # )
+#'
 #' ## How did we create this file?
 #'
 #' ## Uncomment the following to create the file as we did
+#' ## (we used rnaturalearth 1.2.0 and rnaturalearthdata 1.0.0)
 #' # if (require(rnaturalearth) && require(terra)) {
-#' #    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sf')
-#' #    CountryBorders <- vect(CountryBorders[, 0])
-#' #    #saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
+#' #    CountryBorders <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+#' #    CountryBorders <- vect(CountryBorders[, "name"])
+#' #    #terra::saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
 #' # }
 #'
 NULL
@@ -388,7 +405,8 @@ NULL
 #' Mask of world oceans
 #'
 #' This dataset contains a polygon SpatVector (from \pkg{terra}).
-#' It can be used to mask large bodies of water.
+#' It can be used to mask large bodies of water. It is the complement of the
+#' polygons stored in [`CountryBorders`] within their extent.
 #'
 #'
 #' @name OceanMask
@@ -405,11 +423,12 @@ NULL
 #' ## How did we create this file?
 #'
 #' ## Uncomment the following to create the file as we did
+#' ## (after having created CountryBorders, see ?CountryBorders)
 #' # if (require(terra)) {
-#' #   worldlimit <- vect(ext(CountryBorders))
+#' #   worldlimit <- as.polygons(ext(CountryBorders))
 #' #   crs(worldlimit) <- crs(CountryBorders)
 #' #   OceanMask <- worldlimit - CountryBorders
-#' #   #saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+#' #   #terra::saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
 #' # }
 #'
 NULL

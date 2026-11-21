@@ -5,7 +5,7 @@
 \alias{CountryBorders}
 \title{Borders of world CountryBorders}
 \format{
-A \emph{SpatVector} object
+A \emph{SpatVector} object with 242 polygons and one column (\code{name})
 }
 \source{
 This \emph{SpatVector} is derived from the package
@@ -14,20 +14,37 @@ sources of this dataset. See example for details on how we created the
 dataset.
 }
 \description{
-This dataset contains a polygon polygon SpatVector (from \pkg{terra}).
-It can be used to draw the borders of world countries.
+This dataset contains a polygon SpatVector (from \pkg{terra}).
+It can be used to draw the borders of world countries. Each polygon corresponds
+to a country (or territory) whose name is stored in the column \code{name}, so that
+countries can be selected by name (see examples).
 }
 \examples{
 
 plot(CountryBorders, border = "red", col = "darkgrey")
 
+## Selecting a country by name:
+head(CountryBorders$name)
+Germany <- CountryBorders[CountryBorders$name == "Germany", ]
+plot(Germany)
+
+## This can be used, for example, to download elevation data for a given
+## country only:
+terra::ext(Germany)
+# getelev(
+#   file = "elevation_DE_z5.tif",
+#   long_min = terra::xmin(Germany), long_max = terra::xmax(Germany),
+#   lat_min = terra::ymin(Germany), lat_max = terra::ymax(Germany)
+# )
+
 ## How did we create this file?
 
 ## Uncomment the following to create the file as we did
+## (we used rnaturalearth 1.2.0 and rnaturalearthdata 1.0.0)
 # if (require(rnaturalearth) && require(terra)) {
-#    CountryBorders <- rnaturalearth::ne_countries(scale = 'medium', returnclass = 'sf')
-#    CountryBorders <- vect(CountryBorders[, 0])
-#    #saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
+#    CountryBorders <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+#    CountryBorders <- vect(CountryBorders[, "name"])
+#    #terra::saveRDS(CountryBorders, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
 # }
 
 }
