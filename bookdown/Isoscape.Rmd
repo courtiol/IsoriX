@@ -157,6 +157,16 @@ As you can see, we now have a single row of data per location.
 The column `mean_source_value` gives the average across months and years.
 The column `var_source_value` gives the variance between monthly measurements spanning across years.
 
+Before fitting any model, it is a good idea to look at these aggregated data on a map.
+The function `plot_sources()` maps, for each source location, the mean, the standard deviation and the number of measurements:
+
+```{r plot_sources, fig.width = 12, fig.height = 4.5}
+plot_sources(GNIPDataEUagg)
+```
+
+Such maps show where the sources are, which areas are poorly covered, which locations rely on few measurements and which values look unusual.
+For datasets containing few source locations, you can write the values on the maps instead, using `plot_sources(..., labels = TRUE)`.
+
 
 ## Fitting the geostatistical models {#isofit}
 
