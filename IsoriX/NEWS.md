@@ -14,6 +14,7 @@
 
 ## Minor changes
 
+  * outdated links in the documentation were updated (e.g. the homepage of **spaMM** in `?isofit` and the link to the preprint in `citation("IsoriX")`), following the review of all links with the new script `release_checks/list_links.R` (#188).
   * the dataset `CountryBorders` contains again the names of the countries (column `name`), so that countries can be selected by name, e.g. `CountryBorders[CountryBorders$name == "Germany", ]` (#183). `CountryBorders` and `OceanMask` have been recreated from the current version of the Natural Earth data (same resolution as before), which leads to minor changes in borders (e.g. Tuvalu is now included).
   * the titles of isoscape plots no longer refer to hydrogen by default, since IsoriX cannot know which isotope is being studied: the default of the global option `title_delta_notation` is now `NULL`. Use e.g. `options_IsoriX(title_delta_notation = bquote(delta^2*H))` to restore the previous titles. The documentation (`?options_IsoriX` and the bookdown) now also explains what to do when the delta symbol is not rendered by the graphic device (#155).
   * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
