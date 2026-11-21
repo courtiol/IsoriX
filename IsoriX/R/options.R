@@ -39,11 +39,22 @@
 #' @examples
 #' OldOptions <- options_IsoriX()
 #' OldOptions
+#'
+#' ## defining the delta notation used in the titles of isoscape plots,
+#' ## e.g. for hydrogen:
+#' options_IsoriX(title_delta_notation = bquote(delta^2*H))
 #' getOption_IsoriX("title_delta_notation")
+#'
+#' ## or for oxygen:
+#' options_IsoriX(title_delta_notation = bquote(delta^18*O))
+#' getOption_IsoriX("title_delta_notation")
+#'
 #' getOption_IsoriX("example_maxtime")
 #' options_IsoriX(example_maxtime = 30)
 #' options_IsoriX()
-#' options_IsoriX(example_maxtime = OldOptions$example_maxtime)
+#'
+#' ## restoring the original options:
+#' options_IsoriX(OldOptions)
 #' options_IsoriX()
 options_IsoriX <- function(...) { ## as in spaMM
   if (nargs() == 0) {
