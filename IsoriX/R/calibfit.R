@@ -380,6 +380,15 @@ calibfit <- function(data,
 
   method <- match.arg(method, c("wild", "lab", "desk", "desk_inverse"))
 
+  ## Check the inputs (#164)
+  .check_input_class(data, "data.frame", "data", "calibfit")
+  if (method == "wild") {
+    if (is.null(isofit)) {
+      stop("The calibration method 'wild' (default) requires the argument `isofit` (the output of isofit()).", call. = FALSE)
+    }
+    .check_input_class(isofit, "ISOFIT", "isofit", "calibfit")
+  }
+
   ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
   ## That would allow to fit species as a random effect in the model
   ## However, it is not obvious that it would make sense to do that as it may

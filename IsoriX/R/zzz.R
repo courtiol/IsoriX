@@ -98,6 +98,80 @@
 }
 
 
+.IsoriX_objects <- c(
+  ## the classes of the objects created by IsoriX and the functions creating them,
+  ## from the most to the least specific (the first match is used)
+  MULTIISOFIT = "isomultifit()",
+  ISOSIM = "isosim()",
+  ISOFIT = "isofit()",
+  ISOSCAPE = "isoscape() or isomultiscape()",
+  CALIBFIT = "calibfit()",
+  ISOFIND = "isofind()"
+)
+
+
+.describe_input <- function(x) {
+  ## This function should not be called by the user.
+  ## It describes an object in error messages about wrong inputs.
+  if (is.null(x)) {
+    return("NULL")
+  }
+  known <- intersect(names(.IsoriX_objects), class(x))
+  if (length(known) > 0) {
+    return(paste0("the output of ", .IsoriX_objects[[known[1]]], " (an object of class ", known[1], ")"))
+  }
+  paste0("an object of class ", paste(class(x), collapse = "/"))
+}
+
+
+.check_input_class <- function(x, expected, arg, fn, null_ok = FALSE) {
+  ## This function should not be called by the user.
+  ## It stops with an informative message if the input `x` (given to the
+  ## argument `arg` of the function `fn`) does not inherit from the class
+  ## `expected` (which can be NULL if `null_ok = TRUE`) (#164).
+  if (is.null(x) && null_ok) {
+    return(invisible(TRUE))
+  }
+  if (!inherits(x, expected)) {
+    what <- if (expected %in% names(.IsoriX_objects)) {
+      paste0("the output of ", .IsoriX_objects[[expected]], " (an object of class ", expected, ")")
+    } else if (expected == "SpatRaster") {
+      "a raster of class SpatRaster (see e.g. terra::rast() or prepraster())"
+    } else if (expected == "data.frame") {
+      "a data frame"
+    } else {
+      paste("an object of class", expected)
+    }
+    if (null_ok) what <- paste(what, "or NULL")
+    stop(paste0(
+      "The argument `", arg, "` of ", fn, "() must be ", what,
+      ", but the object provided is ", .describe_input(x), "."
+    ), call. = FALSE)
+  }
+  invisible(TRUE)
+}
+
+
+.check_source_data <- function(data, fn) {
+  ## This function should not be called by the user.
+  ## It checks that the source data are aggregated, as required to fit isoscapes (#164).
+  .check_input_class(data, "data.frame", "data", fn)
+  if (!"mean_source_value" %in% colnames(data)) {
+    if ("source_value" %in% colnames(data)) {
+      stop(paste0(
+        "The argument `data` of ", fn, "() must contain source data aggregated per location, ",
+        "but the data provided seem to be raw source data: use prepsources() to aggregate them first."
+      ), call. = FALSE)
+    }
+    stop(paste0(
+      "The argument `data` of ", fn, "() must contain source data aggregated per location ",
+      "(as produced by prepsources()), but the column 'mean_source_value' is missing."
+    ), call. = FALSE)
+  }
+  invisible(TRUE)
+}
+
+
 .complete_args <- function(fn) {
   ## This function should not be called by the user.
   ## It keeps the default list elements when
