@@ -258,18 +258,159 @@
 }
 
 
+.check_raster_valid <- function(raster, arg = "raster") {
+  ## This function should not be called by the user.
+  ## It stops with an informative error if the SpatRaster `raster` can no
+  ## longer be used, e.g. because it was restored from a saved workspace
+  ## (.RData) or from another R session: the data of such objects (stored by
+  ## terra outside of R) are then lost, which otherwise leads to obscure errors
+  ## such as "NULL value passed as symbol address". The class of `raster` must
+  ## be checked beforehand (see .check_input_class()).
+  valid <- tryCatch(
+    {
+      terra::ext(raster)
+      TRUE
+    },
+    error = function(e) FALSE
+  )
+  if (!valid) {
+    stop("The SpatRaster passed to the argument '", arg, "' is no longer valid in this R session ",
+      "(it was probably restored from a saved workspace or from another R session). ",
+      "Please re-create it using terra::rast() on the file downloaded with getelev() ",
+      "(see ?getelev).",
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
+}
+
+
 .crop_withmargin <- function(raster, xmin, xmax, ymin, ymax, margin_pct = 5) {
   ## This function should not be called by the user.
   ## It crops a raster using a safety margin.
+  ## Crops crossing the antimeridian are supported (see .crop_long()).
   margin_long <- (xmax - xmin) * margin_pct / 100
   margin_lat <- (ymax - ymin) * margin_pct / 100
 
-  terra::crop(raster, terra::ext(
-    xmin - margin_long,
-    xmax + margin_long,
-    ymin - margin_lat,
-    ymax + margin_lat
-  ))
+  .crop_long(raster,
+    xmin = xmin - margin_long,
+    xmax = xmax + margin_long,
+    ymin = ymin - margin_lat,
+    ymax = ymax + margin_lat
+  )
+}
+
+
+## Helpers for handling the antimeridian (International Date Line, #180) --------
+##
+## IsoriX expresses longitudes within [-180, 180] by default. When the area of
+## interest crosses the antimeridian, longitudes are instead expressed
+## continuously beyond 180 (e.g. from 70 to 210), so that the area is
+## contiguous. The helpers below create and handle this representation.
+
+.continuous_long_range <- function(long_min, long_max, from = -180) {
+  ## This function should not be called by the user.
+  ## It expresses a range of longitudes continuously, with `long_min` within
+  ## [from, from + 360) and `long_max` greater than `long_min`, e.g.:
+  ## (70, -150) -> (70, 210), (70, 210) -> (70, 210), (-200, -150) -> (160, 210).
+  if (long_min > long_max) long_max <- long_max + 360
+  shift <- 360 * floor((long_min - from) / 360)
+  c(long_min - shift, long_max - shift)
+}
+
+
+.wrap_long_like <- function(long, long_ref) {
+  ## This function should not be called by the user.
+  ## It expresses the longitudes `long` in the same representation as the
+  ## reference longitudes `long_ref`: within [0, 360] if some reference
+  ## longitudes are greater than 180 and within [-180, 180] otherwise.
+  if (is.null(long) || length(long_ref) == 0) {
+    return(long)
+  }
+  if (any(long_ref > 180, na.rm = TRUE)) {
+    return(ifelse(!is.na(long) & long < 0, long + 360, long))
+  }
+  ifelse(!is.na(long) & long > 180, long - 360, long)
+}
+
+
+.muffle_long_warning <- function(expr) {
+  ## This function should not be called by the user.
+  ## It evaluates `expr` while muffling the warning emitted by spaMM when
+  ## longitudes are greater than 180 degrees. Such longitudes are used on
+  ## purpose by IsoriX when the area of interest straddles the antimeridian,
+  ## and the great-circle distances computed by spaMM ("Earth" method) are not
+  ## affected by the representation of longitudes.
+  withCallingHandlers(expr,
+    warning = function(w) {
+      if (grepl("max(abs(longitude)) should be <= 180", conditionMessage(w), fixed = TRUE)) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
+}
+
+
+.is_global_raster <- function(raster) {
+  ## This function should not be called by the user.
+  ## It tests whether a raster covers all longitudes.
+  (terra::xmax(raster) - terra::xmin(raster)) >= (360 - terra::res(raster)[1] / 2)
+}
+
+
+.crop_long <- function(raster, xmin, xmax, ymin, ymax) {
+  ## This function should not be called by the user.
+  ## It crops a raster as terra::crop() but, if the raster covers all
+  ## longitudes, it also allows for extents crossing the antimeridian, defined
+  ## either with xmin > xmax (e.g. xmin = 70, xmax = -150) or with longitudes
+  ## beyond 180 (e.g. xmin = 70, xmax = 210). In such cases, the raster
+  ## returned is expressed with continuous longitudes (e.g. 70 to 210).
+  if (!.is_global_raster(raster)) {
+    return(terra::crop(raster, terra::ext(xmin, xmax, ymin, ymax)))
+  }
+  if ((xmax - xmin) >= 360) { ## no crop needed in longitude
+    return(terra::crop(raster, terra::ext(terra::xmin(raster), terra::xmax(raster), ymin, ymax)))
+  }
+  long_range <- .continuous_long_range(xmin, xmax, from = terra::xmin(raster))
+  east <- terra::crop(raster, terra::ext(long_range[1], min(long_range[2], terra::xmax(raster)), ymin, ymax))
+  if (long_range[2] <= terra::xmax(raster)) {
+    return(east)
+  }
+  west <- terra::crop(raster, terra::ext(terra::xmin(raster), long_range[2] - 360, ymin, ymax))
+  .assemble_across_antimeridian(east = east, west = west)
+}
+
+
+.assemble_across_antimeridian <- function(east, west) {
+  ## This function should not be called by the user.
+  ## It assembles two rasters located on each side of the antimeridian (east:
+  ## up to 180, west: from -180) into a single raster with continuous
+  ## longitudes (e.g. from 70 to 210). The western raster is shifted by 360
+  ## degrees and resampled onto the grid of the eastern one, since rasters
+  ## downloaded separately are not necessarily aligned.
+  west <- terra::shift(west, dx = 360)
+  grid <- terra::extend(east, terra::union(terra::ext(east), terra::ext(west)))
+  terra::cover(grid, terra::resample(west, grid))
+}
+
+
+.wrap_vector_to_extent <- function(vector, extent) {
+  ## This function should not be called by the user.
+  ## It adds to a SpatVector (e.g. country borders, a mask or points) copies
+  ## shifted by 360 degrees of longitude when the extent of a map goes beyond
+  ## 180 degrees (or below -180 degrees), so that the vector is drawn over the
+  ## whole map (e.g. for maps centred on the Pacific). Copies falling outside
+  ## the map are simply not drawn.
+  if (!inherits(vector, "SpatVector") || is.null(extent)) {
+    return(vector)
+  }
+  shifts <- 0
+  if (terra::xmax(extent) > 180) shifts <- c(shifts, 360)
+  if (terra::xmin(extent) < -180) shifts <- c(shifts, -360)
+  if (length(shifts) == 1) {
+    return(vector)
+  }
+  do.call(rbind, lapply(shifts, function(dx) terra::shift(vector, dx = dx)))
 }
 
 .invert_reg <- function(intercept, slope, SE_I, SE_S, phi, N, sign_mean_Y) {
@@ -379,7 +520,7 @@
   ## This function should not be called by the user.
   ## It run the predictions while capturing errors, warnings and messages without stopping
 
-  res <- .quiet(tryCatch(spaMM::predict.HLfit(object = object, newdata = newdata, variances = variances, ...),
+  res <- .quiet(tryCatch(.muffle_long_warning(spaMM::predict.HLfit(object = object, newdata = newdata, variances = variances, ...)),
     error = function(e) {
       ## debugging mode
       if (getOption_IsoriX("spaMM_debug")) {
@@ -456,3 +597,4 @@ release_bullets <- function() {
 
 
 utils::globalVariables(c("CountryBorders", "OceanMask"))
+

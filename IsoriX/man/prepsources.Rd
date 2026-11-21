@@ -39,7 +39,12 @@ available.}
 from. Should be a number between -180 and 180 (default = -180).}
 
 \item{long_max}{A \emph{numeric} indicating the maximal longitude to select
-from. Should be a number between -180 and 180 (default = 180).}
+from. Should be a number between -180 and 180 (default = 180). To select
+an area crossing the antimeridian (i.e. the International Date Line, 180
+degrees), use a value of \code{long_max} smaller than \code{long_min} (e.g.
+\code{long_min = 70} and \code{long_max = -150} selects longitudes from 70 to 180
+and from -180 to -150) or, equivalently, a value of \code{long_max} above 180
+(e.g. \code{long_max = 210}).}
 
 \item{lat_min}{A \emph{numeric} indicating the minimum latitude to select
 from. Should be a number between -90 and 90 (default = -90).}

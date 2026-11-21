@@ -390,7 +390,8 @@ calibfit!"
     }
 
     ## turn mask into raster with NA inside polygons
-    raster_mask <- is.na(terra::rasterize(mask, stat_brick))
+    ## (the mask is shifted if the isoscape crosses the antimeridian, #180)
+    raster_mask <- is.na(terra::rasterize(.wrap_vector_to_extent(mask, terra::ext(stat_brick)), stat_brick))
 
     ## multiplying rasters by the raster_mask
     stat_brick <- stat_brick * raster_mask

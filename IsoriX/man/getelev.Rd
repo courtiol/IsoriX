@@ -30,7 +30,12 @@ file do be downloaded (1 = lowest, 14 = highest; default = 5)}
 from. Should be a number between -180 and 180 (default = -180).}
 
 \item{long_max}{A \emph{numeric} indicating the maximal longitude to select
-from. Should be a number between -180 and 180 (default = 180).}
+from. Should be a number between -180 and 180 (default = 180). To select
+an area crossing the antimeridian (i.e. the International Date Line, 180
+degrees), use a value of \code{long_max} smaller than \code{long_min} (e.g.
+\code{long_min = 70} and \code{long_max = -150} selects longitudes from 70 to 180
+and from -180 to -150) or, equivalently, a value of \code{long_max} above 180
+(e.g. \code{long_max = 210}).}
 
 \item{lat_min}{A \emph{numeric} indicating the minimum latitude to select
 from. Should be a number between -90 and 90 (default = -90).}
@@ -84,6 +89,14 @@ to increase the resolution or expend the boundaries. As a consequence, it is
 probably a good idea to overshoot a little when using \code{getelev} and
 download data at a resolution slightly higher than you need and for a extent
 larger than your data.
+
+Areas crossing the antimeridian (i.e. the International Date Line, 180
+degrees) can be downloaded by using a value for \code{long_max} smaller than the
+one for \code{long_min} (e.g. \verb{long_min = 70, long_max = -150}). Since
+\code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}} only handles longitudes between -180 and 180,
+the area is then downloaded in two parts (on each side of the
+antimeridian), which are assembled into a single raster with continuous
+longitudes (e.g. from 70 to 210), as produced by \code{\link{prepraster}}.
 
 You can customise further what you download by using other parameters of
 \code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}} (via the elipsis \code{...}).
