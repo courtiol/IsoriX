@@ -1,6 +1,6 @@
-#' Assignment datasets for bat species
+#' Assignment data: hydrogen delta values of common noctule bats (Voigt & Lehnert 2019)
 #'
-#' These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
+#' These datasets contain data from Voigt & Lehnert (2019). They contain hydrogen
 #' delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
 #' killed at wind turbines in northern Germany. These data can be used as an
 #' example to perform assignments using the function [`isofind`]. The difference
@@ -24,11 +24,12 @@
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 #' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 #' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' \doi{10.1016/B978-0-12-814723-8.00005-2}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 #'
 #' @source data provided by  Voigt CC & Lehnert L.
 #' @keywords datasets
@@ -41,7 +42,7 @@ NULL
 
 
 
-#' Assignment datasets for bat species
+#' Assignment data: hydrogen delta values of Myotis bats (Voigt, Lehmann & Greif 2015)
 #'
 #' These datasets contain data from Voigt, Lehmann & Greif (2015). It contains
 #' hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
@@ -65,12 +66,12 @@ NULL
 #' @seealso [`isofind`] to perform assignments
 #' @references Voigt CC, Lehmann D & Greif S (2015). Stable isotope
 #' ratios of hydrogen separate mammals of aquatic and terrestrial food webs.
-#' Methods in Ecology and Evolution 6(11).
+#' Methods in Ecology and Evolution 6(11):1332-1340. \doi{10.1111/2041-210X.12414}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 #'
 #' @source data provided by Voigt CC, Lehmann D & Greif S.
 #' @keywords datasets
@@ -83,11 +84,11 @@ NULL
 
 
 
-#' Calibration datasets for bat species
+#' Calibration data: hydrogen delta values of sedentary bats (Voigt & Lehnert 2019)
 #'
 #' These datasets contain hydrogen delta values of fur keratin from 6 sedentary
 #' bat species. They correspond to the combination of several studies as detailed
-#' in Voigt & Lenhert 2019. `CalibDataBat` is the dataset used in Courtiol et al. 2019.
+#' in Voigt & Lehnert 2019. `CalibDataBat` is the dataset used in Courtiol et al. 2019.
 #' The data can be used as an example to fit a calibration model using the
 #' function [`calibfit`]. `CalibDataBatRev` is the same data but the bat
 #' fur isotope values were corrected to align with the current delta values for deuterium
@@ -123,15 +124,16 @@ NULL
 #' @references Voigt CC & Lehnert L (2019). Tracking of movements of terrestrial
 #' mammals using stable isotopes. In Hobson KA & Wassenaar LI (eds.), Tracking Animal
 #' Migration with Stable Isotopes, second edition. Academic Press, London.
+#' \doi{10.1016/B978-0-12-814723-8.00005-2}.
 #'
 #' Courtiol A, Rousset F, Rohwäder M, Soto DX, Lehnert L, Voigt CC, Hobson KA, Wassenaar LI & Kramer-Schadt S (2019). Isoscape
 #' computation and inference of spatial origins with mixed models using the R package IsoriX. In Hobson KA & Wassenaar LI (eds.),
-#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London.
+#' Tracking Animal Migration with Stable Isotopes, second edition. Academic Press, London, pp. 207-236. \doi{10.1016/B978-0-12-814723-8.00009-X}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 #'
 #' @keywords datasets
 #' @examples
@@ -142,7 +144,7 @@ NULL
 
 
 
-#' Calibration datasets for bat species
+#' Calibration data: hydrogen delta values of sedentary bats (Popa-Lisseanu et al. 2012)
 #'
 #' These datasets contain hydrogen delta values of fur keratin from sedentary
 #' bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
@@ -180,12 +182,12 @@ NULL
 #' Kramer-Schadt S, Ciechanowski M, Goerfoel T, Niermann I, Beuneux G,
 #' Myslajek RW, Juste J, Fonderflick J, Kelm D & Voigt CC (2012).
 #' A triple isotope approach to predict the breeding origins of European bats.
-#' PLoS ONE 7(1):e30388.
+#' PLoS ONE 7(1):e30388. \doi{10.1371/journal.pone.0030388}.
 #'
 #' Soto DX, Koehler G, Wassenaar LI & Hobson KA (2017). Re-evaluation of the hydrogen stable
 #' isotopic composition of keratin calibration standards for wildlife and forensic
 #' science applications. Rapid Commun Mass Spectrom. 31(14):1193-1203.
-#' doi: 10.1002/rcm.7893. PMID: 28475227.
+#' \doi{10.1002/rcm.7893}. PMID: 28475227.
 
 #' @source data provided by Popa-Lisseanu AG et al.
 #' @keywords datasets
@@ -219,7 +221,7 @@ NULL
 
 
 
-#' Simulated assignment dataset
+#' Assignment data: simulated hydrogen delta values
 #'
 #' This dataset contains simulated hydrogen delta values.
 #' The data can be used as an example to perform assignments using the function [`isofind`].
@@ -280,7 +282,7 @@ NULL
 
 
 
-#' Simulated calibration dataset
+#' Calibration data: simulated hydrogen delta values
 #'
 #' This dataset contains simulated hydrogen delta values for corresponding locations
 #' based on an assumed linear relationship between the animal tissue value and the
@@ -352,7 +354,7 @@ NULL
 
 
 
-#' Borders of world CountryBorders
+#' Polygon data: borders of world countries
 #'
 #' This dataset contains a polygon SpatVector (from \pkg{terra}).
 #' It can be used to draw the borders of world countries. Each polygon corresponds
@@ -402,7 +404,7 @@ NULL
 
 
 
-#' Mask of world oceans
+#' Polygon data: mask of world oceans
 #'
 #' This dataset contains a polygon SpatVector (from \pkg{terra}).
 #' It can be used to mask large bodies of water. It is the complement of the
@@ -435,7 +437,7 @@ NULL
 
 
 
-#' The raster of elevation for Germany
+#' Raster data: elevation in Germany
 #'
 #' This raster contains the elevation of the surface of Germany (meters above sea
 #' level) with a resolution of approximately 40 square-km.
@@ -482,7 +484,7 @@ NULL
 
 
 
-#' The precipitation monthly amounts for Germany
+#' Raster data: monthly precipitation amounts in Germany
 #'
 #' This brick of rasters contains the monthly precipitation amounts (in mm) for
 #' Germany with a resolution of approximately 30 square-km.
@@ -513,7 +515,7 @@ NULL
 
 
 
-#' Hydrogen delta values in precipitation water, Germany
+#' Source data: hydrogen delta values in precipitation water in Germany
 #'
 #' This dataset contains the hydrogen delta value from
 #' precipitation water sampled at weather stations between 1961 and 2013 in
@@ -556,9 +558,9 @@ NULL
 #' to filter by time and location.
 #' @references GNIP Project IAEA Global Network of Isotopes in Precipitation: \url{https://www.iaea.org}
 #'
-#' Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of hydrology, 517, 351-361.
+#' Stumpp, C., Klaus, J., & Stichler, W. (2014). Analysis of long-term stable isotopic composition in German precipitation. Journal of Hydrology, 517, 351-361. \doi{10.1016/j.jhydrol.2014.05.034}.
 #'
-#' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680.
+#' Klaus, J., Chun, K. P., & Stumpp, C. (2015). Temporal trends in d18O composition of precipitation in Germany: insights from time series modelling and trend analysis. Hydrological Processes, 29(12), 2668-2680. \doi{10.1002/hyp.10395}.
 #'
 #' @source data provided by the IAEA.
 #' @keywords datasets
@@ -570,7 +572,7 @@ NULL
 
 
 
-#' Hydrogen delta values in precipitation water (aggregated per location)
+#' Source data: hydrogen delta values in precipitation water in Europe and in the world (aggregated per location)
 #'
 #' These datasets contain the mean and variance of hydrogen delta value from
 #' precipitation water sampled at weather stations between 1953 and 2015 in
@@ -620,7 +622,7 @@ NULL
 
 
 
-#' Colour palettes for plotting
+#' Plotting: colour palettes for isoscapes and assignments
 #'
 #' These datasets contain colour vectors that can be used for plotting. In our
 #' examples, we use the `isopalette1` for plotting the isoscape using

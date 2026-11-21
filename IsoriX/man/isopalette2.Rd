@@ -4,7 +4,7 @@
 \name{isopalette2}
 \alias{isopalette2}
 \alias{isopalette1}
-\title{Colour palettes for plotting}
+\title{Plotting: colour palettes for isoscapes and assignments}
 \format{
 A vector of colours
 }

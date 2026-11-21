@@ -4,7 +4,7 @@
 \name{GNIPDataEUagg}
 \alias{GNIPDataEUagg}
 \alias{GNIPDataALLagg}
-\title{Hydrogen delta values in precipitation water (aggregated per location)}
+\title{Source data: hydrogen delta values in precipitation water in Europe and in the world (aggregated per location)}
 \format{
 The \emph{dataframe}s include many observations and the following
 variables:\tabular{lll}{
