@@ -159,3 +159,70 @@ test_that("spaMM Earth distances do not depend on the representation of longitud
   expect_equal(as.numeric(pred_mixed), as.numeric(pred180), tolerance = 1e-4)
   expect_equal(attr(pred360, "predVar"), attr(pred180, "predVar"), tolerance = 1e-4)
 })
+
+## getelev() with elevatr mocked (no download) --------------------------------
+
+local_fake_elevatr <- function(env = parent.frame(), offset_west = 0) {
+  ## replaces elevatr::get_elev_raster() by a fake function returning a raster
+  ## covering the requested bounding box, with the longitude as cell values;
+  ## the calls are recorded in the returned environment
+  calls <- new.env()
+  calls$bbox <- list()
+  fake_get_elev_raster <- function(locations, z, prj, clip, ...) {
+    expect_true(all(locations$x >= -180 & locations$x <= 180)) ## as required by elevatr
+    bbox <- c(min(locations$x), max(locations$x), min(locations$y), max(locations$y))
+    calls$bbox[[length(calls$bbox) + 1]] <- bbox
+    ## rasters downloaded separately are not necessarily aligned:
+    offset <- if (bbox[2] < 0) offset_west else 0
+    raster <- terra::rast(
+      xmin = bbox[1] + offset, xmax = bbox[2] + offset, ymin = bbox[3], ymax = bbox[4],
+      resolution = 0.5, crs = prj
+    )
+    terra::values(raster) <- terra::crds(raster)[, "x"]
+    raster
+  }
+  testthat::local_mocked_bindings(get_elev_raster = fake_get_elev_raster, .package = "elevatr", .env = env)
+  calls
+}
+
+test_that("getelev() downloads areas not crossing the antimeridian in one go", {
+  skip_if_not_installed("elevatr")
+  calls <- local_fake_elevatr()
+  file <- withr::local_tempfile(fileext = ".tif")
+  suppressMessages(getelev(file, long_min = -10, long_max = 30, lat_min = 0, lat_max = 50, margin_pct = 0, verbose = FALSE))
+  expect_length(calls$bbox, 1)
+  expect_equal(calls$bbox[[1]], c(-10, 30, 0, 50))
+  expect_equal(as.vector(terra::ext(terra::rast(file))), c(xmin = -10, xmax = 30, ymin = 0, ymax = 50))
+})
+
+test_that("getelev() downloads areas crossing the antimeridian in two parts", {
+  skip_if_not_installed("elevatr")
+  for (long_max in c(-150, 210)) { ## two equivalent ways of defining the area
+    calls <- local_fake_elevatr()
+    file <- withr::local_tempfile(fileext = ".tif")
+    suppressMessages(getelev(file, long_min = 70, long_max = long_max, lat_min = -50, lat_max = 70, margin_pct = 0, verbose = FALSE))
+    expect_length(calls$bbox, 2)
+    expect_equal(calls$bbox[[1]], c(70, 180, -50, 70))
+    expect_equal(calls$bbox[[2]], c(-180, -150, -50, 70))
+    elev <- terra::rast(file)
+    expect_equal(as.vector(terra::ext(elev)), c(xmin = 70, xmax = 210, ymin = -50, ymax = 70))
+    expect_false(anyNA(terra::values(elev)))
+    ## cells east of 180 contain the data downloaded for the corresponding western cells
+    expect_equal(terra::extract(elev, cbind(c(100.25, 200.25), 10.25))[[1]], c(100.25, -159.75))
+  }
+})
+
+test_that("getelev() applies margins and handles misaligned parts across the antimeridian", {
+  skip_if_not_installed("elevatr")
+  calls <- local_fake_elevatr(offset_west = 0.1)
+  file <- withr::local_tempfile(fileext = ".tif")
+  suppressMessages(getelev(file, long_min = 70, long_max = -150, lat_min = -50, lat_max = 70, verbose = FALSE))
+  ## 5% of 140 degrees of longitude and of 120 degrees of latitude
+  expect_equal(calls$bbox[[1]], c(63, 180, -56, 76))
+  expect_equal(calls$bbox[[2]], c(-180, -143, -56, 76))
+  elev <- terra::rast(file)
+  expect_equal(terra::res(elev), c(0.5, 0.5))
+  expect_equal(terra::xmin(elev), 63)
+  expect_gte(terra::xmax(elev), 217)
+  expect_equal(terra::extract(elev, cbind(200.25, 10.25))[[1]], -159.75, tolerance = 0.2)
+})

@@ -14,6 +14,7 @@
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
   * IsoriX now handles areas crossing the International Date Line (antimeridian) out of the box, e.g. for studies centred on the Pacific (#180):
     - `prepsources()` can select sources across the International Date Line using `long_min > long_max` (e.g. `long_min = 70, long_max = -150`);
+    - `getelev()` can download elevation across the International Date Line using `long_min > long_max`: since **elevatr** only handles longitudes within [-180, 180], the area is downloaded in two parts which are assembled into a single raster with continuous longitudes (e.g. from 70 to 210);
     - `isofit()` and `isomultifit()` express longitudes within [0, 360] instead of [-180, 180] when the sources straddle the International Date Line, so that the area they cover is continuous (a message is displayed);
     - `prepraster()` crops structural rasters across the International Date Line, both manually (`manual_crop` with a first longitude greater than the second one, which no longer triggers a warning) and automatically from a fitted model;
     - `isoscape()`, `calibfit()`, `isofind()` and `prepcipitate()` handle such rasters and express locations consistently (e.g. the ocean mask of `isofind()` now also applies beyond 180 degrees);

@@ -22,6 +22,14 @@
 #' download data at a resolution slightly higher than you need and for a extent
 #' larger than your data.
 #'
+#' Areas crossing the antimeridian (i.e. the International Date Line, 180
+#' degrees) can be downloaded by using a value for `long_max` smaller than the
+#' one for `long_min` (e.g. `long_min = 70, long_max = -150`). Since
+#' [`elevatr::get_elev_raster`] only handles longitudes between -180 and 180,
+#' the area is then downloaded in two parts (on each side of the
+#' antimeridian), which are assembled into a single raster with continuous
+#' longitudes (e.g. from 70 to 210), as produced by [`prepraster`].
+#'
 #' You can customise further what you download by using other parameters of
 #' [`elevatr::get_elev_raster`] (via the elipsis `...`).
 #'
@@ -30,11 +38,6 @@
 #' there to know how to cite them.
 #'
 #' @inheritParams prepsources
-#' @param long_max A *numeric* indicating the maximal longitude to select
-#'   from. Should be a number between -180 and 180 (default = 180). To work on
-#'   an area crossing the antimeridian (i.e. the International Date Line, 180
-#'   degrees), download the elevation for all longitudes and crop it using
-#'   [`prepraster`].
 #' @param file A *string* indicating where to store the file on the hard
 #'   drive (default = `~/elevation_world_z5.tif`)
 #' @param z An *integer* between 1 and 14 indicating the resolution of the
@@ -95,27 +98,40 @@ getelev <- function(file = "~/elevation_world_z5.tif",
     dir.create(path, recursive = TRUE)
   }
 
+  ## Expressing areas crossing the antimeridian with continuous longitudes
+  ## (e.g. 70 to 210 instead of 70 to -150, or -200 to -150)
+  if (long_min > long_max) long_max <- long_max + 360
+  if (long_min < -180) {
+    long_min <- long_min + 360
+    long_max <- long_max + 360
+  }
+  if (long_min >= 180) {
+    long_min <- long_min - 360
+    long_max <- long_max - 360
+  }
+
   ## Applying margin_pct
   if (margin_pct != 0) {
     margin_long_extra <- (long_max - long_min) * margin_pct / 100
     margin_lat_extra <- (lat_max - lat_min) * margin_pct / 100
 
-    ## correction in case applying margins increase boundaries outside -180 180 -90 90
-    if (long_min > -180) {
+    if (long_max <= 180) { ## not crossing the antimeridian
       long_min <- max(c(-180, long_min - margin_long_extra))
-    }
-    if (long_max < 180) {
       long_max <- min(c(180, long_max + margin_long_extra))
+    } else {
+      long_min <- long_min - margin_long_extra
+      long_max <- long_max + margin_long_extra
     }
-    if (lat_min > -90) {
-      lat_min <- max(c(-90, lat_min - margin_lat_extra))
-    }
-    if (lat_max < 90) {
-      lat_max <- min(c(90, lat_max + margin_lat_extra))
-    }
+    lat_min <- max(c(-90, lat_min - margin_lat_extra))
+    lat_max <- min(c(90, lat_max + margin_lat_extra))
   }
 
-  ## Conditional file download
+  ## the whole world is downloaded if the area spans all longitudes
+  if (long_max - long_min >= 360) {
+    long_min <- -180
+    long_max <- 180
+  }
+
   if (file.exists(file) && !overwrite) {
     message(paste(
       "the file", basename(file), "is already present in", path,
@@ -123,19 +139,22 @@ getelev <- function(file = "~/elevation_world_z5.tif",
     ))
   } else {
     if (verbose) print("Downloading and formating the elevation raster... (be patient)")
-    elev <- elevatr::get_elev_raster(
-      locations = data.frame(
-        x = c(long_min, long_max),
-        y = c(lat_min, lat_max)
-      ),
-      z = z,
-      prj = "+proj=longlat +datum=WGS84 +no_defs",
-      clip = "bbox",
-      override_size_check = override_size_check,
-      ncpu = Ncpu,
-      verbose = verbose,
-      ...
-    )
+    download <- function(long_min, long_max) {
+      .getelev_download(
+        long_min = long_min, long_max = long_max, lat_min = lat_min, lat_max = lat_max,
+        z = z, override_size_check = override_size_check, Ncpu = Ncpu, verbose = verbose, ...
+      )
+    }
+    if (long_min >= -180 && long_max <= 180) {
+      elev <- download(long_min, long_max)
+    } else {
+      ## elevatr only handles longitudes within [-180, 180], so areas crossing
+      ## the antimeridian are downloaded in two parts which are then assembled
+      ## with continuous longitudes (#180)
+      elev_east <- download(long_min, 180)
+      elev_west <- download(-180, long_max - 360)
+      elev <- .assemble_across_antimeridian(east = elev_east, west = elev_west)
+    }
 
     if (verbose) print("Writing the elevation raster on the disk...")
     terra::writeRaster(elev, filename = file, overwrite = overwrite)
@@ -146,6 +165,41 @@ getelev <- function(file = "~/elevation_world_z5.tif",
   message(paste0("elev_raster <- terra::rast('", file, "')"))
 
   return(invisible(file))
+}
+
+
+.getelev_download <- function(long_min, long_max, lat_min, lat_max, z,
+                              override_size_check, Ncpu, verbose, ...) {
+  ## This function should not be called by the user.
+  ## It downloads an elevation raster (within [-180, 180]) using elevatr and
+  ## returns it as a SpatRaster.
+  elev <- elevatr::get_elev_raster(
+    locations = data.frame(
+      x = c(long_min, long_max),
+      y = c(lat_min, lat_max)
+    ),
+    z = z,
+    prj = "+proj=longlat +datum=WGS84 +no_defs",
+    clip = "bbox",
+    override_size_check = override_size_check,
+    ncpu = Ncpu,
+    verbose = verbose,
+    ...
+  )
+  if (inherits(elev, "SpatRaster")) elev else terra::rast(elev)
+}
+
+
+.assemble_across_antimeridian <- function(east, west) {
+  ## This function should not be called by the user.
+  ## It assembles two rasters located on each side of the antimeridian (east:
+  ## up to 180, west: from -180) into a single raster with continuous
+  ## longitudes (e.g. from 70 to 210). The western raster is shifted by 360
+  ## degrees and resampled onto the grid of the eastern one, since rasters
+  ## downloaded separately are not necessarily aligned.
+  west <- terra::shift(west, dx = 360)
+  grid <- terra::extend(east, terra::union(terra::ext(east), terra::ext(west)))
+  terra::cover(grid, terra::resample(west, grid))
 }
 
 
