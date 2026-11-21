@@ -962,26 +962,36 @@ plot.SpatRaster <- function(x, ...) {
     if (!assigns$draw) {
       assigns_layer <- latticeExtra::layer()
     } else {
-      assigns_layer <- latticeExtra::layer(
-        {
-          ## only draw the point(s) of the sample shown in the current panel (#103)
-          points_to_draw <- select_points(assigns, ids = ids, packet = lattice::packet.number())
-          if (nrow(points_to_draw) > 0) {
-            lattice::lpoints(points_to_draw,
-              col = pt$col,
-              cex = pt$cex,
-              pch = pt$pch,
-              lwd = pt$lwd
-            )
-          }
-        },
-        data = list(
-          assigns = x$sp_points$assigns,
-          ids = assigns_ids,
-          select_points = .select_assign_points,
-          pt = assigns
+      make_assigns_layer <- function(points, packets = NULL) {
+        latticeExtra::layer(
+          lattice::lpoints(assigns,
+            col = pt$col,
+            cex = pt$cex,
+            pch = pt$pch,
+            lwd = pt$lwd
+          ),
+          data = list(
+            assigns = points,
+            pt = assigns
+          ),
+          packets = packets
         )
-      )
+      }
+      if (is.null(assigns_ids)) {
+        ## all points in all panels (e.g. group assignment)
+        assigns_layer <- make_assigns_layer(x$sp_points$assigns)
+      } else {
+        ## one layer per panel, only drawing the point(s) of the sample shown
+        ## in that panel (#103); the selection is done here rather than within
+        ## the layer, since layers are evaluated outside the IsoriX namespace
+        assigns_layer <- latticeExtra::layer()
+        for (i in seq_along(assigns_ids)) {
+          points_i <- .select_assign_points(x$sp_points$assigns, ids = assigns_ids, packet = i)
+          if (nrow(points_i) > 0) {
+            assigns_layer <- assigns_layer + make_assigns_layer(points_i, packets = i)
+          }
+        }
+      }
     }
   }
 
