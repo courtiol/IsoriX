@@ -120,6 +120,7 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
                           max_n_samples = 10) {
   ## Check the inputs (#164)
   .check_input_class(isoscape, "ISOSCAPE", "isoscape", "create_aliens")
+  .stop_if_calibscape(isoscape, fn = "create_aliens")
   .check_input_class(raster, "SpatRaster", "raster", "create_aliens")
 
   ## Complete the arguments

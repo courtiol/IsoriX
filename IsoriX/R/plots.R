@@ -33,6 +33,13 @@
 #' corresponding information for the residual dispersion variance model
 #' (`"disp"`, `"disp_predVar"`, `"disp_residVar"`, or `"disp_respVar"`).
 #'
+#' When used on a calibrated isoscape (i.e. converted into sample values) produced with the function
+#' [`calibscape`], only the mean isotopic value can be plotted (`which =
+#' "mean"`). By default, the location of the calibration samples is then drawn
+#' (if available, i.e. not for the calibration method "desk") instead of the
+#' location of the sources (use `sources = list(draw = TRUE)` to draw the latter
+#' and `calibs = list(draw = FALSE)` to hide the former).
+#'
 #' When used on a simulated isoscape produced with the function `isosim`
 #' (currently dropped due to the package RandomFields being temporarily retired
 #' from CRAN), the user can choose between plotting the mean isotopic value
@@ -182,6 +189,7 @@ plot.ISOSCAPE <- function(x,
                           which = "mean",
                           y_title = list(which = TRUE, title = getOption_IsoriX("title_delta_notation")),
                           sources = list(draw = TRUE, cex = 0.5, pch = 2, lwd = 1, col = "red"),
+                          calibs = list(draw = TRUE, cex = 0.5, pch = 4, lwd = 1, col = "blue"),
                           borders = list(borders = NA, lwd = 0.5, col = "black"),
                           mask = list(mask = NA, lwd = 0, col = "black", fill = "black"),
                           palette = list(step = NA, range = c(NA, NA), n_labels = 11, digits = 2, fn = NA),
@@ -194,9 +202,23 @@ plot.ISOSCAPE <- function(x,
   }
 
   simu <- "ISOSIM" %in% class(x)
+  calibrated <- "CALIBSCAPE" %in% class(x)
+
+  ## for calibrated isoscapes, sources are not drawn unless the user asks for them
+  sources_draw_requested <- !missing(sources) &&
+    ("draw" %in% names(sources) || (is.null(names(sources)) && length(sources) > 0))
 
   ## complete input with default setting
   .complete_args(plot.ISOSCAPE)
+
+  if (calibrated && !sources_draw_requested) {
+    sources$draw <- FALSE
+  }
+
+  ## calibration sites are only drawn on calibrated isoscapes (when available)
+  if (!calibrated || is.null(x$sp_points$calibs)) {
+    calibs <- NULL
+  }
 
   ## importing palette if missing
   if (!is.null(palette$fn) && !is.function(palette$fn) && is.na(palette$fn)) {
@@ -215,7 +237,11 @@ plot.ISOSCAPE <- function(x,
     mask$mask <- terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX"))
   }
 
-  if (simu) {
+  if (calibrated) {
+    if (which != "mean") {
+      stop("For calibrated isoscapes (produced by `calibscape()`), the argument 'which' must be 'mean'.")
+    }
+  } else if (simu) {
     if (sources$draw) {
       sources$draw <- FALSE
       message("You have asked to plot sources, but it does not make sense for simulations as each raster cell is a source. The argument 'plot.sources' was thus considered to be FALSE.")
@@ -245,6 +271,7 @@ plot.ISOSCAPE <- function(x,
   ## define y title
   Title <- ""
   if (simu) Title <- "simulated"
+  if (calibrated) Title <- "calibrated"
   if (y_title$which) Title <- trimws(paste(Title, sub("_", " ", which, fixed = TRUE)))
   if (!is.null(y_title$title)) Title <- bquote(.(Title) ~ .(y_title$title))
 
@@ -266,14 +293,14 @@ plot.ISOSCAPE <- function(x,
   decor <- .build_additional_layers(
     x = x,
     sources = sources,
-    calibs = NULL,
+    calibs = calibs,
     borders = borders,
     mask = mask,
     extent = terra::ext(x$isoscapes)
   )
 
 
-  complete_map <- map + decor$borders_layer + decor$mask_layer + decor$sources_layer
+  complete_map <- map + decor$borders_layer + decor$mask_layer + decor$sources_layer + decor$calibs_layer
 
   ## plotting
   if (plot && !sphere$build) {

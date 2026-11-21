@@ -86,6 +86,18 @@ test_that("plotting isoscapes works", {
   )
 })
 
+test_that("plotting calibrated isoscapes works (#191)", {
+  ## the toy calibration (method "desk") has no calibration sites, so we add some
+  toy_calibration_sites <- toy_calibration
+  toy_calibration_sites$sp_points <- list(calibs = .create_spatial_points(long = c(8, 11, 14), lat = c(51, 47.5, 52)))
+  toy_calibscape <- calibscape(isoscape = toy_isoscape, calibfit = toy_calibration_sites)
+  ## calibration sites drawn, sources hidden
+  vdiffr::expect_doppelganger(
+    "calibrated isoscape mean",
+    lattice_plot(plot(toy_calibscape, y_title = y_title_H, borders = toy_borders, mask = toy_mask, plot = FALSE))
+  )
+})
+
 test_that("plotting assignments works", {
   vdiffr::expect_doppelganger(
     "assignment group",

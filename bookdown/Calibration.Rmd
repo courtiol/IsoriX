@@ -7,6 +7,7 @@ Doing so is needed because looking at the isotopic composition in any candidate 
 In `IsoriX`, the function performing the calibration is called `calibfit()`.
 The goal of this function is to characterize the relationship between the isotopic composition of samples similar to those that you want to assign but of known origin (e.g. sedentary individuals) -- which we call *calibration samples* -- and the isotopic composition of the environment where these samples are collected.
 During the assignment step (detailed in chapter \@ref(assignment)), the relationship established by `calibfit()` will be used to rescale the mean isoscape so that it represents the isotopic composition of the samples to be assigned.
+The same relationship can also be used to build calibrated isoscapes, i.e. isoscapes representing the isotopic composition of the samples instead of that of the sources (see section \@ref(calibscape)).
 
 We call the statistical model behind the calibration the _calibration model_ and the fitted model the _calibration fit_.
 In other publications, the latter is also referred to as the calibration function, calibration curve, or transfer function.
@@ -123,3 +124,31 @@ plot(CalibBats)
 
 The plot illustrates a strong assumption made while fitting the calibration model: we consider that the relationship between the isotope values of the calibration samples and those of the environment are linearly related.
 For the moment, we offer no alternative to this assumption.
+
+
+## Building calibrated isoscapes {#calibscape}
+
+The isoscapes we built in chapter \@ref(isoscape) describe the isotopic composition of the sources (here, precipitation water).
+To perform assignments, `IsoriX` does not need to convert these isoscapes since it instead converts the isotopic composition of the samples to assign into that of the sources (see chapter \@ref(assignment)).
+Yet, it is sometimes useful to visualise what the isoscape looks like in terms of the isotopic composition of the samples (here, the fur of bats).
+We call such an isoscape a *calibrated isoscape* and you can build it using the function `calibscape()`, which only requires the isoscape and the calibration fit:
+
+```{r calibscape}
+EuropeCalibScape <- calibscape(isoscape = EuropeIsoscape, calibfit = CalibBats)
+```
+
+The function computes, in each cell of the isoscape, the mean isotopic composition expected for the samples: `intercept + slope * mean`, using the intercept and slope of the calibration fit.
+
+You can plot the calibrated isoscape as any other isoscape.
+Since the values no longer correspond to precipitation but to fur, we also adapt the delta notation used in the title (here using the subscript `f` for fur instead of `p` for precipitation):
+
+```{r plot_calibscape, dev='CairoPNG'}
+plot(EuropeCalibScape, y_title = list(title = bquote(italic("\u03B4")**2*H[f])))
+```
+
+By default, the plot of a calibrated isoscape shows the locations of the calibration samples (blue crosses) instead of those of the sources.
+You can change this using the arguments `sources` and `calibs`, e.g. `plot(EuropeCalibScape, sources = list(draw = TRUE), calibs = list(draw = FALSE))`.
+
+Note that only the mean isoscape is calibrated.
+The variances (prediction, residual and response variances) are not, since calibrating them would require to account for the uncertainty of the calibration fit, which depends on the calibration method being used.
+As a consequence, calibrated isoscapes are meant for visualisation and exploration only: they cannot be used to perform assignments (`isofind()` will refuse them).

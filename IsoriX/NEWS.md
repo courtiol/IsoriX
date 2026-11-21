@@ -13,6 +13,7 @@
 
 ## New features
 
+  * new function `calibscape()` to build calibrated isoscapes, i.e. to convert an isoscape of source isotopic values (e.g. precipitation) into an isoscape of sample isotopic values (e.g. animal tissues) using a calibration fit. Only the mean isoscape is calibrated. The output, of class `CALIBSCAPE` (in addition to `ISOSCAPE`), can be plotted (`which = "mean"` only; by default, the plot shows the location of the calibration samples instead of that of the sources, see the new argument `calibs` of `plot.ISOSCAPE()`) but cannot be used by `isofind()` or `create_aliens()` (#191).
   * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
   * IsoriX now handles areas crossing the International Date Line (antimeridian) out of the box, e.g. for studies centred on the Pacific (#180):

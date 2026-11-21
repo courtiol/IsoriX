@@ -177,6 +177,7 @@ isofind <- function(data,
     stop(paste0("The argument `data` of isofind() must contain the column(s) ", paste0("'", missing_cols, "'", collapse = " and "), " (see e.g. ?AssignDataAlien)."), call. = FALSE)
   }
   .check_input_class(isoscape, "ISOSCAPE", "isoscape", "isofind")
+  .stop_if_calibscape(isoscape, fn = "isofind")
   .check_input_class(calibfit, "CALIBFIT", "calibfit", "isofind", null_ok = TRUE)
 
   ### Check that sample_IDs correspond to unique locations if lat and long provided (not compulsory since not used to do the assignment but only for plotting)

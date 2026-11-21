@@ -104,6 +104,7 @@
   MULTIISOFIT = "isomultifit()",
   ISOSIM = "isosim()",
   ISOFIT = "isofit()",
+  CALIBSCAPE = "calibscape()",
   ISOSCAPE = "isoscape() or isomultiscape()",
   CALIBFIT = "calibfit()",
   ISOFIND = "isofind()"
