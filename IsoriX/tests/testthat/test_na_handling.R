@@ -33,7 +33,7 @@ test_that("calibfit() can handle NA", {
   expect_error(CalibAlien <<- calibfit(
     data = CalibDataAlien,
     isofit = GermanFit,
-    control_optim = list(maxit = 15)
+    control_optim = list(maxit = 1) ## capped to save time (the fit itself is not tested here)
   ), regexp = NA)
 })
 

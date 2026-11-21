@@ -71,6 +71,11 @@ importFrom(lattice,
   xyplot
 )
 importFrom(latticeExtra,layer)
+importFrom(methods,
+  setClass,
+  setMethod,
+  signature
+)
 importFrom(rasterVis,
   RdBuTheme,
   levelplot

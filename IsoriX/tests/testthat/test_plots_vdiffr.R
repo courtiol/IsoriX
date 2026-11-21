@@ -53,10 +53,10 @@ toy_samples <- data.frame(
 toy_assignment <- suppressWarnings(isofind(data = toy_samples, isoscape = toy_isoscape, calibfit = NULL, verbose = FALSE))
 
 ## a calibration that does not involve any model fit
-toy_calibration <- calibfit(
+toy_calibration <- suppressMessages(calibfit(
   data = data.frame(intercept = 1.67, slope = 0.48, intercept_se = 1.65, slope_se = 0.03, resid_var = 3.96),
   method = "desk"
-)
+))
 
 ## the title is set explicitly so that these snapshots do not depend on the
 ## default value of the option title_delta_notation

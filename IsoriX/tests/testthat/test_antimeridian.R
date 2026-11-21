@@ -128,7 +128,7 @@ test_that("the full workflow works across the antimeridian", {
     sample_ID = paste0("x", 1:24)
   )
   calib$sample_value <- -2.2 * abs(calib$lat) + rnorm(nrow(calib))
-  cal <- suppressMessages(calibfit(calib, isofit = fit, verbose = FALSE))
+  cal <- suppressMessages(calibfit(calib, isofit = fit, control_optim = list(maxit = 1), verbose = FALSE)) ## capped to save time
   expect_true(all(cal$data$long >= 0))
 
   assign <- data.frame(sample_ID = c("a", "b"), sample_value = c(-40, -60), long = c(-170, 150), lat = c(10, 30))

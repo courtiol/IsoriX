@@ -1,11 +1,9 @@
-## preparation step:
-GNIPDataDEagg <- prepsources(data = GNIPDataDE)
+## the objects saved and read are the shared ones (see helper-fixtures.R)
 
-## tests:
 
 test_that("saveRDS() and readRDS() can handle ISOFIT objects", {
   tempfile_fit <- tempfile(fileext = ".rds")
-  GermanFit <<- isofit(data = GNIPDataDEagg)
+  GermanFit <<- fixture_german()$fit
   suppressWarnings(saveRDS(GermanFit, file = tempfile_fit)) ## silly RStudio warning "'package:stats' may not be available when loading"
   GermanFit2 <- readRDS(tempfile_fit)
   expect_equal(spaMM::fixef(GermanFit$mean_fit), spaMM::fixef(GermanFit2$mean_fit))
@@ -13,7 +11,7 @@ test_that("saveRDS() and readRDS() can handle ISOFIT objects", {
 
 test_that("saveRDS() and readRDS() can handle ISOSCAPE objects", {
   tempfile_isoscape <- tempfile(fileext = ".rds")
-  GermanScape <<- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+  GermanScape <<- fixture_german()$scape
   saveRDS(GermanScape, file = tempfile_isoscape)
   GermanScape2 <- readRDS(tempfile_isoscape)
   expect_equal(GermanScape2$mean_scape, GermanScape$mean_scape)
