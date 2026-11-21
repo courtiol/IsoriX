@@ -1,12 +1,14 @@
+## (the informative messages displayed by IsoriX are not tested here, so they are suppressed)
+
 ## preparation steps:
 GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-GermanFit <- isofit(
+GermanFit <- suppressMessages(isofit(
   data = GNIPDataDEagg,
   mean_model_fix = list(elev = FALSE, lat_abs = FALSE),
   mean_model_rand = list(uncorr = FALSE, spatial = TRUE),
   disp_model_rand = list(uncorr = FALSE, spatial = FALSE)
-)
+))
 
 ## tests:
 test_that("prepsources() flags duplicated locations with different IDs", {
@@ -31,7 +33,7 @@ test_that("calibfit() flags siteIDs actualy corresponding to different locations
   CalibDataAlien2 <- rbind(CalibDataAlien2, CalibDataAlien2)
   CalibDataAlien2$elev[1:3] <- 10
   expect_warning(
-    calibfit(data = CalibDataAlien2, isofit = GermanFit, control_optim = list(maxit = 1)), ## capped to save time
+    suppressMessages(calibfit(data = CalibDataAlien2, isofit = GermanFit, control_optim = list(maxit = 1))), ## capped to save time
     "share the same site_ID"
   )
 })
