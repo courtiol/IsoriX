@@ -12,7 +12,7 @@ test_that("make rasters and spatial points", {
 })
 
 test_that("convert month to numbers", {
-  expect_equivalent(.converts_months_to_numbers("Jan"), 1)
+  expect_equal(.converts_months_to_numbers("Jan"), 1, ignore_attr = TRUE)
   expect_warning(.converts_months_to_numbers("Jo"))
 })
 

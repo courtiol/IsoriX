@@ -6,7 +6,6 @@
 ## To update the snapshots after an intended change, run the tests and then
 ## `testthat::snapshot_review()`.
 
-testthat::local_edition(3) ## vdiffr requires the third edition of testthat
 skip_if_not_installed("vdiffr")
 
 ## a small toy isoscape whose layers are simple functions of the coordinates

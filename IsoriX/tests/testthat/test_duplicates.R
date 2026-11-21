@@ -20,7 +20,10 @@ test_that("prepsources() flags IDs actualy corresponding to different locations"
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
   GNIPDataDE2 <- rbind(GNIPDataDE2, GNIPDataDE2)
   GNIPDataDE2$elev[1:3] <- 10
-  expect_warning(prepsources(GNIPDataDE2))
+  expect_warning(
+    expect_warning(prepsources(GNIPDataDE2), "share the same source_ID"),
+    "elevation values are not unique"
+  )
 })
 
 test_that("calibfit() flags siteIDs actualy corresponding to different locations", {

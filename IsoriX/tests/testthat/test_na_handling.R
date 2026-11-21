@@ -38,7 +38,15 @@ test_that("calibfit() can handle NA", {
 })
 
 test_that("plot.CALIBFIT can handle NA", {
-  expect_error(plot(CalibAlien), regexp = NA)
+  ## the optimisation of the calibration function has been capped above, so its
+  ## estimates are poor and some variances are estimated as negative: only the
+  ## warning about it is ignored (any other warning would still be reported)
+  expect_error(
+    withCallingHandlers(plot(CalibAlien), warning = function(w) {
+      if (grepl("negative estimates of variances", conditionMessage(w))) invokeRestart("muffleWarning")
+    }),
+    regexp = NA
+  )
 })
 
 test_that("isofind() can handle NA", {
