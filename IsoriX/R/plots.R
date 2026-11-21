@@ -919,20 +919,13 @@ plot.SpatRaster <- function(x, ...) {
   ## It builds the additional layers for the plots.
   ## assigns_ids: the sample IDs of the assignment rasters plotted in each panel
   ## (in panel order), or NULL to draw all assignment points in every panel.
-  ## extent: the extent of the map; if provided, borders, masks and points are
-  ## shifted by 360 degrees of longitude where needed so that they are drawn
+  ## extent: the extent of the map, used to draw borders, masks and points
   ## properly on maps crossing the antimeridian (#180).
 
-  if (!is.null(extent)) {
-    if (!is.null(borders$borders)) borders$borders <- .wrap_vector_to_extent(borders$borders, extent)
-    if (!is.null(mask$mask)) mask$mask <- .wrap_vector_to_extent(mask$mask, extent)
-    if (!is.null(mask2$mask)) mask2$mask <- .wrap_vector_to_extent(mask2$mask, extent)
-    for (points_type in names(x$sp_points)) {
-      if (!is.null(x$sp_points[[points_type]])) {
-        x$sp_points[[points_type]] <- .wrap_points_to_extent(x$sp_points[[points_type]], extent)
-      }
-    }
-  }
+  borders$borders <- .wrap_vector_to_extent(borders$borders, extent)
+  mask$mask <- .wrap_vector_to_extent(mask$mask, extent)
+  mask2$mask <- .wrap_vector_to_extent(mask2$mask, extent)
+  x$sp_points <- lapply(x$sp_points, .wrap_vector_to_extent, extent = extent)
 
   ## layer for sources
   if (!sources$draw) {

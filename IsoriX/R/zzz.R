@@ -217,7 +217,6 @@
   ## This function should not be called by the user.
   ## It crops a raster using a safety margin.
   ## Crops crossing the antimeridian are supported (see .crop_long()).
-  if (xmin > xmax) xmax <- xmax + 360
   margin_long <- (xmax - xmin) * margin_pct / 100
   margin_lat <- (ymax - ymin) * margin_pct / 100
 
@@ -232,22 +231,19 @@
 
 ## Helpers for handling the antimeridian (International Date Line, #180) --------
 ##
-## IsoriX expresses longitudes either within [-180, 180] (the default) or, when
-## the area of interest straddles the antimeridian, within [0, 360] so that the
-## area is continuous. The helpers below are used throughout the package to
-## keep all objects (sources, rasters, calibration and assignment points,
-## borders and masks) in the same representation.
+## IsoriX expresses longitudes within [-180, 180] by default. When the area of
+## interest crosses the antimeridian, longitudes are instead expressed
+## continuously beyond 180 (e.g. from 70 to 210), so that the area is
+## contiguous. The helpers below create and handle this representation.
 
-.long_straddles_antimeridian <- function(long) {
+.continuous_long_range <- function(long_min, long_max, from = -180) {
   ## This function should not be called by the user.
-  ## It tests whether longitudes expressed within [-180, 180] would be more
-  ## compact (i.e. span a narrower range) if expressed within [0, 360], which
-  ## indicates that the locations straddle the antimeridian.
-  long <- long[!is.na(long)]
-  if (length(long) < 2 || any(long < -180 | long > 180)) {
-    return(FALSE)
-  }
-  diff(range(long %% 360)) < diff(range(long))
+  ## It expresses a range of longitudes continuously, with `long_min` within
+  ## [from, from + 360) and `long_max` greater than `long_min`, e.g.:
+  ## (70, -150) -> (70, 210), (70, 210) -> (70, 210), (-200, -150) -> (160, 210).
+  if (long_min > long_max) long_max <- long_max + 360
+  shift <- 360 * floor((long_min - from) / 360)
+  c(long_min - shift, long_max - shift)
 }
 
 
@@ -283,50 +279,57 @@
 }
 
 
+.is_global_raster <- function(raster) {
+  ## This function should not be called by the user.
+  ## It tests whether a raster covers all longitudes.
+  (terra::xmax(raster) - terra::xmin(raster)) >= (360 - terra::res(raster)[1] / 2)
+}
+
+
 .crop_long <- function(raster, xmin, xmax, ymin, ymax) {
   ## This function should not be called by the user.
   ## It crops a raster as terra::crop() but, if the raster covers all
   ## longitudes, it also allows for extents crossing the antimeridian, defined
   ## either with xmin > xmax (e.g. xmin = 70, xmax = -150) or with longitudes
-  ## outside [-180, 180] (e.g. xmin = 70, xmax = 210). In such cases, the
-  ## raster returned is expressed with continuous longitudes (e.g. 70 to 210).
-  if (xmin > xmax) xmax <- xmax + 360
-  r_xmin <- terra::xmin(raster)
-  r_xmax <- terra::xmax(raster)
-  global <- (r_xmax - r_xmin) >= (360 - terra::res(raster)[1] / 2)
-
-  if (!global || (xmin >= r_xmin && xmax <= r_xmax)) {
+  ## beyond 180 (e.g. xmin = 70, xmax = 210). In such cases, the raster
+  ## returned is expressed with continuous longitudes (e.g. 70 to 210).
+  if (!.is_global_raster(raster)) {
     return(terra::crop(raster, terra::ext(xmin, xmax, ymin, ymax)))
   }
-
   if ((xmax - xmin) >= 360) { ## no crop needed in longitude
-    return(terra::crop(raster, terra::ext(r_xmin, r_xmax, ymin, ymax)))
+    return(terra::crop(raster, terra::ext(terra::xmin(raster), terra::xmax(raster), ymin, ymax)))
   }
+  long_range <- .continuous_long_range(xmin, xmax, from = terra::xmin(raster))
+  east <- terra::crop(raster, terra::ext(long_range[1], min(long_range[2], terra::xmax(raster)), ymin, ymax))
+  if (long_range[2] <= terra::xmax(raster)) {
+    return(east)
+  }
+  west <- terra::crop(raster, terra::ext(terra::xmin(raster), long_range[2] - 360, ymin, ymax))
+  .assemble_across_antimeridian(east = east, west = west)
+}
 
-  ## we crop each part of the extent and reassemble them after shifting
-  pieces <- list()
-  for (shift in c(-360, 0, 360)) {
-    from <- max(xmin, r_xmin + shift)
-    to <- min(xmax, r_xmax + shift)
-    if (to - from > terra::res(raster)[1] / 2) {
-      piece <- terra::crop(raster, terra::ext(from - shift, to - shift, ymin, ymax))
-      pieces[[length(pieces) + 1]] <- terra::shift(piece, dx = shift)
-    }
-  }
-  if (length(pieces) == 1) {
-    return(pieces[[1]])
-  }
-  do.call(terra::merge, unname(pieces))
+
+.assemble_across_antimeridian <- function(east, west) {
+  ## This function should not be called by the user.
+  ## It assembles two rasters located on each side of the antimeridian (east:
+  ## up to 180, west: from -180) into a single raster with continuous
+  ## longitudes (e.g. from 70 to 210). The western raster is shifted by 360
+  ## degrees and resampled onto the grid of the eastern one, since rasters
+  ## downloaded separately are not necessarily aligned.
+  west <- terra::shift(west, dx = 360)
+  grid <- terra::extend(east, terra::union(terra::ext(east), terra::ext(west)))
+  terra::cover(grid, terra::resample(west, grid))
 }
 
 
 .wrap_vector_to_extent <- function(vector, extent) {
   ## This function should not be called by the user.
-  ## It adds to a SpatVector (e.g. country borders or a mask) copies shifted
-  ## by 360 degrees of longitude when the extent of a map goes beyond 180
-  ## degrees (or below -180 degrees), so that the vector is drawn over the
-  ## whole map (e.g. for maps centred on the Pacific).
-  if (is.null(vector) || !inherits(vector, "SpatVector") || is.null(extent)) {
+  ## It adds to a SpatVector (e.g. country borders, a mask or points) copies
+  ## shifted by 360 degrees of longitude when the extent of a map goes beyond
+  ## 180 degrees (or below -180 degrees), so that the vector is drawn over the
+  ## whole map (e.g. for maps centred on the Pacific). Copies falling outside
+  ## the map are simply not drawn.
+  if (!inherits(vector, "SpatVector") || is.null(extent)) {
     return(vector)
   }
   shifts <- 0
@@ -336,29 +339,6 @@
     return(vector)
   }
   do.call(rbind, lapply(shifts, function(dx) terra::shift(vector, dx = dx)))
-}
-
-
-.wrap_points_to_extent <- function(points, extent) {
-  ## This function should not be called by the user.
-  ## It moves by 360 degrees of longitude the spatial points falling outside
-  ## the extent of a map if this brings them inside the map (e.g. points with
-  ## a longitude of -170 drawn on a map spanning longitudes from 70 to 210).
-  if (is.null(points) || !inherits(points, "SpatVector") || nrow(points) == 0 || is.null(extent)) {
-    return(points)
-  }
-  coords <- terra::crds(points)
-  x <- coords[, 1]
-  x_min <- terra::xmin(extent)
-  x_max <- terra::xmax(extent)
-  to_shift_up <- x < x_min & (x + 360) <= x_max
-  to_shift_down <- x > x_max & (x - 360) >= x_min
-  if (!any(to_shift_up | to_shift_down)) {
-    return(points)
-  }
-  x[to_shift_up] <- x[to_shift_up] + 360
-  x[to_shift_down] <- x[to_shift_down] - 360
-  terra::vect(cbind(x, coords[, 2]), atts = as.data.frame(points), crs = terra::crs(points))
 }
 
 .invert_reg <- function(intercept, slope, SE_I, SE_S, phi, N, sign_mean_Y) {

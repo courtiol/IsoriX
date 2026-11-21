@@ -99,16 +99,10 @@ getelev <- function(file = "~/elevation_world_z5.tif",
   }
 
   ## Expressing areas crossing the antimeridian with continuous longitudes
-  ## (e.g. 70 to 210 instead of 70 to -150, or -200 to -150)
-  if (long_min > long_max) long_max <- long_max + 360
-  if (long_min < -180) {
-    long_min <- long_min + 360
-    long_max <- long_max + 360
-  }
-  if (long_min >= 180) {
-    long_min <- long_min - 360
-    long_max <- long_max - 360
-  }
+  ## (e.g. 70 to 210 instead of 70 to -150)
+  long_range <- .continuous_long_range(long_min, long_max)
+  long_min <- long_range[1]
+  long_max <- long_range[2]
 
   ## Applying margin_pct
   if (margin_pct != 0) {
@@ -187,19 +181,6 @@ getelev <- function(file = "~/elevation_world_z5.tif",
     ...
   )
   if (inherits(elev, "SpatRaster")) elev else terra::rast(elev)
-}
-
-
-.assemble_across_antimeridian <- function(east, west) {
-  ## This function should not be called by the user.
-  ## It assembles two rasters located on each side of the antimeridian (east:
-  ## up to 180, west: from -180) into a single raster with continuous
-  ## longitudes (e.g. from 70 to 210). The western raster is shifted by 360
-  ## degrees and resampled onto the grid of the eastern one, since rasters
-  ## downloaded separately are not necessarily aligned.
-  west <- terra::shift(west, dx = 360)
-  grid <- terra::extend(east, terra::union(terra::ext(east), terra::ext(west)))
-  terra::cover(grid, terra::resample(west, grid))
 }
 
 

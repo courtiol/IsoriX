@@ -351,11 +351,12 @@ prepsources <- function(data,
   ## It returns a logical vector indicating which longitudes are within the
   ## range defined by `long_min` and `long_max`. Ranges crossing the
   ## antimeridian (180 degrees) are supported: they can be defined either with
-  ## `long_min > long_max` (e.g. 70 and -150) or with bounds outside
-  ## [-180, 180] (e.g. 70 and 210).
-  if (long_min <= long_max && ((long_max - long_min) >= 360 || (long_min >= -180 && long_max <= 180))) {
-    return(long >= long_min & long <= long_max)
+  ## `long_min > long_max` (e.g. 70 and -150) or with bounds beyond 180 (e.g.
+  ## 70 and 210).
+  if (long_max - long_min >= 360) {
+    return(rep(TRUE, length(long)))
   }
-  width <- (long_max - long_min) %% 360
-  ((long - long_min) %% 360) <= width
+  long_range <- .continuous_long_range(long_min, long_max)
+  in_range <- function(x) x >= long_range[1] & x <= long_range[2]
+  in_range(long) | in_range(long + 360)
 }

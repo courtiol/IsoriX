@@ -401,7 +401,7 @@ calibfit!"
     ## the (possibly modified) sample IDs are stored so that each point can be
     ## matched to its assignment raster when plotting (#103)
     assigns <- .create_spatial_points(
-      long = .wrap_long_like(data$long, long_ref = c(terra::xmin(stat_brick), terra::xmax(stat_brick))),
+      long = data$long,
       lat = data$lat,
       ID = names_layers,
       proj = "+proj=longlat +datum=WGS84"

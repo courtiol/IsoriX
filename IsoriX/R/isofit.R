@@ -559,7 +559,10 @@ isomultifit <- function(data,
   ## area covered by the sources is continuous (#180). This matters for
   ## fixed effects involving longitude, for cropping structural rasters and
   ## for plotting.
-  if (!"long" %in% colnames(data) || !.long_straddles_antimeridian(data$long)) {
+  long <- data$long[!is.na(data$long)]
+  straddles <- length(long) > 1 && all(long >= -180 & long <= 180) &&
+    diff(range(long %% 360)) < diff(range(long)) ## more compact within [0, 360]
+  if (!straddles) {
     return(data)
   }
   data$long <- data$long %% 360

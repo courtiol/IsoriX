@@ -165,10 +165,9 @@ prepraster <- function(raster,
       }
       if (!is.null(manual_crop)) stop("cannot crop both according to sources and manually! Make up your choice.")
       long_sources <- isofit$mean_fit$data$long
-      global_raster <- (terra::xmax(raster) - terra::xmin(raster)) >= (360 - terra::res(raster)[1] / 2)
       if ( ## test if the raster is not smaller than the area covered by the sources.
         ## If yes crop will not proceed!
-        (!global_raster && (terra::xmin(raster) > min(long_sources) |
+        (!.is_global_raster(raster) && (terra::xmin(raster) > min(long_sources) |
           terra::xmax(raster) < max(long_sources))) |
           terra::ymin(raster) > min(isofit$mean_fit$data$lat) |
           terra::ymax(raster) < max(isofit$mean_fit$data$lat)
@@ -190,7 +189,6 @@ prepraster <- function(raster,
       )
     } else {
       if (length(manual_crop) == 4) {
-        ## crops crossing the antimeridian are handled by .crop_long()
         raster <- .crop_long(raster,
           xmin = manual_crop[1],
           xmax = manual_crop[2],
