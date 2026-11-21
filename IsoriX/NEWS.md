@@ -15,7 +15,7 @@
 
 ## Minor changes
 
-  * the references cited in the documentation now include their DOIs (as links), and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
+  * each reference cited in the documentation now includes a link to its DOI, and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
   * the titles of the help pages of all datasets follow a consistent pattern indicating their role in the workflow (e.g. "Calibration data: ..."), and those of datasets from different studies are no longer identical (#97).
   * outdated links in the documentation were updated (e.g. the homepage of **spaMM** in `?isofit` and the link to the preprint in `citation("IsoriX")`), following the review of all links with the new script `release_checks/list_links.R` (#188).
   * the dataset `CountryBorders` contains again the names of the countries (column `name`), so that countries can be selected by name, e.g. `CountryBorders[CountryBorders$name == "Germany", ]` (#183). `CountryBorders` and `OceanMask` have been recreated from the current version of the Natural Earth data (same resolution as before), which leads to minor changes in borders (e.g. Tuvalu is now included).
