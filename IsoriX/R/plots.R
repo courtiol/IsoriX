@@ -33,6 +33,10 @@
 #' corresponding information for the residual dispersion variance model
 #' (`"disp"`, `"disp_predVar"`, `"disp_residVar"`, or `"disp_respVar"`).
 #'
+#' When used on an isoscape converted into sample values with the function
+#' [`isotranscape`], only the mean isotopic value can be plotted (`which =
+#' "mean"`).
+#'
 #' When used on a simulated isoscape produced with the function `isosim`
 #' (currently dropped due to the package RandomFields being temporarily retired
 #' from CRAN), the user can choose between plotting the mean isotopic value
@@ -194,6 +198,7 @@ plot.ISOSCAPE <- function(x,
   }
 
   simu <- "ISOSIM" %in% class(x)
+  rescaled <- "ISORESCALED" %in% class(x)
 
   ## complete input with default setting
   .complete_args(plot.ISOSCAPE)
@@ -215,7 +220,11 @@ plot.ISOSCAPE <- function(x,
     mask$mask <- terra::readRDS(system.file("extdata/OceanMask.rds", package = "IsoriX"))
   }
 
-  if (simu) {
+  if (rescaled) {
+    if (which != "mean") {
+      stop("For isoscapes converted using `isotranscape()`, the argument 'which' must be 'mean'.")
+    }
+  } else if (simu) {
     if (sources$draw) {
       sources$draw <- FALSE
       message("You have asked to plot sources, but it does not make sense for simulations as each raster cell is a source. The argument 'plot.sources' was thus considered to be FALSE.")
@@ -245,6 +254,7 @@ plot.ISOSCAPE <- function(x,
   ## define y title
   Title <- ""
   if (simu) Title <- "simulated"
+  if (rescaled) Title <- "rescaled"
   if (y_title$which) Title <- trimws(paste(Title, sub("_", " ", which, fixed = TRUE)))
   if (!is.null(y_title$title)) Title <- bquote(.(Title) ~ .(y_title$title))
 

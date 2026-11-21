@@ -182,6 +182,9 @@ response variance (\code{which = "mean_respVar"}) for the mean model; or the
 corresponding information for the residual dispersion variance model
 (\code{"disp"}, \code{"disp_predVar"}, \code{"disp_residVar"}, or \code{"disp_respVar"}).
 
+When used on an isoscape converted into sample values with the function
+\code{\link{isotranscape}}, only the mean isotopic value can be plotted (\code{which = "mean"}).
+
 When used on a simulated isoscape produced with the function \code{isosim}
 (currently dropped due to the package RandomFields being temporarily retired
 from CRAN), the user can choose between plotting the mean isotopic value

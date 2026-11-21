@@ -661,6 +661,11 @@ summary.ISOSCAPE <- function(object, ...) {
     cat("### Note: this isoscape has been simulated ###", "\n")
     cat("\n")
   }
+  if (inherits(object, "ISORESCALED")) {
+    cat("\n")
+    cat("### Note: this isoscape has been converted into sample values using a calibration fit (see ?isotranscape) ###", "\n")
+    cat("\n")
+  }
   cat("### Multilayered raster containing the isoscapes", "\n")
   print(object[[1]])
   cat("\n")

@@ -99,6 +99,10 @@ model on such a calibration dataset.
 If the isoscape is directly built from isotopic values of organisms, there is
 no need to fit a calibration model.
 
+The calibration fit can also be used to convert the isoscape of sources into
+an isoscape of sample values (e.g. of tissues) with \code{\link{isotranscape}}. Such an
+isoscape can be plotted but cannot be used for assignments.
+
 \item Inferring spatial origins of samples with \code{\link{isofind}}:
 
 The function \code{\link{isofind}} tests for each location across the

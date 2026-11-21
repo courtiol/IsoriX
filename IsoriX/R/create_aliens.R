@@ -121,6 +121,9 @@ create_aliens <- function(calib_fn = list(intercept = 3, slope = 0.5, resid_var 
   ## Complete the arguments
   .complete_args(create_aliens)
 
+  ## Check that the isoscape is an isoscape of sources
+  .stop_if_rescaled(isoscape, fn = "create_aliens")
+
   ## Choose location for the aliens
   if (length(coordinates) == 1 && is.na(coordinates)) {
     LocationData <- data.frame(site_ID = sample(1:terra::ncell(isoscape$isoscapes$mean), n_sites, replace = FALSE))

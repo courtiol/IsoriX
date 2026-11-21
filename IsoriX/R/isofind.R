@@ -169,6 +169,9 @@ isofind <- function(data,
                     mask = NA,
                     neglect_covPredCalib = TRUE,
                     verbose = interactive()) {
+  ### Check that the isoscape is an isoscape of sources
+  .stop_if_rescaled(isoscape, fn = "isofind")
+
   ### Check that sample_IDs correspond to unique locations if lat and long provided (not compulsory since not used to do the assignment but only for plotting)
   if (!is.null(data$lat) && !is.null(data$long)) {
     data$.location <- paste(data[, "lat", drop = TRUE], data[, "long", drop = TRUE], sep = "_")
