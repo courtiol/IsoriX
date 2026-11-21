@@ -1,7 +1,7 @@
 test_that("calibscape() calibrates the mean isoscape of sources into sample values (#191)", {
-  agg <- prepsources(data = GNIPDataDE)
-  fit <- suppressMessages(isofit(data = agg, verbose = FALSE))
-  scape <- suppressMessages(isoscape(raster = ElevRasterDE, isofit = fit, verbose = FALSE))
+  german <- fixture_german() ## see helper-fixtures.R
+  fit <- german$fit
+  scape <- german$scape
   calib <- suppressMessages(calibfit(data = data.frame(intercept = -10, slope = 0.8), method = "desk", verbose = FALSE))
 
   calibrated <- calibscape(isoscape = scape, calibfit = calib)

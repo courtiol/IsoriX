@@ -1,9 +1,9 @@
 test_that("isoscape titles do not mention any isotope by default (#155)", {
   expect_null(getOption_IsoriX("title_delta_notation"))
 
-  agg <- prepsources(data = GNIPDataDE)
-  fit <- suppressMessages(isofit(data = agg, verbose = FALSE))
-  scape <- suppressMessages(isoscape(raster = ElevRasterDE, isofit = fit, verbose = FALSE))
+  german <- fixture_german() ## see helper-fixtures.R
+  fit <- german$fit
+  scape <- german$scape
 
   ## default: no isotope (and no leading space)
   expect_equal(plot(scape, plot = FALSE)$main, "mean")

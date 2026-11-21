@@ -1,5 +1,8 @@
 # This S4 definitions of classes are required for saveRDS to work and interact properly with the package terra.
 
+#' @importFrom methods setClass setMethod signature
+NULL
+
 #' Class ISOSCAPE
 #'
 #' @slot isoscapes a SpatRaster storing the isoscapes
