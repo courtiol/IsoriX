@@ -4,7 +4,7 @@
 \name{AssignDataBat}
 \alias{AssignDataBat}
 \alias{AssignDataBatRev}
-\title{Assignment datasets for bat species}
+\title{Assignment data: hydrogen delta values of common noctule bats (Voigt & Lehnert 2019)}
 \format{
 Two \emph{dataframes} with 14 observations and 4 variables:\tabular{lll}{
     \tab  \tab  \cr

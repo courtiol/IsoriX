@@ -4,7 +4,7 @@
 \name{CalibDataBat2}
 \alias{CalibDataBat2}
 \alias{CalibDataBat2Rev}
-\title{Calibration datasets for bat species}
+\title{Calibration data: hydrogen delta values of sedentary bats (Popa-Lisseanu et al. 2012)}
 \format{
 Two \emph{dataframes} with 178 observations and 6 variables:\tabular{lll}{
     \tab  \tab  \cr

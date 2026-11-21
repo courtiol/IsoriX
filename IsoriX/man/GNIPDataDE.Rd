@@ -3,7 +3,7 @@
 \docType{data}
 \name{GNIPDataDE}
 \alias{GNIPDataDE}
-\title{Hydrogen delta values in precipitation water, Germany}
+\title{Source data: hydrogen delta values in precipitation water in Germany}
 \format{
 The \emph{dataframe} includes 8591 observations and the following
 variables:\tabular{lll}{

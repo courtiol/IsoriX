@@ -1,4 +1,4 @@
-#' Assignment datasets for bat species
+#' Assignment data: hydrogen delta values of common noctule bats (Voigt & Lehnert 2019)
 #'
 #' These datasets contain data from Voigt & Lenhert (2019). They contain hydrogen
 #' delta values of fur keratin from common noctule bats (\emph{Nyctalus noctula})
@@ -41,7 +41,7 @@ NULL
 
 
 
-#' Assignment datasets for bat species
+#' Assignment data: hydrogen delta values of Myotis bats (Voigt, Lehmann & Greif 2015)
 #'
 #' These datasets contain data from Voigt, Lehmann & Greif (2015). It contains
 #' hydrogen delta values of fur keratin from bats captured in 2008, 2009 and
@@ -83,7 +83,7 @@ NULL
 
 
 
-#' Calibration datasets for bat species
+#' Calibration data: hydrogen delta values of sedentary bats (Voigt & Lehnert 2019)
 #'
 #' These datasets contain hydrogen delta values of fur keratin from 6 sedentary
 #' bat species. They correspond to the combination of several studies as detailed
@@ -142,7 +142,7 @@ NULL
 
 
 
-#' Calibration datasets for bat species
+#' Calibration data: hydrogen delta values of sedentary bats (Popa-Lisseanu et al. 2012)
 #'
 #' These datasets contain hydrogen delta values of fur keratin from sedentary
 #' bat species captured between 2005 and 2009 from Popa-Lisseanu et al. (2012).
@@ -219,7 +219,7 @@ NULL
 
 
 
-#' Simulated assignment dataset
+#' Assignment data: simulated hydrogen delta values
 #'
 #' This dataset contains simulated hydrogen delta values.
 #' The data can be used as an example to perform assignments using the function [`isofind`].
@@ -280,7 +280,7 @@ NULL
 
 
 
-#' Simulated calibration dataset
+#' Calibration data: simulated hydrogen delta values
 #'
 #' This dataset contains simulated hydrogen delta values for corresponding locations
 #' based on an assumed linear relationship between the animal tissue value and the
@@ -352,7 +352,7 @@ NULL
 
 
 
-#' Borders of world CountryBorders
+#' Polygon data: borders of world countries
 #'
 #' This dataset contains a polygon SpatVector (from \pkg{terra}).
 #' It can be used to draw the borders of world countries. Each polygon corresponds
@@ -402,7 +402,7 @@ NULL
 
 
 
-#' Mask of world oceans
+#' Polygon data: mask of world oceans
 #'
 #' This dataset contains a polygon SpatVector (from \pkg{terra}).
 #' It can be used to mask large bodies of water. It is the complement of the
@@ -435,7 +435,7 @@ NULL
 
 
 
-#' The raster of elevation for Germany
+#' Raster data: elevation in Germany
 #'
 #' This raster contains the elevation of the surface of Germany (meters above sea
 #' level) with a resolution of approximately 40 square-km.
@@ -482,7 +482,7 @@ NULL
 
 
 
-#' The precipitation monthly amounts for Germany
+#' Raster data: monthly precipitation amounts in Germany
 #'
 #' This brick of rasters contains the monthly precipitation amounts (in mm) for
 #' Germany with a resolution of approximately 30 square-km.
@@ -513,7 +513,7 @@ NULL
 
 
 
-#' Hydrogen delta values in precipitation water, Germany
+#' Source data: hydrogen delta values in precipitation water in Germany
 #'
 #' This dataset contains the hydrogen delta value from
 #' precipitation water sampled at weather stations between 1961 and 2013 in
@@ -570,7 +570,7 @@ NULL
 
 
 
-#' Hydrogen delta values in precipitation water (aggregated per location)
+#' Source data: hydrogen delta values in precipitation water in Europe and in the world (aggregated per location)
 #'
 #' These datasets contain the mean and variance of hydrogen delta value from
 #' precipitation water sampled at weather stations between 1953 and 2015 in
@@ -620,7 +620,7 @@ NULL
 
 
 
-#' Colour palettes for plotting
+#' Plotting: colour palettes for isoscapes and assignments
 #'
 #' These datasets contain colour vectors that can be used for plotting. In our
 #' examples, we use the `isopalette1` for plotting the isoscape using

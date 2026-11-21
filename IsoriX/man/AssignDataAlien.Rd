@@ -3,7 +3,7 @@
 \docType{data}
 \name{AssignDataAlien}
 \alias{AssignDataAlien}
-\title{Simulated assignment dataset}
+\title{Assignment data: simulated hydrogen delta values}
 \format{
 A \emph{dataframe} with 10 observations and 2 variables:\tabular{lll}{
     \tab  \tab  \cr
