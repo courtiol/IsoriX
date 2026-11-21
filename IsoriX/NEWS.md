@@ -16,6 +16,7 @@
 ## New features
 
   * new method `AIC()` for the outputs of `isofit()` and `isomultifit()`, which computes the conditional AIC of the fitted isoscapes corrected for the number of parameters estimated in the residual dispersion model (following Courtiol & Rousset 2017). This allows for the comparison of models differing in their residual dispersion model, and not only in their mean model. When several fits are given (e.g. `AIC(fit1, fit2)`), a table is returned which also details the number of parameters of each model and the uncorrected conditional AIC (#101).
+  * new function `plot_sources()` mapping, for aggregated source data (as produced by `prepsources()`), the mean, standard deviation and number of measurements at each source location, using either coloured points or text labels; in interactive sessions, the user is asked to press <Return> before each new map (#195).
   * new function `calibscape()` to build calibrated isoscapes, i.e. to convert an isoscape of source isotopic values (e.g. precipitation) into an isoscape of sample isotopic values (e.g. animal tissues) using a calibration fit. Only the mean isoscape is calibrated. The output, of class `CALIBSCAPE` (in addition to `ISOSCAPE`), can be plotted (`which = "mean"` only; by default, the plot shows the location of the calibration samples instead of that of the sources, see the new argument `calibs` of `plot.ISOSCAPE()`) but cannot be used by `isofind()` or `create_aliens()` (#191).
   * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
@@ -44,6 +45,7 @@
 
 ## Internal (geeky) changes
 
+  * the tests now use the third edition of **testthat** and run in parallel (using 2 processes by default; see the README of the GitHub repository to use more), which makes them about twice as fast.
   * **tibble** is now a suggested package, so that the support of tibbles is tested using genuine tibbles.
   * the documentation is now generated using **roxygen2** 8.1.1.
   * GitHub issue templates have been added (#178).

@@ -1,14 +1,14 @@
+## (the informative messages displayed by IsoriX are not tested here, so they are suppressed)
+
 ## preparation steps:
 GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 
-GermanFit <- isofit(
+GermanFit <- suppressMessages(isofit(
   data = GNIPDataDEagg,
   mean_model_fix = list(elev = FALSE, lat_abs = FALSE),
   mean_model_rand = list(uncorr = FALSE, spatial = TRUE),
   disp_model_rand = list(uncorr = FALSE, spatial = FALSE)
-)
-
-GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
+))
 
 ## tests:
 test_that("prepsources() flags duplicated locations with different IDs", {
@@ -22,17 +22,24 @@ test_that("prepsources() flags IDs actualy corresponding to different locations"
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
   GNIPDataDE2 <- rbind(GNIPDataDE2, GNIPDataDE2)
   GNIPDataDE2$elev[1:3] <- 10
-  expect_warning(prepsources(GNIPDataDE2))
+  expect_warning(
+    expect_warning(prepsources(GNIPDataDE2), "share the same source_ID"),
+    "elevation values are not unique"
+  )
 })
 
 test_that("calibfit() flags siteIDs actualy corresponding to different locations", {
   CalibDataAlien2 <- CalibDataAlien[1:20, ]
   CalibDataAlien2 <- rbind(CalibDataAlien2, CalibDataAlien2)
   CalibDataAlien2$elev[1:3] <- 10
-  expect_warning(calibfit(data = CalibDataAlien2, isofit = GermanFit))
+  expect_warning(
+    suppressMessages(calibfit(data = CalibDataAlien2, isofit = GermanFit, control_optim = list(maxit = 1))), ## capped to save time
+    "share the same site_ID"
+  )
 })
 
 ## FIXME test sometimes returns an error and sometimes a warning, not sure why...
+## (if reactivated, it needs: GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit))
 # test_that("isofind() flags siteIDs actualy corresponding to different locations", {
 #   AssignDataAlien2 <- AssignDataAlien[1:3, ]
 #   AssignDataAlien2 <- rbind(AssignDataAlien2, AssignDataAlien2)

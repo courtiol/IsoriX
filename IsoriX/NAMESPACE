@@ -47,6 +47,7 @@ export(lpolygon)
 export(options_IsoriX)
 export(plot)
 export(plot_dependencies)
+export(plot_sources)
 export(points)
 export(polys)
 export(prepcipitate)
@@ -72,6 +73,11 @@ importFrom(lattice,
   xyplot
 )
 importFrom(latticeExtra,layer)
+importFrom(methods,
+  setClass,
+  setMethod,
+  signature
+)
 importFrom(rasterVis,
   RdBuTheme,
   levelplot

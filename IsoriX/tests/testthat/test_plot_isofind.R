@@ -11,9 +11,9 @@ test_that(".select_assign_points() keeps only the point(s) of the sample in a gi
 })
 
 test_that("isofind() labels assignment points by sample and plots draw (#103)", {
-  agg <- prepsources(data = GNIPDataDE)
-  fit <- suppressMessages(isofit(data = agg, verbose = FALSE))
-  scape <- suppressMessages(isoscape(raster = ElevRasterDE, isofit = fit, verbose = FALSE))
+  german <- fixture_german() ## see helper-fixtures.R
+  fit <- german$fit
+  scape <- german$scape
   d <- AssignDataAlien[1:3, ]
   assignment <- suppressWarnings(isofind(data = d, isoscape = scape, verbose = FALSE))
   expect_equal(assignment$sp_points$assigns$ID, names(assignment$sample$pv))
