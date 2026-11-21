@@ -60,3 +60,6 @@ material_for_maintainer/sources_for_vignettes/**/wc2.0_30s_prec/
 
 # -> do that in the specific .ignore file!
 
+
+# Outputs of the comparison between versions before a release
+release_checks/output/

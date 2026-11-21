@@ -206,7 +206,7 @@ plot.ISOSCAPE <- function(x,
   }
 
   ## importing country borders if missing
-  if (!is.null(borders$borders) && is.na(borders$borders)) {
+  if (!is.null(borders$borders) && !inherits(borders$borders, "SpatVector") && is.na(borders$borders)) {
     borders$borders <- terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX"))
   }
 
@@ -402,7 +402,7 @@ plot.ISOFIND <- function(x,
   }
 
   ## importing country borders if missing
-  if (!is.null(borders$borders) && is.na(borders$borders)) {
+  if (!is.null(borders$borders) && !inherits(borders$borders, "SpatVector") && is.na(borders$borders)) {
     borders$borders <- terra::readRDS(system.file("extdata/CountryBorders.rds", package = "IsoriX"))
   }
 
@@ -959,7 +959,8 @@ plot.SpatRaster <- function(x, ...) {
   }
 
   ## layer for assignment points
-  if (is.null(assigns)) {
+  ## (no layer if the assignment data contained no coordinates)
+  if (is.null(assigns) || is.null(x$sp_points$assigns)) {
     assigns_layer <- latticeExtra::layer()
   } else {
     if (!assigns$draw) {

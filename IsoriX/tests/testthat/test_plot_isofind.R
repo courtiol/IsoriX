@@ -26,4 +26,12 @@ test_that("isofind() labels assignment points by sample and plots draw (#103)", 
   expect_no_error(plot(assignment, who = 1:3))
   expect_no_error(plot(assignment, who = 2))
   expect_no_error(plot(assignment, who = "group"))
+
+  ## assignment data without coordinates (nothing to draw for the samples),
+  ## with a single sample so that its own map is plotted by default
+  d_no_coord <- d[1, c("sample_ID", "sample_value")]
+  assignment_no_coord <- suppressWarnings(isofind(data = d_no_coord, isoscape = scape, verbose = FALSE))
+  expect_null(assignment_no_coord$sp_points$assigns)
+  expect_no_error(plot(assignment_no_coord))
+  expect_no_error(plot(assignment_no_coord, who = "group"))
 })

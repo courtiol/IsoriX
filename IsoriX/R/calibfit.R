@@ -569,26 +569,7 @@ calibfit <- function(data,
     data$mean_source_value <- c(mean_calib)
 
     ## Test for extrapolation during calibration
-    issues_extrapolations <- FALSE
-    msg <- paste("Note: extrapolation issues\nOut of your", nrow(data), "calibration samples,\n")
-
-    ### check if spatial extrapolation occurs
-    points_out <- .points_outside_hull(
-      long_ref = isofit$info_fit$data$long,
-      lat_ref = isofit$info_fit$data$lat,
-      long = data$long,
-      lat = data$lat
-    )
-
-    if (sum(points_out, na.rm = TRUE) > 0) {
-      issues_extrapolations <- TRUE
-      msg <- paste(msg, "*", sum(points_out, na.rm = TRUE), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
-    }
-
-    ## display message if necessary
-    if (issues_extrapolations) {
-      message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could impede the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more calibration data within the expected range to avoid any problem."))
-    }
+    .check_extrapolation_calib(data = data, isofit = isofit)
 
     ## extract the prediction covariance matrix
     predcov_matrix_isofit_full <- attr(mean_calib, "predVar")
@@ -708,6 +689,37 @@ calibfit <- function(data,
     "sp_points" = list(calibs = calib_points)
   ))
 }
+
+.check_extrapolation_calib <- function(data, isofit) {
+  ## This function should not be called by the user.
+  ## It displays a message if some calibration samples are located outside the
+  ## area covered by the source data used to build the isoscape (i.e. if the
+  ## calibration involves spatial extrapolation).
+  ## It invisibly returns a logical vector indicating which samples are outside.
+  issues_extrapolations <- FALSE
+  msg <- paste("Note: extrapolation issues\nOut of your", nrow(data), "calibration samples,\n")
+
+  ### check if spatial extrapolation occurs
+  points_out <- .points_outside_hull(
+    long_ref = isofit$info_fit$data$long,
+    lat_ref = isofit$info_fit$data$lat,
+    long = data$long,
+    lat = data$lat
+  )
+
+  if (sum(points_out, na.rm = TRUE) > 0) {
+    issues_extrapolations <- TRUE
+    msg <- paste(msg, "*", sum(points_out, na.rm = TRUE), "correspond to locations outside the area covered by the measurements you used to build your isoscape.\n")
+  }
+
+  ## display message if necessary
+  if (issues_extrapolations) {
+    message(paste0(msg, "--> These cases correspond to extrapolation during the calibration step, which could impede the reliability of your assignments.\nIf the proportion of problematic samples is large, you should perhaps rethink the design of your isoscape and/or collect more calibration data within the expected range to avoid any problem."))
+  }
+
+  invisible(points_out)
+}
+
 
 .points_outside_hull <- function(long_ref, lat_ref, long, lat, tol = 1e-8) {
   ## This function should not be called by the user.
