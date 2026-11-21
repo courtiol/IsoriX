@@ -272,7 +272,7 @@ These summary tables are created behind the scenes by [**`spaMM`**](https://gitl
 
 Each of the fitted models is an object of class `HLfit` which has been created by `spaMM`.
 You can thus directly manipulate those fits using `spaMM` for advanced usage.
-For example, if you want to compare different models using the information criterion, you can call the `AIC()` function implemented by `spaMM` by simply typing:
+For example, you can compute the information criteria implemented by `spaMM` for one of the two fits by simply typing:
 
 ```{r AIC EuropeFit, eval = FALSE}
 AIC(EuropeFit$mean_fit)
@@ -283,6 +283,7 @@ print(AIC(EuropeFit$mean_fit, verbose = FALSE))
 ```
 
 Note that we re-exported some `spaMM` functions for you to use without the need to load the package `spaMM` (e.g. `AIC.HLfit()` which is implicitly here), but you will have to call `library(spaMM)` to access all `spaMM` functions.
+To compare fitted isoscapes, use instead `AIC()` directly on the output of `isofit()` (see section \@ref(modelselection)).
 
 
 ## Choosing the model {#modelselection}
@@ -319,16 +320,13 @@ if (file.exists("output/EuropeFit_elev.rds")) {
 }
 ```
 
-We can then compute the information criteria of the three mean models:
+We can then compare the three fitted isoscapes using the function `AIC()`:
 
 ```{r modelselection AIC}
-sapply(list(null = EuropeFit_null,
-            elev = EuropeFit_elev,
-            elev_lat_abs = EuropeFit),
-       \(fit) AIC(fit$mean_fit, verbose = FALSE))
+AIC(EuropeFit_null, EuropeFit_elev, EuropeFit)
 ```
 
-Which criterion to use matters: to compare mean models, use the **conditional AIC** (the second row above).
+The column `cAIC` gives the **conditional AIC** of each fit, which is the criterion to use for comparing isoscape models.
 The goal is indeed to select the model that best predicts the true, unobserved isoscape, which the fitted model approximates.
 As long as the random-effect structure is kept identical between the models being compared, the predicted isoscape corresponds to a specific realization of the random effects (in the spirit of BLUPs), and the conditional AIC measures the predictive power of precisely such predictions.
 (In addition, since `isofit()` fits the models by REML, the marginal AIC values of models with different fixed effects would not be comparable anyway.)
@@ -341,17 +339,30 @@ Such problems should be visible as areas of large prediction variance, which you
 Here, the elevation is the variable that increases the predictive power the most.
 For `EuropeFit`, we thus selected the mean model with the highest predictive power (i.e. the lowest conditional AIC) among those compared here.
 
-Note that the mean model relies on the predictions of the residual dispersion model, so make sure that you only change `mean_model_fix` while comparing mean models, and keep everything else identical.
+The other columns detail how the conditional AIC is computed.
+The mean model relies on the predictions of the residual dispersion model, which it treats as known.
+The conditional AIC computed by `spaMM` for the mean model (`cAIC_uncorrected`, which is also what you would get by calling `AIC(EuropeFit$mean_fit)`) thus ignores that the parameters of the residual dispersion model have been estimated.
+`AIC()` corrects for that by adding twice the number of parameters estimated in the residual dispersion model (`K_disp`) to it.
+`K_mean` gives, for information, the number of parameters estimated in the mean model, which is already accounted for in `cAIC_uncorrected`.
+When you compare mean models fitted with the same residual dispersion model, as we did here, the correction is the same for all fits, so it does not change the ranking of the models.
 
 Also note that all the predictors you use must be available for building the isoscapes.
 The latitude and longitude are directly obtained from the coordinates of the structural raster, but the elevation must be provided by the structural raster itself (see section \@ref(structuralraster)).
 
 ### Comparing residual dispersion models
 
-You can also change the fixed effects of the residual dispersion model using the argument `disp_model_fix`.
-Comparing residual dispersion models is trickier though, because counting the number of parameters in such models is not straightforward, which affects the computation of information criteria (see [issue #101](https://github.com/courtiol/IsoriX/issues/101)).
+You can also change the fixed effects (`disp_model_fix`) and the random effects (`disp_model_rand`) of the residual dispersion model.
+Thanks to the correction described above, the conditional AIC returned by `AIC()` also allows you to compare models that differ in their residual dispersion model, e.g.:
+
+```{r modelselection disp, eval = FALSE}
+EuropeFit_disp_elev <- isofit(data = GNIPDataEUagg,
+                              mean_model_fix = list(elev = TRUE, lat_abs = TRUE),
+                              disp_model_fix = list(elev = TRUE))
+AIC(EuropeFit, EuropeFit_disp_elev)
+```
+
+Indeed, the residual dispersion model influences the fit of the mean model (it determines how much weight each source receives), and thus the predictive power of the isoscape.
 We are planning to provide a function that automates the comparison of all possible models (see [issue #194](https://github.com/courtiol/IsoriX/issues/194)).
-Until then, unless you have good reasons to do otherwise, focus on the selection of the mean model.
 
 
 ## Building the isoscapes

@@ -14,6 +14,7 @@
 
 ## New features
 
+  * new method `AIC()` for the outputs of `isofit()` and `isomultifit()`, which computes the conditional AIC of the fitted isoscapes corrected for the number of parameters estimated in the residual dispersion model (following Courtiol & Rousset 2017). This allows for the comparison of models differing in their residual dispersion model, and not only in their mean model. When several fits are given (e.g. `AIC(fit1, fit2)`), a table is returned which also details the number of parameters of each model and the uncorrected conditional AIC (#101).
   * new function `calibscape()` to build calibrated isoscapes, i.e. to convert an isoscape of source isotopic values (e.g. precipitation) into an isoscape of sample isotopic values (e.g. animal tissues) using a calibration fit. Only the mean isoscape is calibrated. The output, of class `CALIBSCAPE` (in addition to `ISOSCAPE`), can be plotted (`which = "mean"` only; by default, the plot shows the location of the calibration samples instead of that of the sources, see the new argument `calibs` of `plot.ISOSCAPE()`) but cannot be used by `isofind()` or `create_aliens()` (#191).
   * new function `plot_dependencies()` plotting the packages that IsoriX requires and suggests, and the dependencies among them, which can help with installation problems (#171).
   * `prepsources()` no longer requires the columns `year` and `month` unless data are filtered or split by year or month, and the column `elev` is now optional (#192, #123).
@@ -27,6 +28,7 @@
 
 ## Minor changes
 
+  * IsoriX now requires **spaMM** >= 4.4.0 (for the function `DoF()`).
   * the main functions now check the type of the objects given to them and stop with an informative error message saying which function creates the expected object (e.g. when an isoscape is given instead of the output of `isofit()`), or that source data must first be aggregated with `prepsources()` (#164).
   * each reference cited in the documentation now includes a link to its DOI, and `citation("IsoriX")` now gives the pages and the DOI of the book chapter describing IsoriX.
   * the titles of the help pages of all datasets follow a consistent pattern indicating their role in the workflow (e.g. "Calibration data: ..."), and those of datasets from different studies are no longer identical (#97).

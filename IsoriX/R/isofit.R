@@ -42,7 +42,8 @@
 #' [online documentation](https://courtiol-isorix.share.connect.posit.cloud/isoscape.html#modelselection)
 #' for an example). Note that fixed-effect structures should be compared using
 #' the conditional AIC, which measures the predictive power of the fitted
-#' isoscape. To remind users of all this, a message is displayed the first
+#' isoscape and which can be computed by calling [`AIC()`][AIC.ISOFIT] on the
+#' output of `isofit()`. To remind users of all this, a message is displayed the first
 #' time the default model is fitted during an R session.
 #'
 #' In the models, the mean (for the mean model) or the log residual variance
@@ -162,7 +163,11 @@
 #'   fact that our package is more likely to be used for drawing inferences than
 #'   null hypothesis testing. Users interested in model comparisons may rely on
 #'   the conditional AIC values that can be extracted from fitted models using
-#'   the function [`spaMM::AIC`] from  \pkg{spaMM}.
+#'   [`AIC()`][AIC.ISOFIT] (e.g. `AIC(fit1, fit2)`). Unlike the conditional AIC
+#'   computed by [`spaMM::AIC`] on `mean_fit`, this value is corrected for the
+#'   number of parameters estimated in the residual dispersion model, so it can
+#'   also be used to compare models differing in their residual dispersion
+#'   model.
 #'
 #'   Variable names for `data` must be respected to ensure a correct utilization
 #'   of this package. Alteration to the fixed effect structure is not
@@ -171,7 +176,9 @@
 #'   using spaMM directly (see Courtiol & Rousset 2017) or let us know which
 #'   other covariates would be useful to add in IsoriX.
 #'
-#' @seealso [`spaMM::spaMM`] for an overview of the \pkg{spaMM} package
+#' @seealso [`AIC.ISOFIT`] for comparing fitted isoscape models
+#'
+#'   [`spaMM::spaMM`] for an overview of the \pkg{spaMM} package
 #'
 #'   [`spaMM::fitme`] and [`spaMM::corrHLfit`] for
 #'   information about the two possible fitting procedures that can be used here
@@ -218,7 +225,9 @@
 #'   ## Exploration of the fitted models
 #'   GermanFit$mean_fit
 #'   GermanFit$disp_fit
-#'   AIC(GermanFit$disp_fit)
+#'
+#'   ## Conditional AIC (corrected for the residual dispersion model)
+#'   AIC(GermanFit)
 #' }
 #'
 #' @export
