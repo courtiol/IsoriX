@@ -13,6 +13,7 @@
 
 ## Minor changes
 
+  * the titles of isoscape plots no longer refer to hydrogen by default, since IsoriX cannot know which isotope is being studied: the default of the global option `title_delta_notation` is now `NULL`. Use e.g. `options_IsoriX(title_delta_notation = bquote(delta^2*H))` to restore the previous titles. The documentation (`?options_IsoriX` and the bookdown) now also explains what to do when the delta symbol is not rendered by the graphic device (#155).
   * `prepsources()` now stops with an informative message when the data have already been aggregated or when required columns are missing (#139).
   * `isofit()` now stops with an informative message if elevation is used as a predictor but is absent from the data.
   * the link to the IAEA WISER portal no longer points to an `.aspx` page (#186).

@@ -2,21 +2,31 @@
 #'
 #' ** Information on the settings for the delta notation **
 #'
-#' Note that if the delta notation is not successfully rendered on
-#' your plots (which can happen for various reasons related to fonts, encoding
-#' settings, graphic devices and perhaps more), you may try to use e.g.
-#' `options_IsoriX(title_delta_notation = bquote(italic("\u03B4")**2*H[p]))`
-#' to override the default for all plots. The default does correspond to
-#' `options_IsoriX(title_delta_notation = bquote(delta**2*H))`. If you
-#' are working with oxygen (rather than with deuterium), modifying the
-#' global option is also a good place to do so. You may do:
-#' `options_IsoriX(title_delta_notation = bquote(delta**18*O))`.
+#' By default, the titles of isoscape plots do not mention any isotope since
+#' IsoriX cannot know which isotope you are working with (the default value of
+#' `title_delta_notation` is `NULL`). You can define the delta notation to be
+#' used in the titles of all plots by setting this option, e.g.
+#' `options_IsoriX(title_delta_notation = bquote(delta^2*H))` for hydrogen, or
+#' `options_IsoriX(title_delta_notation = bquote(delta^18*O))` for oxygen.
+#'
+#' If the delta symbol is not rendered on your plots (i.e. the title only
+#' shows the superscript and the element), the problem comes from the font used by
+#' the graphic device to draw Greek letters, not from IsoriX. This happens for
+#' example with `CairoPNG()` from the package \pkg{Cairo} on some systems. You
+#' can then:
+#'  - tell \pkg{Cairo} which font to use for symbols, using a font installed on
+#'  your system that contains Greek letters, e.g.
+#'  `Cairo::CairoFonts(symbol = "DejaVu Sans", usePUA = FALSE)`;
+#'  - use another graphic device, e.g. `png(type = "cairo")`;
+#'  - or use the Unicode character for delta, e.g.
+#'  `options_IsoriX(title_delta_notation = bquote(italic("\u03B4")^2*H))`.
+#'  Note that this last solution does not work with the device `pdf()`.
 #'
 #' @name options
 #' @aliases options options_IsoriX getOption_IsoriX
 #' @param ... A named value or a list of named values. The following values, with their defaults, are used:
 #' \describe{
-#'   \item{title_delta_notation}{a name, call, or expression used as default in titles to refer to the delta notation.}
+#'   \item{title_delta_notation}{`NULL` (default) or a name, call, or expression used in the titles of isoscape plots to refer to the delta notation (see above).}
 #'   \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
 #'   \item{Ncpu}{An *integer* corresponding to the number of cores to be used (in functions that can handle parallel processing).}
 #'   \item{dont_ask}{A *logical* indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only).}
@@ -29,11 +39,22 @@
 #' @examples
 #' OldOptions <- options_IsoriX()
 #' OldOptions
+#'
+#' ## defining the delta notation used in the titles of isoscape plots,
+#' ## e.g. for hydrogen:
+#' options_IsoriX(title_delta_notation = bquote(delta^2*H))
 #' getOption_IsoriX("title_delta_notation")
+#'
+#' ## or for oxygen:
+#' options_IsoriX(title_delta_notation = bquote(delta^18*O))
+#' getOption_IsoriX("title_delta_notation")
+#'
 #' getOption_IsoriX("example_maxtime")
 #' options_IsoriX(example_maxtime = 30)
 #' options_IsoriX()
-#' options_IsoriX(example_maxtime = OldOptions$example_maxtime)
+#'
+#' ## restoring the original options:
+#' options_IsoriX(OldOptions)
 #' options_IsoriX()
 options_IsoriX <- function(...) { ## as in spaMM
   if (nargs() == 0) {
@@ -100,5 +121,5 @@ getOption_IsoriX <- function(x = NULL) {
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(title_delta_notation = bquote(delta**2 * H), example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.data_IsoriX$IsoriX_options <- list(title_delta_notation = NULL, example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
 ## otherwise put 5

@@ -156,12 +156,16 @@ There are a few general options you can set up for `IsoriX` (see `?options_Isori
 Like the loading of the package, changing the general options must be done again each time you start an R session.
 
 Three of these general options are particularly useful: `title_delta_notation`, `example_maxtime` and `Ncpu`.
-The first one allows you to control how the delta notation is being rendered in plots; so if you experience any issue, this is the place to tinker.
-For example, since we compile this bookdown on a special remote computer running Linux we had to change the default setting for it to work:
+The first one allows you to define the delta notation used in the titles of isoscape plots.
+By default, titles do not mention any isotope since `IsoriX` cannot know which isotope you are working with.
+For example, since this bookdown deals with hydrogen in precipitation, we use:
 
 ```{r title_delta_notation, eval = FALSE}
 options_IsoriX(title_delta_notation = bquote(italic("\u03B4")**2*H[p]))
 ```
+
+For oxygen, you could use `bquote(delta^18*O)` instead.
+If the delta symbol does not show up in your plots, see section \@ref(deltasymbol).
 
 The second option -- `example_maxtime` -- allows you to control whether examples in the `IsoriX` help files should be run or not depending on the time they take.
 We have to restrict long examples to run since CRAN, the platform hosting R packages, checks all examples but does not allow for them to last more than a few seconds.
