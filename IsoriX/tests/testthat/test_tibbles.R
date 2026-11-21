@@ -25,17 +25,19 @@ test_that("The workfow works with tibble", {
   expect_equal(ref_2, job_2)
 
   ## calibfit
+  ## (the optimisation of the calibration function is capped to save time: it
+  ## does not matter here since the results are compared between inputs)
   test_df2 <- CalibDataBat[1:10, ]
   test_tbl2 <- tibble::as_tibble(test_df2)
   test_tbl2$site_ID <- as.character(test_tbl2$site_ID)
 
-  ref_calib <- calibfit(test_df2, ref_isofit) ## df and df
+  ref_calib <- calibfit(test_df2, ref_isofit, control_optim = list(maxit = 1)) ## df and df
   ref_3 <- ref_calib$fixefCov
 
-  job_calib <- calibfit(test_tbl2, ref_isofit) ## tbl and df
+  job_calib <- calibfit(test_tbl2, ref_isofit, control_optim = list(maxit = 1)) ## tbl and df
   job_3 <- job_calib$fixefCov
 
-  job_calib2 <- calibfit(test_tbl2, job_isofit) ## tbl and tbl
+  job_calib2 <- calibfit(test_tbl2, job_isofit, control_optim = list(maxit = 1)) ## tbl and tbl
   job_33 <- job_calib2$fixefCov
   expect_equal(job_3, ref_3)
   expect_equal(job_33, ref_3)

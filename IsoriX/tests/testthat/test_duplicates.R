@@ -8,8 +8,6 @@ GermanFit <- isofit(
   disp_model_rand = list(uncorr = FALSE, spatial = FALSE)
 )
 
-GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit)
-
 ## tests:
 test_that("prepsources() flags duplicated locations with different IDs", {
   GNIPDataDE2 <- GNIPDataDE[1:3, ]
@@ -29,10 +27,14 @@ test_that("calibfit() flags siteIDs actualy corresponding to different locations
   CalibDataAlien2 <- CalibDataAlien[1:20, ]
   CalibDataAlien2 <- rbind(CalibDataAlien2, CalibDataAlien2)
   CalibDataAlien2$elev[1:3] <- 10
-  expect_warning(calibfit(data = CalibDataAlien2, isofit = GermanFit))
+  expect_warning(
+    calibfit(data = CalibDataAlien2, isofit = GermanFit, control_optim = list(maxit = 1)), ## capped to save time
+    "share the same site_ID"
+  )
 })
 
 ## FIXME test sometimes returns an error and sometimes a warning, not sure why...
+## (if reactivated, it needs: GermanScape <- isoscape(raster = ElevRasterDE, isofit = GermanFit))
 # test_that("isofind() flags siteIDs actualy corresponding to different locations", {
 #   AssignDataAlien2 <- AssignDataAlien[1:3, ]
 #   AssignDataAlien2 <- rbind(AssignDataAlien2, AssignDataAlien2)

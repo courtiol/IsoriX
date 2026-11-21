@@ -1,7 +1,7 @@
 test_that("printing IsoriX objects displays no stray NULL (#220)", {
-  agg <- prepsources(data = GNIPDataDE)
-  fit <- suppressMessages(isofit(data = agg, verbose = FALSE))
-  scape <- suppressMessages(isoscape(raster = ElevRasterDE, isofit = fit, verbose = FALSE))
+  german <- fixture_german() ## see helper-fixtures.R
+  fit <- german$fit
+  scape <- german$scape
   assignment <- suppressWarnings(isofind(data = AssignDataAlien[1:2, ], isoscape = scape, verbose = FALSE))
   set.seed(1)
   aliens <- create_aliens(isoscape = scape, raster = ElevRasterDE, n_sites = 10, min_n_samples = 3, max_n_samples = 3)
