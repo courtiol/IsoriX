@@ -1,5 +1,8 @@
 # This S4 definitions of classes are required for saveRDS to work and interact properly with the package terra.
 
+#' @importFrom methods setClass setMethod signature
+NULL
+
 #' Class ISOSCAPE
 #'
 #' @slot isoscapes a SpatRaster storing the isoscapes
@@ -8,7 +11,7 @@
 #' @export
 #' @rdname ISOSCAPE-class
 #'
-methods::setClass("ISOSCAPE", slots = c(
+setClass("ISOSCAPE", slots = c(
   isoscapes = "SpatRaster",
   sp_points = "list"
 ))
@@ -30,7 +33,7 @@ methods::setClass("ISOSCAPE", slots = c(
 #' @export
 #' @rdname CALIBFIT-class
 #'
-methods::setClass("CALIBFIT", slots = c(
+setClass("CALIBFIT", slots = c(
   method = "character",
   species_rand = "logical",
   site_rand = "logical",
@@ -53,7 +56,7 @@ methods::setClass("CALIBFIT", slots = c(
 #' @export
 #' @rdname ISOFIND-class
 #'
-methods::setClass("ISOFIND", slots = c(
+setClass("ISOFIND", slots = c(
   sample = "list",
   group = "SpatRaster",
   sp_points = "list"
