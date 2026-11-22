@@ -1,0 +1,167 @@
+# Fit isoscape models per strata (typically time interval such as months)
+
+This function fits several set of isoscapes (e.g. one per strata). It
+can thus be used to predict annual averages precipitation weighted
+isoscapes.
+
+## Usage
+
+``` r
+isomultifit(
+  data,
+  split_by = "month",
+  mean_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE,
+    long_2 = FALSE),
+  disp_model_fix = list(elev = FALSE, lat_abs = FALSE, lat_2 = FALSE, long = FALSE,
+    long_2 = FALSE),
+  mean_model_rand = list(uncorr = TRUE, spatial = TRUE),
+  disp_model_rand = list(uncorr = TRUE, spatial = TRUE),
+  uncorr_terms = list(mean_model = "lambda", disp_model = "lambda"),
+  spaMM_method = list(mean_model = "fitme", disp_model = "fitme"),
+  dist_method = "Earth",
+  control_mean = list(),
+  control_disp = list(),
+  Ncpu = getOption_IsoriX("Ncpu"),
+  verbose = interactive()
+)
+```
+
+## Arguments
+
+- data:
+
+  The *dataframe* containing the data used for fitting the isoscape
+  model
+
+- split_by:
+
+  A *string* indicating the name of the column of `data` used to split
+  the dataset. The function
+  [`isofit`](https://courtiol.github.io/IsoriX/reference/isofit.md) will
+  then be called on each of these sub-datasets. The default behaviour is
+  to consider that the dataset should be split per months
+  (`split_by = "month"`).
+
+- mean_model_fix:
+
+  A *list* of *logical* indicating which fixed effects to consider in
+  mean_fit
+
+- disp_model_fix:
+
+  A *list* of *logical* indicating which fixed effects to consider in
+  disp_fit
+
+- mean_model_rand:
+
+  A *list* of *logical* indicating which random effects to consider in
+  mean_fit
+
+- disp_model_rand:
+
+  A *list* of *logical* indicating which random effects to consider in
+  disp_fit
+
+- uncorr_terms:
+
+  A *list* of two strings defining the parametrization used to model the
+  uncorrelated random effects for mean_fit and disp_fit
+
+- spaMM_method:
+
+  A *list* of two strings defining the spaMM functions used for mean_fit
+  and disp_fit
+
+- dist_method:
+
+  A *string* indicating the distance method
+
+- control_mean:
+
+  A *list* of additional arguments to be passed to the call of mean_fit
+
+- control_disp:
+
+  A *list* of additional arguments to be passed to the call of disp_fit
+
+- Ncpu:
+
+  An *integer* specifying the number of CPUs to use, i.e. the number of
+  pairs of models fitted in parallel (default set by the global package
+  option `Ncpu`, see
+  [`options_IsoriX`](https://courtiol.github.io/IsoriX/reference/options.md)).
+  Use `Ncpu = 1` to fit the models sequentially (see **Parallel
+  computing** in Details).
+
+- verbose:
+
+  A *logical* indicating whether information about the progress of the
+  procedure should be displayed or not while the function is running. By
+  default verbose is `TRUE` if users use an interactive R session and
+  `FALSE` otherwise.
+
+## Value
+
+This function returns a *list* of class *MULTIISOFIT* containing all
+pairs of inter-related fits (stored under `multi_fits`). The returned
+*list* also contains the object `info_fit` that contains all the call
+arguments.
+
+## Details
+
+This function is a wrapper around the function
+[`isofit`](https://courtiol.github.io/IsoriX/reference/isofit.md).
+
+**Parallel computing**
+
+The pairs of models of the different strata are fitted independently
+from each other. They can therefore be fitted in parallel, using several
+CPUs, which is done when `Ncpu` is larger than 1 (by default `Ncpu` is
+set by the global option `Ncpu` of IsoriX, see
+[`options_IsoriX`](https://courtiol.github.io/IsoriX/reference/options.md)).
+Parallel computing relies on socket clusters created by the base package
+parallel, which works on Windows, macOS and Linux. Each of the `Ncpu`
+CPUs used runs a new R session, which takes a few seconds to start and
+requires its own memory, so parallel computing is only worth it when
+fitting each pair of models takes more than a few seconds. In such case,
+setting `Ncpu` to the number of strata, or to a divisor of it, makes the
+best use of the CPUs. The fits are identical whether they are produced
+sequentially or in parallel. Note that when IsoriX is not attached using
+[`library()`](https://rdrr.io/r/base/library.html) but loaded during
+development (e.g. with `devtools::load_all()`), the package pkgload is
+used to load the same version of IsoriX in each R session.
+
+## See also
+
+[`isofit`](https://courtiol.github.io/IsoriX/reference/isofit.md) for
+information about the fitting procedure of each isoscape.
+
+## Examples
+
+``` r
+
+## The examples below will only be run if sufficient time is allowed
+## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
+## if you want to allow for examples taking up to ca. XX seconds to run
+## (so don't write XX but put a number instead!)
+
+if (getOption_IsoriX("example_maxtime") > 30) {
+  ## We prepare the GNIP monthly data between January and June for Germany
+
+  GNIPDataDEmonthly <- prepsources(
+    data = GNIPDataDE,
+    month = 1:6,
+    split_by = "month"
+  )
+
+  head(GNIPDataDEmonthly)
+
+  ## We fit the isoscapes
+
+  GermanMonthlyFit <- isomultifit(data = GNIPDataDEmonthly)
+
+  GermanMonthlyFit
+
+  plot(GermanMonthlyFit)
+}
+```

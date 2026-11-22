@@ -1,0 +1,293 @@
+# Welcome to IsoriX
+
+[![CRAN](https://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
+[![CRAN RStudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](https://www.r-pkg.org/pkg/IsoriX)
+[![Dependencies](https://tinyverse.netlify.app/badge/IsoriX)](https://cran.r-project.org/package=IsoriX)
+
+This is the development repository of **IsoriX**, an
+[R](https://www.r-project.org/) package aiming at building isoscapes
+using mixed models and inferring the geographic origin of organisms
+based on their isotopic ratios.
+
+![isoscape](reference/figures/image_intro-.gif)
+
+isoscape
+
+## Where to learn about IsoriX?
+
+You can start by reading our
+[bookdown](https://courtiol-isorix.share.connect.posit.cloud)!
+
+Then, it may not be a bad idea to also have a look at our papers:
+[here](https://www.biorxiv.org/content/10.1101/207662v1) and
+[there](https://shop.elsevier.com/books/tracking-animal-migration-with-stable-isotopes/hobson/978-0-12-814723-8).
+
+Another great source of help is [our mailing
+list](https://groups.google.com/g/IsoriX). First register for free
+(using your Google account) and then feel free to send us questions.
+
+For specific help on IsoriX functions and objects, you should also check
+the documentation embedded in the package after having installed and
+attached (= loaded) it:
+
+``` r
+
+help(package = "IsoriX")
+```
+
+## How to download and install IsoriX?
+
+You can download and install the stable version of IsoriX directly from
+within R by typing:
+
+``` r
+
+install.packages("IsoriX", dependencies = TRUE)
+```
+
+Note: if you get into troubles due to suggested package(s)
+(`colorspace`, `elevatr`, `gmp`, `magick`, `rgl`, `spelling`,
+`testthat`, `webshot2` or `withr`) retry using simply:
+
+``` r
+
+install.packages("IsoriX")
+```
+
+These packages offer additional functionalities but some of them can be
+difficult to install on some systems.
+
+If you want the development version of IsoriX, you can download and
+install it by typing:
+
+``` r
+
+remotes::install_github("courtiol/IsoriX")
+```
+
+Mind that you need the R package [remotes](https://remotes.r-lib.org/)
+to be installed for that to work. Mind also that the development
+version, being under development, can sometimes contain code that is
+partly broken.
+
+## How can you contribute?
+
+There are plenty way you can contribute! If you are fluent in R
+programming, you can improve the code and develop new functions. If you
+are not so fluent, you can still edit the documentation files to make
+them more complete and clearer, write new vignettes, report bugs or make
+feature requests (see the [chapter on
+contributing](https://courtiol-isorix.share.connect.posit.cloud/contrib.html)
+of our bookdown for details, including the simple steps to propose
+changes using pull requests).
+
+## For the maintainer
+
+### Testing a pull request locally
+
+From the RStudio project of the package (`IsoriX.Rproj`, at the root of
+the repository), with `123` replaced by the number of the pull request:
+
+``` r
+
+usethis::pr_fetch(123) ## checks out the branch of the pull request
+devtools::load_all()   ## loads the version of IsoriX proposed in the pull request
+withr::with_envvar(c(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1"),
+                   devtools::test()) ## runs the tests, including the plot snapshot tests
+usethis::pr_finish()   ## once done (or merged): goes back to the main branch and deletes the local branch
+```
+
+Use `usethis::pr_pause()` instead of `usethis::pr_finish()` to go back
+to the main branch while keeping the branch of the pull request for
+later.
+
+### Preparing a release
+
+- run `gitcreds::gitcreds_set()` to enter the GitHub token;
+- run `usethis::use_release_issue(version = "XX")`, with `"XX"` the
+  future release number: it creates a GitHub issue with the checklist
+  for the release, which includes the steps specific to IsoriX defined
+  in `release_bullets()` (in `R/zzz.R`);
+- follow the steps in the issue created by the previous command.
+
+Some of these steps use the scripts stored in the folder
+`release_checks` (see the README in there).
+
+### Recreating the datasets
+
+The script creating the datasets stored in IsoriX is
+`material_for_maintainer/sources_for_datasets/create_rda.R` (most of the
+source files it uses are not stored in the repository).
+
+### Organisation of the repository
+
+The R package itself is at the root of the repository (`DESCRIPTION`,
+`R/`, `man/`, `tests/`…), so that tools such as
+`remotes::install_github("courtiol/IsoriX")` or `rhub::rhub_setup()`
+work directly. The other folders (`bookdown`, `presentation`,
+`release_checks`, `material_for_maintainer`, `pkg_manuals`…) are
+excluded from the package via `.Rbuildignore`.
+
+### Some useful links for developers
+
+- [Wickham & Bryan’s book *R packages*](https://r-pkgs.org/)
+- [Writing R
+  extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
+- [R coding standard](https://style.tidyverse.org/)
+- [Using version control in
+  RStudio](https://docs.posit.co/ide/user/ide/guide/tools/version-control.html)
+- [Preparing your package for a CRAN
+  submission](https://github.com/ThinkR-open/prepare-for-cran)
+
+## Main packages behind IsoriX
+
+IsoriX heavily depends on three R packages:
+[spaMM](https://gitlab.in2p3.fr/francois.rousset/spamm-ref),
+[rasterVis](https://oscarperpinan.github.io/rastervis/) &
+[terra](https://rspatial.github.io/terra/reference/terra-package.html).
+
+# Package index
+
+## Package overview
+
+- [`IsoriX-package`](https://courtiol.github.io/IsoriX/reference/IsoriX-package.md)
+  [`IsoriX`](https://courtiol.github.io/IsoriX/reference/IsoriX-package.md)
+  : Isoscape Computation and Inference of Spatial Origins using Mixed
+  Models
+
+## Preparing the data
+
+- [`prepsources()`](https://courtiol.github.io/IsoriX/reference/prepsources.md)
+  : Filter and aggregate the raw source dataset
+- [`prepraster()`](https://courtiol.github.io/IsoriX/reference/prepraster.md)
+  : Prepare the structural raster
+- [`prepcipitate()`](https://courtiol.github.io/IsoriX/reference/prepcipitate.md)
+  : Prepare the raster brick containing the precipitation data
+- [`getelev()`](https://courtiol.github.io/IsoriX/reference/getelev.md)
+  : Download an elevation raster from internet
+- [`getprecip()`](https://courtiol.github.io/IsoriX/reference/getprecip.md)
+  : Download rasters of monthly precipitation from internet
+- [`downloadfile()`](https://courtiol.github.io/IsoriX/reference/downloadfile.md)
+  : Download files and check their binary integrity
+- [`create_aliens()`](https://courtiol.github.io/IsoriX/reference/create_aliens.md)
+  : Simulate datasets for calibrations or assignments
+
+## Building isoscapes
+
+- [`isofit()`](https://courtiol.github.io/IsoriX/reference/isofit.md) :
+  Fit the isoscape models
+- [`isomultifit()`](https://courtiol.github.io/IsoriX/reference/isomultifit.md)
+  : Fit isoscape models per strata (typically time interval such as
+  months)
+- [`isoscape()`](https://courtiol.github.io/IsoriX/reference/isoscape.md)
+  : Predicts the spatial distribution of source isotopic values
+- [`isomultiscape()`](https://courtiol.github.io/IsoriX/reference/isomultiscape.md)
+  : Predicts the average spatial distribution of isotopic values over
+  months, years...
+- [`AIC(`*`<ISOFIT>`*`)`](https://courtiol.github.io/IsoriX/reference/AIC.ISOFIT.md)
+  : Compute the conditional AIC of fitted isoscapes
+
+## Calibration
+
+- [`calibfit()`](https://courtiol.github.io/IsoriX/reference/calibfit.md)
+  : Fit the calibration model (or load parameters from calibration done
+  outside IsoriX)
+- [`calibscape()`](https://courtiol.github.io/IsoriX/reference/calibscape.md)
+  : Builds calibrated isoscapes, i.e. isoscapes of samples (e.g.
+  tissues)
+
+## Assignment
+
+- [`isofind()`](https://courtiol.github.io/IsoriX/reference/isofind.md)
+  : Infer spatial origins
+
+## Plotting
+
+- [`points(`*`<CALIBFIT>`*`)`](https://courtiol.github.io/IsoriX/reference/plots.md)
+  [`plot()`](https://courtiol.github.io/IsoriX/reference/plots.md) :
+  Plotting functions for IsoriX
+- [`plot_sources()`](https://courtiol.github.io/IsoriX/reference/plot_sources.md)
+  : Map the aggregated source data
+- [`plot_dependencies()`](https://courtiol.github.io/IsoriX/reference/plot_dependencies.md)
+  : Plot the dependencies of IsoriX
+- [`isopalette2`](https://courtiol.github.io/IsoriX/reference/isopalette2.md)
+  [`isopalette1`](https://courtiol.github.io/IsoriX/reference/isopalette2.md)
+  : Plotting: colour palettes for isoscapes and assignments
+
+## Classes
+
+- [`CALIBFIT-class`](https://courtiol.github.io/IsoriX/reference/CALIBFIT-class.md)
+  : Class CALIBFIT
+- [`ISOFIND-class`](https://courtiol.github.io/IsoriX/reference/ISOFIND-class.md)
+  : Class ISOFIND
+- [`ISOSCAPE-class`](https://courtiol.github.io/IsoriX/reference/ISOSCAPE-class.md)
+  : Class ISOSCAPE
+
+## Options and saving
+
+- [`options_IsoriX()`](https://courtiol.github.io/IsoriX/reference/options.md)
+  [`getOption_IsoriX()`](https://courtiol.github.io/IsoriX/reference/options.md)
+  : Setting and displaying the options of the package
+- [`saveRDS_IsoriX()`](https://courtiol.github.io/IsoriX/reference/serialize.md)
+  [`saveRDS(`*`<ISOSCAPE>`*`)`](https://courtiol.github.io/IsoriX/reference/serialize.md)
+  [`saveRDS(`*`<CALIBFIT>`*`)`](https://courtiol.github.io/IsoriX/reference/serialize.md)
+  [`saveRDS(`*`<ISOFIND>`*`)`](https://courtiol.github.io/IsoriX/reference/serialize.md)
+  [`readRDS(`*`<character>`*`)`](https://courtiol.github.io/IsoriX/reference/serialize.md)
+  : Save and read objects produced by IsoriX using RDS files
+
+## Datasets
+
+- [`AssignDataAlien`](https://courtiol.github.io/IsoriX/reference/AssignDataAlien.md)
+  : Assignment data: simulated hydrogen delta values
+- [`AssignDataBat`](https://courtiol.github.io/IsoriX/reference/AssignDataBat.md)
+  [`AssignDataBatRev`](https://courtiol.github.io/IsoriX/reference/AssignDataBat.md)
+  : Assignment data: hydrogen delta values of common noctule bats (Voigt
+  & Lehnert 2019)
+- [`AssignDataBat2`](https://courtiol.github.io/IsoriX/reference/AssignDataBat2.md)
+  [`AssignDataBat2Rev`](https://courtiol.github.io/IsoriX/reference/AssignDataBat2.md)
+  : Assignment data: hydrogen delta values of Myotis bats (Voigt,
+  Lehmann & Greif 2015)
+- [`CalibDataAlien`](https://courtiol.github.io/IsoriX/reference/CalibDataAlien.md)
+  : Calibration data: simulated hydrogen delta values
+- [`CalibDataBat`](https://courtiol.github.io/IsoriX/reference/CalibDataBat.md)
+  [`CalibDataBatRev`](https://courtiol.github.io/IsoriX/reference/CalibDataBat.md)
+  : Calibration data: hydrogen delta values of sedentary bats (Voigt &
+  Lehnert 2019)
+- [`CalibDataBat2`](https://courtiol.github.io/IsoriX/reference/CalibDataBat2.md)
+  [`CalibDataBat2Rev`](https://courtiol.github.io/IsoriX/reference/CalibDataBat2.md)
+  : Calibration data: hydrogen delta values of sedentary bats
+  (Popa-Lisseanu et al. 2012)
+- [`GNIPDataDE`](https://courtiol.github.io/IsoriX/reference/GNIPDataDE.md)
+  : Source data: hydrogen delta values in precipitation water in Germany
+- [`GNIPDataEUagg`](https://courtiol.github.io/IsoriX/reference/GNIPDataEUagg.md)
+  [`GNIPDataALLagg`](https://courtiol.github.io/IsoriX/reference/GNIPDataEUagg.md)
+  : Source data: hydrogen delta values in precipitation water in Europe
+  and in the world (aggregated per location)
+- [`CountryBorders`](https://courtiol.github.io/IsoriX/reference/CountryBorders.md)
+  : Polygon data: borders of world countries
+- [`OceanMask`](https://courtiol.github.io/IsoriX/reference/OceanMask.md)
+  : Polygon data: mask of world oceans
+- [`ElevRasterDE`](https://courtiol.github.io/IsoriX/reference/ElevRasterDE.md)
+  : Raster data: elevation in Germany
+- [`PrecipBrickDE`](https://courtiol.github.io/IsoriX/reference/PrecipBrickDE.md)
+  : Raster data: monthly precipitation amounts in Germany
+
+## Defunct and deprecated
+
+- [`IsoriX-defunct`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`Calibfit`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`GetElev`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`Isofit`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`Isorix`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`Isoscape`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`Isosim`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`QueryGNIP`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`queryGNIP`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`prepdata`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`prepelev`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`prepiso`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`RElevate`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  [`relevate`](https://courtiol.github.io/IsoriX/reference/IsoriX-defunct.md)
+  : Defunct and deprecated functions
+
