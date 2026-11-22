@@ -154,28 +154,6 @@ isoscape <- function(raster,
     rm(coord)
     gc() ## remove coord as it can be a large object
 
-    ## size of chunks to split the job into smaller ones
-    chunk_size_for_predict <- 1000L
-
-    ## indexes of beginning of each chunk (- 1) and of last position are being computed
-    steps <- unique(c(
-      seq(from = 0L, to = length(long_to_do), by = chunk_size_for_predict),
-      length(long_to_do)
-    ))
-
-    ## a logical indicating if a progression bar must be used
-    draw_pb <- interactive() & (length(steps) - 1) > 2
-
-    ## create empty vectors to store predictions
-    mean_pred <- disp_pred <- rep(NA, length(long_to_do))
-    mean_predVar <- mean_residVar <- mean_respVar <- mean_pred
-    disp_predVar <- disp_residVar <- disp_respVar <- disp_pred
-
-    ## initiate the progress bar
-    if (draw_pb) {
-      pb <- utils::txtProgressBar(style = 3)
-    }
-
     ## we build xs non-specifically using most complex model definition
     ## (it may look ugly but it should not increase much the computation time
     ## and it avoids a lot of uglier code)
@@ -189,79 +167,70 @@ isoscape <- function(raster,
       source_ID = as.factor(paste("new", seq_len(length(long_to_do)), sep = "_"))
     )
 
+    ## we express longitudes as in the fitted models, which matters for fixed
+    ## effects involving longitudes when the structural raster and the
+    ## sources use different representations around the antimeridian (#180)
+    xs_pred <- xs
+    xs_pred$long <- .wrap_long_like(xs_pred$long, long_ref = isofit$mean_fit$data$long)
+    xs_pred$long_2 <- xs_pred$long^2
 
-    ## we loop on each chunk
-    messages_meanpred <- character()
-    messages_disppred <- character()
-    warnings_meanpred <- character()
-    warnings_disppred <- character()
+    ## all predictions are computed in a single call per model: spaMM slices the
+    ## computation of the prediction variances itself (argument `blockSize`),
+    ## which is faster than calling spaMM on chunks of locations (#150, #176)
+    ## and lets spaMM display its own progress bar; the size of the slices is
+    ## set by the option `spaMM_blocksize` (larger is faster but uses more
+    ## memory; spaMM's default of 2000 is about 1.5 times slower)
+    pred_args <- list(
+      variances = list(respVar = TRUE),
+      blockSize = getOption_IsoriX("spaMM_blocksize"),
+      control = list(showpbar = verbose)
+    )
 
-    for (i in 1:(length(steps) - 1)) {
-      ## compute indexes for covariate values matching the current chunk
-      within_steps <- (steps[i] + 1L):steps[i + 1L]
+    ## predictions from disp_fit
+    pred_dispfit <- do.call(.safe_and_quiet_predictions, c(
+      list(object = isofit$disp_fit, newdata = xs_pred),
+      pred_args
+    ))
 
-      ## we select the chunk of the design matrix required for the loop
-      xs_small <- xs[within_steps, ]
+    messages_disppred <- unique(pred_dispfit$messages)
+    warnings_disppred <- unique(pred_dispfit$warnings)
+    pred_dispfit <- pred_dispfit$result
 
-      ## we express longitudes as in the fitted models, which matters for fixed
-      ## effects involving longitudes when the structural raster and the
-      ## sources use different representations around the antimeridian (#180)
-      xs_small$long <- .wrap_long_like(xs_small$long, long_ref = isofit$mean_fit$data$long)
-      xs_small$long_2 <- xs_small$long^2
+    ## predictions drop the locations with NA in predictors, so we retrieve
+    ## the indexes of the locations predicted (spaMM does not yet pad the
+    ## variance attributes with NAs when using `na.action = na.exclude`, #176)
+    index_disp <- as.integer(rownames(pred_dispfit))
 
-      ## predictions from disp_fit
-      pred_dispfit <- .safe_and_quiet_predictions(
-        object = isofit$disp_fit,
-        newdata = xs_small,
-        variances = list(respVar = TRUE)
-      )
+    ## transmission of phi to mean_fit
+    xs_pred[index_disp, "pred_disp"] <- pred_dispfit[, 1]
 
-      messages_disppred <- c(messages_disppred, pred_dispfit$messages)
-      warnings_disppred <- c(warnings_disppred, pred_dispfit$warnings)
-      pred_dispfit <- pred_dispfit$result
+    ## predictions from mean_fit
+    pred_meanfit <- do.call(.safe_and_quiet_predictions, c(
+      list(object = isofit$mean_fit, newdata = xs_pred),
+      pred_args
+    ))
 
-      index_disp <- as.integer(rownames(pred_dispfit)) ## need since predictions drop values if NA in predictors
+    messages_meanpred <- unique(pred_meanfit$messages)
+    warnings_meanpred <- unique(pred_meanfit$warnings)
+    pred_meanfit <- pred_meanfit$result
 
-      ## transmission of phi to mean_fit
-      xs_small[rownames(pred_dispfit), "pred_disp"] <- pred_dispfit[, 1]
+    index_mean <- as.integer(rownames(pred_meanfit))
 
-      ## predictions from mean_fit
-      pred_meanfit <- .safe_and_quiet_predictions(
-        object = isofit$mean_fit,
-        newdata = xs_small,
-        variances = list(respVar = TRUE)
-      )
+    ## we save the predictions
+    mean_pred <- disp_pred <- rep(NA, length(long_to_do))
+    mean_predVar <- mean_residVar <- mean_respVar <- mean_pred
+    disp_predVar <- disp_residVar <- disp_respVar <- disp_pred
 
-      messages_meanpred <- c(messages_meanpred, pred_meanfit$messages)
-      warnings_meanpred <- c(warnings_meanpred, pred_meanfit$warnings)
-      pred_meanfit <- pred_meanfit$result
+    mean_pred[index_mean] <- pred_meanfit[, 1]
+    mean_predVar[index_mean] <- attr(pred_meanfit, "predVar")
+    mean_residVar[index_mean] <- attr(pred_meanfit, "residVar") ## same as disp_pred (as it should be)
+    mean_respVar[index_mean] <- attr(pred_meanfit, "respVar")
 
-      index_mean <- as.integer(rownames(pred_meanfit)) ## need since predictions drop values if NA in predictors
-
-      ## we save the predictions
-      mean_pred[index_mean] <- pred_meanfit[, 1]
-      mean_predVar[index_mean] <- attr(pred_meanfit, "predVar")
-      mean_residVar[index_mean] <- attr(pred_meanfit, "residVar") ## same as disp_pred (as it should be)
-      mean_respVar[index_mean] <- attr(pred_meanfit, "respVar")
-
-      disp_pred[index_disp] <- pred_dispfit[, 1]
-      disp_predVar[index_disp] <- attr(pred_dispfit, "predVar") ## same as mean_residVar (as it should be)
-      disp_residVar[index_disp] <- attr(pred_dispfit, "residVar")
-      disp_respVar[index_disp] <- attr(pred_dispfit, "respVar")
-
-      if (draw_pb) {
-        utils::setTxtProgressBar(pb, steps[i + 1L] / length(lat_to_do)) ## update progress bar
-      }
-    } ## we leave the loop on chunks
-
-    ## the progress bar is being closed
-    if (draw_pb) close(pb)
+    disp_pred[index_disp] <- pred_dispfit[, 1]
+    disp_predVar[index_disp] <- attr(pred_dispfit, "predVar") ## same as mean_residVar (as it should be)
+    disp_residVar[index_disp] <- attr(pred_dispfit, "residVar")
+    disp_respVar[index_disp] <- attr(pred_dispfit, "respVar")
   }) ## end of system.time
-
-  messages_meanpred <- unique(messages_meanpred)
-  messages_disppred <- unique(messages_disppred)
-  warnings_meanpred <- unique(warnings_meanpred)
-  warnings_disppred <- unique(warnings_disppred)
 
   if (length(messages_meanpred) > 0) {
     message("The following messages were produced by the predictions of mean isotopic values: ")
@@ -347,137 +316,6 @@ isoscape <- function(raster,
 
   return(out)
 }
-
-.futureisoscape <- function(raster, ## change as method?
-                            isofit,
-                            verbose = interactive()) {
-  # Predicts the spatial distribution of isotopic values
-  #
-  # This function is an alternative implementation of isoscape().
-  # It is not exported but may be put in use in a future version of IsoriX.
-  # It does not compute the predictions into chunks.
-
-  if (inherits(isofit, "MULTIISOFIT")) {
-    stop("object 'isofit' of class MULTIISOFIT; use isomultiscape instead.")
-  }
-
-  if (verbose) {
-    print("Building the isoscapes... ", quote = FALSE)
-    print("(this may take a while)", quote = FALSE)
-  }
-
-  if (isofit$mean_fit$spaMM.version != utils::packageVersion(pkg = "spaMM")) {
-    warning("The isofit has been fitted on a different version of spaMM than the one called by IsoriX. This may create troubles in paradize...")
-  }
-
-  time <- system.time({
-    ## we extract lat/long from all cells of the raster
-    coord <- terra::crds(raster, na.rm = FALSE)
-
-    ## we create the object for newdata
-    xs <- data.frame(
-      long = coord[, 1],
-      long_2 = coord[, 1]^2,
-      lat = coord[, 2],
-      lat_abs = abs(coord[, 2]),
-      lat_2 = coord[, 2]^2,
-      elev = terra::extract(raster, coord)[[1]], ## ToDo: check that it is elev
-      source_ID = as.factor(paste("new", seq_len(nrow(coord)), sep = "_"))
-    )
-
-    rm(coord)
-    gc() ## remove coord as it can be a large object
-
-    pred_dispfit <- .safe_and_quiet_predictions(
-      object = isofit$disp_fit,
-      newdata = xs,
-      variances = list(respVar = TRUE),
-      blockSize = 16000L
-    )
-
-    ## transmission of phi to mean_fit
-    xs$pred_disp <- pred_dispfit[, 1]
-
-    ## predictions from mean_fit
-    pred_meanfit <- .safe_and_quiet_predictions(
-      object = isofit$mean_fit,
-      newdata = xs,
-      variances = list(respVar = TRUE),
-      blockSize = 16000L
-    )
-
-    mean_pred <- pred_meanfit[, 1]
-    mean_predVar <- attr(pred_meanfit, "predVar")
-    mean_residVar <- attr(pred_meanfit, "residVar") ## same as disp_pred (as it should be)
-    mean_respVar <- attr(pred_meanfit, "respVar")
-
-    disp_pred <- pred_dispfit[, 1]
-    disp_predVar <- attr(pred_dispfit, "predVar") ## same as mean_residVar (as it should be)
-    disp_residVar <- attr(pred_dispfit, "residVar")
-    disp_respVar <- attr(pred_dispfit, "respVar")
-  }) ## end of system.time
-
-  ## display time
-  time <- round(as.numeric((time)[3]))
-  if (verbose) {
-    print(paste0(
-      "predictions for all ", nrow(xs),
-      " locations have been computed in ", time, "s."
-    ), quote = FALSE)
-  }
-
-  ## we store the predictions for mean isotopic values into a raster
-  save_raster <- function(x) {
-    .create_raster(
-      long = xs$long,
-      lat = xs$lat,
-      values = x,
-      proj = "+proj=longlat +datum=WGS84"
-    )
-  }
-
-  mean_raster <- save_raster(mean_pred)
-  mean_predVar_raster <- save_raster(mean_predVar)
-  mean_residVar_raster <- save_raster(mean_residVar)
-  mean_respVar_raster <- save_raster(mean_respVar)
-
-  disp_raster <- save_raster(disp_pred)
-  disp_predVar_raster <- save_raster(disp_predVar)
-  disp_residVar_raster <- save_raster(disp_residVar)
-  disp_respVar_raster <- save_raster(disp_respVar)
-
-
-  ## we create the spatial points for sources
-  source_points <- .create_spatial_points(
-    long = isofit$mean_fit$data$long,
-    lat = isofit$mean_fit$data$lat,
-    proj = "+proj=longlat +datum=WGS84"
-  )
-
-  ## we put all rasters in a brick
-  isoscapes <- terra::rast(list(
-    "mean" = mean_raster,
-    "mean_predVar" = mean_predVar_raster,
-    "mean_residVar" = mean_residVar_raster,
-    "mean_respVar" = mean_respVar_raster,
-    "disp" = disp_raster,
-    "disp_predVar" = disp_predVar_raster,
-    "disp_residVar" = disp_residVar_raster,
-    "disp_respVar" = disp_respVar_raster
-  ))
-
-  ## we put the brick in a list that also contains
-  ## the spatial points for the sources
-  out <- list(
-    isoscapes = isoscapes,
-    sp_points = list(sources = source_points)
-  )
-
-  ## we define a new class
-  class(out) <- c("ISOCAPE", "list")
-  return(out)
-}
-
 
 #' Predicts the average spatial distribution of isotopic values over months,
 #' years...
