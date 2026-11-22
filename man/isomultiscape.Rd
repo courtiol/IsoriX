@@ -5,7 +5,13 @@
 \title{Predicts the average spatial distribution of isotopic values over months,
 years...}
 \usage{
-isomultiscape(raster, isofit, weighting = NULL, verbose = interactive())
+isomultiscape(
+  raster,
+  isofit,
+  weighting = NULL,
+  Ncpu = getOption_IsoriX("Ncpu"),
+  verbose = interactive()
+)
 }
 \arguments{
 \item{raster}{The structural raster (\emph{SpatRaster}) such as an elevation
@@ -14,6 +20,11 @@ raster created using \code{\link{prepelev}}}
 \item{isofit}{The fitted isoscape created by \code{\link{isofit}}}
 
 \item{weighting}{An optional RasterBrick containing the weights}
+
+\item{Ncpu}{An \emph{integer} specifying the number of CPUs to use, i.e. the
+number of isoscapes built in parallel (default set by the global package
+option \code{Ncpu}, see \code{\link{options_IsoriX}}). Use \code{Ncpu = 1} to build the
+isoscapes sequentially (see \strong{Parallel computing} in Details).}
 
 \item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
@@ -32,6 +43,22 @@ strata (e.g. month) defined by \code{split_by} during the call to
 \code{\link{isomultifit}} and the aggregate them. The function can handle
 weighting for the aggregation process and may thus be used to predict annual
 averages precipitation weighted isoscapes.
+}
+\details{
+\strong{Parallel computing}
+
+The isoscapes of the different strata are built independently from each
+other. They can therefore be built in parallel, using several CPUs, which is
+done when \code{Ncpu} is larger than 1 (by default \code{Ncpu} is set by the global
+option \code{Ncpu} of IsoriX, see \code{\link{options_IsoriX}}). As for \code{\link{isomultifit}},
+parallel computing relies on socket clusters created by the base package
+\pkg{parallel}, which works on Windows, macOS and Linux. Each of the \code{Ncpu}
+CPUs used runs a new R session, which takes a few seconds to start and
+requires its own memory: for large rasters, the memory needed is roughly
+multiplied by \code{Ncpu}, so you may have to decrease \code{Ncpu} (or the global
+option \code{spaMM_blocksize}, see \code{\link{options_IsoriX}}) if you run out of memory.
+The isoscapes are identical whether they are produced sequentially or in
+parallel.
 }
 \examples{
 
