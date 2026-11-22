@@ -134,5 +134,6 @@ getOption_IsoriX <- function(x = NULL) {
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(title_delta_notation = NULL, example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_blocksize = 16000L, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.default_options_IsoriX <- list(title_delta_notation = NULL, example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_blocksize = 16000L, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.data_IsoriX$IsoriX_options <- .default_options_IsoriX
 ## otherwise put 5
