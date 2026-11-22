@@ -278,19 +278,14 @@ These summary tables are created behind the scenes by [**`spaMM`**](https://gitl
 (We are also planning to write an extensive description of model outputs to guide you.)
 
 
-### Doing more stuff with the fitted models
-
-To compare fitted isoscapes, use `AIC()` directly on the output of `isofit()` (see section \@ref(modelselection)).
-
-
-## Choosing the model {#modelselection}
+### Comparing fitted models {#modelselection}
 
 By default, `isofit()` fits models without any fixed-effect predictor: only an intercept and the random effects (including the spatial autocorrelation) are considered.
 This default is a convenient starting point, but it is probably not the best model for your data.
 This is why `isofit()` displays a message the first time you fit the default model during an R session.
-You should instead fit a few alternative models and compare them.
+You should instead fit a few alternative models and compare them, using `AIC()` directly on the outputs of `isofit()`.
 
-### Comparing mean models
+#### Comparing mean models
 
 The fixed effects you can consider are the elevation (`elev`), the absolute latitude (`lat_abs`), the squared latitude (`lat_2`), the longitude (`long`) and the squared longitude (`long_2`); see `?isofit`.
 Here, we compare the model we fitted in section \@ref(isofit) (`EuropeFit`, with `elev` and `lat_abs`) to the default model and to a model with only the elevation:
@@ -350,7 +345,7 @@ When you compare mean models fitted with the same residual dispersion model, as 
 Also note that all the predictors you use must be available for building the isoscapes.
 The latitude and longitude are directly obtained from the coordinates of the structural raster, but the elevation must be provided by the structural raster itself (see section \@ref(structuralraster)).
 
-### Comparing residual dispersion models
+#### Comparing residual dispersion models
 
 You can also change the fixed effects (`disp_model_fix`) and the random effects (`disp_model_rand`) of the residual dispersion model.
 The residual dispersion model influences the fit of the mean model (it determines how much weight each source receives), and thus the predictive power of the isoscape.
