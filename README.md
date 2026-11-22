@@ -48,17 +48,6 @@ remotes::install_github("courtiol/IsoriX")
 
 Mind that you need the R package [remotes](https://remotes.r-lib.org/) to be installed for that to work. Mind also that the development version, being under development, can sometimes contain code that is partly broken.
 
-### Installation behind a proxy?
-
-Also, if you access the network via a proxy, you may experience troubles with ```install_github```. In such case try something like:
-
-```R
-library(httr)
-with_config(use_proxy("192.123.4.5:6789"), remotes::install_github("courtiol/IsoriX"))
-```
-
-Off course, replace the numbers (`"192.123.4.5:6789"`) with those corresponding to your proxy settings!
-
 
 ## How can you contribute?
 There are plenty way you can contribute! If you are fluent in R programming, you can improve the code and develop new functions. If you are not so fluent, you can still edit the documentation files to make them more complete and clearer, write new vignettes, report bugs or make feature requests (see the [chapter on contributing](https://courtiol-isorix.share.connect.posit.cloud/contrib.html) of our bookdown for details, including the simple steps to propose changes using pull requests).
@@ -100,4 +89,4 @@ The other folders (`bookdown`, `presentation`, `release_checks`, `material_for_m
 
 
 ## Main packages behind IsoriX
-IsoriX heavily depends on two R packages: [spaMM](https://gitlab.in2p3.fr/francois.rousset/spamm-ref) & [rasterVis](https://oscarperpinan.github.io/rastervis/).
+IsoriX heavily depends on three R packages: [spaMM](https://gitlab.in2p3.fr/francois.rousset/spamm-ref), [rasterVis](https://oscarperpinan.github.io/rastervis/) & [terra](https://rspatial.github.io/terra/reference/terra-package.html).
