@@ -6,7 +6,7 @@
 ##
 ##   previous:  "cran" (default) to use the version currently on CRAN,
 ##              or a git reference (e.g. a tag such as "v0.9.4", a branch or a commit)
-##   candidate: path to the source of the candidate version (default: "IsoriX",
+##   candidate: path to the source of the candidate version (default: ".",
 ##              i.e. the current state of the working directory)
 ##
 ## Both versions are installed in separate temporary libraries and the workflow
@@ -23,7 +23,7 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 previous <- if (length(args) >= 1) args[1] else "cran"
-candidate <- if (length(args) >= 2) args[2] else "IsoriX"
+candidate <- if (length(args) >= 2) args[2] else "."
 
 if (!file.exists(file.path(candidate, "DESCRIPTION"))) {
   stop("Please run this script from the root of the repository (no package found in '", candidate, "').")
@@ -65,11 +65,17 @@ if (tolower(previous) == "cran") {
   src_previous <- file.path(tempdir(), "src_previous")
   dir.create(src_previous, showWarnings = FALSE)
   tar_file <- file.path(tempdir(), "previous.tar")
-  if (system2("git", c("archive", "--format=tar", "-o", shQuote(tar_file), shQuote(previous), "IsoriX")) != 0) {
-    stop("Could not extract the folder IsoriX from the git reference '", previous, "'.")
+  ## up to version 0.9.4, the package was stored in the folder IsoriX of the
+  ## repository; it is now stored at the root of the repository (#185)
+  old_layout <- system2("git", c("cat-file", "-e", shQuote(paste0(previous, ":IsoriX/DESCRIPTION"))),
+    stdout = FALSE, stderr = FALSE
+  ) == 0
+  pkg_folder <- if (old_layout) "IsoriX" else "."
+  if (system2("git", c("archive", "--format=tar", "-o", shQuote(tar_file), shQuote(previous), pkg_folder)) != 0) {
+    stop("Could not extract the package from the git reference '", previous, "'.")
   }
   utils::untar(tar_file, exdir = src_previous)
-  install_source(file.path(src_previous, "IsoriX"), lib_previous)
+  install_source(file.path(src_previous, pkg_folder), lib_previous)
 }
 
 message("  -> installed version: ", installed_version(lib_previous, "previous"))

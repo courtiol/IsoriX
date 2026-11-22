@@ -30,6 +30,7 @@
 
 ## Minor changes
 
+  * the R package is now stored at the root of the GitHub repository instead of in a sub-folder: the development version is thus installed with `remotes::install_github("courtiol/IsoriX")` (instead of `"courtiol/IsoriX/IsoriX"`), and tools requiring the package at the root of the repository, such as `rhub::rhub_setup()`, now work (#185).
   * `isoscape()` (and thus `isomultiscape()`) is faster for large rasters: predictions are now computed in a single call to **spaMM** per model, letting **spaMM** slice the computation of the prediction variances into larger blocks, instead of calling **spaMM** on chunks of 1000 locations. The isoscapes produced are unchanged; for a raster of 600,000 cells, the computation time is divided by about 4. The progress bar is now the one from **spaMM** (shown when `verbose = TRUE`). The size of these blocks can be set with the new global option `spaMM_blocksize` (default `16000L`; e.g. `options_IsoriX(spaMM_blocksize = 4000L)` to reduce the memory used on very large rasters). The unused internal function `.futureisoscape()` has been removed (#150, #176).
   * IsoriX now requires **spaMM** >= 4.4.0 (for the function `DoF()`).
   * the main functions now check the type of the objects given to them and stop with an informative error message saying which function creates the expected object (e.g. when an isoscape is given instead of the output of `isofit()`), or that source data must first be aggregated with `prepsources()` (#164).

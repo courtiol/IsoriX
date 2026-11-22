@@ -27,7 +27,7 @@ plot(OceanMask, col = "blue")
 #   worldlimit <- as.polygons(ext(CountryBorders))
 #   crs(worldlimit) <- crs(CountryBorders)
 #   OceanMask <- worldlimit - CountryBorders
-#   #terra::saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+#   #terra::saveRDS(OceanMask, file = "inst/extdata/OceanMask.rds", compress = "xz")
 # }
 
 }

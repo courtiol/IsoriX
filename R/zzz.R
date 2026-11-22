@@ -578,7 +578,7 @@ release_bullets <- function() {
   ## This function should not be called by the user.
   ## It is used to add bullet points to GitHub issues created with `usethis::use_release_issue()`
   c(
-    "run `styler:::style_active_pkg()` for reformatting of the code according to `styler::tidyverse_style()`",
+    "run `styler::style_pkg(exclude_dirs = c('bookdown', 'material_for_maintainer', 'presentation', 'release_checks'))` for reformatting of the code according to `styler::tidyverse_style()` (the folders excluded are not part of the package)",
     "run `lintr::lint_package()` for checking code in depth",
     "run `all_checks <- rhub::rhub_check()`",
     "run `usethis::use_cran_comments()` and paste the output of `all_checks$cran_summary()` in the created file",
@@ -587,7 +587,7 @@ release_bullets <- function() {
     "run `tests/local_tests.R` step-by-step",
     "run `devtools::test()` (which also runs the plot snapshot tests, skipped otherwise) and review any intended change in plots with `testthat::snapshot_review()`",
     "from the root of the repo, run `Rscript release_checks/compare_versions.R` to compare all plots and key numbers of the full workflow between the CRAN version and the candidate version; review `report.html` (see release_checks/README.md)",
-    "update manual using `devtools::build_manual(path = '../pkg_manuals')`",
+    "update manual using `devtools::build_manual(path = 'pkg_manuals')` (from the root of the repo)",
     "from the root of the repo, run `Rscript release_checks/list_links.R` and review `report.html`: fix broken links, update redirected (possibly outdated) ones and open in a browser those with access denied, in the bookdown and in the documentation",
     "rebuilt bookdown (after `usethis::use_version('patch')`) to make sure all works in there too (follow instructions in bookdown/README)",
     "update bookdown (after `usethis::use_version('patch')`; follow instructions in bookdown/README)",

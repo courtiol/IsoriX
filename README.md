@@ -43,7 +43,7 @@ These packages offer additional functionalities but some of them can be difficul
 If you want the development version of IsoriX, you can download and install it by typing:
 
 ```R
-remotes::install_github("courtiol/IsoriX/IsoriX") ## no typo: you do need to write IsoriX twice ;-)
+remotes::install_github("courtiol/IsoriX")
 ```
 
 Mind that you need the R package [remotes](https://remotes.r-lib.org/) to be installed for that to work. Mind also that the development version, being under development, can sometimes contain code that is partly broken.
@@ -54,7 +54,7 @@ Also, if you access the network via a proxy, you may experience troubles with ``
 
 ```R
 library(httr)
-with_config(use_proxy("192.123.4.5:6789"), remotes::install_github("courtiol/IsoriX/IsoriX"))
+with_config(use_proxy("192.123.4.5:6789"), remotes::install_github("courtiol/IsoriX"))
 ```
 
 Off course, replace the numbers (`"192.123.4.5:6789"`) with those corresponding to your proxy settings!
@@ -67,7 +67,7 @@ There are plenty way you can contribute! If you are fluent in R programming, you
 ## For the maintainer
 
 ### Testing a pull request locally
-From the RStudio project of the package (`IsoriX/IsoriX.Rproj`), with `123` replaced by the number of the pull request:
+From the RStudio project of the package (`IsoriX.Rproj`, at the root of the repository), with `123` replaced by the number of the pull request:
 ```r
 usethis::pr_fetch(123) ## checks out the branch of the pull request
 devtools::load_all()   ## loads the version of IsoriX proposed in the pull request
@@ -78,11 +78,25 @@ usethis::pr_finish()   ## once done (or merged): goes back to the main branch an
 Use `usethis::pr_pause()` instead of `usethis::pr_finish()` to go back to the main branch while keeping the branch of the pull request for later.
 
 ### Preparing a release
-Run `usethis::use_release_issue()`: it creates a GitHub issue with the checklist for the release, which includes the steps specific to IsoriX defined in `release_bullets()` (in `IsoriX/R/zzz.R`).
+  - run `gitcreds::gitcreds_set()` to enter the GitHub token;
+  - run `usethis::use_release_issue(version = "XX")`, with `"XX"` the future release number: it creates a GitHub issue with the checklist for the release, which includes the steps specific to IsoriX defined in `release_bullets()` (in `R/zzz.R`);
+  - follow the steps in the issue created by the previous command.
+
 Some of these steps use the scripts stored in the folder `release_checks` (see the README in there).
 
 ### Recreating the datasets
 The script creating the datasets stored in IsoriX is `material_for_maintainer/sources_for_datasets/create_rda.R` (most of the source files it uses are not stored in the repository).
+
+### Organisation of the repository
+The R package itself is at the root of the repository (`DESCRIPTION`, `R/`, `man/`, `tests/`...), so that tools such as `remotes::install_github("courtiol/IsoriX")` or `rhub::rhub_setup()` work directly.
+The other folders (`bookdown`, `presentation`, `release_checks`, `material_for_maintainer`, `pkg_manuals`...) are excluded from the package via `.Rbuildignore`.
+
+### Some useful links for developers
+ - [Wickham & Bryan's book *R packages*](https://r-pkgs.org/)
+ - [Writing R extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
+ - [R coding standard](https://style.tidyverse.org/)
+ - [Using version control in RStudio](https://docs.posit.co/ide/user/ide/guide/tools/version-control.html)
+ - [Preparing your package for a CRAN submission](https://github.com/ThinkR-open/prepare-for-cran)
 
 
 ## Main packages behind IsoriX

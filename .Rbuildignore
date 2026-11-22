@@ -1,0 +1,29 @@
+## files of the package not meant to be distributed
+^R/isosim\.R$
+^R/testpackage\.R$
+^man/isosim\.Rd$
+^cran-comments\.md$
+
+## the README is for GitHub (it uses images stored in .github)
+^README\.md$
+
+## RStudio, VS Code and git
+^.*\.Rproj$
+^\.Rproj\.user$
+^IsoriX_project\.code-workspace$
+^\.vscode$
+^\.github$
+^\.claude$
+
+## folders of the repository that are not part of the package
+^bookdown$
+^presentation$
+^release_checks$
+^material_for_maintainer$
+^pkg_manuals$
+^Makefile$
+
+## outputs of R CMD build and R CMD check
+^IsoriX_.*\.tar\.gz$
+^IsoriX\.Rcheck$
+^CRAN_releases$

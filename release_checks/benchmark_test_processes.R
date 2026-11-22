@@ -28,14 +28,14 @@ args <- setdiff(args, "--both-blas")
 n_cpus <- if (length(args) >= 1) as.integer(strsplit(args[1], ",")[[1]]) else c(1:6, seq(8, 16, by = 2))
 n_reps <- if (length(args) >= 2) as.integer(args[2]) else 1L
 
-if (!dir.exists("IsoriX") || !file.exists("IsoriX/DESCRIPTION")) {
+if (!file.exists("DESCRIPTION") || !dir.exists("release_checks")) {
   stop("Please run this script from the root of the repository.")
 }
 for (pkg in c("callr", "pkgload")) {
   if (!requireNamespace(pkg, quietly = TRUE)) stop("The package ", pkg, " is required: install.packages('", pkg, "')")
 }
 
-## the variables limiting linear algebra libraries to a single thread (as in IsoriX/tests/testthat.R)
+## the variables limiting linear algebra libraries to a single thread (as in tests/testthat.R)
 single_thread <- c(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1", MKL_NUM_THREADS = "1", VECLIB_MAXIMUM_THREADS = "1")
 
 time_tests <- function(n, blas) {
@@ -51,7 +51,7 @@ time_tests <- function(n, blas) {
   }
   time <- system.time(
     res <- callr::r(function() {
-      as.data.frame(testthat::test_local("IsoriX", reporter = "silent", stop_on_failure = FALSE))
+      as.data.frame(testthat::test_local(".", reporter = "silent", stop_on_failure = FALSE))
     }, env = env)
   )[["elapsed"]]
   data.frame(blas = blas, processes = n, seconds = round(time, 1), failed = sum(res$failed))
