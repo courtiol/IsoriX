@@ -45,7 +45,7 @@
 
 ## Internal (geeky) changes
 
-  * the tests now use the third edition of **testthat** and run in parallel (using 2 processes by default; see the README of the GitHub repository to use more), which makes them about twice as fast. During checks, each test process uses a single thread for linear algebra, since multithreaded libraries such as OpenBLAS otherwise make the processes compete for the cores (see the README of the GitHub repository for running the tests this way with `devtools::test()`).
+  * the tests now use the third edition of **testthat** and run in parallel (using 2 processes by default, or the number given by the environment variable `TESTTHAT_CPUS`), which makes them about twice as fast. During checks, each test process uses a single thread for linear algebra, since multithreaded libraries such as OpenBLAS otherwise make the processes compete for the cores (the README of the GitHub repository shows how to run `devtools::test()` this way).
   * **tibble** is now a suggested package, so that the support of tibbles is tested using genuine tibbles.
   * the documentation is now generated using **roxygen2** 8.1.1.
   * GitHub issue templates have been added (#178).

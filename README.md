@@ -71,20 +71,11 @@ From the RStudio project of the package (`IsoriX/IsoriX.Rproj`), with `123` repl
 ```r
 usethis::pr_fetch(123) ## checks out the branch of the pull request
 devtools::load_all()   ## loads the version of IsoriX proposed in the pull request
-devtools::test()       ## runs the tests, including the plot snapshot tests
+withr::with_envvar(c(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1"),
+                   devtools::test()) ## runs the tests, including the plot snapshot tests
 usethis::pr_finish()   ## once done (or merged): goes back to the main branch and deletes the local branch
 ```
 Use `usethis::pr_pause()` instead of `usethis::pr_finish()` to go back to the main branch while keeping the branch of the pull request for later.
-
-The test files are run in parallel, using 2 R processes by default.
-Each of these processes should use a single thread for linear algebra: if R uses a multithreaded linear algebra library (check the line `BLAS/LAPACK` of `sessionInfo()`, e.g. OpenBLAS), each process otherwise uses all the cores, the processes compete for them, and the tests become slower than when run one file after the other.
-`R CMD check` (and thus `devtools::check()`) takes care of this automatically (see `IsoriX/tests/testthat.R`), but `devtools::test()` does not, so run the tests as follows instead:
-```r
-withr::with_envvar(c(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1"), devtools::test())
-```
-(For example, on a computer using OpenBLAS, the tests took 88 s with `devtools::test()` and 50 s this way.)
-If your computer has more cores, you can use more processes (e.g. 3) by adding `TESTTHAT_CPUS = "3"` to the variables above, but there is little to gain beyond 3 or 4 processes since the duration of the tests is then limited by the slowest test files.
-To run the tests one file after the other (e.g. to debug a problem that only occurs when running tests in parallel), add `TESTTHAT_PARALLEL = "false"` instead.
 
 ### Preparing a release
 Run `usethis::use_release_issue()`: it creates a GitHub issue with the checklist for the release, which includes the steps specific to IsoriX defined in `release_bullets()` (in `IsoriX/R/zzz.R`).
