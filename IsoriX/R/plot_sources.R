@@ -60,20 +60,28 @@
 #'   [`plots`] for the other plotting functions of IsoriX
 #' @export
 #' @examples
-#' ## Aggregate the source data for Germany
-#' GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #'
-#' ## Map the mean, standard deviation and number of measurements
-#' plot_sources(GNIPDataDEagg)
+#' ## The examples below will only be run if sufficient time is allowed
+#' ## You can change that by typing e.g. options_IsoriX(example_maxtime = XX)
+#' ## if you want to allow for examples taking up to ca. XX seconds to run
+#' ## (so don't write XX but put a number instead!)
 #'
-#' ## Same, writing the values instead (better for few source locations)
-#' plot_sources(GNIPDataDEagg, labels = TRUE)
+#' if (getOption_IsoriX("example_maxtime") > 10) {
+#'   ## Aggregate the source data for Germany
+#'   GNIPDataDEagg <- prepsources(data = GNIPDataDE)
 #'
-#' ## Map only the number of measurements, with another palette
-#' plot_sources(GNIPDataDEagg, which = "n", palette = list(fn = NULL))
+#'   ## Map the mean, standard deviation and number of measurements
+#'   plot_sources(GNIPDataDEagg)
 #'
-#' ## Map the means for the European data
-#' plot_sources(GNIPDataEUagg, which = "mean")
+#'   ## Same, writing the values instead (better for few source locations)
+#'   plot_sources(GNIPDataDEagg, labels = TRUE)
+#'
+#'   ## Map only the number of measurements, with another palette
+#'   plot_sources(GNIPDataDEagg, which = "n", palette = list(fn = NULL))
+#'
+#'   ## Map the means for the European data
+#'   plot_sources(GNIPDataEUagg, which = "mean")
+#' }
 #'
 plot_sources <- function(data,
                          which = c("mean", "sd", "n"),
