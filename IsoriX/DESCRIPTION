@@ -19,7 +19,7 @@ Imports:
     methods,
     numDeriv,
     rasterVis (>= 0.51.6),
-    spaMM (>= 3.13),
+    spaMM (>= 4.4.0),
     stats,
     terra,
     tools,
