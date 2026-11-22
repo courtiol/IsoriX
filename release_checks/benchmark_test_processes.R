@@ -20,7 +20,7 @@
 ## The results are written to release_checks/output/benchmark-<date-time>/
 ## (ignored by git): results.csv and plot.png.
 ##
-## Requires the packages callr (installed with testthat), pkgload and withr.
+## Requires the packages callr (installed with testthat) and pkgload.
 
 args <- commandArgs(trailingOnly = TRUE)
 both_blas <- "--both-blas" %in% args
@@ -31,7 +31,7 @@ n_reps <- if (length(args) >= 2) as.integer(args[2]) else 1L
 if (!dir.exists("IsoriX") || !file.exists("IsoriX/DESCRIPTION")) {
   stop("Please run this script from the root of the repository.")
 }
-for (pkg in c("callr", "pkgload", "withr")) {
+for (pkg in c("callr", "pkgload")) {
   if (!requireNamespace(pkg, quietly = TRUE)) stop("The package ", pkg, " is required: install.packages('", pkg, "')")
 }
 
