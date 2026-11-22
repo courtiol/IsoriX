@@ -19,7 +19,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 check <- !"--no-check" %in% args
 
-if (!dir.exists("bookdown") || !dir.exists("IsoriX")) {
+if (!dir.exists("bookdown") || !file.exists("DESCRIPTION")) {
   stop("Please run this script from the root of the repository.")
 }
 if (check && !requireNamespace("curl", quietly = TRUE)) {
@@ -31,8 +31,8 @@ if (check && !requireNamespace("curl", quietly = TRUE)) {
 files <- c(
   bookdown = list.files("bookdown", pattern = "\\.(Rmd|yml)$", full.names = TRUE), ## (not old_material/)
   package = c(
-    list.files("IsoriX/R", pattern = "\\.R$", full.names = TRUE),
-    "IsoriX/DESCRIPTION", "IsoriX/inst/CITATION", "README.md"
+    list.files("R", pattern = "\\.R$", full.names = TRUE),
+    "DESCRIPTION", "inst/CITATION", "README.md"
   )
 )
 files <- files[file.exists(files)]

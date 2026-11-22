@@ -49,12 +49,8 @@ if (!"remotes" %in% installed.packages()[, 1]) {
 }
 
 ## install IsoriX devel
-remotes::install_github("courtiol/IsoriX/IsoriX", dependencies = TRUE)
+remotes::install_github("courtiol/IsoriX", dependencies = TRUE)
 ```
-
-::: rmdnote
-**Geeky note**: Note that the double mention of 'IsoriX' in `"courtiol/IsoriX/IsoriX"` is not a typo: the name is present twice because on our 'IsoriX' repository in GitHub the content of the R package is located inside a sub-folder also called 'IsoriX' (but this practice has become a little unusual, so we may change this in the near future).
-:::
 
 ## Dependencies on other R packages
 

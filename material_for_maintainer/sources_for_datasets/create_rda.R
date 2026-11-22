@@ -254,7 +254,7 @@ rm(list = c("elevationrasterbig", "elevationrasterEU"))
   CountryBorders_terra <- terra::vect(rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")[, "name"])
   print(CountryBorders_terra)
   terra::plot(CountryBorders_terra)
-  terra::saveRDS(CountryBorders_terra, file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
+  terra::saveRDS(CountryBorders_terra, file = "inst/extdata/CountryBorders.rds", compress = "xz")
 ################################################################################
 
 ################################################################################
@@ -265,7 +265,7 @@ rm(list = c("elevationrasterbig", "elevationrasterEU"))
   OceanMask_terra <- worldlimit - CountryBorders_terra
   print(OceanMask_terra)
   terra::plot(OceanMask_terra, col = "blue")
-  terra::saveRDS(OceanMask_terra, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+  terra::saveRDS(OceanMask_terra, file = "inst/extdata/OceanMask.rds", compress = "xz")
   rm(list = c("worldlimit", "CountryBorders_terra", "OceanMask_terra"))
 ################################################################################
 

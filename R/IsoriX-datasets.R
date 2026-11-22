@@ -398,7 +398,7 @@ NULL
 #' #    CountryBorders <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 #' #    CountryBorders <- vect(CountryBorders[, "name"])
 #' #    #terra::saveRDS(CountryBorders,
-#' #    #  file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
+#' #    #  file = "inst/extdata/CountryBorders.rds", compress = "xz")
 #' # }
 #'
 NULL
@@ -431,7 +431,7 @@ NULL
 #' #   worldlimit <- as.polygons(ext(CountryBorders))
 #' #   crs(worldlimit) <- crs(CountryBorders)
 #' #   OceanMask <- worldlimit - CountryBorders
-#' #   #terra::saveRDS(OceanMask, file = "IsoriX/inst/extdata/OceanMask.rds", compress = "xz")
+#' #   #terra::saveRDS(OceanMask, file = "inst/extdata/OceanMask.rds", compress = "xz")
 #' # }
 #'
 NULL

@@ -36,7 +36,7 @@ This creates your own copy (*fork*) of `IsoriX` on GitHub, and downloads it (*cl
 usethis::create_from_github("courtiol/IsoriX", fork = TRUE)
 ```
 
-Note that the repository contains several folders: the R package itself is in the folder `IsoriX` (open the RStudio project `IsoriX/IsoriX.Rproj` to work on it) and this bookdown is in the folder `bookdown`.
+Note that the R package itself is at the root of the repository (open the RStudio project `IsoriX.Rproj` to work on it), while this bookdown is in the folder `bookdown`.
 
 **Step 2: create a branch for your changes**, giving it a short descriptive name:
 
@@ -45,7 +45,7 @@ usethis::pr_init("fix-typo-in-isofit")
 ```
 
 **Step 3: make your changes** and check that they work.
-For changes to the package, you can load your modified version of `IsoriX` without installing it, by running `devtools::load_all()` from within the folder `IsoriX`.
+For changes to the package, you can load your modified version of `IsoriX` without installing it, by running `devtools::load_all()` from the root of the repository (i.e. from within the RStudio project `IsoriX.Rproj`).
 Then record your changes using git (e.g. using the "Git" panel of RStudio: tick the files you changed, click on "Commit" and write a short message describing your changes).
 
 **Step 4: send us your changes:**

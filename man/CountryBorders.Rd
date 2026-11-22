@@ -45,7 +45,7 @@ terra::ext(Germany)
 #    CountryBorders <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 #    CountryBorders <- vect(CountryBorders[, "name"])
 #    #terra::saveRDS(CountryBorders,
-#    #  file = "IsoriX/inst/extdata/CountryBorders.rds", compress = "xz")
+#    #  file = "inst/extdata/CountryBorders.rds", compress = "xz")
 # }
 
 }

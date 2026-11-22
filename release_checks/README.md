@@ -1,7 +1,7 @@
 # Checks to run before a release
 
 This folder is not part of the package. It contains checks to run before each
-release (they are listed in `release_bullets()` in `IsoriX/R/zzz.R`):
+release (they are listed in `release_bullets()` in `R/zzz.R`):
 
 - a thorough comparison of the outputs of the full IsoriX workflow between two
   versions of IsoriX (`compare_versions.R`, see below);
@@ -38,14 +38,16 @@ Rscript release_checks/compare_versions.R
 ```
 
 By default, the version currently on CRAN is compared to the current state of the
-`IsoriX` folder. You can instead compare to any git reference (a tag, a branch
-or a commit), e.g.:
+package in your working directory (the root of the repository). You can instead
+compare to any git reference (a tag, a branch or a commit), e.g.:
 
 ```bash
 Rscript release_checks/compare_versions.R v0.9.4
 ```
 
-It takes a few minutes and requires the package **magick**.
+It takes a few minutes and requires the package **magick**. Git references from
+before the reorganisation of the repository (#185), in which the package was
+stored in the folder `IsoriX`, are handled automatically.
 
 The results are written to `release_checks/output/<date-time>/` (ignored by git).
 Open `report.html` in a browser: it shows
@@ -82,7 +84,7 @@ Rscript release_checks/list_links.R
 ```
 
 This lists every unique link found in the bookdown (`bookdown/*.Rmd` and
-`*.yml`) and in the documentation of the package (`IsoriX/R/*.R`,
+`*.yml`) and in the documentation of the package (`R/*.R`,
 `DESCRIPTION`, `CITATION`, `README.md`), together with all the places where
 each link is used (file:line). It then checks each link (this takes less than a
 minute and requires the package **curl**). Use `--no-check` to only list them.
@@ -112,7 +114,7 @@ The test files are run in parallel (see the README of the repository, section
 "For the maintainer"). How much this speeds up the tests depends on the
 computer, and in particular on the linear algebra library (BLAS) used by R: a
 multithreaded one (e.g. OpenBLAS) makes each process use all the cores, so that
-the processes compete for them, which is why `IsoriX/tests/testthat.R` limits
+the processes compete for them, which is why `tests/testthat.R` limits
 each test process to a single thread.
 
 To measure how long the tests take depending on the number of processes, from
