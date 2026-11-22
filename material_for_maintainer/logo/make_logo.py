@@ -2,7 +2,7 @@
 
 Usage:
   python3 make_logo.py [FONT_FILE] [OUT.svg] [SIZE] [TRACKING] [PIN_X] [PIN_Y]
-Defaults: P052 Bold (URW Palatino clone), logo.svg, 108, 0, 360, 300.
+Defaults: Inter SemiBold, logo.svg, 104, -1, 360, 300.
 Requires: numpy, matplotlib (filled contours of the isoscape), fonttools
 (text is converted to outlines so the SVG renders without the font).
 PNGs were rendered from the SVG with headless Chromium.
@@ -19,10 +19,10 @@ from fontTools.ttLib import TTFont
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 
-FONT = sys.argv[1] if len(sys.argv) > 1 else "/usr/share/fonts/opentype/urw-base35/P052-Bold.otf"
-OUT = sys.argv[2] if len(sys.argv) > 2 else "logo2.svg"
-SIZE = float(sys.argv[3]) if len(sys.argv) > 3 else 108
-TRACK = float(sys.argv[4]) if len(sys.argv) > 4 else 0
+FONT = sys.argv[1] if len(sys.argv) > 1 else "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
+OUT = sys.argv[2] if len(sys.argv) > 2 else "logo.svg"
+SIZE = float(sys.argv[3]) if len(sys.argv) > 3 else 104
+TRACK = float(sys.argv[4]) if len(sys.argv) > 4 else -1
 
 PX, PY = float(sys.argv[5]) if len(sys.argv) > 5 else 360, float(sys.argv[6]) if len(sys.argv) > 6 else 300
 # IsoriX::isopalette1
@@ -95,14 +95,12 @@ pin = (f'<g transform="translate({px},{py})">'
        f'<circle cx="0" cy="-48" r="9" fill="#ffffff"/></g>')
 
 # ---- isotope: deuterium atom (1 proton + 1 neutron, 1 electron) ----
-ax_, ay_ = 128, 168
+ax_, ay_, ORB = 122, 162, 40
 atom = (f'<g transform="translate({ax_},{ay_})">'
-        f'<ellipse cx="0" cy="0" rx="62" ry="22" transform="rotate(-28)" fill="none" stroke="#ffffff" stroke-width="3.2"/>'
-        f'<ellipse cx="0" cy="0" rx="58" ry="21" transform="rotate(32)" fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0"/>'
+        f'<circle cx="0" cy="0" r="{ORB}" fill="none" stroke="#ffffff" stroke-width="3.2"/>'
         f'<circle cx="-10" cy="2" r="14" fill="#f4f1ec" stroke="#10212b" stroke-width="2"/>'
         f'<circle cx="10" cy="-2" r="14" fill="#c8102e" stroke="#ffffff" stroke-width="2.5"/>'
-        f'<circle cx="{62*math.cos(math.radians(-28))*math.cos(2.2) - 22*math.sin(math.radians(-28))*math.sin(2.2):.1f}" '
-        f'cy="{62*math.sin(math.radians(-28))*math.cos(2.2) + 22*math.cos(math.radians(-28))*math.sin(2.2):.1f}" r="7" fill="#ffffff" stroke="#10212b" stroke-width="2"/>'
+        f'<circle cx="{ORB*math.cos(math.radians(150)):.1f}" cy="{ORB*math.sin(math.radians(150)):.1f}" r="7" fill="#ffffff" stroke="#10212b" stroke-width="2"/>'
         f'</g>')
 
 # ---- name, outlined ----
@@ -114,7 +112,7 @@ def textpath(fontfile, txt, size, cx, base, track=0, anchor="middle"):
     for n, a in zip(nm, adv):
         gs[n].draw(TransformPen(pen, (sc, 0, 0, -sc, tx, base))); tx += a + track
     return pen.getCommands()
-label = f'<path d="{textpath(FONT, "\u00b2H", 40, ax_+2, ay_+74)}" fill="#ffffff" filter="url(#sh)"/>'
+label = f'<path d="{textpath(FONT, "\u00b2H", 38, ax_+1, ay_+ORB+44)}" fill="#ffffff" filter="url(#sh)"/>'
 
 f = TTFont(FONT); gs = f.getGlyphSet(); cmap = f.getBestCmap(); sc = SIZE/f["head"].unitsPerEm
 names = [cmap[ord(c)] for c in "IsoriX"]; adv = [gs[n].width*sc for n in names]
