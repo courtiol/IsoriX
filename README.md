@@ -1,4 +1,4 @@
-# Welcome to IsoriX
+# Welcome to IsoriX <img src="man/figures/logo.png" align="right" height="139" alt="IsoriX logo" />
 [![CRAN](https://www.r-pkg.org/badges/version/IsoriX)](https://cran.r-project.org/web/packages/IsoriX)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/IsoriX?color=brightgreen)](https://www.r-pkg.org/pkg/IsoriX)
 [![Dependencies](https://tinyverse.netlify.app/badge/IsoriX)](https://cran.r-project.org/package=IsoriX)
