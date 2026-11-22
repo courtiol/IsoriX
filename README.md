@@ -71,14 +71,11 @@ From the RStudio project of the package (`IsoriX/IsoriX.Rproj`), with `123` repl
 ```r
 usethis::pr_fetch(123) ## checks out the branch of the pull request
 devtools::load_all()   ## loads the version of IsoriX proposed in the pull request
-devtools::test()       ## runs the tests, including the plot snapshot tests
+withr::with_envvar(c(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1"),
+                   devtools::test()) ## runs the tests, including the plot snapshot tests
 usethis::pr_finish()   ## once done (or merged): goes back to the main branch and deletes the local branch
 ```
 Use `usethis::pr_pause()` instead of `usethis::pr_finish()` to go back to the main branch while keeping the branch of the pull request for later.
-
-The test files are run in parallel, using 2 R processes by default.
-If your computer has more cores, you can use more processes (e.g. 4) by adding `TESTTHAT_CPUS=4` to your `.Renviron` file (which you can open with `usethis::edit_r_environ()`), or by running `Sys.setenv(TESTTHAT_CPUS = 4)` before `devtools::test()`.
-To run the tests one file after the other (e.g. to debug a problem that only occurs when running tests in parallel), run `Sys.setenv(TESTTHAT_PARALLEL = "false")` first.
 
 ### Preparing a release
 Run `usethis::use_release_issue()`: it creates a GitHub issue with the checklist for the release, which includes the steps specific to IsoriX defined in `release_bullets()` (in `IsoriX/R/zzz.R`).
