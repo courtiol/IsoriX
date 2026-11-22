@@ -116,9 +116,13 @@ getOption_IsoriX <- function(x = NULL) {
   }
   if (x == "spaMM_blocksize") {
     blocksize <- options_IsoriX(x)[["spaMM_blocksize"]]
-    if (!is.numeric(blocksize) || length(blocksize) != 1L || is.na(blocksize) ||
-      blocksize < 1 || blocksize != round(blocksize)) {
-      stop("the option 'spaMM_blocksize' must be a single positive integer (e.g. `options_IsoriX(spaMM_blocksize = 16000L)`)")
+    valid <- is.numeric(blocksize) && length(blocksize) == 1L &&
+      !is.na(blocksize) && blocksize >= 1 && blocksize == round(blocksize)
+    if (!valid) {
+      stop(
+        "the option 'spaMM_blocksize' must be a single positive integer ",
+        "(e.g. `options_IsoriX(spaMM_blocksize = 16000L)`)"
+      )
     }
     return(as.integer(blocksize))
   }

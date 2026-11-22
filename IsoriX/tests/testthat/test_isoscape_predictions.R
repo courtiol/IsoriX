@@ -17,9 +17,12 @@ test_that("isoscape() stores, for each cell, the predictions from spaMM", {
   na_cells <- seq(1L, length(values), by = 7L)
   values[na_cells] <- NA
   raster <- terra::setValues(raster, values)
-  expect_gt(terra::ncell(raster), getOption_IsoriX("spaMM_blocksize")) ## several slices
+  ## several slices:
+  expect_gt(terra::ncell(raster), getOption_IsoriX("spaMM_blocksize"))
 
-  scape <- suppressMessages(isoscape(raster = raster, isofit = fit, verbose = FALSE))
+  scape <- suppressMessages(
+    isoscape(raster = raster, isofit = fit, verbose = FALSE)
+  )
   iso <- terra::values(scape$isoscapes)
 
   ## NA in the structural raster lead to NA in the mean isoscapes, and only
@@ -51,7 +54,9 @@ test_that("isoscape() stores, for each cell, the predictions from spaMM", {
 test_that("isoscape() runs with verbose = TRUE", {
   fit <- fixture_german()$fit
   expect_error(
-    suppressMessages(utils::capture.output(isoscape(raster = ElevRasterDE, isofit = fit, verbose = TRUE))),
+    suppressMessages(utils::capture.output(
+      isoscape(raster = ElevRasterDE, isofit = fit, verbose = TRUE)
+    )),
     regexp = NA
   )
 })

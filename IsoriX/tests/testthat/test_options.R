@@ -25,6 +25,11 @@ test_that("the option spaMM_blocksize is validated and used by isoscape()", {
   options_IsoriX(old)
   german <- fixture_german()
   options_IsoriX(spaMM_blocksize = 3000L)
-  scape <- suppressMessages(isoscape(raster = ElevRasterDE, isofit = german$fit, verbose = FALSE))
-  expect_equal(terra::values(scape$isoscapes), terra::values(german$scape$isoscapes))
+  scape <- suppressMessages(
+    isoscape(raster = ElevRasterDE, isofit = german$fit, verbose = FALSE)
+  )
+  expect_equal(
+    terra::values(scape$isoscapes),
+    terra::values(german$scape$isoscapes)
+  )
 })
