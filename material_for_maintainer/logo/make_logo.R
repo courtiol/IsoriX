@@ -29,12 +29,12 @@ font_weight <- "semibold"
 name_size <- 104    # font size of "IsoriX"
 name_track <- -1    # extra spacing between letters
 name_y <- 470       # baseline of "IsoriX"
-pin_x <- 360        # tip of the pin (inside the closed contour)
-pin_y <- 300
+pin_near_x <- 360   # the bat's pin is put at the centre (lowest point) of the
+pin_near_y <- 300   # closed contour found near this location
 reverse_palette <- TRUE # TRUE: brown at the top, blue at the bottom
 fish_x <- 66; fish_y <- 382; fish_scale <- 0.85; fish_rot <- 18
-fish_pin_x <- 259    # tip of the fish's pin (in the sea, inside its own closed contour)
-fish_pin_y <- 562
+fish_pin_near_x <- 259 # same for the fish's pin (in the sea, below the name)
+fish_pin_near_y <- 552
 fish_pin_scale <- 0.85
 
 W <- 518; H <- 600  # standard hex sticker proportions
@@ -54,7 +54,7 @@ hex_d <- paste(poly_d(hex[, "x"], hex[, "y"], close = FALSE), "Z")
 
 ## Isoscape: a 2D field (trend + relief + noise) and its filled contours -----
 
-isoscape_svg <- function(shift_x = 0, shift_y = 0, line_width = 1.4) {
+iso_field <- function(shift_x = 0, shift_y = 0) {
   x <- seq(-20, W + 20, by = 2)
   y <- seq(-20, H + 20, by = 2)
   X <- matrix(x + shift_x, nrow = length(y), ncol = length(x), byrow = TRUE)
@@ -74,10 +74,28 @@ isoscape_svg <- function(shift_x = 0, shift_y = 0, line_width = 1.4) {
   F <- F + g(470, 395, 60, 45, 0.07)
   F <- F + g(259, 552, 55, 20, -0.30)                            # closed contour (sea) for the fish's origin
   F <- F + g(259, 560, 340, 115, 0.30)                           # darker area behind the name
+  list(x = x, y = y, F = F) # F[i, j] is the value at (x[j], y[i])
+}
 
-  levels <- stats::quantile(F, seq(0, 1, length.out = 15), names = FALSE) # equal-area bands
+## location of the lowest value of the field within radius r of (x0, y0):
+## the centre of a closed contour (an "island" of low values)
+island_centre <- function(field, x0, y0, r = 50) {
+  d2 <- outer(field$y - y0, field$x - x0, function(dy, dx) dx^2 + dy^2)
+  F <- field$F
+  F[d2 > r^2] <- Inf
+  k <- which.min(F)
+  c(x = field$x[col(F)[k]], y = field$y[row(F)[k]])
+}
+
+iso_levels <- function(field) { # 14 equal-area bands
+  levels <- stats::quantile(field$F, seq(0, 1, length.out = 15), names = FALSE)
   levels[1] <- levels[1] - 1e-6
   levels[length(levels)] <- levels[length(levels)] + 1e-6
+  levels
+}
+
+isoscape_svg <- function(field, levels = iso_levels(field), line_width = 1.4) {
+  x <- field$x; y <- field$y; F <- pmin(pmax(field$F, levels[1]), levels[length(levels)])
   n_bands <- length(levels) - 1
   cols <- isopalette1[round(seq(0, length(isopalette1) - 1, length.out = n_bands)) + 1]
   if (reverse_palette) cols <- rev(cols)
@@ -146,16 +164,25 @@ pin_svg <- function(transform) {
     '<circle cx="0" cy="-48" r="9" fill="#ffffff"/></g>')
 }
 
-trajectory_d <- sprintf("M%s,%s C%s,%s %s,%s %s,%s",
-                        fmt(bat_x + 4), fmt(bat_y + 36), fmt(bat_x + 10), fmt(bat_y + 110),
-                        fmt(pin_x - 70), fmt(pin_y - 130), fmt(pin_x - 4), fmt(pin_y - 86))
+field <- iso_field()
+pin_xy <- island_centre(field, pin_near_x, pin_near_y)
+pin_x <- pin_xy[["x"]]; pin_y <- pin_xy[["y"]]
+fish_pin_xy <- island_centre(field, fish_pin_near_x, fish_pin_near_y)
+fish_pin_x <- fish_pin_xy[["x"]]; fish_pin_y <- fish_pin_xy[["y"]]
 
-## from the fish's nose, down the left of the name, then under it to the pin
-nose_x <- fish_x + 52 * fish_scale * cos(fish_rot * pi / 180) # just in front of the nose
-nose_y <- fish_y + 52 * fish_scale * sin(fish_rot * pi / 180)
-fish_trajectory_d <- sprintf("M%s,%s C%s,%s %s,%s %s,%s",
-                             f1(nose_x), f1(nose_y), f1(nose_x - 12), f1(nose_y + 85),
-                             fmt(fish_pin_x - 125), fmt(fish_pin_y - 28), fmt(fish_pin_x - 30), fmt(fish_pin_y - 44))
+## dotted paths: one gentle curve from below the animal to the left of its pin's head
+path_d <- function(start_x, start_y, pin_x, pin_y, pin_scale = 1) {
+  end_x <- pin_x - 28 * pin_scale
+  end_y <- pin_y - 40 * pin_scale
+  sprintf("M%s,%s Q%s,%s %s,%s", f1(start_x), f1(start_y), f1(start_x + 14), f1(end_y + 4), f1(end_x), f1(end_y))
+}
+trajectory_d <- path_d(bat_x + 4, bat_y + 36, pin_x, pin_y)
+
+## from below the fish, down the left of the name, to its pin
+rot <- fish_rot * pi / 180
+start_x <- fish_x + fish_scale * (-2 * cos(rot) - 36 * sin(rot)) # just below the belly
+start_y <- fish_y + fish_scale * (-2 * sin(rot) + 36 * cos(rot))
+fish_trajectory_d <- path_d(start_x, start_y, fish_pin_x, fish_pin_y, fish_pin_scale)
 
 atom_x <- 122; atom_y <- 162; orbit <- 40
 atom_svg <- paste0(
@@ -195,7 +222,7 @@ text_d <- function(txt, size, centre_x, baseline, track = 0) {
 name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
                     text_d("IsoriX", name_size, 259, name_y, name_track))
 label_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
-                     text_d("²H", 38, atom_x + 1, atom_y + orbit + 44))
+                     text_d("\u00b2H", 38, atom_x + 1, atom_y + orbit + 44))
 
 ## Assemble ---------------------------------------------------------------------
 
@@ -213,7 +240,7 @@ logo_svg <- paste(
   sprintf('<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s">', W, H, W, H),
   defs(3),
   '<g clip-path="url(#hex)">',
-  isoscape_svg(),
+  isoscape_svg(field),
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', trajectory_d),
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', fish_trajectory_d),
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s)", pin_x, pin_y))),
@@ -228,14 +255,17 @@ logo_svg <- paste(
   border(20),
   '</svg>', sep = "\n")
 
-## simplified mark for favicons: square canvas, field shifted so that the closed
-## contour sits in the centre, large pin, thicker lines and border
+## simplified mark for favicons: square canvas, field shifted so that the bat's
+## closed contour sits in the centre, large pin, thicker lines and border
+mark_centre <- c(x = 259, y = 375) # where the bat's island lands in the mark
+mark_field <- iso_field(shift_x = pin_x - mark_centre[["x"]], shift_y = pin_y - mark_centre[["y"]])
+mark_pin <- island_centre(mark_field, mark_centre[["x"]], mark_centre[["y"]], r = 10)
 mark_svg <- paste(
   '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="-41 0 600 600">',
   defs(6),
   '<g clip-path="url(#hex)">',
-  isoscape_svg(shift_x = 100, shift_y = -60, line_width = 3),
-  sprintf('<g filter="url(#sh)">%s</g>', pin_svg("translate(259,382) scale(3.2)")),
+  isoscape_svg(mark_field, levels = iso_levels(field), line_width = 3), # same colours as the logo
+  sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s) scale(3.2)", mark_pin[["x"]], mark_pin[["y"]]))),
   '</g>',
   border(48),
   '</svg>', sep = "\n")
