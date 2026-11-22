@@ -316,7 +316,7 @@ We can then compare the three mean models by comparing directly the isoscapes us
 
 ```{r modelselection AIC}
 AIC_mean <- AIC(EuropeFit_null, EuropeFit_elev, EuropeFit)
-AIC_mean
+print(AIC_mean)
 ```
 
 The column `cAIC` gives the **conditional AIC** of each fit, which is the criterion to use for comparing isoscape models.
@@ -371,7 +371,7 @@ if (file.exists("output/EuropeFit_disp_elev.rds")) {
 
 ```{r modelselection disp AIC}
 AIC_disp <- AIC(EuropeFit, EuropeFit_disp_elev)
-AIC_disp
+print(AIC_disp)
 ```
 
 Adding the elevation to the residual dispersion model slightly decreases the uncorrected conditional AIC (by `r round(AIC_disp["EuropeFit", "cAIC_uncorrected"] - AIC_disp["EuropeFit_disp_elev", "cAIC_uncorrected"], 2)` units), but once the additional parameter estimated in the residual dispersion model is accounted for, the conditional AIC increases (by `r round(AIC_disp["EuropeFit_disp_elev", "cAIC"] - AIC_disp["EuropeFit", "cAIC"], 2)` units).
