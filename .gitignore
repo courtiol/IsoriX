@@ -64,3 +64,6 @@ material_for_maintainer/sources_for_vignettes/**/wc2.0_30s_prec/
 
 # Outputs of the comparison between versions before a release
 release_checks/output/
+
+# pkgdown website (built and deployed by GitHub Actions to the gh-pages branch)
+docs/

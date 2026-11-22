@@ -27,3 +27,9 @@
 ^IsoriX_.*\.tar\.gz$
 ^IsoriX\.Rcheck$
 ^CRAN_releases$
+
+## pkgdown website (the README GIF lives in man/figures for pkgdown, but is not needed in the package)
+^man/figures/image_intro-\.gif$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
