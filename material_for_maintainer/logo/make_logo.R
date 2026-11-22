@@ -16,7 +16,8 @@
 ##
 ## Elements: an isoscape (filled contours of a 2D field coloured with
 ## isopalette1), a bat flying to the assigned origin (pin inside a closed
-## contour), and a deuterium atom (1 proton + 1 neutron, 1 electron) labelled 2H.
+## contour), a fish, and a deuterium atom (1 proton + 1 neutron, 1 electron)
+## labelled 2H.
 
 out_dir <- "material_for_maintainer/logo"
 stopifnot("run this script from the root of the IsoriX package" = dir.exists(out_dir))
@@ -29,6 +30,8 @@ name_size <- 104    # font size of "IsoriX"
 name_track <- -1    # extra spacing between letters
 pin_x <- 360        # tip of the pin (inside the closed contour)
 pin_y <- 300
+reverse_palette <- TRUE # TRUE: brown at the top, blue at the bottom
+fish_x <- 128; fish_y <- 350; fish_scale <- 1; fish_rot <- -6
 
 W <- 518; H <- 600  # standard hex sticker proportions
 hex <- cbind(x = c(259, 518, 518, 259, 0, 0), y = c(0, 150, 450, 600, 450, 150))
@@ -73,6 +76,7 @@ isoscape_svg <- function(shift_x = 0, shift_y = 0, line_width = 1.4) {
   levels[length(levels)] <- levels[length(levels)] + 1e-6
   n_bands <- length(levels) - 1
   cols <- isopalette1[round(seq(0, length(isopalette1) - 1, length.out = n_bands)) + 1]
+  if (reverse_palette) cols <- rev(cols)
 
   bands <- isoband::isobands(x, y, F, levels[-length(levels)], levels[-1])
   bands_svg <- vapply(seq_along(bands), function(i) {
@@ -116,6 +120,17 @@ bat_d <- function() {
   paste(d, "Z")
 }
 bat_x <- 300; bat_y <- 100; bat_scale <- 1.1; bat_rot <- -4
+
+## Fish (facing right, centred on 0,0) ----------------------------------------
+
+fish_svg <- paste0(
+  sprintf('<g transform="translate(%s,%s) rotate(%s) scale(%s)" filter="url(#sh)">', fish_x, fish_y, fish_rot, fish_scale),
+  '<path d="M44,0 C38,-14 24,-22 8,-23 Q0,-36 -12,-35 Q-12,-26 -16,-19 C-24,-14 -30,-9 -36,-5 ',
+  'L-54,-22 Q-48,0 -54,22 L-36,5 C-28,12 -16,18 -2,21 Q-6,28 -14,31 Q2,30 8,22 C24,21 38,14 44,0 Z" ',
+  'fill="#10212b" stroke="#ffffff" stroke-width="2.4" stroke-linejoin="round"/>',
+  '<path d="M17,-12 Q11,0 17,12" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-opacity="0.8"/>', # gill
+  '<circle cx="29" cy="-5" r="3.6" fill="#ffffff"/>',                                                                          # eye
+  '</g>')
 
 ## Pin, trajectory and atom -------------------------------------------------
 
@@ -191,6 +206,7 @@ logo_svg <- paste(
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', trajectory_d),
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s)", pin_x, pin_y))),
   sprintf('<g filter="url(#sh)">%s</g>', atom_svg),
+  fish_svg,
   sprintf('<g transform="translate(%s,%s) rotate(%s) scale(%s)" filter="url(#sh)"><path d="%s" fill="#10212b" stroke="#ffffff" stroke-width="2.4" stroke-linejoin="round"/></g>',
           bat_x, bat_y, bat_rot, bat_scale, bat_d()),
   label_svg,
