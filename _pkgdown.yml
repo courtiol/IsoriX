@@ -1,0 +1,87 @@
+url: https://courtiol.github.io/IsoriX/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#0a2f45"
+    link-color: "#006a9c"
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+    code_font: {google: "JetBrains Mono"}
+
+home:
+  title: "IsoriX: Isoscape Computation and Inference of Spatial Origins"
+  description: >
+    Building isoscapes using mixed models and inferring the geographic origin
+    of samples based on their isotopic ratios.
+
+navbar:
+  structure:
+    left: [intro, reference, documentation, news]
+    right: [search, mailing, github]
+  components:
+    documentation:
+      text: Documentation (bookdown)
+      href: https://courtiol-isorix.share.connect.posit.cloud
+    mailing:
+      icon: fa-envelope
+      href: https://groups.google.com/g/IsoriX
+      aria-label: Mailing list
+
+reference:
+  - title: Package overview
+    contents:
+      - IsoriX-package
+  - title: Preparing the data
+    contents:
+      - prepsources
+      - prepraster
+      - prepcipitate
+      - getelev
+      - getprecip
+      - downloadfile
+      - create_aliens
+  - title: Building isoscapes
+    contents:
+      - isofit
+      - isomultifit
+      - isoscape
+      - isomultiscape
+      - AIC.ISOFIT
+  - title: Calibration
+    contents:
+      - calibfit
+      - calibscape
+  - title: Assignment
+    contents:
+      - isofind
+  - title: Plotting
+    contents:
+      - plots
+      - plot_sources
+      - plot_dependencies
+      - isopalette2
+  - title: Classes
+    contents:
+      - ends_with("-class")
+  - title: Options and saving
+    contents:
+      - options
+      - serialize
+  - title: Datasets
+    contents:
+      - AssignDataAlien
+      - AssignDataBat
+      - AssignDataBat2
+      - CalibDataAlien
+      - CalibDataBat
+      - CalibDataBat2
+      - GNIPDataDE
+      - GNIPDataEUagg
+      - CountryBorders
+      - OceanMask
+      - ElevRasterDE
+      - PrecipBrickDE
+  - title: Defunct and deprecated
+    contents:
+      - IsoriX-defunct

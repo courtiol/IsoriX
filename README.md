@@ -6,7 +6,7 @@
 
 This is the development repository of __IsoriX__, an [R](https://www.r-project.org/) package aiming at building isoscapes using mixed models and inferring the geographic origin of organisms based on their isotopic ratios.
 
-![isoscape](.github/image/image_intro-.gif)
+![isoscape](man/figures/image_intro-.gif)
 
 
 ## Where to learn about IsoriX?

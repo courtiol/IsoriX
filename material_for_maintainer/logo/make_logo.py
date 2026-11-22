@@ -1,7 +1,7 @@
 """Generate the IsoriX hex logo as SVG.
 
 Usage:
-  python3 make_logo.py [FONT_FILE] [OUT.svg] [SIZE] [TRACKING] [PIN_X] [PIN_Y]
+  python3 make_logo.py [--mark] [FONT_FILE] [OUT.svg] [SIZE] [TRACKING] [PIN_X] [PIN_Y]
 Defaults: Inter SemiBold, logo.svg, 104, -1, 360, 300.
 Requires: numpy, matplotlib (filled contours of the isoscape), fonttools
 (text is converted to outlines so the SVG renders without the font).
@@ -19,7 +19,10 @@ from fontTools.ttLib import TTFont
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 
-FONT = sys.argv[1] if len(sys.argv) > 1 else "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
+# --mark: simplified favicon version (isoscape + large pin only, square viewBox)
+MARK = "--mark" in sys.argv
+if MARK: sys.argv.remove("--mark")
+FONT = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] else "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
 OUT = sys.argv[2] if len(sys.argv) > 2 else "logo.svg"
 SIZE = float(sys.argv[3]) if len(sys.argv) > 3 else 104
 TRACK = float(sys.argv[4]) if len(sys.argv) > 4 else -1
@@ -34,6 +37,8 @@ def hexpath(pts): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x,y in pts) + " 
 # ---- isoscape: a 2D field (trend + relief + noise), filled contours ----
 x = np.arange(-20, W+21, 2.0); y = np.arange(-20, H+21, 2.0)
 X, Y = np.meshgrid(x, y)
+DX, DY = (100, -60) if MARK else (0, 0)
+X, Y = X + DX, Y + DY  # shift the field (mark: bring the closed contour to the centre)
 def g(cx, cy, sx, sy, a, th=0):
     c, s = math.cos(th), math.sin(th)
     u = (X-cx)*c + (Y-cy)*s; v = -(X-cx)*s + (Y-cy)*c
@@ -52,6 +57,7 @@ levels = np.quantile(F, np.linspace(0, 1, 15)); levels[0] -= 1e-6; levels[-1] +=
 ncol = len(levels)-1
 cols = [pal[round(i*(len(pal)-1)/(ncol-1))] for i in range(ncol)]
 fig, ax = plt.subplots()
+X, Y = X - DX, Y - DY
 cs = ax.contourf(X, Y, F, levels=levels)
 bands = []
 for i, path in enumerate(cs.get_paths()):
@@ -136,5 +142,17 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewB
 {name}
 </g>
 <path d="{hexpath(hexpts)}" fill="none" stroke="#0a2f45" stroke-width="20" clip-path="url(#hex)"/>
+</svg>'''
+if MARK:
+    mpin = pin.replace(f'translate({px},{py})', 'translate(259,382) scale(3.2)')
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="-41 0 600 600">
+<defs><clipPath id="hex"><path d="{hexpath(hexpts)}"/></clipPath>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/></filter></defs>
+<g clip-path="url(#hex)">
+{chr(10).join(bands)}
+{lines_svg.replace('stroke-width="1.4"', 'stroke-width="3"')}
+<g filter="url(#sh)">{mpin}</g>
+</g>
+<path d="{hexpath(hexpts)}" fill="none" stroke="#0a2f45" stroke-width="48" clip-path="url(#hex)"/>
 </svg>'''
 open(OUT, "w").write(svg)

@@ -47,7 +47,7 @@ Suggests:
     webshot2,
     withr
 LazyData: true
-URL: https://github.com/courtiol/IsoriX, https://courtiol-isorix.share.connect.posit.cloud/
+URL: https://github.com/courtiol/IsoriX, https://courtiol.github.io/IsoriX/, https://courtiol-isorix.share.connect.posit.cloud/
 BugReports: https://github.com/courtiol/IsoriX/issues
 Roxygen: list(markdown = TRUE)
 Language: en-GB
