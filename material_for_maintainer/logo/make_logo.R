@@ -17,8 +17,8 @@
 ## Elements: an isoscape (filled contours of a 2D field coloured with
 ## isopalette1), a bat flying to the assigned origin (pin inside a closed
 ## contour), a fish, and small atoms scattered over the landscape: many 1H and
-## 16O, a few of the heavy stable isotopes 2H and 18O (placed in the brown,
-## i.e. enriched, areas).
+## a few of the heavy stable isotope 2H (placed in the brown, i.e. enriched,
+## areas); 16O and 18O can be switched on in n_atoms.
 
 out_dir <- "material_for_maintainer/logo"
 stopifnot("run this script from the root of the IsoriX package" = dir.exists(out_dir))
@@ -224,15 +224,15 @@ name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
 ## many light atoms (1H, 16O) and a few heavy ones (2H, 18O); the heavy ones only
 ## go where the isoscape is brown (enriched values in isopalette1)
 
-n_atoms <- c(H1 = 9, H2 = 2, O16 = 6, O18 = 2)
+n_atoms <- c(H1 = 12, H2 = 3, O16 = 0, O18 = 0) # oxygen switched off (set e.g. O16 = 6, O18 = 2)
 atoms_seed <- 1     # change to get another random arrangement
-nucleon_r <- 2.8; electron_r <- 1.9; orbit_lwd <- 1.1
+nucleon_r <- 3.6; electron_r <- 2.4; orbit_lwd <- 1.3
 
 isotopes <- list( # protons, neutrons, orbits (radius, number of electrons)
-  H1  = list(p = 1, n = 0,  orbits = list(c(9, 1))),
-  H2  = list(p = 1, n = 1,  orbits = list(c(9, 1))),
-  O16 = list(p = 8, n = 8,  orbits = list(c(13.5, 2), c(19.5, 6))),
-  O18 = list(p = 8, n = 10, orbits = list(c(13.5, 2), c(19.5, 6))))
+  H1  = list(p = 1, n = 0,  orbits = list(c(12, 1))),
+  H2  = list(p = 1, n = 1,  orbits = list(c(12, 1))),
+  O16 = list(p = 8, n = 8,  orbits = list(c(17, 2), c(24.5, 6))),
+  O18 = list(p = 8, n = 10, orbits = list(c(17, 2), c(24.5, 6))))
 
 nucleon <- function(x, y, proton) {
   if (proton) sprintf('<circle cx="%s" cy="%s" r="%s" fill="#c8102e" stroke="#ffffff" stroke-width="0.7"/>', f1(x), f1(y), nucleon_r)
@@ -241,7 +241,7 @@ nucleon <- function(x, y, proton) {
 nucleus_svg <- function(p, n) {
   k <- p + n
   if (k == 1) return(nucleon(0, 0, TRUE))
-  if (k == 2) return(paste0(nucleon(-2.3, 0.5, FALSE), nucleon(2.3, -0.5, TRUE)))
+  if (k == 2) return(paste0(nucleon(-0.82 * nucleon_r, 0.5, FALSE), nucleon(0.82 * nucleon_r, -0.5, TRUE)))
   i <- 0:(k - 1) # larger nuclei: nucleons packed on a sunflower spiral
   r <- 0.66 * nucleon_r * sqrt(i + 0.5)
   th <- i * 137.508 * pi / 180
