@@ -11,7 +11,7 @@ All scripts are run from the root of the repository and load the package with
 |---|---|---|
 | `01_combination_methods.R` | Size and power of group tests (Fisher, joint Gaussian chi-square, GLS mean, Cauchy, raw harmonic mean p) under the variance model of `isofind()` (terms 1-3), with optional extra correlation among animals | ca. 4 min |
 | `02_term4_and_site_effect.R` | Mechanistic simulation of the isoscape prediction errors jointly at the calibration sites and candidate cells, of the calibration data, and of the (linearised) calibration fit; checks term 4 and the calibration site random effect | ca. 3 min |
-| `03_validate_calibfit.R` | Same as above but refitting `calibfit()` on each simulated calibration dataset, to validate the linearisation used in script 02 | ca. 75 min on 4 cores (skipped if `results/03_validate_lambda0.rds` exists) |
+| `03_validate_calibfit.R` | Same as above but refitting `calibfit()` on each simulated calibration dataset, to validate the linearisation used in script 02 | ca. 60 min on 4 cores (skipped if `results/03_validate_lambda0.rds` exists) |
 
 All simulations are conditional on the German example (`GNIPDataDE`,
 `ElevRasterDE`, `CalibDataAlien`): the fitted isoscape is treated as the
@@ -51,5 +51,14 @@ need a replacement for `isosim()`, whose dependency `RandomFields` is retired.
    In the linearised simulation, the empirical variance matches
    `term4 = -2 * Cov(d_cell, d_calib) %*% t(G) %*% c(1, mu_cell)`
    (G = GLS left generalised inverse of the calibration), while the formula in
-   `isofind()` gives about half of that. Script 03 checks this with real
-   `calibfit()` refits.
+   `isofind()` gives about half of that.
+5. **Validation with 200 real `calibfit()` refits (script 03) confirms 4.**
+   The empirical term 4 agrees with the derived formula (regression slope
+   across cells 0.91; e.g. -16.6 ± 2.7 vs -18.1 at the worst predicted cell,
+   -1.38 ± 0.32 vs -1.51 averaged over calibration sites), whereas the
+   `isofind()` formula is too small by a factor of ca. 2 (slope 1.70;
+   -8.6 at the worst cell). The `fixefCov` reported by `calibfit()` averages
+   3.75 for the intercept variance vs 2.96 empirically (GLS: 3.70), so term 3
+   is slightly conservative. The bias of the calibration coefficients is
+   small (-0.38 on the intercept, -0.007 on the slope) and nearly cancels
+   within the range of the isoscape.

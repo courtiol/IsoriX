@@ -11,7 +11,7 @@
 ##
 ## Run from the root of the repository (optional arguments: nrep lambda_true ncores):
 ##   Rscript material_for_maintainer/simulations_issue_64/03_validate_calibfit.R 200 0 4
-## Runtime: each calibfit() takes ca. 85 s, so 200 replicates on 4 cores take ca. 75 min.
+## Runtime: each calibfit() takes ca. 85 s, so 200 replicates on 4 cores take ca. 60 min.
 
 suppressMessages(pkgload::load_all(".", quiet = TRUE))
 args <- as.numeric(commandArgs(TRUE))
