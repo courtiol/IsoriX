@@ -285,23 +285,11 @@ isofit <- function(data,
 
 
   ## Inform users fitting the default model (only once per session)
-  if (!isTRUE(.data_IsoriX$default_model_msg_shown) &&
-    .is_default_isofit_model(
-      mean_model_fix = mean_model_fix, disp_model_fix = disp_model_fix,
-      mean_model_rand = mean_model_rand, disp_model_rand = disp_model_rand,
-      uncorr_terms = uncorr_terms
-    )) {
-    message(
-      "You are fitting the default model of isofit(), which contains no fixed-effect predictor ",
-      "(e.g. elevation or latitude) in either the mean model or the residual dispersion model. ",
-      "This default is a convenient starting point but it is probably not the best model for your data. ",
-      "Please consider comparing alternative models by changing the arguments `mean_model_fix` and `disp_model_fix`. ",
-      "See ?isofit and the online documentation: ",
-      "https://courtiol-isorix.share.connect.posit.cloud/isoscape.html#modelselection\n",
-      "This message is only displayed once per session."
-    )
-    .data_IsoriX$default_model_msg_shown <- TRUE
-  }
+  .inform_default_model(
+    mean_model_fix = mean_model_fix, disp_model_fix = disp_model_fix,
+    mean_model_rand = mean_model_rand, disp_model_rand = disp_model_rand,
+    uncorr_terms = uncorr_terms
+  )
 
   ## Express longitudes continuously if the sources straddle the antimeridian
   data <- .make_long_continuous(data)
@@ -457,6 +445,23 @@ isofit <- function(data,
 #'
 #' This function is a wrapper around the function [`isofit`].
 #'
+#' **Parallel computing**
+#'
+#' The pairs of models of the different strata are fitted independently from
+#' each other. They can therefore be fitted in parallel, using several CPUs,
+#' which is done when `Ncpu` is larger than 1 (by default `Ncpu` is set by the
+#' global option `Ncpu` of IsoriX, see [`options_IsoriX`]). Parallel computing
+#' relies on socket clusters created by the base package \pkg{parallel}, which
+#' works on Windows, macOS and Linux. Each of the `Ncpu` CPUs used runs a new R
+#' session, which takes a few seconds to start and requires its own memory, so
+#' parallel computing is only worth it when fitting each pair of models takes
+#' more than a few seconds. In such case, setting `Ncpu` to the number of
+#' strata, or to a divisor of it, makes the best use of the CPUs. The fits are
+#' identical whether they are produced sequentially or in parallel. Note that
+#' when IsoriX is not attached using `library()` but loaded during development
+#' (e.g. with `devtools::load_all()`), the package \pkg{pkgload} is used to load
+#' the same version of IsoriX in each R session.
+#'
 #' @return This function returns a *list* of class *MULTIISOFIT*
 #'   containing all pairs of inter-related fits (stored under
 #'   \code{multi_fits}). The returned *list* also contains the object
@@ -468,6 +473,10 @@ isofit <- function(data,
 #'   [`isofit`] will then be called on each of these sub-datasets. The
 #'   default behaviour is to consider that the dataset should be split per
 #'   months (`split_by = "month"`).
+#' @param Ncpu An *integer* specifying the number of CPUs to use, i.e. the
+#'   number of pairs of models fitted in parallel (default set by the global
+#'   package option `Ncpu`, see [`options_IsoriX`]). Use `Ncpu = 1` to fit the
+#'   models sequentially (see **Parallel computing** in Details).
 #'
 #' @seealso [`isofit`] for information about the fitting procedure of
 #'   each isoscape.
@@ -510,9 +519,11 @@ isomultifit <- function(data,
                         dist_method = "Earth", ## or: "Euclidean"
                         control_mean = list(),
                         control_disp = list(),
+                        Ncpu = getOption_IsoriX("Ncpu"),
                         verbose = interactive()) {
   ## Check the inputs (#164)
   .check_source_data(data, "isomultifit")
+  Ncpu <- .check_Ncpu(Ncpu)
 
   ## Complete the arguments
   .complete_args(isomultifit)
@@ -532,32 +543,45 @@ isomultifit <- function(data,
   info_fit$data <- data
 
   ## Prepare arguments for call(s) to isofit
-  info_fit$split_by <- info_fit$weighting <- NULL ## removes arguments unknown to isofit
+  info_fit$split_by <- info_fit$weighting <- info_fit$Ncpu <- NULL ## removes arguments unknown to isofit
 
   ## Trivial case if no splitting is done
   if (is.null(split_by)) {
     return(do.call(isofit, info_fit))
   }
 
+  strata <- unique(data[, split_by])
+  Ncpu <- min(Ncpu, length(strata))
+
   ## Interactive display
   if (verbose) {
-    print(paste("Fitting the all", length(unique(data[, split_by])), "pairs of models using spaMM:"), quote = FALSE)
+    print(paste0(
+      "Fitting the all ", length(strata), " pairs of models using spaMM",
+      if (Ncpu > 1) paste0(" (in parallel, using ", Ncpu, " CPUs)"), ":"
+    ), quote = FALSE)
     print(paste("(it may take a while...)"), quote = FALSE)
   }
 
+  ## Inform users fitting the default model (done here so that it is not repeated by each parallel worker)
+  .inform_default_model(
+    mean_model_fix = mean_model_fix, disp_model_fix = disp_model_fix,
+    mean_model_rand = mean_model_rand, disp_model_rand = disp_model_rand,
+    uncorr_terms = uncorr_terms
+  )
+
   ## Run all fits
   info_fit$verbose <- FALSE ## no display for each fit
+  info_fit$data <- NULL ## the data are sent separately for each stratum
+  tasks <- lapply(strata, function(s) list(stratum = s, data = data[data[, split_by] == s, ]))
   total_time <- system.time({
-    multi_fits <- lapply(unique(data[, split_by]), function(s) {
-      info_fit$data <- data[data[, split_by] == s, ]
-      fit <- do.call(isofit, info_fit)
-      if (verbose) {
-        print(paste("fit of the pair of models for", split_by, s, "done"), quote = FALSE)
-      }
-      return(fit)
-    })
+    multi_fits <- .lapply_IsoriX(
+      X = tasks,
+      FUN = .isomultifit_one,
+      shared = list(info_fit = info_fit, split_by = split_by, verbose = verbose),
+      Ncpu = Ncpu
+    )
   })
-  names(multi_fits) <- paste(split_by, unique(data[, split_by]), sep = "_")
+  names(multi_fits) <- paste(split_by, strata, sep = "_")
 
   ## Interactive display
   if (verbose) {
@@ -574,6 +598,19 @@ isomultifit <- function(data,
   class(out) <- c("MULTIISOFIT", "ISOFIT", "list")
 
   return(invisible(out))
+}
+
+
+.isomultifit_one <- function(task, shared) {
+  ## This function should not be called by the user but is itself called by isomultifit().
+  ## It fits the pair of models for a given stratum (possibly within a parallel worker).
+  info_fit <- shared$info_fit
+  info_fit$data <- task$data
+  fit <- do.call(isofit, info_fit)
+  if (shared$verbose) {
+    print(paste("fit of the pair of models for", shared$split_by, task$stratum, "done"), quote = FALSE)
+  }
+  fit
 }
 
 
@@ -637,6 +674,34 @@ isomultifit <- function(data,
     same_as_default(mean_model_rand, "mean_model_rand") &&
     same_as_default(disp_model_rand, "disp_model_rand") &&
     same_as_default(uncorr_terms, "uncorr_terms")
+}
+
+
+.inform_default_model <- function(mean_model_fix, disp_model_fix,
+                                  mean_model_rand, disp_model_rand,
+                                  uncorr_terms) {
+  ## This function should not be called by the user but is itself called by other functions.
+  ## It informs users fitting the default model of isofit() that they should consider other models.
+  ## The message is only displayed once per session.
+  ## The arguments must have been completed using .complete_args() beforehand.
+  if (!isTRUE(.data_IsoriX$default_model_msg_shown) &&
+    .is_default_isofit_model(
+      mean_model_fix = mean_model_fix, disp_model_fix = disp_model_fix,
+      mean_model_rand = mean_model_rand, disp_model_rand = disp_model_rand,
+      uncorr_terms = uncorr_terms
+    )) {
+    message(
+      "You are fitting the default model of isofit(), which contains no fixed-effect predictor ",
+      "(e.g. elevation or latitude) in either the mean model or the residual dispersion model. ",
+      "This default is a convenient starting point but it is probably not the best model for your data. ",
+      "Please consider comparing alternative models by changing the arguments `mean_model_fix` and `disp_model_fix`. ",
+      "See ?isofit and the online documentation: ",
+      "https://courtiol-isorix.share.connect.posit.cloud/isoscape.html#modelselection\n",
+      "This message is only displayed once per session."
+    )
+    .data_IsoriX$default_model_msg_shown <- TRUE
+  }
+  invisible(NULL)
 }
 
 
