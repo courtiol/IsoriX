@@ -312,7 +312,7 @@ if (file.exists("output/EuropeFit_elev.rds")) {
 }
 ```
 
-We can then compare the three fitted isoscapes using the function `AIC()`:
+We can then compare the three mean models by comparing directly the isoscapes using the function `AIC()`:
 
 ```{r modelselection AIC}
 AIC_mean <- AIC(EuropeFit_null, EuropeFit_elev, EuropeFit)
