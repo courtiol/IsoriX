@@ -16,9 +16,9 @@
 ##
 ## Elements: an isoscape (filled contours of a 2D field coloured with
 ## isopalette1), a bat flying to the assigned origin (pin inside a closed
-## contour), a fish, and two stable isotopes: a deuterium atom (2H: 1 proton +
-## 1 neutron, 1 electron) and an oxygen-18 atom (18O: 8 protons + 10 neutrons,
-## 2 + 6 electrons).
+## contour), a fish, and small atoms scattered over the landscape: many 1H and
+## 16O, a few of the heavy stable isotopes 2H and 18O (placed in the brown,
+## i.e. enriched, areas).
 
 out_dir <- "material_for_maintainer/logo"
 stopifnot("run this script from the root of the IsoriX package" = dir.exists(out_dir))
@@ -177,6 +177,13 @@ path_d <- function(start_x, start_y, pin_x, pin_y, pin_scale = 1) {
   end_y <- pin_y - 40 * pin_scale
   sprintf("M%s,%s Q%s,%s %s,%s", f1(start_x), f1(start_y), f1(start_x + 14), f1(end_y + 4), f1(end_x), f1(end_y))
 }
+path_pts <- function(start_x, start_y, pin_x, pin_y, pin_scale = 1, n = 40) { # points along path_d()
+  end_x <- pin_x - 28 * pin_scale; end_y <- pin_y - 40 * pin_scale
+  cx <- start_x + 14; cy <- end_y + 4
+  t <- seq(0, 1, length.out = n)
+  cbind(x = (1 - t)^2 * start_x + 2 * (1 - t) * t * cx + t^2 * end_x,
+        y = (1 - t)^2 * start_y + 2 * (1 - t) * t * cy + t^2 * end_y)
+}
 trajectory_d <- path_d(bat_x + 4, bat_y + 36, pin_x, pin_y)
 
 ## from below the fish, down the left of the name, to its pin
@@ -184,43 +191,6 @@ rot <- fish_rot * pi / 180
 start_x <- fish_x + fish_scale * (-2 * cos(rot) - 36 * sin(rot)) # just below the belly
 start_y <- fish_y + fish_scale * (-2 * sin(rot) + 36 * cos(rot))
 fish_trajectory_d <- path_d(start_x, start_y, fish_pin_x, fish_pin_y, fish_pin_scale)
-
-## shared style of the two atoms
-nucleon_r <- 8.5; electron_r <- 6; orbit_lwd <- 2.8
-nucleon <- function(x, y, proton) {
-  if (proton) sprintf('<circle cx="%s" cy="%s" r="%s" fill="#c8102e" stroke="#ffffff" stroke-width="1.8"/>', f1(x), f1(y), nucleon_r)
-  else sprintf('<circle cx="%s" cy="%s" r="%s" fill="#f4f1ec" stroke="#10212b" stroke-width="1.6"/>', f1(x), f1(y), nucleon_r)
-}
-orbit_svg <- function(radius, angles) { # an orbit and its electrons (angles in degrees)
-  paste0(sprintf('<circle cx="0" cy="0" r="%s" fill="none" stroke="#ffffff" stroke-width="%s"/>', radius, orbit_lwd),
-         paste0(sprintf('<circle cx="%s" cy="%s" r="%s" fill="#ffffff" stroke="#10212b" stroke-width="1.8"/>',
-                        f1(radius * cos(angles * pi / 180)), f1(radius * sin(angles * pi / 180)), electron_r), collapse = ""))
-}
-
-## deuterium (2H): 1 proton + 1 neutron, 1 electron
-atom_x <- 108; atom_y <- 156
-atom_svg <- paste0(
-  sprintf('<g transform="translate(%s,%s)">', atom_x, atom_y),
-  orbit_svg(34, 150),
-  nucleon(-7, 1.5, FALSE), nucleon(7, -1.5, TRUE),
-  '</g>')
-
-## oxygen-18 (18O): 8 protons + 10 neutrons packed on a sunflower spiral,
-## 2 electrons on the inner orbit and 6 on the outer one
-o18_x <- 186; o18_y <- 268
-o18_svg <- local({
-  i <- 0:17
-  r <- 5.6 * sqrt(i + 0.5)
-  th <- i * 137.508 * pi / 180
-  proton <- i %in% c(0, 2, 4, 7, 9, 12, 14, 16)
-  ord <- rev(seq_along(i)) # outer nucleons first, so the inner ones are drawn on top
-  paste0(
-    sprintf('<g transform="translate(%s,%s)">', o18_x, o18_y),
-    orbit_svg(42, c(-60, 120)),
-    orbit_svg(60, seq(15, 315, by = 60)),
-    paste0(vapply(ord, function(k) nucleon(r[k] * cos(th[k]), r[k] * sin(th[k]), proton[k]), ""), collapse = ""),
-    '</g>')
-})
 
 ## Text converted to outlines -------------------------------------------------
 
@@ -250,12 +220,94 @@ text_d <- function(txt, size, centre_x, baseline, track = 0) {
 name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
                     text_d("IsoriX", name_size, 259, name_y, name_track))
 
+## Isotopes scattered over the landscape ---------------------------------------
+## many light atoms (1H, 16O) and a few heavy ones (2H, 18O); the heavy ones only
+## go where the isoscape is brown (enriched values in isopalette1)
+
+n_atoms <- c(H1 = 9, H2 = 2, O16 = 6, O18 = 2)
+atoms_seed <- 1     # change to get another random arrangement
+nucleon_r <- 2.8; electron_r <- 1.9; orbit_lwd <- 1.1
+
+isotopes <- list( # protons, neutrons, orbits (radius, number of electrons)
+  H1  = list(p = 1, n = 0,  orbits = list(c(9, 1))),
+  H2  = list(p = 1, n = 1,  orbits = list(c(9, 1))),
+  O16 = list(p = 8, n = 8,  orbits = list(c(13.5, 2), c(19.5, 6))),
+  O18 = list(p = 8, n = 10, orbits = list(c(13.5, 2), c(19.5, 6))))
+
+nucleon <- function(x, y, proton) {
+  if (proton) sprintf('<circle cx="%s" cy="%s" r="%s" fill="#c8102e" stroke="#ffffff" stroke-width="0.7"/>', f1(x), f1(y), nucleon_r)
+  else sprintf('<circle cx="%s" cy="%s" r="%s" fill="#f4f1ec" stroke="#10212b" stroke-width="0.6"/>', f1(x), f1(y), nucleon_r)
+}
+nucleus_svg <- function(p, n) {
+  k <- p + n
+  if (k == 1) return(nucleon(0, 0, TRUE))
+  if (k == 2) return(paste0(nucleon(-2.3, 0.5, FALSE), nucleon(2.3, -0.5, TRUE)))
+  i <- 0:(k - 1) # larger nuclei: nucleons packed on a sunflower spiral
+  r <- 0.66 * nucleon_r * sqrt(i + 0.5)
+  th <- i * 137.508 * pi / 180
+  is_proton <- seq_len(k) %in% round(seq(1, k, length.out = p))
+  paste0(vapply(rev(seq_len(k)), function(j) nucleon(r[j] * cos(th[j]), r[j] * sin(th[j]), is_proton[j]), ""),
+         collapse = "") # outer nucleons first, so the inner ones are drawn on top
+}
+atom_svg <- function(iso, x, y, angle) {
+  orbits <- vapply(iso$orbits, function(o) {
+    a <- (angle + seq(0, 360, length.out = o[2] + 1)[-(o[2] + 1)]) * pi / 180
+    paste0(sprintf('<circle cx="0" cy="0" r="%s" fill="none" stroke="#ffffff" stroke-width="%s"/>', o[1], orbit_lwd),
+           paste0(sprintf('<circle cx="%s" cy="%s" r="%s" fill="#ffffff" stroke="#10212b" stroke-width="0.7"/>',
+                          f1(o[1] * cos(a)), f1(o[1] * sin(a)), electron_r), collapse = ""))
+  }, "")
+  sprintf('<g transform="translate(%s,%s)" filter="url(#sh_small)">%s%s</g>',
+          f1(x), f1(y), paste0(orbits, collapse = ""), nucleus_svg(iso$p, iso$n))
+}
+
+## random placement, avoiding the other elements of the logo
+atoms_svg <- local({
+  set.seed(atoms_seed)
+  inside_hex <- function(x, y, margin) { # regular hexagon centred on (259, 300)
+    a <- c(0, 60, 120, 180, 240, 300) * pi / 180
+    all((x - 259) * cos(a) + (y - 300) * sin(a) <= 300 * cos(pi / 6) - margin)
+  }
+  boxes <- rbind( # x0, y0, x1, y1
+    bat      = c(bat_x - 100, bat_y - 45, bat_x + 100, bat_y + 40),
+    bat_pin  = c(pin_x - 30, pin_y - 80, pin_x + 30, pin_y + 12),
+    fish     = c(fish_x - 55, fish_y - 35, fish_x + 50, fish_y + 40),
+    fish_pin = c(fish_pin_x - 26, fish_pin_y - 68, fish_pin_x + 26, fish_pin_y + 10),
+    name     = c(110, name_y - 82, 410, name_y + 6))
+  path <- rbind(path_pts(bat_x + 4, bat_y + 36, pin_x, pin_y),
+                path_pts(start_x, start_y, fish_pin_x, fish_pin_y, fish_pin_scale))
+  brown_max <- iso_levels(field)[7] # lower half of the levels = brown half of the palette
+  value_at <- function(x, y) field$F[which.min(abs(field$y - y)), which.min(abs(field$x - x))]
+  placed <- data.frame(x = numeric(), y = numeric(), r = numeric())
+  out <- character()
+  for (type in c("H2", "O18", "O16", "H1")) { # most constrained first
+    iso <- isotopes[[type]]
+    r <- iso$orbits[[length(iso$orbits)]][1] + electron_r
+    for (k in seq_len(n_atoms[[type]])) {
+      for (try in 1:5000) {
+        x <- stats::runif(1, 0, W); y <- stats::runif(1, 0, H)
+        ok <- inside_hex(x, y, r + 16) &&
+          !any(x > boxes[, 1] - r - 6 & x < boxes[, 3] + r + 6 & y > boxes[, 2] - r - 6 & y < boxes[, 4] + r + 6) &&
+          all((path[, "x"] - x)^2 + (path[, "y"] - y)^2 > (r + 8)^2) &&
+          all((placed$x - x)^2 + (placed$y - y)^2 > (placed$r + r + 34)^2) &&
+          (!type %in% c("H2", "O18") || value_at(x, y) < brown_max)
+        if (ok) break
+      }
+      if (!ok) stop("could not place all the atoms; reduce n_atoms or change atoms_seed")
+      placed[nrow(placed) + 1, ] <- c(x, y, r)
+      out <- c(out, atom_svg(iso, x, y, stats::runif(1, 0, 360)))
+    }
+  }
+  paste(out, collapse = "\n")
+})
+
 ## Assemble ---------------------------------------------------------------------
 
 defs <- function(shadow) {
   sprintf(paste0('<defs><clipPath id="hex"><path d="%s"/></clipPath>\n',
                  '<filter id="sh" x="-20%%" y="-20%%" width="140%%" height="140%%">',
-                 '<feDropShadow dx="0" dy="%s" stdDeviation="%s" flood-color="#000" flood-opacity="0.35"/></filter></defs>'),
+                 '<feDropShadow dx="0" dy="%s" stdDeviation="%s" flood-color="#000" flood-opacity="0.35"/></filter>\n',
+                 '<filter id="sh_small" x="-30%%" y="-30%%" width="160%%" height="160%%">',
+                 '<feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.3"/></filter></defs>'),
           hex_d, shadow, shadow)
 }
 border <- function(width) {
@@ -267,12 +319,11 @@ logo_svg <- paste(
   defs(3),
   '<g clip-path="url(#hex)">',
   isoscape_svg(field),
+  atoms_svg,
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', trajectory_d),
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', fish_trajectory_d),
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s)", pin_x, pin_y))),
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s) scale(%s)", fish_pin_x, fish_pin_y, fish_pin_scale))),
-  sprintf('<g filter="url(#sh)">%s</g>', atom_svg),
-  sprintf('<g filter="url(#sh)">%s</g>', o18_svg),
   fish_svg,
   sprintf('<g transform="translate(%s,%s) rotate(%s) scale(%s)" filter="url(#sh)"><path d="%s" fill="#10212b" stroke="#ffffff" stroke-width="2.4" stroke-linejoin="round"/></g>',
           bat_x, bat_y, bat_rot, bat_scale, bat_d()),
