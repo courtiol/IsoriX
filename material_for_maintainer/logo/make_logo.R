@@ -28,12 +28,14 @@ font_family <- "Inter"
 font_weight <- "semibold"
 name_size <- 104    # font size of "IsoriX"
 name_track <- -1    # extra spacing between letters
+name_y <- 470       # baseline of "IsoriX"
 pin_x <- 360        # tip of the pin (inside the closed contour)
 pin_y <- 300
 reverse_palette <- TRUE # TRUE: brown at the top, blue at the bottom
-fish_x <- 82; fish_y <- 366; fish_scale <- 0.95; fish_rot <- -6
-fish_pin_x <- 215    # tip of the fish's pin (inside its own closed contour)
-fish_pin_y <- 362
+fish_x <- 66; fish_y <- 382; fish_scale <- 0.85; fish_rot <- 18
+fish_pin_x <- 259    # tip of the fish's pin (in the sea, inside its own closed contour)
+fish_pin_y <- 562
+fish_pin_scale <- 0.85
 
 W <- 518; H <- 600  # standard hex sticker proportions
 hex <- cbind(x = c(259, 518, 518, 259, 0, 0), y = c(0, 150, 450, 600, 450, 150))
@@ -70,7 +72,7 @@ isoscape_svg <- function(shift_x = 0, shift_y = 0, line_width = 1.4) {
   F <- F + g(150, 520, 80, 40, 0.06)
   F <- F + g(70, 385, 95, 32, -0.09, 0.25)
   F <- F + g(470, 395, 60, 45, 0.07)
-  F <- F + g(215, 358, 50, 20, -0.30, 0.15)                     # closed contour for the fish's origin
+  F <- F + g(259, 552, 55, 20, -0.30)                            # closed contour (sea) for the fish's origin
   F <- F + g(259, 560, 340, 115, 0.30)                           # darker area behind the name
 
   levels <- stats::quantile(F, seq(0, 1, length.out = 15), names = FALSE) # equal-area bands
@@ -148,9 +150,12 @@ trajectory_d <- sprintf("M%s,%s C%s,%s %s,%s %s,%s",
                         fmt(bat_x + 4), fmt(bat_y + 36), fmt(bat_x + 10), fmt(bat_y + 110),
                         fmt(pin_x - 70), fmt(pin_y - 130), fmt(pin_x - 4), fmt(pin_y - 86))
 
+## from the fish's nose, down the left of the name, then under it to the pin
+nose_x <- fish_x + 52 * fish_scale * cos(fish_rot * pi / 180) # just in front of the nose
+nose_y <- fish_y + 52 * fish_scale * sin(fish_rot * pi / 180)
 fish_trajectory_d <- sprintf("M%s,%s C%s,%s %s,%s %s,%s",
-                             fmt(fish_x + 50), fmt(fish_y - 8), fmt(fish_x + 95), fmt(fish_y - 60),
-                             fmt(fish_pin_x - 75), fmt(fish_pin_y - 95), fmt(fish_pin_x - 30), fmt(fish_pin_y - 62))
+                             f1(nose_x), f1(nose_y), f1(nose_x - 12), f1(nose_y + 85),
+                             fmt(fish_pin_x - 125), fmt(fish_pin_y - 28), fmt(fish_pin_x - 30), fmt(fish_pin_y - 44))
 
 atom_x <- 122; atom_y <- 162; orbit <- 40
 atom_svg <- paste0(
@@ -188,7 +193,7 @@ text_d <- function(txt, size, centre_x, baseline, track = 0) {
 }
 
 name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
-                    text_d("IsoriX", name_size, 259, 482, name_track))
+                    text_d("IsoriX", name_size, 259, name_y, name_track))
 label_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
                      text_d("²H", 38, atom_x + 1, atom_y + orbit + 44))
 
@@ -212,7 +217,7 @@ logo_svg <- paste(
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', trajectory_d),
   sprintf('<path d="%s" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>', fish_trajectory_d),
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s)", pin_x, pin_y))),
-  sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s)", fish_pin_x, fish_pin_y))),
+  sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s) scale(%s)", fish_pin_x, fish_pin_y, fish_pin_scale))),
   sprintf('<g filter="url(#sh)">%s</g>', atom_svg),
   fish_svg,
   sprintf('<g transform="translate(%s,%s) rotate(%s) scale(%s)" filter="url(#sh)"><path d="%s" fill="#10212b" stroke="#ffffff" stroke-width="2.4" stroke-linejoin="round"/></g>',
