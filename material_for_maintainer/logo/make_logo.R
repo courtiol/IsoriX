@@ -16,8 +16,9 @@
 ##
 ## Elements: an isoscape (filled contours of a 2D field coloured with
 ## isopalette1), a bat flying to the assigned origin (pin inside a closed
-## contour), a fish, and a deuterium atom (1 proton + 1 neutron, 1 electron)
-## labelled 2H.
+## contour), a fish, and two stable isotopes: a deuterium atom (2H: 1 proton +
+## 1 neutron, 1 electron) and an oxygen-18 atom (18O: 8 protons + 10 neutrons,
+## 2 + 6 electrons).
 
 out_dir <- "material_for_maintainer/logo"
 stopifnot("run this script from the root of the IsoriX package" = dir.exists(out_dir))
@@ -184,15 +185,42 @@ start_x <- fish_x + fish_scale * (-2 * cos(rot) - 36 * sin(rot)) # just below th
 start_y <- fish_y + fish_scale * (-2 * sin(rot) + 36 * cos(rot))
 fish_trajectory_d <- path_d(start_x, start_y, fish_pin_x, fish_pin_y, fish_pin_scale)
 
-atom_x <- 122; atom_y <- 162; orbit <- 40
+## shared style of the two atoms
+nucleon_r <- 8.5; electron_r <- 6; orbit_lwd <- 2.8
+nucleon <- function(x, y, proton) {
+  if (proton) sprintf('<circle cx="%s" cy="%s" r="%s" fill="#c8102e" stroke="#ffffff" stroke-width="1.8"/>', f1(x), f1(y), nucleon_r)
+  else sprintf('<circle cx="%s" cy="%s" r="%s" fill="#f4f1ec" stroke="#10212b" stroke-width="1.6"/>', f1(x), f1(y), nucleon_r)
+}
+orbit_svg <- function(radius, angles) { # an orbit and its electrons (angles in degrees)
+  paste0(sprintf('<circle cx="0" cy="0" r="%s" fill="none" stroke="#ffffff" stroke-width="%s"/>', radius, orbit_lwd),
+         paste0(sprintf('<circle cx="%s" cy="%s" r="%s" fill="#ffffff" stroke="#10212b" stroke-width="1.8"/>',
+                        f1(radius * cos(angles * pi / 180)), f1(radius * sin(angles * pi / 180)), electron_r), collapse = ""))
+}
+
+## deuterium (2H): 1 proton + 1 neutron, 1 electron
+atom_x <- 108; atom_y <- 156
 atom_svg <- paste0(
   sprintf('<g transform="translate(%s,%s)">', atom_x, atom_y),
-  sprintf('<circle cx="0" cy="0" r="%s" fill="none" stroke="#ffffff" stroke-width="3.2"/>', orbit),
-  '<circle cx="-10" cy="2" r="14" fill="#f4f1ec" stroke="#10212b" stroke-width="2"/>',  # neutron
-  '<circle cx="10" cy="-2" r="14" fill="#c8102e" stroke="#ffffff" stroke-width="2.5"/>', # proton
-  sprintf('<circle cx="%s" cy="%s" r="7" fill="#ffffff" stroke="#10212b" stroke-width="2"/>', # electron
-          f1(orbit * cos(150 * pi / 180)), f1(orbit * sin(150 * pi / 180))),
+  orbit_svg(34, 150),
+  nucleon(-7, 1.5, FALSE), nucleon(7, -1.5, TRUE),
   '</g>')
+
+## oxygen-18 (18O): 8 protons + 10 neutrons packed on a sunflower spiral,
+## 2 electrons on the inner orbit and 6 on the outer one
+o18_x <- 186; o18_y <- 268
+o18_svg <- local({
+  i <- 0:17
+  r <- 5.6 * sqrt(i + 0.5)
+  th <- i * 137.508 * pi / 180
+  proton <- i %in% c(0, 2, 4, 7, 9, 12, 14, 16)
+  ord <- rev(seq_along(i)) # outer nucleons first, so the inner ones are drawn on top
+  paste0(
+    sprintf('<g transform="translate(%s,%s)">', o18_x, o18_y),
+    orbit_svg(42, c(-60, 120)),
+    orbit_svg(60, seq(15, 315, by = 60)),
+    paste0(vapply(ord, function(k) nucleon(r[k] * cos(th[k]), r[k] * sin(th[k]), proton[k]), ""), collapse = ""),
+    '</g>')
+})
 
 ## Text converted to outlines -------------------------------------------------
 
@@ -221,8 +249,6 @@ text_d <- function(txt, size, centre_x, baseline, track = 0) {
 
 name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
                     text_d("IsoriX", name_size, 259, name_y, name_track))
-label_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
-                     text_d("\u00b2H", 38, atom_x + 1, atom_y + orbit + 44))
 
 ## Assemble ---------------------------------------------------------------------
 
@@ -246,10 +272,10 @@ logo_svg <- paste(
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s)", pin_x, pin_y))),
   sprintf('<g filter="url(#sh)">%s</g>', pin_svg(sprintf("translate(%s,%s) scale(%s)", fish_pin_x, fish_pin_y, fish_pin_scale))),
   sprintf('<g filter="url(#sh)">%s</g>', atom_svg),
+  sprintf('<g filter="url(#sh)">%s</g>', o18_svg),
   fish_svg,
   sprintf('<g transform="translate(%s,%s) rotate(%s) scale(%s)" filter="url(#sh)"><path d="%s" fill="#10212b" stroke="#ffffff" stroke-width="2.4" stroke-linejoin="round"/></g>',
           bat_x, bat_y, bat_rot, bat_scale, bat_d()),
-  label_svg,
   name_svg,
   '</g>',
   border(20),
