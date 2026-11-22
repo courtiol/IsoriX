@@ -517,11 +517,6 @@
   )
 }
 
-## Number of locations per slice used by spaMM to compute prediction variances
-## in `isoscape()`. Larger slices are faster but use more memory; spaMM's default
-## (2000) is about 1.5 times slower for large rasters (#150, #176).
-.blocksize_isoscape <- 16000L
-
 .safe_and_quiet_predictions <- function(object, newdata, variances = list(), ...) {
   ## This function should not be called by the user.
   ## It run the predictions while capturing errors, warnings and messages without stopping

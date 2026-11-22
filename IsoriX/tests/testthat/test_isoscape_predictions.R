@@ -17,7 +17,7 @@ test_that("isoscape() stores, for each cell, the predictions from spaMM", {
   na_cells <- seq(1L, length(values), by = 7L)
   values[na_cells] <- NA
   raster <- terra::setValues(raster, values)
-  expect_gt(terra::ncell(raster), .blocksize_isoscape) ## several slices
+  expect_gt(terra::ncell(raster), getOption_IsoriX("spaMM_blocksize")) ## several slices
 
   scape <- suppressMessages(isoscape(raster = raster, isofit = fit, verbose = FALSE))
   iso <- terra::values(scape$isoscapes)

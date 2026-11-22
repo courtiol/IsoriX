@@ -17,6 +17,7 @@ getOption_IsoriX(x = NULL)
 \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
 \item{Ncpu}{An \emph{integer} corresponding to the number of cores to be used (in functions that can handle parallel processing).}
 \item{dont_ask}{A \emph{logical} indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only).}
+\item{spaMM_blocksize}{A positive \emph{integer} (default \code{16000L}) giving the number of locations per slice used by \pkg{spaMM} to compute the prediction variances in \code{\link{isoscape}} (argument \code{blockSize} of \code{\link[spaMM:predict]{spaMM::predict}}). Larger values are faster but use more memory; lower it if \code{\link{isoscape}} runs out of memory on large rasters.}
 \item{spaMM_debugmod}{A \emph{logical} indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only).}
 }}
 

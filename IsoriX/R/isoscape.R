@@ -177,10 +177,12 @@ isoscape <- function(raster,
     ## all predictions are computed in a single call per model: spaMM slices the
     ## computation of the prediction variances itself (argument `blockSize`),
     ## which is faster than calling spaMM on chunks of locations (#150, #176)
-    ## and lets spaMM display its own progress bar
+    ## and lets spaMM display its own progress bar; the size of the slices is
+    ## set by the option `spaMM_blocksize` (larger is faster but uses more
+    ## memory; spaMM's default of 2000 is about 1.5 times slower)
     pred_args <- list(
       variances = list(respVar = TRUE),
-      blockSize = .blocksize_isoscape,
+      blockSize = getOption_IsoriX("spaMM_blocksize"),
       control = list(showpbar = verbose)
     )
 
