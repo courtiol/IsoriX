@@ -84,9 +84,10 @@ utils::write.csv(results, file.path(out_dir, "results.csv"), row.names = FALSE)
 
 grDevices::png(file.path(out_dir, "plot.png"), width = 7, height = 5, units = "in", res = 150)
 cols <- c("single thread" = "#1b7837", "default threading" = "#762a83")
-plot(seconds ~ processes, data = results, type = "n", ylim = c(0, max(results$seconds)),
+plot(seconds ~ processes, data = results, type = "n", ylim = c(0, max(results$seconds)), xaxt = "n",
   xlab = "Number of processes running the test files", ylab = "Duration of the tests (s)"
 )
+axis(1, at = sort(unique(results$processes)))
 for (b in unique(results$blas)) {
   d <- results[results$blas == b, ]
   means <- tapply(d$seconds, d$processes, mean)
@@ -94,7 +95,7 @@ for (b in unique(results$blas)) {
   lines(as.numeric(names(means)), means, col = cols[[b]])
 }
 legend("bottomright", legend = paste("BLAS:", unique(results$blas)), col = cols[unique(results$blas)], lwd = 1, pch = 16, bty = "n")
-grDevices::dev.off()
+invisible(grDevices::dev.off())
 
 print(results, row.names = FALSE)
 message("Results written to ", out_dir)
