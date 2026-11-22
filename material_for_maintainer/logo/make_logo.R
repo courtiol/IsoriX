@@ -221,11 +221,13 @@ name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
                     text_d("IsoriX", name_size, 259, name_y, name_track))
 
 ## Isotopes scattered over the landscape ---------------------------------------
-## many light atoms (1H, 16O) and a few heavy ones (2H, 18O); the heavy ones only
-## go where the isoscape is brown (enriched values in isopalette1)
+## light (1H, 16O) and heavy (2H, 18O) isotopes; as in IsoriX, blue means negative
+## (depleted) and brown positive (enriched) delta values, so the share of heavy
+## isotopes increases from the blue to the brown areas
 
-n_atoms <- c(H1 = 12, H2 = 3, O16 = 0, O18 = 0) # oxygen switched off (set e.g. O16 = 6, O18 = 2)
-atoms_seed <- 1     # change to get another random arrangement
+n_atoms <- c(H1 = 13, H2 = 6, O16 = 0, O18 = 0) # oxygen switched off (set e.g. O16 = 6, O18 = 2)
+heavy_weight <- function(e) e^2 # odds of a heavy isotope vs enrichment e (0 = bluest, 1 = brownest)
+atoms_seed <- 4     # change to get another random arrangement
 nucleon_r <- 3.6; electron_r <- 2.4; orbit_lwd <- 1.3
 
 isotopes <- list( # protons, neutrons, orbits (radius, number of electrons)
@@ -260,7 +262,9 @@ atom_svg <- function(iso, x, y, angle) {
           f1(x), f1(y), paste0(orbits, collapse = ""), nucleus_svg(iso$p, iso$n))
 }
 
-## random placement, avoiding the other elements of the logo
+## random placement, avoiding the other elements of the logo: all the atoms of
+## an element are placed first, then the heavy isotope is given to some of them,
+## drawn with a probability increasing with the local enrichment
 atoms_svg <- local({
   set.seed(atoms_seed)
   inside_hex <- function(x, y, margin) { # regular hexagon centred on (259, 300)
@@ -275,27 +279,41 @@ atoms_svg <- local({
     name     = c(110, name_y - 82, 410, name_y + 6))
   path <- rbind(path_pts(bat_x + 4, bat_y + 36, pin_x, pin_y),
                 path_pts(start_x, start_y, fish_pin_x, fish_pin_y, fish_pin_scale))
-  brown_max <- iso_levels(field)[7] # lower half of the levels = brown half of the palette
-  value_at <- function(x, y) field$F[which.min(abs(field$y - y)), which.min(abs(field$x - x))]
+  levels <- iso_levels(field)
+  n_bands <- length(levels) - 1
+  enrichment_at <- function(x, y) { # 0 for the bluest band, 1 for the brownest one
+    band <- findInterval(field$F[which.min(abs(field$y - y)), which.min(abs(field$x - x))], levels, all.inside = TRUE)
+    if (reverse_palette) (n_bands - band) / (n_bands - 1) else (band - 1) / (n_bands - 1)
+  }
   placed <- data.frame(x = numeric(), y = numeric(), r = numeric())
   out <- character()
-  for (type in c("H2", "O18", "O16", "H1")) { # most constrained first
-    iso <- isotopes[[type]]
-    r <- iso$orbits[[length(iso$orbits)]][1] + electron_r
-    for (k in seq_len(n_atoms[[type]])) {
+  for (el in list(c("O16", "O18"), c("H1", "H2"))) { # larger atoms first
+    n <- n_atoms[[el[1]]] + n_atoms[[el[2]]]
+    if (n == 0) next
+    r <- max(vapply(isotopes[el], function(iso) iso$orbits[[length(iso$orbits)]][1], 0)) + electron_r
+    xy <- matrix(NA_real_, n, 2)
+    for (k in seq_len(n)) {
       for (try in 1:5000) {
         x <- stats::runif(1, 0, W); y <- stats::runif(1, 0, H)
         ok <- inside_hex(x, y, r + 16) &&
           !any(x > boxes[, 1] - r - 6 & x < boxes[, 3] + r + 6 & y > boxes[, 2] - r - 6 & y < boxes[, 4] + r + 6) &&
           all((path[, "x"] - x)^2 + (path[, "y"] - y)^2 > (r + 8)^2) &&
-          all((placed$x - x)^2 + (placed$y - y)^2 > (placed$r + r + 34)^2) &&
-          (!type %in% c("H2", "O18") || value_at(x, y) < brown_max)
+          all((placed$x - x)^2 + (placed$y - y)^2 > (placed$r + r + 30)^2)
         if (ok) break
       }
       if (!ok) stop("could not place all the atoms; reduce n_atoms or change atoms_seed")
       placed[nrow(placed) + 1, ] <- c(x, y, r)
-      out <- c(out, atom_svg(iso, x, y, stats::runif(1, 0, 360)))
+      xy[k, ] <- c(x, y)
     }
+    e <- apply(xy, 1, function(p) enrichment_at(p[1], p[2]))
+    heavy <- seq_len(n) %in% sample.int(n, n_atoms[[el[2]]], prob = heavy_weight(e) + 1e-9)
+    zone <- cut(e, c(-Inf, 1/3, 2/3, Inf), labels = c("blue/depleted", "middle", "brown/enriched"))
+    tab <- table(zone, ifelse(heavy, el[2], el[1]))[, el[el %in% names(n_atoms)[n_atoms > 0]], drop = FALSE]
+    message(el[2], " among ", paste(el, collapse = " + "), " atoms, by zone:")
+    print(tab)
+    out <- c(out, vapply(seq_len(n), function(k) {
+      atom_svg(isotopes[[el[1 + heavy[k]]]], xy[k, 1], xy[k, 2], stats::runif(1, 0, 360))
+    }, ""))
   }
   paste(out, collapse = "\n")
 })
