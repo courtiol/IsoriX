@@ -126,15 +126,15 @@ isoscape_svg <- function(field, levels = iso_levels(field), line_width = 1.4) {
   paste(c(bands_svg[bands_svg != ""], lines_svg), collapse = "\n")
 }
 
-## Bat (right half drawn, left half mirrored) ---------------------------------
+## Bat (right half drawn, left half mirrored; 2 scallops under each wing) -------
 
 bat_d <- function() {
   ## each row: end point (x, y) and, for quadratic curves, the control point (cx, cy)
   seg <- data.frame(
-    x  = c(0, 3.5, 7, 11, 48, 88, 77, 58, 38, 15, 6, 0),
-    y  = c(-11, -22, -10, -2, -34, -26, 0, 8, 14, 13, 25, 28),
-    cx = c(NA, NA, NA, 10, 30, 68, 78, 67, 47, 27, 11, 3),
-    cy = c(NA, NA, NA, -5, -12, -32, -14, -6, 2, 6, 20, 27)
+    x  = c(0, 3.5, 7, 11, 48, 88, 71, 44, 15, 6, 0),
+    y  = c(-11, -22, -10, -2, -34, -26, 2, 12, 13, 25, 28),
+    cx = c(NA, NA, NA, 10, 30, 68, 79, 58, 29, 11, 3),
+    cy = c(NA, NA, NA, -5, -12, -32, -13, -5, 0, 20, 27)
   )
   step <- function(cx, cy, x, y) {
     if (is.na(cx)) sprintf(" L%s,%s", fmt(x), fmt(y))
