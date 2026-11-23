@@ -30,6 +30,9 @@ font_weight <- "semibold"
 name_size <- 104    # font size of "IsoriX"
 name_track <- -1    # extra spacing between letters
 name_y <- 470       # baseline of "IsoriX"
+name_fill <- "#ffffff"   # colour of "IsoriX"
+name_stroke <- NA        # outline colour around the letters (NA: none)
+name_stroke_width <- 6   # outline width (half of it shows outside the letters)
 pin_near_x <- 360   # the bat's pin is put at the centre (lowest point) of the
 pin_near_y <- 300   # closed contour found near this location
 reverse_palette <- TRUE # TRUE: brown at the top, blue at the bottom
@@ -217,8 +220,9 @@ text_d <- function(txt, size, centre_x, baseline, track = 0) {
   }, ""), collapse = "")
 }
 
-name_svg <- sprintf('<path d="%s" fill="#ffffff" filter="url(#sh)"/>',
-                    text_d("IsoriX", name_size, 259, name_y, name_track))
+name_svg <- sprintf('<path d="%s" fill="%s"%s filter="url(#sh)"/>',
+                    text_d("IsoriX", name_size, 259, name_y, name_track), name_fill,
+                    if (is.na(name_stroke)) "" else sprintf(' stroke="%s" stroke-width="%s" stroke-linejoin="round" paint-order="stroke"', name_stroke, name_stroke_width))
 
 ## Isotopes scattered over the landscape ---------------------------------------
 ## light (1H, 16O) and heavy (2H, 18O) isotopes; as in IsoriX, blue means negative
