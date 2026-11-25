@@ -71,6 +71,16 @@ statistical details about this procedure as well as a discussion of which
 uncertainties are captured and which are not, please refer to Courtiol et al.
 2019.
 
+\strong{Random effects of the calibration fit:} when the calibration fit
+includes uncorrelated random effects (e.g. for \code{site_ID}, see \code{\link{calibfit}}),
+their variances are added to the residual variance of the calibration fit
+when computing the variance of the test statistic. Indeed, such effects
+represent deviations from the calibration function shared by the samples of
+a given site (or species), and the samples to assign come from sites (and
+possibly species) that are not part of the calibration data. The variances
+considered are stored in the element \code{ranef_var} of the output of
+\code{\link{calibfit}}.
+
 \strong{Details on parameters:}
 \itemize{
 \item \emph{neglect_covPredCalib}: as long as the calibration method used in

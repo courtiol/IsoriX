@@ -39,7 +39,9 @@ This function returns a \emph{list} of class \emph{CALIBFIT} containing
 the name of the calibration method used, whether a species_ID random effect
 was estimated, whether a site_ID random effect was estimated, the
 fixed-effect estimates of the calibration function, the covariance of the
-fixed effects, the residual variance of the calibration fit, the fitted
+fixed effects, the residual variance of the calibration fit, the variances
+of its uncorrelated random effects (\code{ranef_var}, a named vector, e.g.
+\code{c(site_ID = ...)}; empty when the calibration fit has none), the fitted
 calibration model (if applicable), the fitted isoscape model (if
 applicable), the original calibration data set with additional information
 added during the fit, and the location of the calibration points as spatial

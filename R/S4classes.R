@@ -25,6 +25,7 @@ setClass("ISOSCAPE", slots = c(
 #' @slot param the fixed-effect estimates of the calibration function
 #' @slot fixefCov the covariance matrix of the fixed effects
 #' @slot phi the residual variance of the calibration fit
+#' @slot ranef_var the variances of the uncorrelated random effects of the calibration fit (e.g. site_ID)
 #' @slot calib_fit the fitted calibration model (if applicable)
 #' @slot iso_fit the fitted calibration model (if applicable)
 #' @slot data the calibration data
@@ -40,6 +41,7 @@ setClass("CALIBFIT", slots = c(
   param = "numeric",
   fixefCov = "matrix",
   phi = "numeric",
+  ranef_var = "numeric",
   calib_fit = "list",
   iso_fit = "list",
   data = "data.frame",

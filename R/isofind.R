@@ -20,6 +20,16 @@
 #' uncertainties are captured and which are not, please refer to Courtiol et al.
 #' 2019.
 #'
+#' **Random effects of the calibration fit:** when the calibration fit
+#' includes uncorrelated random effects (e.g. for `site_ID`, see [`calibfit`]),
+#' their variances are added to the residual variance of the calibration fit
+#' when computing the variance of the test statistic. Indeed, such effects
+#' represent deviations from the calibration function shared by the samples of
+#' a given site (or species), and the samples to assign come from sites (and
+#' possibly species) that are not part of the calibration data. The variances
+#' considered are stored in the element `ranef_var` of the output of
+#' [`calibfit`].
+#'
 #' **Details on parameters:**
 #'
 #' - *neglect_covPredCalib*: as long as the calibration method used in
@@ -265,8 +275,11 @@ calibfit!"
       ## term 1 in eq. 9.18 from Courtiol et al. 2019
       var_term1 <- sapply(seq_len(nrow(data)), function(i) isoscape$isoscapes$mean_predVar)
 
-      ## term 2 in eq. 9.18 from Courtiol et al. 2019
-      var_term2 <- calibfit$phi / calibfit$param[["slope"]]^2
+      ## term 2 in eq. 9.18 from Courtiol et al. 2019, which also includes the
+      ## variances of the uncorrelated random effects of the calibration fit
+      ## (e.g. site_ID) since the samples to assign come from sites that are not
+      ## part of the calibration data (#235)
+      var_term2 <- (calibfit$phi + sum(.get_calib_ranef_var(calibfit))) / calibfit$param[["slope"]]^2
 
       ## term 3 in eq. 9.18 from Courtiol et al. 2019
       X <- cbind(1, data$mean_origin)

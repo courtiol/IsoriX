@@ -212,7 +212,9 @@
 #'   the name of the calibration method used, whether a species_ID random effect
 #'   was estimated, whether a site_ID random effect was estimated, the
 #'   fixed-effect estimates of the calibration function, the covariance of the
-#'   fixed effects, the residual variance of the calibration fit, the fitted
+#'   fixed effects, the residual variance of the calibration fit, the variances
+#'   of its uncorrelated random effects (`ranef_var`, a named vector, e.g.
+#'   `c(site_ID = ...)`; empty when the calibration fit has none), the fitted
 #'   calibration model (if applicable), the fitted isoscape model (if
 #'   applicable), the original calibration data set with additional information
 #'   added during the fit, and the location of the calibration points as spatial
@@ -390,10 +392,11 @@ calibfit <- function(data,
   }
 
   ## Note: part of the code is prepared to use species_rand as an argument (with NULL = automatic selection)
-  ## That would allow to fit species as a random effect in the model
-  ## However, it is not obvious that it would make sense to do that as it may
-  ## remove variance that should be captured during the assignment.
-  ## We thus disregard this term for now.
+  ## That would allow to fit species as a random effect in the model.
+  ## The variance of such an effect is not lost for the assignment: isofind()
+  ## adds the variances of all uncorrelated random effects of the calibration fit
+  ## (see .calib_ranef_var()) to its residual variance (#235).
+  ## We nonetheless disregard this term for now.
   species_rand <- FALSE
 
   species_info <- "species_ID" %in% colnames(data)
@@ -698,6 +701,7 @@ calibfit <- function(data,
     "param" = param_calibfit,
     "fixefCov" = fixefCov_calibfit,
     "phi" = calib_fit$phi,
+    "ranef_var" = .calib_ranef_var(calib_fit),
     "calib_fit" = calib_fit,
     "iso_fit" = isofit,
     "data" = data,
@@ -878,6 +882,7 @@ calibfit <- function(data,
     "param" = param_calibfit,
     "fixefCov" = fixefCov_calibfit,
     "phi" = calib_fit$phi,
+    "ranef_var" = .calib_ranef_var(calib_fit),
     "calib_fit" = calib_fit,
     "iso_fit" = list(),
     "data" = data,
@@ -917,11 +922,51 @@ calibfit <- function(data,
     "param" = c(intercept = data$intercept, slope = data$slope),
     "fixefCov" = fixefCov_calibfit,
     "phi" = phi_calibfit,
+    "ranef_var" = .calib_ranef_var(NULL),
     "calib_fit" = list(),
     "iso_fit" = list(),
     "data" = data,
     "sp_points" = NULL
   ))
+}
+
+
+.calib_ranef_var <- function(calib_fit) {
+  ## This function should not be called by the user.
+  ## It returns the variances of the uncorrelated random effects of a calibration
+  ## fit (e.g. (1|site_ID) and (1|species_ID)), named after their grouping factor.
+  ## Such effects are deviations from the calibration function shared by the
+  ## samples of a given site (or species). The samples to assign come from sites
+  ## (and possibly species) which are not part of the calibration data, so these
+  ## variances must be added to the residual variance of the calibration fit in
+  ## the variance of the assignment test (#235).
+  ## The corrMatrix term of the method "wild" is not returned: it represents the
+  ## prediction error of the isoscape at the calibration sites, which is not a
+  ## property of the samples to assign.
+  no_ranef <- stats::setNames(numeric(0), character(0))
+  if (!inherits(calib_fit, "HLfit")) {
+    return(no_ranef)
+  }
+  terms <- attr(calib_fit$ZAlist, "exp_ranef_strings")
+  if (length(terms) == 0) {
+    return(no_ranef)
+  }
+  type <- attr(terms, "type")
+  keep <- if (is.null(type)) !grepl("^corrMatrix", terms) else type == "(.|.)"
+  ranef_var <- unname(calib_fit$lambda)[keep]
+  names(ranef_var) <- trimws(sub("\\)\\s*$", "", sub("^.*\\|", "", terms[keep])))
+  ranef_var
+}
+
+
+.get_calib_ranef_var <- function(calibfit) {
+  ## This function should not be called by the user.
+  ## It returns the variances of the uncorrelated random effects of a calibration
+  ## fit, which calibration fits created by former versions of IsoriX do not store.
+  if (!is.null(calibfit$ranef_var)) {
+    return(calibfit$ranef_var)
+  }
+  .calib_ranef_var(calibfit$calib_fit)
 }
 
 
@@ -958,10 +1003,11 @@ print.CALIBFIT <- function(x, ...) {
   cat("Fixed effect estimates of the calibration fit", "\n")
   if (x$method == "wild") {
     if (x$species_rand) {
-      cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + slope^2 * (1|site_ID) + (1|species_ID) + Error", "\n")
+      cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + (1|site_ID) + (1|species_ID) + Error", "\n")
     } else {
-      cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + slope^2 * (1|site_ID) + Error", "\n")
+      cat("sample_value = intercept + slope * mean_source_value + corrMatrix(1|site_ID) + (1|site_ID) + Error", "\n")
     }
+    cat("(the variance of corrMatrix(1|site_ID) is slope^2 times the prediction covariance of the isoscape between calibration sites)", "\n")
   } else if (x$method == "lab") {
     if (x$species_rand && x$site_rand) {
       cat("sample_value = intercept + slope * source_value + (1|species_ID) + (1|site_ID) + Error", "\n")
@@ -1006,6 +1052,13 @@ summary.CALIBFIT <- function(object, ...) {
   cat("Residual variance of the calibration fit:", "\n")
   print(.print_nice_and_round(c(phi = object$phi), 3), quote = FALSE)
   cat("\n")
+  ranef_var <- .get_calib_ranef_var(object)
+  if (length(ranef_var) > 0) {
+    cat("Variance of the random effects of the calibration fit", "\n")
+    cat("(added to the residual variance in the variance of the assignment test):", "\n")
+    print(.print_nice_and_round(ranef_var, 3), quote = FALSE)
+    cat("\n")
+  }
   if (object$method != "desk") {
     cat("#########################################################", "\n")
     cat("### spaMM summary of the fit of the calibration model ###", "\n")
