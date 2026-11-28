@@ -71,6 +71,15 @@ statistical details about this procedure as well as a discussion of which
 uncertainties are captured and which are not, please refer to Courtiol et al.
 2019.
 
+\strong{Random effect for site in the calibration fit:} when the calibration
+fit includes a random effect for \code{site_ID} (see \code{\link{calibfit}}), its variance
+is added to the residual variance of the calibration fit when computing the
+variance of the test statistic. Indeed, this effect represents deviations
+from the calibration function shared by the samples of a given site, and the
+samples to assign come from sites that are not part of the calibration data.
+This variance is stored in the element \code{site_var} of the output of
+\code{\link{calibfit}}.
+
 \strong{Details on parameters:}
 \itemize{
 \item \emph{neglect_covPredCalib}: as long as the calibration method used in

@@ -22,6 +22,8 @@ Class CALIBFIT
 
 \item{\code{phi}}{the residual variance of the calibration fit}
 
+\item{\code{site_var}}{the variance of the random effect for site_ID of the calibration fit (0 if not estimated)}
+
 \item{\code{calib_fit}}{the fitted calibration model (if applicable)}
 
 \item{\code{iso_fit}}{the fitted calibration model (if applicable)}
