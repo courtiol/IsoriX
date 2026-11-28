@@ -22,7 +22,7 @@ Class CALIBFIT
 
 \item{\code{phi}}{the residual variance of the calibration fit}
 
-\item{\code{ranef_var}}{the variances of the uncorrelated random effects of the calibration fit (e.g. site_ID)}
+\item{\code{site_var}}{the variance of the random effect for site_ID of the calibration fit (0 if not estimated)}
 
 \item{\code{calib_fit}}{the fitted calibration model (if applicable)}
 

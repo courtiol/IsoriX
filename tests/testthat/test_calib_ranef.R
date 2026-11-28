@@ -1,7 +1,7 @@
-## The variances of the random effects of the calibration fit must enter the
-## variance of the assignment test (#235)
+## The variance of the random effect for site_ID of the calibration fit must
+## enter the variance of the assignment test (#235)
 
-test_that(".calib_ranef_var() returns the variances of uncorrelated random effects (lab)", {
+test_that(".calib_ranef_var() returns the variance of a given uncorrelated random effect", {
   set.seed(1)
   n_sites <- 12
   d <- data.frame(
@@ -16,22 +16,23 @@ test_that(".calib_ranef_var() returns the variances of uncorrelated random effec
   ## species_rand is not (yet) exposed by calibfit(), so we call the internal fitting function
   calib <- .calibfit_lab(data = .prepare_data_calib(d, method = "lab"), species_rand = TRUE, verbose = FALSE)
   vc <- spaMM::VarCorr(calib$calib_fit)
-  expect_setequal(names(calib$ranef_var), c("site_ID", "species_ID"))
-  expect_equal(calib$ranef_var[["site_ID"]], vc$Variance[vc$Group == "site_ID"])
-  expect_equal(calib$ranef_var[["species_ID"]], vc$Variance[vc$Group == "species_ID"])
+  expect_equal(calib$site_var, vc$Variance[vc$Group == "site_ID"])
+  expect_equal(.calib_ranef_var(calib$calib_fit, group = "site_ID"), vc$Variance[vc$Group == "site_ID"])
+  expect_equal(.calib_ranef_var(calib$calib_fit, group = "species_ID"), vc$Variance[vc$Group == "species_ID"])
+  expect_identical(.calib_ranef_var(calib$calib_fit, group = "not_a_group"), 0)
 
-  ## no random effect
+  ## no random effect for site
   calib_no_site <- .calibfit_lab(data = d[, c("source_value", "sample_value")], species_rand = FALSE, verbose = FALSE)
-  expect_length(calib_no_site$ranef_var, 0)
+  expect_identical(calib_no_site$site_var, 0)
 })
 
-test_that("calibration methods without random effects store no ranef_var", {
+test_that("calibration methods without random effect for site store a null site_var", {
   calib_desk <- suppressMessages(calibfit(
     data = data.frame(intercept = 1, slope = 0.5, intercept_se = 1, slope_se = 0.1, resid_var = 5),
     method = "desk", verbose = FALSE
   ))
-  expect_length(calib_desk$ranef_var, 0)
-  expect_false(any(grepl("random effects", capture.output(summary(calib_desk)))))
+  expect_identical(calib_desk$site_var, 0)
+  expect_false(any(grepl("random effect for site_ID", capture.output(summary(calib_desk)))))
 })
 
 test_that("isofind() adds the site variance of the calibration fit to term 2 (#235)", {
@@ -46,9 +47,9 @@ test_that("isofind() adds the site variance of the calibration fit to term 2 (#2
   site_effect <- stats::rnorm(nlevels(aliens$site_ID), sd = 2)
   aliens$sample_value <- aliens$sample_value + site_effect[as.integer(aliens$site_ID)]
   calib <- suppressMessages(calibfit(data = aliens, method = "lab", verbose = FALSE))
-  expect_named(calib$ranef_var, "site_ID")
-  expect_gt(calib$ranef_var[["site_ID"]], 0)
-  expect_true(any(grepl("random effects", capture.output(summary(calib)))))
+  expect_true(calib$site_rand)
+  expect_gt(calib$site_var, 0)
+  expect_true(any(grepl("random effect for site_ID", capture.output(summary(calib)))))
 
   assignment <- suppressWarnings(isofind(
     data = AssignDataAlien[1:2, ], isoscape = scape, calibfit = calib, mask = NULL, verbose = FALSE
@@ -58,25 +59,25 @@ test_that("isofind() adds the site variance of the calibration fit to term 2 (#2
   slope <- calib$param[["slope"]]
   X <- c(1, (AssignDataAlien$sample_value[1] - calib$param[["intercept"]]) / slope)
   expected <- terra::values(scape$isoscapes$mean_predVar)[, 1] + # term 1
-    (calib$phi + calib$ranef_var[["site_ID"]]) / slope^2 + # term 2
+    (calib$phi + calib$site_var) / slope^2 + # term 2
     drop(X %*% calib$fixefCov %*% X) / slope^2 # term 3
   expect_equal(terra::values(assignment$sample$stat_var[[1]])[, 1], expected)
 
-  ## calibration fits created by former versions of IsoriX do not store ranef_var
+  ## calibration fits created by former versions of IsoriX do not store site_var
   calib_old <- calib
-  calib_old$ranef_var <- NULL
+  calib_old$site_var <- NULL
   assignment_old <- suppressWarnings(isofind(
     data = AssignDataAlien[1:2, ], isoscape = scape, calibfit = calib_old, mask = NULL, verbose = FALSE
   ))
   expect_equal(terra::values(assignment_old$sample$stat_var), terra::values(assignment$sample$stat_var))
 })
 
-test_that("the corrMatrix term of the calibration method wild is not part of ranef_var (#235)", {
+test_that("the corrMatrix term of the calibration method wild is not used as site_var (#235)", {
   skip_on_cran()
   german <- fixture_german() ## see helper-fixtures.R
   calib <- suppressMessages(calibfit(data = CalibDataAlien, isofit = german$fit, verbose = FALSE))
-  expect_named(calib$ranef_var, "site_ID")
   ## the first lambda is the one of corrMatrix(1|site_ID), fixed to slope^2
-  expect_equal(calib$ranef_var[["site_ID"]], unname(calib$calib_fit$lambda[2]))
+  expect_equal(calib$site_var, unname(calib$calib_fit$lambda[2]))
+  expect_identical(.calib_ranef_var(calib$calib_fit, group = "species_ID"), 0)
   expect_true(any(grepl("corrMatrix(1|site_ID) + (1|site_ID)", capture.output(print(calib)), fixed = TRUE)))
 })
