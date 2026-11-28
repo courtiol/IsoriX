@@ -18,6 +18,7 @@ isomultifit(
   dist_method = "Earth",
   control_mean = list(),
   control_disp = list(),
+  Ncpu = getOption_IsoriX("Ncpu"),
   verbose = interactive()
 )
 }
@@ -57,6 +58,11 @@ call of mean_fit}
 \item{control_disp}{A \emph{list} of additional arguments to be passed to the
 call of disp_fit}
 
+\item{Ncpu}{An \emph{integer} specifying the number of CPUs to use, i.e. the
+number of pairs of models fitted in parallel (default set by the global
+package option \code{Ncpu}, see \code{\link{options_IsoriX}}). Use \code{Ncpu = 1} to fit the
+models sequentially (see \strong{Parallel computing} in Details).}
+
 \item{verbose}{A \emph{logical} indicating whether information about the
 progress of the procedure should be displayed or not while the function is
 running. By default verbose is \code{TRUE} if users use an interactive R
@@ -74,6 +80,23 @@ used to predict annual averages precipitation weighted isoscapes.
 }
 \details{
 This function is a wrapper around the function \code{\link{isofit}}.
+
+\strong{Parallel computing}
+
+The pairs of models of the different strata are fitted independently from
+each other. They can therefore be fitted in parallel, using several CPUs,
+which is done when \code{Ncpu} is larger than 1 (by default \code{Ncpu} is set by the
+global option \code{Ncpu} of IsoriX, see \code{\link{options_IsoriX}}). Parallel computing
+relies on socket clusters created by the base package \pkg{parallel}, which
+works on Windows, macOS and Linux. Each of the \code{Ncpu} CPUs used runs a new R
+session, which takes a few seconds to start and requires its own memory, so
+parallel computing is only worth it when fitting each pair of models takes
+more than a few seconds. In such case, setting \code{Ncpu} to the number of
+strata, or to a divisor of it, makes the best use of the CPUs. The fits are
+identical whether they are produced sequentially or in parallel. Note that
+when IsoriX is not attached using \code{library()} but loaded during development
+(e.g. with \code{devtools::load_all()}), the package \pkg{pkgload} is used to load
+the same version of IsoriX in each R session.
 }
 \examples{
 

@@ -327,8 +327,27 @@ isoscape <- function(raster,
 #' weighting for the aggregation process and may thus be used to predict annual
 #' averages precipitation weighted isoscapes.
 #'
+#' **Parallel computing**
+#'
+#' The isoscapes of the different strata are built independently from each
+#' other. They can therefore be built in parallel, using several CPUs, which is
+#' done when `Ncpu` is larger than 1 (by default `Ncpu` is set by the global
+#' option `Ncpu` of IsoriX, see [`options_IsoriX`]). As for [`isomultifit`],
+#' parallel computing relies on socket clusters created by the base package
+#' \pkg{parallel}, which works on Windows, macOS and Linux. Each of the `Ncpu`
+#' CPUs used runs a new R session, which takes a few seconds to start and
+#' requires its own memory: for large rasters, the memory needed is roughly
+#' multiplied by `Ncpu`, so you may have to decrease `Ncpu` (or the global
+#' option `spaMM_blocksize`, see [`options_IsoriX`]) if you run out of memory.
+#' The isoscapes are identical whether they are produced sequentially or in
+#' parallel.
+#'
 #' @inheritParams isoscape
 #' @param weighting An optional RasterBrick containing the weights
+#' @param Ncpu An *integer* specifying the number of CPUs to use, i.e. the
+#'   number of isoscapes built in parallel (default set by the global package
+#'   option `Ncpu`, see [`options_IsoriX`]). Use `Ncpu = 1` to build the
+#'   isoscapes sequentially (see **Parallel computing** in Details).
 #' @return This function returns a *list* of class *ISOSCAPE*
 #' containing a set of all 8 raster layers mentioned above (all being of
 #' class *SpatRaster*), and the location of the sources as spatial points.
@@ -399,6 +418,7 @@ isoscape <- function(raster,
 isomultiscape <- function(raster, ## change as method?
                           isofit,
                           weighting = NULL,
+                          Ncpu = getOption_IsoriX("Ncpu"),
                           verbose = interactive()) {
   ## Check the inputs (#164)
   .check_input_class(raster, "SpatRaster", "raster", "isomultiscape")
@@ -430,21 +450,25 @@ isomultiscape <- function(raster, ## change as method?
     }
   }
 
-  isoscapes <- lapply(
-    names(isofit$multi_fits),
-    function(fit) {
-      if (verbose) {
-        print(paste("#### building isoscapes for", fit, " in progress ####"), quote = FALSE)
-      }
-      iso <- isoscape(
-        raster = raster,
-        isofit = isofit$multi_fits[[fit]],
-        verbose = verbose
-      )
-      iso$sp_points$sources$values <- fit ## set values for sp.points
-      return(iso)
-    }
+  ## Build the isoscapes for all strata
+  ## (the terra objects are packed when built in parallel, since they cannot be
+  ## sent directly between R sessions)
+  Ncpu <- min(.check_Ncpu(Ncpu), length(isofit$multi_fits))
+  if (verbose && Ncpu > 1) {
+    print(paste("building the", length(isofit$multi_fits), "isoscapes in parallel, using", Ncpu, "CPUs (it may take a while...)"), quote = FALSE)
+  }
+  tasks <- lapply(names(isofit$multi_fits), function(fit) list(name = fit, isofit = isofit$multi_fits[[fit]]))
+  isoscapes <- .lapply_IsoriX(
+    X = tasks,
+    FUN = .isomultiscape_one,
+    shared = list(raster = if (Ncpu > 1) .pack_terra(raster) else raster, verbose = verbose),
+    Ncpu = Ncpu
   )
+  isoscapes <- lapply(isoscapes, function(iso) {
+    iso$isoscapes <- .unpack_terra(iso$isoscapes)
+    iso$sp_points <- lapply(iso$sp_points, .unpack_terra)
+    iso
+  })
 
   names(isoscapes) <- names(isofit$multi_fits)
 
@@ -527,4 +551,26 @@ summary.ISOSCAPE <- function(object, ...) {
     print(object[[2]][[1]])
   }
   return(invisible(NULL))
+}
+
+
+.isomultiscape_one <- function(task, shared) {
+  ## This function should not be called by the user but is itself called by isomultiscape().
+  ## It builds the isoscapes for a given stratum (possibly within a parallel worker).
+  ## If the raster has been packed (for parallel computing), the terra objects of the output are also packed.
+  packed <- !inherits(shared$raster, "SpatRaster")
+  if (shared$verbose) {
+    print(paste("#### building isoscapes for", task$name, " in progress ####"), quote = FALSE)
+  }
+  iso <- isoscape(
+    raster = .unpack_terra(shared$raster),
+    isofit = task$isofit,
+    verbose = shared$verbose
+  )
+  iso$sp_points$sources$values <- task$name ## set values for sp.points
+  if (packed) {
+    iso$isoscapes <- .pack_terra(iso$isoscapes)
+    iso$sp_points <- lapply(iso$sp_points, .pack_terra)
+  }
+  iso
 }

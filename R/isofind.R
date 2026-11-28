@@ -333,7 +333,7 @@ calibfit!"
       ## if no calibration, the variance of the test statistic is the response variance
       list_varstat_layers <- sapply(seq_len(nrow(data)), function(i) isoscape$isoscapes$mean_respVar)
     }
-    if (exists("var_term1")) rm(var_term2)
+    if (exists("var_term1")) rm(var_term1)
     if (exists("var_term2")) rm(var_term2)
     if (exists("var_term3")) rm(var_term3)
     if (exists("var_term4")) rm(var_term4)

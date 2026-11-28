@@ -28,7 +28,7 @@
 #' \describe{
 #'   \item{title_delta_notation}{`NULL` (default) or a name, call, or expression used in the titles of isoscape plots to refer to the delta notation (see above).}
 #'   \item{example_maxtime}{The number of seconds allowed for a given example to run. It is used to control whether the longer examples should be run or not based on the comparison between this option and the approximate running time of the example on our computers.}
-#'   \item{Ncpu}{An *integer* corresponding to the number of cores to be used (in functions that can handle parallel processing).}
+#'   \item{Ncpu}{An *integer* (default `2L`) corresponding to the number of CPUs to be used by the functions that can handle parallel processing: [`isomultifit`], [`isomultiscape`], [`getelev`] and [`prepraster`]. Use `1L` to prevent parallel processing.}
 #'   \item{dont_ask}{A *logical* indicating if the user prompt during interactive session during plotting must be inactivated (for development purposes only).}
 #'   \item{spaMM_blocksize}{A positive *integer* (default `16000L`) giving the number of locations per slice used by \pkg{spaMM} to compute the prediction variances in [`isoscape`] (argument `blockSize` of [`spaMM::predict`]). Larger values are faster but use more memory; lower it if [`isoscape`] runs out of memory on large rasters.}
 #'   \item{spaMM_debugmod}{A *logical* indicating if the warnings and errors produced by the spaMM package should stopped being turned into messages (for development purposes only).}
@@ -134,5 +134,6 @@ getOption_IsoriX <- function(x = NULL) {
 
 ## Setting default package options
 .data_IsoriX <- new.env(parent = emptyenv())
-.data_IsoriX$IsoriX_options <- list(title_delta_notation = NULL, example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_blocksize = 16000L, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.default_options_IsoriX <- list(title_delta_notation = NULL, example_maxtime = 5, Ncpu = 2L, dont_ask = FALSE, spaMM_blocksize = 16000L, spaMM_debug = FALSE) ## put example_maxtime = 500 to check all examples
+.data_IsoriX$IsoriX_options <- .default_options_IsoriX
 ## otherwise put 5
